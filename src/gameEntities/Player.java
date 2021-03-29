@@ -1,9 +1,9 @@
 package gameEntities;
 
 /**
- * This class is used for the player objects. For each
- * player, a player object, which stores all relevant attributes, is created and
- * stored in the GameSession.
+ * Implementation of the Player objects.
+ * <p>
+ * For each player, a Player object containing all relevant attributes is created.
  * 
  * @author tthielen
  */
@@ -12,16 +12,20 @@ public class Player {
 
 	private String username;
 	private int score;
+	private Rack rack;
+	//Reference
+	private Bag bag;
 
 	/**
-	 * Creates a player object with the given username
+	 * Constructor: Creates a player object with the given username.
 	 * 
 	 * @author tthielen
 	 * @param username
 	 */
-	public Player(String username) {
+	public Player(String username, Bag bag) {
 		this.username = username;
 		this.score = 0;
+		this.rack = new Rack(this, this.bag);
 	}
 
 	/**

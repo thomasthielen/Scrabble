@@ -1,9 +1,9 @@
 package gameEntities;
 
 /**
- * This class is used for the tile objects. The object attributes include the
- * letter as well as the value (meaning the amount of points the tile will net)
- * of the tile
+ * Implementation of the Tile objects.
+ * <p>
+ * The attributes include the letter as well as the value of the tile.
  * 
  * @author tthielen
  */
@@ -14,10 +14,11 @@ public class Tile {
 	private int value;
 
 	/**
-	 * Creates a tile object with the given letter + value
+	 * Constructor: Creates a tile object with the given letter + value.
 	 * 
 	 * @author tthielen
-	 * @param letter, value
+	 * @param letter
+	 * @param value
 	 */
 	public Tile(char letter, int value) {
 		this.letter = letter;

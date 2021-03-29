@@ -3,21 +3,21 @@ package gameEntities;
 import java.util.ArrayList;
 
 /**
- * This class is used for the bag object. For each GameSession, a bag object is
- * created and automatically filled with all tiles.
+ * Implementation of the Bag object.
+ * <p>
+ * For each GameSession, a Bag object is created and automatically filled with the tiles of a game scrabble.
  * 
  * @author tthielen
  */
 public class Bag {
 
 	private boolean isEmpty = true;
-	private ArrayList<Tile> remainingTiles;
+	private ArrayList<Tile> remainingTiles = new ArrayList<Tile>();
 
 	/**
-	 * Creates a bag object and uses fillBag() to fill the remainingTiles ArrayList
+	 * Constructor: Creates a Bag object and uses fillBag() to fill the remainingTiles ArrayList.
 	 * 
 	 * @author tthielen
-	 * @param username
 	 */
 	public Bag() {
 		isEmpty = false;
@@ -80,5 +80,25 @@ public class Bag {
 		for (int i = 0; i < 2; i++) {
 			remainingTiles.add(new Tile('*', 0));
 		}
+
 	}
+
+	/**
+	 * Returns a random Tile and removes it from the bag
+	 * 
+	 * @author tthielen
+	 * @return random Tile 
+	 */
+	public Tile drawTile() {
+		if (!this.isEmpty) {
+			int rand = (int) (remainingTiles.size() * Math.random());
+			Tile randTile = remainingTiles.get(rand);
+			remainingTiles.remove(rand);
+			return randTile;
+		} else {
+			System.out.println("The bag is empty.");
+			return null;
+		}
+	}
+
 }
