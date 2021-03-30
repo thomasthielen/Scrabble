@@ -1,4 +1,4 @@
-package gameEntities;
+package gameentities;
 
 /**
  * Implementation of the Player objects.
