@@ -87,7 +87,7 @@ public class Bag {
 	 * Returns a random Tile and removes it from the bag
 	 * 
 	 * @author tthielen
-	 * @return random Tile 
+	 * @return Tile, randomly drawn from the bag
 	 */
 	public Tile drawTile() {
 		if (!this.isEmpty) {
@@ -99,6 +99,16 @@ public class Bag {
 			System.out.println("The bag is empty.");
 			return null;
 		}
+	}
+	
+	/**
+	 * Adds the given Tile into the Bag (meaning into the ArrayList remainingTiles)
+	 * 
+	 * @author tthielen
+	 * @param Tile to be added to the bag
+	 */
+	public void addTile(Tile t) {
+		this.remainingTiles.add(t);
 	}
 
 }
