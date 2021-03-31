@@ -58,8 +58,8 @@ public class DataHandler {
 	}
 	
 	/**
-	 * Creates a new player table in the PlayerDB with 
-	 * the given username and avatar.
+	 * Creates a new player  in the PlayerInfo table of 
+	 * PlayerDB with the given username and avatar.
 	 * 
 	 * @param username
 	 * @param avatar
@@ -67,38 +67,10 @@ public class DataHandler {
 	 *
 	 * @author jluellig
 	 */
-	public static void createPlayerInfoTable(String username, String avatar) throws Exception {
-		Connection con = null;
-		Statement stm = null;
-
-		try {
-			// connect to Database
-			Class.forName("org.sqlite.JDBC");
-			con = DriverManager.getConnection("jdbc:sqlite:" + System.getProperty("user.dir") + System.getProperty("file.separator") + 
-					"resources" + System.getProperty("file.separator") + 
-					"PlayerDB.db");
-			
-			stm = con.createStatement();
-			
-			// Delete table PlayerInfo
-			stm.executeUpdate("DROP TABLE PlayerInfo");
-			
-			// Create new and empty table PlayerInfo
-			stm.executeUpdate("CREATE TABLE PlayerInfo (Username TEXT NOT NULL, Avatar TEXT NOT NULL)");
-			
-			// Add username and avatar to PlayerInfo
-			stm.executeUpdate("INSERT INTO PlayerInfo(Username, Avatar) VALUES('" + username + "', '"
-					+ avatar + "')");
-			
-		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage() ); 
-			System.exit(0);
-		} finally {
-			if (con != null && stm != null) {
-				stm.close();
-				con.close();
-			}
-		}
+	public static void addPlayer(String username, String avatar) {
+		Database.connect();
+		Database.addPlayer(username, avatar);
+		Database.disconnect();
 	}
 	
 	/**
