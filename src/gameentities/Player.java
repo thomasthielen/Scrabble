@@ -5,7 +5,8 @@ import java.util.ArrayList;
 /**
  * Implementation of the Player objects.
  * <p>
- * For each player, a Player object containing all relevant attributes is
+ * For each player, a Player object cont
+ * aining all relevant attributes is
  * created.
  * 
  * @author tthielen
