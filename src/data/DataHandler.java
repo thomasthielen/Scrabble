@@ -4,11 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class is used to handle all kinds of Data that has to be stored,
@@ -63,7 +59,6 @@ public class DataHandler {
 	 * 
 	 * @param username
 	 * @param avatar
-	 * @throws Exception
 	 *
 	 * @author jluellig
 	 */
@@ -77,162 +72,93 @@ public class DataHandler {
 	 * Changes the username of the player in the database
 	 * 
 	 * @param username
-	 * @throws Exception
+	 * @param ID
 	 *
 	 * @author jluellig
 	 */
-	public static void alterPlayerUsername(String username) throws Exception{
-		Connection con = null;
-		Statement stm = null;
-
-		try {
-			// connect to Database
-			Class.forName("org.sqlite.JDBC");
-			con = DriverManager.getConnection("jdbc:sqlite:" + System.getProperty("user.dir") + System.getProperty("file.separator") + 
-					"resources" + System.getProperty("file.separator") + 
-					"PlayerDB.db");
-			
-			stm = con.createStatement();
-			
-			// Alter Username
-			stm.executeUpdate("UPDATE PlayerInfo SET Username = '" + username + "'");
-			
-		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage() ); 
-			System.exit(0);
-		} finally {
-			if (con != null && stm != null) {
-				stm.close();
-				con.close();
-			}
-		}
+	public static void alterPlayerUsername(String username, int ID) {
+		Database.connect();
+		Database.alterPlayerUsername(username, ID);
+		Database.disconnect();
 	}
 	
 	/**
 	 * Changes the avatar of the player in the database
 	 * 
 	 * @param avatar
-	 * @throws Exception
+	 * @param ID
 	 *
 	 * @author jluellig
 	 */
-	public static void alterPlayerAvatar(String avatar) throws Exception{
-		Connection con = null;
-		Statement stm = null;
-
-		try {
-			// connect to Database
-			Class.forName("org.sqlite.JDBC");
-			con = DriverManager.getConnection("jdbc:sqlite:" + System.getProperty("user.dir") + System.getProperty("file.separator") + 
-					"resources" + System.getProperty("file.separator") + 
-					"PlayerDB.db");
-			
-			stm = con.createStatement();
-			
-			// Alter Avatar
-			stm.executeUpdate("UPDATE PlayerInfo SET Avatar = '" + avatar + "'");
-			
-		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage() ); 
-			System.exit(0);
-		} finally {
-			if (con != null && stm != null) {
-				stm.close();
-				con.close();
-			}
-		}
+	public static void alterPlayerAvatar(String avatar, int ID) {
+		Database.connect();
+		Database.alterPlayerAvatar(avatar, ID);
+		Database.disconnect();
 	}
 	
 	/**
-	 * Returns the Usernames of the Players which are stored in the Database
+	 * Returns the Usernames, IDs, Avatars of the Players which are stored in the Database.
+	 * The information is stored in a HashMap with the key beeing the player's ID with a String array for the player data as value.
+	 * Note that in the String Array the index 0 marks the player's username and the index 1 the avatar.
 	 * 
-	 * @return Player Usernames
-	 * @throws Exception
+	 * @return playerInfo 
 	 *
 	 * @author jluellig
 	 */
-	public static String[] getPlayerUsernames() throws Exception{
-		Connection con = null;
-		Statement stm = null;
-		ResultSet rs = null;
-		ArrayList<String> usernames = new ArrayList<String>(); 
-		
-		try {
-			// connect to Database
-			Class.forName("org.sqlite.JDBC");
-			con = DriverManager.getConnection("jdbc:sqlite:" + System.getProperty("user.dir") + System.getProperty("file.separator") + 
-					"resources" + System.getProperty("file.separator") + 
-					"PlayerDB.db");
-			
-			stm = con.createStatement();
-			
-			// Get player Username
-			rs = stm.executeQuery("SELECT Username FROM PlayerInfo");
-			
-			while(rs.next()) {
-				usernames.add(rs.getString("Username"));
-			}
-			
-				
-		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage() ); 
-			System.exit(0);
-		} finally {
-			if (con != null && stm != null) {
-				if (rs != null) {
-					rs.close();
-				}
-				con.close();
-				stm.close();
-			}
-		}
-		return (String[]) usernames.toArray();
+	public static HashMap<Integer, String[]> getPlayerInfo() {
+		HashMap<Integer, String[]> playerInfo = new HashMap<Integer, String[]>();
+		Database.connect();
+		playerInfo = Database.getPlayerInfo();
+		Database.disconnect();
+		return playerInfo;
 	}
 	
 	/**
-	 * Returns the Avatar of the player which is stored in the database
+	 * Deletes the player of given ID in the PlayerDB
 	 * 
-	 * @param username
-	 * @return avatar
-	 * @throws Exception
+	 * @param ID
 	 *
 	 * @author jluellig
 	 */
-	public static String getPlayerAvatar(String username) throws Exception{
-		Connection con = null;
-		Statement stm = null;
-		ResultSet rs = null;
-		StringBuffer avatar = new StringBuffer();
-		
-		try {
-			// connect to Database
-			Class.forName("org.sqlite.JDBC");
-			con = DriverManager.getConnection("jdbc:sqlite:" + System.getProperty("user.dir") + System.getProperty("file.separator") + 
-					"resources" + System.getProperty("file.separator") + 
-					"PlayerDB.db");
-			
-			stm = con.createStatement();
-			
-			// Get player Avatar
-			rs = stm.executeQuery("SELECT Avatar FROM PlayerInfo WHERE (Username = '" + username + "')");
-			
-			while(rs.next()) {
-				avatar.append(rs.getString("Avatar"));
-			}
-			
-				
-		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage() ); 
-			System.exit(0);
-		} finally {
-			if (con != null && stm != null) {
-				if (rs != null) {
-					rs.close();
-				}
-				con.close();
-				stm.close();
-			}
+	public static void deletePlayer (int ID) {
+		Database.connect();
+		Database.deletePlayer(ID);
+		Database.disconnect();
+	}
+	
+	/**
+	 * adds Statistics (if the player won and the points) for one game to the player of given ID
+	 * 
+	 * @param ID
+	 * @param win
+	 * @param points
+	 *
+	 * @author jluellig
+	 */
+	public static void addStatistics(int ID, boolean win, int points) {
+		Database.connect();
+		if (win) {
+			Database.addStatistics(ID, 1, points);
+		} else {
+			Database.addStatistics(ID, 0, points);
 		}
-		return avatar.toString();
+		Database.disconnect();
+	}
+	
+	/**
+	 * Gives the statistics of the given player ID in a HashMap.
+	 * Keys: Matches, Won, PointsAVG, Date
+	 * 
+	 * @return Statistics
+	 * @param ID
+	 *
+	 * @author jluellig
+	 */
+	public static HashMap<String, Integer> getStatistics(int ID) {
+		HashMap<String, Integer> statistics = new HashMap<String, Integer>();
+		Database.connect();
+		statistics = Database.getStatistics(ID);
+		Database.disconnect();
+		return statistics;
 	}
 }
