@@ -12,6 +12,12 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class Client {
 	
+	/**
+	 * @author tikrause
+	 * @param args
+	 * @throws InterruptedException
+	 * @throws IOException
+	 */
 	public static void main (String[] args) throws InterruptedException, IOException {
 		new Client("localhost", 8000).run();
 	}
@@ -19,11 +25,21 @@ public class Client {
 	private final String host;
 	private final int port;
 	
+	/**
+	 * @author tikrause
+	 * @param host
+	 * @param port
+	 */
 	public Client (String host, int port) {
 		this.host = host;
 		this.port = port;
 	}
 
+	/**
+	 * @author tikrause
+	 * @throws InterruptedException
+	 * @throws IOException
+	 */
 	public void run() throws InterruptedException, IOException {
 		EventLoopGroup group = new NioEventLoopGroup();
 		

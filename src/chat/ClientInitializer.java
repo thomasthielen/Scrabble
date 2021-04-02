@@ -10,6 +10,9 @@ import io.netty.handler.codec.string.StringEncoder;
 
 public class ClientInitializer extends ChannelInitializer<SocketChannel> {
 
+	/**
+	 * @author tikrause
+	 */
 	@Override
 	protected void initChannel(SocketChannel socketCh) throws Exception {
 		ChannelPipeline pipeline = socketCh.pipeline();

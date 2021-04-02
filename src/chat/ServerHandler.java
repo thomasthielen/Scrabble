@@ -9,8 +9,15 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 
 public class ServerHandler extends SimpleChannelInboundHandler<String> {
 
+	/**
+	 * @author tikrause
+	 */
 	private static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 	
+	
+	/**
+	 * @author tikrause
+	 */
 	@Override
 	public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
 		Channel in = ctx.channel();
@@ -20,6 +27,9 @@ public class ServerHandler extends SimpleChannelInboundHandler<String> {
 		channels.add(ctx.channel());
 	}
 	
+	/**
+	 * @author tikrause
+	 */
 	@Override
 	public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
 		Channel in = ctx.channel();
@@ -29,6 +39,9 @@ public class ServerHandler extends SimpleChannelInboundHandler<String> {
 		channels.remove(ctx.channel());
 	}
 	
+	/**
+	 * @author tikrause
+	 */
 	@Override
 	protected void messageReceived(ChannelHandlerContext ctx, String msg) throws Exception {
 		Channel	in = ctx.channel();
