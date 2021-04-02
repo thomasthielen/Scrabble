@@ -1,5 +1,6 @@
 package chat;
 
+import chat.messages.SendChatMessage;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -44,10 +45,11 @@ public class ServerHandler extends SimpleChannelInboundHandler<Object> {
 	 */
 	@Override
 	protected void messageReceived(ChannelHandlerContext ctx, Object msg) throws Exception {
+		SendChatMessage message = (SendChatMessage) msg;
 		Channel	in = ctx.channel();
 		for (Channel channel : channels) {
 			if (channel != in) {
-				channel.writeAndFlush("[" + in.remoteAddress() + "] " + msg + "\n");
+				channel.writeAndFlush("[" + in.remoteAddress() + "] " + message.getMessage() + "\n");
 			}
 		}
 	

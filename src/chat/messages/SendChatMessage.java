@@ -23,5 +23,9 @@ public class SendChatMessage extends Message {
 		super(MessageType.SEND_CHAT_MESSAGE, name);
 		this.message = message;
 	}
+	
+	public String getMessage() {
+		return this.message;
+	}
 
 }

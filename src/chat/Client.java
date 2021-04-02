@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import chat.messages.SendChatMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -54,7 +55,8 @@ public class Client {
 			
 			
 			while (true) {
-				channel.writeAndFlush(in.readLine() + "\r\n");
+				// pls change
+				channel.writeAndFlush(new SendChatMessage("hugo", in.readLine() + "\r\n"));
 			}
 		}
 		finally {
