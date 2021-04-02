@@ -7,7 +7,7 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
-public class ServerHandler extends SimpleChannelInboundHandler<String> {
+public class ServerHandler extends SimpleChannelInboundHandler<Object> {
 
 	/**
 	 * @author tikrause
@@ -43,7 +43,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<String> {
 	 * @author tikrause
 	 */
 	@Override
-	protected void messageReceived(ChannelHandlerContext ctx, String msg) throws Exception {
+	protected void messageReceived(ChannelHandlerContext ctx, Object msg) throws Exception {
 		Channel	in = ctx.channel();
 		for (Channel channel : channels) {
 			if (channel != in) {
