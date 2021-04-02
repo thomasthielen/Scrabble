@@ -9,17 +9,14 @@ package gameentities;
  * @author tthielen
  */
 public class Square {
-	private boolean dls = false; // Double Letter Square
-	private boolean tls = false; // Triple Letter Square
-	private boolean dws = false; // Double Word Square
-	private boolean tws = false; // Triple Word Square
-
-	private boolean star = false; // Square on (8,8) through which the first word has to be played
+	
+	Premium premium = Premium.NONE; // Indicates Premium variant
 
 	private int posX; // On X-Axis: [1,15]
 	private int posY; // On Y-Axis: [1,15]
 	
 	private Tile tile; //This variable saves the Tile which is put on the Square
+	private boolean taken = false; //This variable indicates whether the Square is already taken
 
 	/**
 	 * Constructor: Creates a Square object, saves the coordinates and checks
@@ -38,67 +35,67 @@ public class Square {
 		case 1:
 		case 15:
 			if (posY == 1 || posY == 8 || posY == 15) {
-				this.tws = true;
+				premium = Premium.TWS;
 			} else if (posY == 4 || posY == 12) {
-				this.dls = true;
+				premium = Premium.DLS;
 			}
 			break;
 
 		case 2:
 		case 14:
 			if (posY == 2 || posY == 14) {
-				this.dws = true;
+				premium = Premium.DWS;
 			} else if (posY == 6 || posY == 10) {
-				this.tls = true;
+				premium = Premium.TLS;
 			}
 			break;
 
 		case 3:
 		case 13:
 			if (posY == 3 || posY == 13) {
-				this.dws = true;
+				premium = Premium.DWS;
 			} else if (posY == 7 || posY == 9) {
-				this.dls = true;
+				premium = Premium.DLS;
 			}
 			break;
 
 		case 4:
 		case 12:
 			if (posY == 4 || posY == 12) {
-				this.dws = true;
+				premium = Premium.DWS;
 			} else if (posY == 1 || posY == 8 || posY == 15) {
-				this.dls = true;
+				premium = Premium.DLS;
 			}
 			break;
 
 		case 5:
 		case 11:
 			if (posY == 5 || posY == 11) {
-				this.dws = true;
+				premium = Premium.DWS;
 			}
 			break;
 
 		case 6:
 		case 10:
 			if (posY == 2 || posY == 6 || posY == 10 || posY == 14) {
-				this.tls = true;
+				premium = Premium.TLS;
 			}
 			break;
 
 		case 7:
 		case 9:
 			if (posY == 3 || posY == 7 || posY == 9 || posY == 13) {
-				this.dls = true;
+				premium = Premium.DLS;
 			}
 			break;
 
 		case 8:
 			if (posY == 1 || posY == 15) {
-				this.tws = true;
+				premium = Premium.TWS;
 			} else if (posY == 4 || posY == 12) {
-				this.dls = true;
+				premium = Premium.DLS;
 			} else if (posY == 8) {
-				this.star = true;
+				premium = Premium.STAR;
 			}
 			break;
 
@@ -107,4 +104,47 @@ public class Square {
 		}
 
 	}
+	
+	
+	/**
+	 * Places the given Tile on the Square and marks the Square as taken.
+	 * 
+	 * @author tthielen
+	 * @param tile
+	 */
+	public void placeTile(Tile tile) {
+		this.tile = tile;
+		this.taken = true;
+	}
+	
+	/**
+	 * Returns the premium status of the square.
+	 * 
+	 * @author tthielen
+	 * @return premium
+	 */
+	public Premium getPremium() {
+		return this.premium;
+	}
+	
+	/**
+	 * Returns the tile of the square (or null, if the square is empty)
+	 * 
+	 * @author tthielen
+	 * @return tile
+	 */
+	public Tile getTile() {
+		return this.tile;
+	}
+	
+	/**
+	 * Returns whether the square is already taken (or not)
+	 * 
+	 * @author tthielen
+	 * @return taken
+	 */
+	public boolean getTaken() {
+		return this.taken;
+	}
+	
 }
