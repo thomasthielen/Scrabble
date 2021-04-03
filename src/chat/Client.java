@@ -11,9 +11,21 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
+/**
+ * For each client that joins the game a Client instance is created which connects to the server
+ * and can send or receive any messages or notifications
+ * 
+ * @author tikrause
+ *
+ */
 public class Client {
 	
+	private final String host;
+	private final int port;
+	
 	/**
+	 * main method starts a new client and its run method
+	 * 
 	 * @author tikrause
 	 * @param args
 	 * @throws InterruptedException
@@ -23,10 +35,9 @@ public class Client {
 		new Client("localhost", 8000).run();
 	}
 
-	private final String host;
-	private final int port;
-	
 	/**
+	 * Constructor: creates a Client object at the existing server port
+	 * 
 	 * @author tikrause
 	 * @param host
 	 * @param port
@@ -37,6 +48,9 @@ public class Client {
 	}
 
 	/**
+	 * connects the client instance to the server and opens a TCP connection 
+	 * that can be used to send or receive messages and to update the game status
+	 * 
 	 * @author tikrause
 	 * @throws InterruptedException
 	 * @throws IOException
@@ -45,17 +59,19 @@ public class Client {
 		EventLoopGroup group = new NioEventLoopGroup();
 		
 		try {
+			// simplifies the connecting process
 			Bootstrap bootstrap = new Bootstrap()
 					.group(group)
 					.channel(NioSocketChannel.class)
 					.handler(new ClientInitializer());
 			
+			// connects the client to the server using TCP
 			Channel channel = bootstrap.connect(host, port).sync().channel();
 			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 			
 			
 			while (true) {
-				// pls change
+				// INCOMPLETE
 				channel.writeAndFlush(new SendChatMessage("hugo", in.readLine() + "\r\n"));
 			}
 		}

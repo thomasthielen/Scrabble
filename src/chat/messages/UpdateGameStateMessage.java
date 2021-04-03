@@ -1,10 +1,6 @@
-/**
- * 
- */
 package chat.messages;
 
-import gameEntities.Bag;
-import gameEntities.Player;
+import session.GameSession;
 
 /**
  * Implementation of the update game state message. A UpdateGameStateMessage is
@@ -22,41 +18,30 @@ public class UpdateGameStateMessage extends Message {
 	 */
 
 	private static final long serialVersionUID = 1L;
-	private Bag bag;
-	private Player[] players;
+	private GameSession game;
 
 	/**
 	 * Constructor: creating a UpdateGameStateMessage with the
-	 * MessageType.UPDATE_GAME_STATE, the name of the creator, the current state of
-	 * the bag and a list of players
+	 * MessageType.UPDATE_GAME_STATE, the name of the creator and the current 
+	 * GameSession that should be sent in the message
 	 * 
-	 * @author lsteltma
+	 * @author tikrause
 	 * @param from
 	 */
 
-	public UpdateGameStateMessage(String name, Bag bag, Player[] players) {
+	public UpdateGameStateMessage(String name, GameSession game) {
 		super(MessageType.UPDATE_GAME_STATE, name);
-		this.bag = bag;
-		this.players = players;
+		this.game = game;
 	}
 
 	/**
-	 * getter method for the player list
+	 * getter method for the current GameSession instance
 	 * 
-	 * @return list of players
+	 * @author tikrause
+	 * @return game
 	 */
 
-	public Player[] getPlayers() {
-		return this.players;
-	}
-
-	/**
-	 * getter method for the bag
-	 * 
-	 * @return the current state of the bag
-	 */
-
-	public Bag getBag() {
-		return this.bag;
+	public GameSession getGameSession() {
+		return this.game;
 	}
 }

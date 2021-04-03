@@ -1,12 +1,11 @@
-/**
- * 
- */
 package chat.messages;
 
 /**
+ * enum for all types a message can be an instance of
+ * 
  * @author tikrause
  *
  */
 public enum MessageType {
-	CONNECT, DISCONNECT, ERROR, SUCCESS, SEND_CHAT_MESSAGE, UPDATE_GAME_STATE, LETTER;
+	CONNECT, DISCONNECT, ERROR, SUCCESS, SEND_CHAT, UPDATE_GAME_STATE, LETTER;
 }

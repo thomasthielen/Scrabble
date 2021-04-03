@@ -6,8 +6,7 @@ package chat.messages;
 import gameEntities.Tile;
 
 /**
- * Implementation of the letter message. A LetterMessage is created to send
- * tiles
+ * Implementation of the letter message. A LetterMessage is created to send tiles
  * 
  * @author lsteltma
  */
@@ -40,7 +39,7 @@ public class LetterMessage extends Message {
 	/**
 	 * getter method for the tile
 	 * 
-	 * @return the send tile of the message
+	 * @return the sent tile of the message
 	 */
 	
 	public Tile getTile() {
