@@ -65,5 +65,10 @@ public class Board {
 		// -1 because the ArrayList starts with index = 0
 		return squares.get(index);
 	}
+	
+	//Testing Purposes TODO: DELETE
+	public ArrayList<Square> getSquareList(){
+		return this.squares;
+	}
 
 }

@@ -2,6 +2,8 @@ package gameentities;
 
 import java.util.ArrayList;
 
+import session.GameSession;
+
 /**
  * Implementation of the Rack object.
  * <p>
@@ -13,7 +15,6 @@ import java.util.ArrayList;
 public class Rack {
 	private ArrayList<Tile> tiles = new ArrayList<Tile>();
 	// References
-	private Player player;
 	private Bag bag;
 
 	/**
@@ -23,9 +24,8 @@ public class Rack {
 	 * @param player
 	 * @param bag
 	 */
-	public Rack(Player player, Bag bag) {
-		this.player = player;
-		this.bag = bag;
+	public Rack(GameSession gameReference) {
+		this.bag = gameReference.getBag();
 	}
 
 	/**

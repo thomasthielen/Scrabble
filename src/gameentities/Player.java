@@ -2,11 +2,12 @@ package gameentities;
 
 import java.util.ArrayList;
 
+import session.GameSession;
+
 /**
  * Implementation of the Player objects.
  * <p>
- * For each player, a Player object cont
- * aining all relevant attributes is
+ * For each player, a Player object containing all relevant attributes is
  * created.
  * 
  * @author tthielen
@@ -15,10 +16,9 @@ import java.util.ArrayList;
 public class Player {
 
 	private String username;
-	private int score;
+	private Avatar avatar;
+	private int score = 0;
 	private Rack rack;
-	// Reference
-	private Bag bag;
 
 	/**
 	 * Constructor: Creates a player object with the given username.
@@ -26,10 +26,11 @@ public class Player {
 	 * @author tthielen
 	 * @param username
 	 */
-	public Player(String username, Bag bag) {
+	public Player(String username, Avatar avatar, GameSession gameReference) {
 		this.username = username;
-		this.score = 0;
-		this.rack = new Rack(this, this.bag);
+		this.avatar = avatar;
+
+		this.rack = new Rack(gameReference);
 	}
 
 	/**
@@ -38,7 +39,7 @@ public class Player {
 	 * @author tthielen
 	 */
 	public void refillRack() {
-		this.rack.refillDraw();
+		rack.refillDraw();
 	}
 
 	/**
@@ -50,9 +51,9 @@ public class Player {
 	 * @param Tiles that are meant to be swapped
 	 */
 	public void exchangeTiles(ArrayList<Tile> swapTiles) {
-		this.rack.exchangeTiles(swapTiles);
+		rack.exchangeTiles(swapTiles);
 	}
-	
+
 	/**
 	 * Returns the player username
 	 * 
