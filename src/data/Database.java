@@ -90,7 +90,7 @@ class Database {
 			stm = con.createStatement();
 			
 			// Change the username of the given ID
-			stm.executeUpdate("UPDATE PlayerInfo SET Username = '" + username + "' WHERE ID = " + ID + "");
+			stm.executeUpdate("UPDATE PlayerInfo SET Username = '" + username + "' WHERE ID = " + ID);
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage()); 
 		}
@@ -109,7 +109,7 @@ class Database {
 			stm = con.createStatement();
 			
 			// Change the avatar of the given ID
-			stm.executeUpdate("UPDATE PlayerInfo SET Avatar = '" + avatar + "' WHERE ID = " + ID + "");
+			stm.executeUpdate("UPDATE PlayerInfo SET Avatar = '" + avatar + "' WHERE ID = " + ID);
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage()); 
 		}
@@ -171,7 +171,7 @@ class Database {
 	}
 	
 	/**
-	 * Adds Statistics (Win, Points) to the given player ID
+	 * Adds statistics (Win, Points) for one game to the given player ID into Statistics table in PlayerDB
 	 * 
 	 * @param ID
 	 * @param win

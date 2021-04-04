@@ -16,8 +16,8 @@ import java.util.HashMap;
 public class DataHandler {
 
 	/**
-	 * Imports File f as the Dictionary of the current game. The File has to be in
-	 * the specific format to be correctly read. Each (and also the first and last)
+	 * Imports the given file as the Dictionary of the current game. The File has to be in
+	 * the right format to be correctly read. Each (and also the first and last)
 	 * line has to start with the word that should be added to the dictionary. It
 	 * has to be separated from any following info in this line (if there is any) by
 	 * any whitespace.
@@ -27,7 +27,7 @@ public class DataHandler {
 	 *
 	 * @author jluellig
 	 */
-	public static void useDictionaryFile(File file) throws IOException {
+	public static void useDictionaryFile(File file) {
 		try {
 			BufferedReader inputReader = new BufferedReader(new FileReader(file));
 			String z;
@@ -127,7 +127,7 @@ public class DataHandler {
 	}
 	
 	/**
-	 * adds Statistics (if the player won and the points) for one game to the player of given ID
+	 * Adds Statistics (if the player won and the points) for one game to the player of given ID
 	 * 
 	 * @param ID
 	 * @param win
@@ -147,7 +147,7 @@ public class DataHandler {
 	
 	/**
 	 * Gives the statistics of the given player ID in a HashMap.
-	 * Keys: Matches, Won, PointsAVG, Date
+	 * Keys: Matches, Won, PointsAVG
 	 * 
 	 * @return Statistics
 	 * @param ID

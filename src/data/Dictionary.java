@@ -1,11 +1,9 @@
 package data;
 
 /**
- * This class is in charge of everything related
- * to the dictionary used in the game. It stores 
- * words in the dictionary and provides methods 
- * to search the dictionary or check if a word 
- * is a part of the dictionary.
+ * This class is in charge of everything related to the dictionary used in the game. 
+ * It stores words in the dictionary and provides methods to search the dictionary 
+ * or check if a word is a part of the dictionary.
  *
  * @author jluellig
  */
@@ -24,11 +22,10 @@ class Dictionary {
 	}
 
 	/**
-	 * Returns true if the String s is a
-	 * correct word in the dictionary.
+	 * Returns true if the String s is a correct word in the dictionary.
 	 * 
 	 * @param string
-	 * @return boolean 
+	 * @return isWord 
 	 *
 	 * @author jluellig
 	 */
