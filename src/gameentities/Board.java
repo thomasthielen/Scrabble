@@ -65,9 +65,41 @@ public class Board {
 		// -1 because the ArrayList starts with index = 0
 		return squares.get(index);
 	}
-	
-	//Testing Purposes TODO: DELETE
-	public ArrayList<Square> getSquareList(){
+
+	public Square getUpperNeighbour(Square square) {
+		if (square.getY() < 15) {
+			return squares.get(squares.indexOf(square) + 1);
+		} else {
+			return null;
+		}
+	}
+
+	public Square getLowerNeighbour(Square square) {
+		if (square.getY() > 1) {
+			return squares.get(squares.indexOf(square) - 1);
+		} else {
+			return null;
+		}
+	}
+
+	public Square getRightNeighbour(Square square) {
+		if (square.getX() < 15) {
+			return squares.get(squares.indexOf(square) + 15);
+		} else {
+			return null;
+		}
+	}
+
+	public Square getLeftNeighbour(Square square) {
+		if (square.getX() > 1) {
+			return squares.get(squares.indexOf(square) - 15);
+		} else {
+			return null;
+		}
+	}
+
+	// Testing Purposes TODO: DELETE
+	public ArrayList<Square> getSquareList() {
 		return this.squares;
 	}
 

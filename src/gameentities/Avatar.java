@@ -1,7 +1,12 @@
 package gameentities;
 
+/**
+ * Enum to be able to choose from several preset avatars (currently only placeholders).
+ * 
+ * @author tthielen
+ */
 public enum Avatar {
-	PFP1,
-	PFP2,
-	PFP3
+	PIC1,
+	PIC2,
+	PIC3
 }

@@ -147,4 +147,24 @@ public class Square {
 		return this.taken;
 	}
 	
+	/**
+	 * Returns the x-coordinate of the square
+	 * 
+	 * @author tthielen
+	 * @return posX
+	 */
+	public int getX() {
+		return this.posX;
+	}
+	
+	/**
+	 * Returns the y-coordinate of the square
+	 * 
+	 * @author tthielen
+	 * @return posY
+	 */
+	public int getY() {
+		return this.posY;
+	}
+	
 }
