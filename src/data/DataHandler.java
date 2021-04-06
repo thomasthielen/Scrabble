@@ -42,7 +42,7 @@ public class DataHandler {
 	}
 	
 	/**
-	 * Checks if the dictionary contains a specific word.
+	 * Returns true if the dictionary contains the given word.
 	 * 
 	 * @param string
 	 * @return boolean
@@ -158,6 +158,7 @@ public class DataHandler {
 		HashMap<String, Integer> statistics = new HashMap<String, Integer>();
 		Database.connect();
 		statistics = Database.getStatistics(ID);
+		// TODO create HashKey Enum
 		Database.disconnect();
 		return statistics;
 	}

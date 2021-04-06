@@ -70,6 +70,7 @@ class Database {
 		try {
 			stm = con.createStatement();
 				
+			// TODO Use Enum as Avatar String
 			// Add username and avatar to PlayerInfo
 			stm.executeUpdate("INSERT INTO PlayerInfo(Username, Avatar) VALUES('" + username + "', '" + avatar + "')");
 		} catch (Exception e) {
@@ -145,7 +146,6 @@ class Database {
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage()); 
 		}
-		
 		return playerInfo;
 	}
 	
@@ -227,8 +227,7 @@ class Database {
 			}	
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage()); 
-		}
-		
+		}		
 		return statistics;
 	}
 	
@@ -252,5 +251,4 @@ class Database {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage()); 
 		}
 	}
-
 }
