@@ -9,14 +9,15 @@ package gameentities;
  * @author tthielen
  */
 public class Square {
-	
+
 	Premium premium = Premium.NONE; // Indicates Premium variant
 
 	private int posX; // On X-Axis: [1,15]
 	private int posY; // On Y-Axis: [1,15]
-	
-	private Tile tile; //This variable saves the Tile which is put on the Square
-	private boolean taken = false; //This variable indicates whether the Square is already taken
+
+	private Tile tile; // Saves the Tile which is put on the Square
+	private boolean taken = false; // Indicates whether the Square is taken
+	private boolean previousPlay = false; // Indicates whether this Square holds a Tile from a previous move
 
 	/**
 	 * Constructor: Creates a Square object, saves the coordinates and checks
@@ -104,8 +105,7 @@ public class Square {
 		}
 
 	}
-	
-	
+
 	/**
 	 * Places the given Tile on the Square and marks the Square as taken.
 	 * 
@@ -116,7 +116,7 @@ public class Square {
 		this.tile = tile;
 		this.taken = true;
 	}
-	
+
 	/**
 	 * Returns the premium status of the square.
 	 * 
@@ -126,7 +126,7 @@ public class Square {
 	public Premium getPremium() {
 		return this.premium;
 	}
-	
+
 	/**
 	 * Returns the tile of the square (or null, if the square is empty)
 	 * 
@@ -136,17 +136,27 @@ public class Square {
 	public Tile getTile() {
 		return this.tile;
 	}
-	
+
 	/**
 	 * Returns whether the square is already taken (or not)
 	 * 
 	 * @author tthielen
 	 * @return taken
 	 */
-	public boolean getTaken() {
+	public boolean isTaken() {
 		return this.taken;
 	}
 	
+	/**
+	 * Returns whether this Square holds a Tile from a previous move
+	 * 
+	 * @author tthielen
+	 * @return previousPlay
+	 */
+	public boolean isPreviouslyPlayed() {
+		return this.previousPlay;
+	}
+
 	/**
 	 * Returns the x-coordinate of the square
 	 * 
@@ -156,7 +166,7 @@ public class Square {
 	public int getX() {
 		return this.posX;
 	}
-	
+
 	/**
 	 * Returns the y-coordinate of the square
 	 * 
@@ -167,4 +177,6 @@ public class Square {
 		return this.posY;
 	}
 	
+
+
 }
