@@ -182,9 +182,6 @@ public class GameSession {
 		// Checks whether the placed tiles are coherent (including already placed tiles)
 		// & CHECKS the MAIN word and calculates its VALUE
 
-		// TODO: Check whether the highest Square has even more (previously) placed
-		// tiles above it
-
 		if (column) { // COLUMN
 
 			// Search for lowest square on which a tile was placed
