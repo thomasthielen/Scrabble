@@ -16,13 +16,16 @@ public class GameSession {
 
 	private boolean isActive = false; // Indicates whether the game is live
 	private boolean ownTurn = false; // Indicates if it is the turn of this GameSession object
+
 	private Player currentPlayer; // The Player who currently is at turn
 	private Player ownPlayer; // The Player of this GameSession object
 
-	// List of squares on which the tiles of this turn are (temporarly) placed
-	private ArrayList<Square> placedSquares = new ArrayList<Square>();
-	// Value of the current turn (including bonuses of premium squares)
-	private int turnValue = 0;
+	private ArrayList<Square> placedSquares = new ArrayList<Square>(); // List of squares on which the tiles of this
+																		// turn are (temporarly) placed
+	private int turnValue = 0; // Value of the current turn (including bonuses of premium squares)
+
+	int dwsCount = 0;
+	int twsCount = 0;
 
 	/**
 	 * Constructor: Creates a GameSession object and creates the player-list, the
@@ -77,7 +80,7 @@ public class GameSession {
 		}
 	}
 
-	// PLAYER TURN OPTIONS below
+	// PLAYER TURN OPTIONS:
 
 	/**
 	 * Skips the turn of the player by switching to the next player.
@@ -127,11 +130,22 @@ public class GameSession {
 
 		boolean column = true;
 		boolean row = true;
-		
-		// TODO: Implement check whether any tile of the placedSquares is adjacent to the other squares
 
 		// Checks whether a tile has already been placed.
 		if (placedSquares.size() == 0) {
+			return false;
+		}
+
+		// Checks whether any tile of the placedSquares is adjacent to the a previously
+		// played square.
+		boolean adjacent = false;
+		for (Square s : placedSquares) {
+			if (board.hasPreviouslyPlayedNeighbour(s)) {
+				adjacent = true;
+				break;
+			}
+		}
+		if (!adjacent) {
 			return false;
 		}
 
@@ -167,8 +181,9 @@ public class GameSession {
 
 		// Checks whether the placed tiles are coherent (including already placed tiles)
 		// & CHECKS the MAIN word and calculates its VALUE
-		
-		// TODO: Check whether the highest Square has even more (previously) placed tiles above it
+
+		// TODO: Check whether the highest Square has even more (previously) placed
+		// tiles above it
 
 		if (column) { // COLUMN
 
@@ -188,13 +203,16 @@ public class GameSession {
 				}
 			}
 
-			// Start on the highest square
+			// Start on the highest square or a square with a previous tile above
 			Square iterator = highestSquare;
+			while (board.getUpperNeighbour(iterator).isTaken()) {
+				iterator = board.getUpperNeighbour(iterator);
+			}
 
 			StringBuffer sb = new StringBuffer();
 			int wordValue = 0;
-			int dwsCount = 0;
-			int twsCount = 0;
+			dwsCount = 0;
+			twsCount = 0;
 
 			// Go down to the lowest square with a tile
 			while (board.getLowerNeighbour(iterator).isTaken()) {
@@ -202,30 +220,7 @@ public class GameSession {
 
 				// Score the Tile
 				// Premium Squares apply only when newly placed tiles cover them
-				if (!iterator.isPreviouslyPlayed()) {
-					switch (iterator.getPremium()) {
-					case DLS:
-						wordValue += 2 * iterator.getTile().getValue();
-						break;
-					case TLS:
-						wordValue += 3 * iterator.getTile().getValue();
-						break;
-					case DWS:
-						wordValue += iterator.getTile().getValue();
-						dwsCount++;
-						break;
-					case TWS:
-						wordValue += iterator.getTile().getValue();
-						twsCount++;
-						break;
-					case STAR:
-					case NONE:
-						wordValue += iterator.getTile().getValue();
-						break;
-					}
-				} else {
-					wordValue += iterator.getTile().getValue();
-				}
+				wordValue += scoreSquare(iterator);
 
 				iterator = board.getLowerNeighbour(iterator);
 			}
@@ -266,13 +261,16 @@ public class GameSession {
 				}
 			}
 
-			// Start on the leftmost square
+			// Start on the leftmost square or a square with a previous tile to the left
 			Square iterator = leftmostSquare;
+			while (board.getLeftNeighbour(iterator).isTaken()) {
+				iterator = board.getLeftNeighbour(iterator);
+			}
 
 			StringBuffer sb = new StringBuffer();
 			int wordValue = 0;
-			int dwsCount = 0;
-			int twsCount = 0;
+			dwsCount = 0;
+			twsCount = 0;
 
 			// Go to the right to the rightmost square with a tile
 			while (board.getRightNeighbour(iterator).isTaken()) {
@@ -280,30 +278,7 @@ public class GameSession {
 
 				// Score the Tile
 				// Premium Squares apply only when newly placed tiles cover them
-				if (!iterator.isPreviouslyPlayed()) {
-					switch (iterator.getPremium()) {
-					case DLS:
-						wordValue += 2 * iterator.getTile().getValue();
-						break;
-					case TLS:
-						wordValue += 3 * iterator.getTile().getValue();
-						break;
-					case DWS:
-						wordValue += iterator.getTile().getValue();
-						dwsCount++;
-						break;
-					case TWS:
-						wordValue += iterator.getTile().getValue();
-						twsCount++;
-						break;
-					case STAR:
-					case NONE:
-						wordValue += iterator.getTile().getValue();
-						break;
-					}
-				} else {
-					wordValue += iterator.getTile().getValue();
-				}
+				wordValue += scoreSquare(iterator);
 
 				iterator = board.getRightNeighbour(iterator);
 			}
@@ -324,8 +299,9 @@ public class GameSession {
 			}
 
 			String newWord = sb.toString();
-			//return data.DataHandler.checkWord(newWord);
-			//TODO: Uncomment
+			if (!data.DataHandler.checkWord(newWord)) {
+				return false;
+			}
 		}
 
 		// CHECKS all OTHER words formed for correctness & calculates their VALUE
@@ -365,53 +341,35 @@ public class GameSession {
 		return false; // Dummy return
 	}
 
-	
-
+	/**
+	 * Checks whether the column through this square is a legal word and scores it.
+	 * 
+	 * @author tthielen
+	 * @param originSquare
+	 * @return legalWord
+	 */
 	public boolean columnCheck(Square originSquare) {
 		StringBuffer sb = new StringBuffer();
 
-		int dwsCount = 0;
-		int twsCount = 0;
+		dwsCount = 0;
+		twsCount = 0;
 
 		int wordValue = 0;
 
-		Square highest = originSquare;
+		Square iterator = originSquare;
 		// Get the highest taken square
-		while (board.getUpperNeighbour(highest).isTaken()) {
-			highest = board.getUpperNeighbour(highest);
+		while (board.getUpperNeighbour(iterator).isTaken()) {
+			iterator = board.getUpperNeighbour(iterator);
 		}
 		// Append all chars from left to right to the StringBuffer
-		while (board.getLowerNeighbour(highest).isTaken()) {
-			sb.append(highest.getTile().getLetter());
+		while (board.getLowerNeighbour(iterator).isTaken()) {
+			sb.append(iterator.getTile().getLetter());
 
 			// Score the Tile
 			// Premium Squares apply only when newly placed tiles cover them
-			if (!highest.isPreviouslyPlayed()) {
-				switch (highest.getPremium()) {
-				case DLS:
-					wordValue += 2 * highest.getTile().getValue();
-					break;
-				case TLS:
-					wordValue += 3 * highest.getTile().getValue();
-					break;
-				case DWS:
-					wordValue += highest.getTile().getValue();
-					dwsCount++;
-					break;
-				case TWS:
-					wordValue += highest.getTile().getValue();
-					twsCount++;
-					break;
-				case STAR:
-				case NONE:
-					wordValue += highest.getTile().getValue();
-					break;
-				}
-			} else {
-				wordValue += highest.getTile().getValue();
-			}
+			wordValue += scoreSquare(iterator);
 
-			highest = board.getLowerNeighbour(highest);
+			iterator = board.getLowerNeighbour(iterator);
 		}
 
 		for (int i = 0; i < dwsCount; i++) {
@@ -424,54 +382,41 @@ public class GameSession {
 		turnValue += wordValue;
 
 		String newWord = sb.toString();
-		return data.DataHandler.checkWord(newWord);
+		if (data.DataHandler.checkWord(newWord)) {
+			return false;
+		}
+		return true;
 	}
 
+	/**
+	 * Checks whether the row through this square is a legal word and scores it.
+	 * 
+	 * @author tthielen
+	 * @param originSquare
+	 * @return legalWord
+	 */
 	public boolean rowCheck(Square originSquare) {
 		StringBuffer sb = new StringBuffer();
 		int wordValue = 0;
-		int dwsCount = 0;
-		int twsCount = 0;
+		dwsCount = 0;
+		twsCount = 0;
 
-		Square leftmost = originSquare;
+		Square iterator = originSquare;
 		// Get the leftmost taken square
-		while (board.getLeftNeighbour(leftmost).isTaken()) {
-			leftmost = board.getLeftNeighbour(leftmost);
+		while (board.getLeftNeighbour(iterator).isTaken()) {
+			iterator = board.getLeftNeighbour(iterator);
 		}
 		// From Left to Right:
-		while (board.getRightNeighbour(leftmost).isTaken()) {
+		while (board.getRightNeighbour(iterator).isTaken()) {
 
 			// Append the char of the tile to the StringBuffer
-			sb.append(leftmost.getTile().getLetter());
+			sb.append(iterator.getTile().getLetter());
 
 			// Score the Tile
 			// Premium Squares apply only when newly placed tiles cover them
-			if (!leftmost.isPreviouslyPlayed()) {
-				switch (leftmost.getPremium()) {
-				case DLS:
-					wordValue += 2 * leftmost.getTile().getValue();
-					break;
-				case TLS:
-					wordValue += 3 * leftmost.getTile().getValue();
-					break;
-				case DWS:
-					wordValue += leftmost.getTile().getValue();
-					dwsCount++;
-					break;
-				case TWS:
-					wordValue += leftmost.getTile().getValue();
-					twsCount++;
-					break;
-				case STAR:
-				case NONE:
-					wordValue += leftmost.getTile().getValue();
-					break;
-				}
-			} else {
-				wordValue += leftmost.getTile().getValue();
-			}
+			wordValue += scoreSquare(iterator);
 
-			leftmost = board.getRightNeighbour(leftmost);
+			iterator = board.getRightNeighbour(iterator);
 		}
 
 		for (int i = 0; i < dwsCount; i++) {
@@ -484,7 +429,42 @@ public class GameSession {
 		turnValue += wordValue;
 
 		String newWord = sb.toString();
-		return data.DataHandler.checkWord(newWord);
+		if (data.DataHandler.checkWord(newWord)) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Scores the tile according to the square (i.e. according to premium squares).
+	 * 
+	 * @author tthielen
+	 * @param iterator
+	 * @return score
+	 */
+	private int scoreSquare(Square iterator) {
+		if (!iterator.isPreviouslyPlayed()) {
+			switch (iterator.getPremium()) {
+			case DLS:
+				return 2 * iterator.getTile().getValue();
+			case TLS:
+				return 3 * iterator.getTile().getValue();
+			case DWS:
+				dwsCount++;
+				return iterator.getTile().getValue();
+			case TWS:
+				twsCount++;
+				return iterator.getTile().getValue();
+			case STAR:
+				// fall through
+			case NONE:
+				return iterator.getTile().getValue();
+			default:
+				return 0;
+			}
+		} else {
+			return iterator.getTile().getValue();
+		}
 	}
 
 	/**
@@ -506,6 +486,12 @@ public class GameSession {
 		}
 	}
 
+	/**
+	 * Returns the bag of the session. Used to draw tiles in Rack.
+	 * 
+	 * @author tthielen
+	 * @return bag
+	 */
 	public Bag getBag() {
 		return bag;
 	}

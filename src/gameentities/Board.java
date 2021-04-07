@@ -98,6 +98,16 @@ public class Board {
 		}
 	}
 
+	public boolean hasPreviouslyPlayedNeighbour(Square square) {
+		if (this.getUpperNeighbour(square).isPreviouslyPlayed() || this.getLeftNeighbour(square).isPreviouslyPlayed()
+				|| this.getRightNeighbour(square).isPreviouslyPlayed()
+				|| this.getLowerNeighbour(square).isPreviouslyPlayed()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	// Testing Purposes TODO: DELETE
 	public ArrayList<Square> getSquareList() {
 		return this.squares;
