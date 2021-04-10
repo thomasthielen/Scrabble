@@ -3,6 +3,7 @@ package network;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import network.messages.Message;
+import network.messages.SendChatMessage;
 
 /**
  * Handles the received messages of the client
@@ -21,7 +22,8 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
 	 */
 	@Override
 	protected void messageReceived(ChannelHandlerContext ctx, Message msg) throws Exception {
-		System.out.println(msg);
+		SendChatMessage message = (SendChatMessage) msg;
+		System.out.println(message.getMessage());
 	}
 
 }

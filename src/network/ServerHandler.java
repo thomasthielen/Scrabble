@@ -62,7 +62,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
 		Channel	in = ctx.channel();
 		for (Channel channel : channels) {
 			if (channel != in) {
-				channel.writeAndFlush("[" + in.remoteAddress() + "] " + message.getMessage() + "\n");
+				channel.writeAndFlush(new SendChatMessage("client", "[" + in.remoteAddress() + "] " + message.getMessage() + "\n"));
 			}
 		}
 	
