@@ -1,13 +1,13 @@
-package chat;
+package network;
 
-import chat.messages.Message;
-import chat.messages.SendChatMessage;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import network.messages.Message;
+import network.messages.SendChatMessage;
 
 /**
  * Handles the received messages of the server

@@ -1,4 +1,4 @@
-package chat;
+package network;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.EventLoopGroup;

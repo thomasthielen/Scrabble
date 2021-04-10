@@ -1,8 +1,8 @@
-package chat;
+package network;
 
-import chat.messages.Message;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import network.messages.Message;
 
 /**
  * Handles the received messages of the client

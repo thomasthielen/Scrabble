@@ -1,7 +1,7 @@
-package chat.messages;
+package network.messages;
 
 /**
- * Implementation of the SendChatMessage. A SendChatMessage is created to send chat messages
+ * Implementation of the SendChatMessage. A SendChatMessage is created to send network messages
  * 
  * @author tikrause
  *
@@ -18,7 +18,7 @@ public class SendChatMessage extends Message {
 	
 	/**
 	 * Constructor: creating a SendChatMessage with the MessageType.SEND_CHAT, the name
-	 * of the creator and the text that is sent as a chat message
+	 * of the creator and the text that is sent as a network message
 	 * 
 	 * @author tikrause
 	 * @param from

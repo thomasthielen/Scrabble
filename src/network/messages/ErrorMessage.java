@@ -1,4 +1,4 @@
-package chat.messages;
+package network.messages;
 
 /**
  * Implementation of the error message. A ErrorMessage is created when something

@@ -1,4 +1,4 @@
-package chat.messages;
+package network.messages;
 
 /**
  * enum for all types a message can be an instance of

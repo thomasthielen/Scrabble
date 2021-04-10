@@ -1,4 +1,4 @@
-package chat.messages;
+package network.messages;
 
 /**
  * Implementation of the connect message. A ConnectMessage is created for every

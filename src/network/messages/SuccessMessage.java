@@ -1,4 +1,4 @@
-package chat.messages;
+package network.messages;
 
 /**
  * Implementation of the success message. A SuccessMessage is created to send a

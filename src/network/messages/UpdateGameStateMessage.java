@@ -1,4 +1,4 @@
-package chat.messages;
+package network.messages;
 
 import session.GameSession;
 

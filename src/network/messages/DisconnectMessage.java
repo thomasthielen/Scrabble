@@ -1,4 +1,4 @@
-package chat.messages;
+package network.messages;
 
 /**
  * Implementation of the disconnect message. A DisconnectMessage is created for
