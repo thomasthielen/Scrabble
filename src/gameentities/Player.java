@@ -85,13 +85,13 @@ public class Player {
 	}
 
 	/**
-	 * Sets the player score
+	 * Increases the player score by the given value.
 	 * 
 	 * @author tthielen
 	 * @param score
 	 */
-	public void setScore(int score) {
-		this.score = score;
+	public void incScore(int score) {
+		this.score += score;
 	}
 
 }

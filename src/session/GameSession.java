@@ -56,11 +56,13 @@ public class GameSession {
 	 * @author tthielen
 	 */
 	public void synchronise() {
+		// If the own turn is over: Create a GameState object and send it
 		if (ownTurn) {
 			GameState gs = new GameState(this.players, this.currentPlayer, this.bag, this.board);
 			// TODO: Send GameState object to other users
 			ownTurn = false;
-		} else {
+		} else { 
+			ownTurn = (ownPlayer == currentPlayer);
 			// TODO: Receive GameState object and set own game entities to the given values
 		}
 	}
@@ -82,6 +84,8 @@ public class GameSession {
 
 	// PLAYER TURN OPTIONS:
 
+	// 1: Skip turn
+
 	/**
 	 * Skips the turn of the player by switching to the next player.
 	 * 
@@ -91,8 +95,10 @@ public class GameSession {
 		nextPlayer();
 	}
 
+	// 2: Swap tiles
+
 	/**
-	 * Swaps the selected Tiles for new ones by calling the exchangeTiles() function
+	 * Swaps the selected tiles for new ones by calling the exchangeTiles() function
 	 * of the currentPlayer.
 	 * 
 	 * @author tthielen
@@ -102,6 +108,8 @@ public class GameSession {
 		currentPlayer.exchangeTiles(swapTiles);
 		nextPlayer();
 	}
+
+	// 3: Make a play
 
 	/**
 	 * Temporarily places the given tile on the square corresponding to the given
@@ -311,9 +319,40 @@ public class GameSession {
 				// (because we are in a column)
 				if (board.getRightNeighbour(s).isTaken() || board.getLeftNeighbour(s).isTaken()) {
 
-					boolean success = rowCheck(s);
+					StringBuffer sb = new StringBuffer();
+					int wordValue = 0;
+					dwsCount = 0;
+					twsCount = 0;
 
-					if (!success) {
+					Square iterator = s;
+					// Get the leftmost taken square
+					while (board.getLeftNeighbour(iterator).isTaken()) {
+						iterator = board.getLeftNeighbour(iterator);
+					}
+					// From Left to Right:
+					while (board.getRightNeighbour(iterator).isTaken()) {
+
+						// Append the char of the tile to the StringBuffer
+						sb.append(iterator.getTile().getLetter());
+
+						// Score the Tile
+						// Premium Squares apply only when newly placed tiles cover them
+						wordValue += scoreSquare(iterator);
+
+						iterator = board.getRightNeighbour(iterator);
+					}
+
+					for (int i = 0; i < dwsCount; i++) {
+						wordValue = 2 * wordValue;
+					}
+					for (int i = 0; i < twsCount; i++) {
+						wordValue = 3 * wordValue;
+					}
+
+					turnValue += wordValue;
+
+					String newWord = sb.toString();
+					if (data.DataHandler.checkWord(newWord)) {
 						return false;
 					}
 				}
@@ -326,9 +365,40 @@ public class GameSession {
 				// (because we are in a row)
 				if (board.getUpperNeighbour(s).isTaken() || board.getLowerNeighbour(s).isTaken()) {
 
-					boolean success = columnCheck(s);
+					StringBuffer sb = new StringBuffer();
 
-					if (!success) {
+					dwsCount = 0;
+					twsCount = 0;
+
+					int wordValue = 0;
+
+					Square iterator = s;
+					// Get the highest taken square
+					while (board.getUpperNeighbour(iterator).isTaken()) {
+						iterator = board.getUpperNeighbour(iterator);
+					}
+					// Append all chars from left to right to the StringBuffer
+					while (board.getLowerNeighbour(iterator).isTaken()) {
+						sb.append(iterator.getTile().getLetter());
+
+						// Score the Tile
+						// Premium Squares apply only when newly placed tiles cover them
+						wordValue += scoreSquare(iterator);
+
+						iterator = board.getLowerNeighbour(iterator);
+					}
+
+					for (int i = 0; i < dwsCount; i++) {
+						wordValue = 2 * wordValue;
+					}
+					for (int i = 0; i < twsCount; i++) {
+						wordValue = 3 * wordValue;
+					}
+
+					turnValue += wordValue;
+
+					String newWord = sb.toString();
+					if (data.DataHandler.checkWord(newWord)) {
 						return false;
 					}
 				}
@@ -336,100 +406,6 @@ public class GameSession {
 		}
 
 		return false; // Dummy return
-	}
-
-	/**
-	 * Checks whether the column through this square is a legal word and scores it.
-	 * 
-	 * @author tthielen
-	 * @param originSquare
-	 * @return legalWord
-	 */
-	public boolean columnCheck(Square originSquare) {
-		StringBuffer sb = new StringBuffer();
-
-		dwsCount = 0;
-		twsCount = 0;
-
-		int wordValue = 0;
-
-		Square iterator = originSquare;
-		// Get the highest taken square
-		while (board.getUpperNeighbour(iterator).isTaken()) {
-			iterator = board.getUpperNeighbour(iterator);
-		}
-		// Append all chars from left to right to the StringBuffer
-		while (board.getLowerNeighbour(iterator).isTaken()) {
-			sb.append(iterator.getTile().getLetter());
-
-			// Score the Tile
-			// Premium Squares apply only when newly placed tiles cover them
-			wordValue += scoreSquare(iterator);
-
-			iterator = board.getLowerNeighbour(iterator);
-		}
-
-		for (int i = 0; i < dwsCount; i++) {
-			wordValue = 2 * wordValue;
-		}
-		for (int i = 0; i < twsCount; i++) {
-			wordValue = 3 * wordValue;
-		}
-
-		turnValue += wordValue;
-
-		String newWord = sb.toString();
-		if (data.DataHandler.checkWord(newWord)) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Checks whether the row through this square is a legal word and scores it.
-	 * 
-	 * @author tthielen
-	 * @param originSquare
-	 * @return legalWord
-	 */
-	public boolean rowCheck(Square originSquare) {
-		StringBuffer sb = new StringBuffer();
-		int wordValue = 0;
-		dwsCount = 0;
-		twsCount = 0;
-
-		Square iterator = originSquare;
-		// Get the leftmost taken square
-		while (board.getLeftNeighbour(iterator).isTaken()) {
-			iterator = board.getLeftNeighbour(iterator);
-		}
-		// From Left to Right:
-		while (board.getRightNeighbour(iterator).isTaken()) {
-
-			// Append the char of the tile to the StringBuffer
-			sb.append(iterator.getTile().getLetter());
-
-			// Score the Tile
-			// Premium Squares apply only when newly placed tiles cover them
-			wordValue += scoreSquare(iterator);
-
-			iterator = board.getRightNeighbour(iterator);
-		}
-
-		for (int i = 0; i < dwsCount; i++) {
-			wordValue = 2 * wordValue;
-		}
-		for (int i = 0; i < twsCount; i++) {
-			wordValue = 3 * wordValue;
-		}
-
-		turnValue += wordValue;
-
-		String newWord = sb.toString();
-		if (data.DataHandler.checkWord(newWord)) {
-			return false;
-		}
-		return true;
 	}
 
 	/**
@@ -463,6 +439,25 @@ public class GameSession {
 			return iterator.getTile().getValue();
 		}
 	}
+
+	/**
+	 * Can be called if the current move is legal. Saves the value of the move in
+	 * the score, draws back to 7 tiles, empties values, synchronises GameState and
+	 * calls nextPlayer().
+	 * 
+	 * @author tthielen
+	 */
+	public void makePlay() {
+		ownPlayer.incScore(turnValue);
+		ownPlayer.refillRack();
+
+		placedSquares.removeAll(placedSquares);
+
+		synchronise();
+		nextPlayer();
+	}
+
+	// OTHER METHODS:
 
 	/**
 	 * Sets currentPlayer to the next player by following the order of the
