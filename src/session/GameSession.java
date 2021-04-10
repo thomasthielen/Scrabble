@@ -10,14 +10,14 @@ import gameentities.*;
  * @author tthielen
  */
 public class GameSession {
+
+	// Objects which are synchronised between the players
 	private ArrayList<Player> players; // Holds all participating players
 	private Bag bag; // The bag of the game
 	private Board board; // The board of the game
 
 	private boolean isActive = false; // Indicates whether the game is live
-	private boolean ownTurn = false; // Indicates if it is the turn of this GameSession object
 
-	private Player currentPlayer; // The Player who currently is at turn
 	private Player ownPlayer; // The Player of this GameSession object
 
 	private ArrayList<Square> placedSquares = new ArrayList<Square>(); // List of squares on which the tiles of this
@@ -57,28 +57,16 @@ public class GameSession {
 	 */
 	public void synchronise() {
 		// If the own turn is over: Create a GameState object and send it
-		if (ownTurn) {
-			GameState gs = new GameState(this.players, this.currentPlayer, this.bag, this.board);
+		if (ownPlayer.isCurrentlyPlaying()) {
+			GameState gs = new GameState(this.players, this.bag, this.board);
 			// TODO: Send GameState object to other users
-			ownTurn = false;
-		} else { 
-			ownTurn = (ownPlayer == currentPlayer);
-			// TODO: Receive GameState object and set own game entities to the given values
-		}
-	}
-
-	/**
-	 * Adds a Player with a given username and avatar to the players list
-	 * 
-	 * @author tthielen
-	 * @param username
-	 * @param avatar
-	 */
-	public void addPlayer(String username, Avatar avatar) {
-		if (players.size() < 4) {
-			players.add(new Player(username, avatar, this));
 		} else {
-			System.out.println("There are already 4 players in this GameSession!");
+			// TODO: Replace "new GameState(xxx)" with the received GameState message
+			GameState overrideGameState = new GameState(this.players, this.bag, this.board);
+			this.players = overrideGameState.getPlayers();
+			this.bag = overrideGameState.getBag();
+			this.board = overrideGameState.getBoard();
+
 		}
 	}
 
@@ -105,7 +93,7 @@ public class GameSession {
 	 * @param swapTiles
 	 */
 	public void exchangeTiles(ArrayList<Tile> swapTiles) {
-		currentPlayer.exchangeTiles(swapTiles);
+		ownPlayer.exchangeTiles(swapTiles);
 		nextPlayer();
 	}
 
@@ -124,6 +112,10 @@ public class GameSession {
 	public void placeTile(int posX, int posY, Tile tile) {
 		board.placeTile(posX, posY, tile);
 		placedSquares.add(board.getSquare(posX, posY));
+
+		if (checkMove()) {
+			// TODO: enable "SUBMIT"-Button
+		}
 	}
 
 	/**
@@ -138,6 +130,7 @@ public class GameSession {
 
 		boolean column = true;
 		boolean row = true;
+		turnValue = 0;
 
 		// Checks whether a tile has already been placed.
 		if (placedSquares.size() == 0) {
@@ -405,7 +398,12 @@ public class GameSession {
 			}
 		}
 
-		return false; // Dummy return
+		// Bingo / Bonus
+		if (placedSquares.size() == 7) {
+			turnValue += 50;
+		}
+
+		return true; // If no condition is violated, return true
 	}
 
 	/**
@@ -428,8 +426,9 @@ public class GameSession {
 			case TWS:
 				twsCount++;
 				return iterator.getTile().getValue();
-			case STAR:
-				// fall through
+			case STAR: // First play is doubled in value
+				dwsCount++;
+				return iterator.getTile().getValue();
 			case NONE:
 				return iterator.getTile().getValue();
 			default:
@@ -460,26 +459,32 @@ public class GameSession {
 	// OTHER METHODS:
 
 	/**
-	 * Sets currentPlayer to the next player by following the order of the
-	 * ArrayList.
+	 * Sets currentlyPlaying of the player of the last turn to false. Afterwards it
+	 * sets currentlyPlaying of the next player (according to the order of the
+	 * ArrayList) to true.
 	 * 
 	 * @author tthielen
 	 */
 	public void nextPlayer() {
 		// TODO: Missing: Current player order is only connected to order of insertion
-
 		turnValue = 0;
+		for (Player p : players) {
+			if (p.isCurrentlyPlaying()) {
+				p.setCurrentlyPlaying(false);
 
-		if (players.indexOf(currentPlayer) < players.size() - 1) {
-			// Max-Index = 3 (due to [0,3]), whereas players.size = 4
-			currentPlayer = players.get(players.indexOf(currentPlayer) + 1);
-		} else {
-			currentPlayer = players.get(0);
+				int index = players.indexOf(p);
+				if (index == players.size() - 1) {
+					players.get(0).setCurrentlyPlaying(true);
+				} else {
+					players.get(index + 1).setCurrentlyPlaying(true);
+				}
+			}
 		}
 	}
 
 	/**
-	 * Returns the bag of the session. Used to draw tiles in Rack.
+	 * Returns the bag of the session. Used to draw tiles from the bag in the class
+	 * Rack.
 	 * 
 	 * @author tthielen
 	 * @return bag

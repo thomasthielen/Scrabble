@@ -20,6 +20,8 @@ public class Player {
 	private int score = 0;
 	private Rack rack;
 
+	private boolean currentlyPlaying = false;
+
 	/**
 	 * Constructor: Creates a player object with the given username.
 	 * 
@@ -29,7 +31,6 @@ public class Player {
 	public Player(String username, Avatar avatar, GameSession gameReference) {
 		this.username = username;
 		this.avatar = avatar;
-
 		this.rack = new Rack(gameReference);
 	}
 
@@ -55,33 +56,23 @@ public class Player {
 	}
 
 	/**
-	 * Returns the player username
-	 * 
-	 * @author tthielen
-	 * @return username
-	 */
-	public String getUsername() {
-		return username;
-	}
-
-	/**
-	 * Returns the player score
-	 * 
-	 * @author tthielen
-	 * @return score
-	 */
-	public int getScore() {
-		return score;
-	}
-
-	/**
-	 * Sets the player username
+	 * Sets the player's username
 	 * 
 	 * @author tthielen
 	 * @param username
 	 */
 	public void setUsername(String name) {
 		this.username = name;
+	}
+	
+	/**
+	 * Sets whether the it is the player's turn
+	 * 
+	 * @author tthielen
+	 * @param currentlyPlaying
+	 */
+	public void setCurrentlyPlaying(boolean currentlyPlaying) {
+		this.currentlyPlaying = currentlyPlaying;
 	}
 
 	/**
@@ -92,6 +83,46 @@ public class Player {
 	 */
 	public void incScore(int score) {
 		this.score += score;
+	}
+
+	/**
+	 * Returns the player's username
+	 * 
+	 * @author tthielen
+	 * @return username
+	 */
+	public String getUsername() {
+		return username;
+	}
+
+	/**
+	 * Returns the player's score
+	 * 
+	 * @author tthielen
+	 * @return score
+	 */
+	public int getScore() {
+		return score;
+	}
+	
+	/**
+	 * Returns the player's avatar
+	 * 
+	 * @author tthielen
+	 * @return avatar
+	 */
+	public Avatar getAvatar() {
+		return avatar;
+	}
+
+	/**
+	 * Returns whether it is the player's turn.
+	 * 
+	 * @author tthielen
+	 * @return currentlyPlaying
+	 */
+	public boolean isCurrentlyPlaying() {
+		return currentlyPlaying;
 	}
 
 }

@@ -15,14 +15,52 @@ import gameentities.Player;
  */
 public class GameState {
 	private ArrayList<Player> players;
-	private Player currentPlayer;
 	private Bag bag;
 	private Board board;
 
-	public GameState(ArrayList<Player> players, Player currentPlayer, Bag bag, Board board) {
+	/**
+	 * Constructor: Creates a GameState object by saving all relevant attributes
+	 * within.
+	 * 
+	 * @author tthielen
+	 * @param players
+	 * @param currentPlayer
+	 * @param bag
+	 * @param board
+	 */
+	public GameState(ArrayList<Player> players, Bag bag, Board board) {
 		this.players = players;
-		this.currentPlayer = currentPlayer;
 		this.bag = bag;
 		this.board = board;
+	}
+
+	/**
+	 * Returns the players.
+	 * 
+	 * @author tthielen
+	 * @return players
+	 */
+	public ArrayList<Player> getPlayers() {
+		return this.players;
+	}
+
+	/**
+	 * Returns the bag.
+	 * 
+	 * @author tthielen
+	 * @return bag
+	 */
+	public Bag getBag() {
+		return this.bag;
+	}
+
+	/**
+	 * Returns the currentPlayer.
+	 * 
+	 * @author tthielen
+	 * @return currentPlayer
+	 */
+	public Board getBoard() {
+		return this.board;
 	}
 }

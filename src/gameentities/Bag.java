@@ -135,12 +135,16 @@ public class Bag {
 		if (!this.isEmpty) {
 			int rand = (int) (remainingTiles.size() * Math.random());
 			TileContainer randTileContainer = remainingTiles.get(rand);
+
 			if (randTileContainer.getCount() == 1) {
 				remainingTiles.remove(randTileContainer);
 			} else {
 				randTileContainer.decCount();
 			}
+
+			isEmpty = remainingTiles.size() == 0;
 			return randTileContainer.getTile();
+
 		} else {
 			System.out.println("The bag is empty.");
 			return null;
@@ -165,4 +169,21 @@ public class Bag {
 		remainingTiles.add(new TileContainer(t, 1));
 	}
 
+	/**
+	 * Returns the total count of remaining tiles.
+	 * 
+	 * @author tthielen
+	 * @return count of tiles
+	 */
+	public int getRemainingCount() {
+		int count = 0;
+		for (TileContainer tc : remainingTiles) {
+			count += tc.getCount();
+		}
+		return count;
+	}
+	
+	public boolean isEmpty() {
+		return this.isEmpty;
+	}
 }

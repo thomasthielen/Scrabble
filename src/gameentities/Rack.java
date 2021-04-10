@@ -40,12 +40,15 @@ public class Rack {
 	}
 
 	/**
-	 * Redraws Tiles until there are 7 Tiles on the Rack
+	 * Redraws tiles until there are 7 tiles on the rack again or the bag is empty.
 	 * 
 	 * @author tthielen
 	 */
 	public void refillDraw() {
 		while (this.tiles.size() < 7) {
+			if (bag.isEmpty()) {
+				return;
+			}
 			tiles.add(bag.drawTile());
 		}
 	}
