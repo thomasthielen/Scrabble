@@ -9,7 +9,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import network.messages.SendChatMessage;
+import network.messages.*;
+// import session.GameState;
 
 /**
  * For each client that joins the game a Client instance is created which connects to the server
@@ -20,8 +21,10 @@ import network.messages.SendChatMessage;
  */
 public class Client {
 	
-	private final String host;
+	private final String name;
 	private final int port;
+	private boolean isRunning;
+	private Channel channel;
 	
 	/**
 	 * main method starts a new client and its run method
@@ -32,6 +35,7 @@ public class Client {
 	 * @throws IOException
 	 */
 	public static void main (String[] args) throws InterruptedException, IOException {
+		// TODO: nicht mit localhost, sondern mit Server-IP verbinden
 		new Client("localhost", 8000).run();
 	}
 
@@ -39,12 +43,13 @@ public class Client {
 	 * Constructor: creates a Client object at the existing server port
 	 * 
 	 * @author tikrause
-	 * @param host
+	 * @param name
 	 * @param port
 	 */
-	public Client (String host, int port) {
-		this.host = host;
+	public Client (String name, int port) {
+		this.name = name;
 		this.port = port;
+		isRunning = true;
 	}
 
 	/**
@@ -66,18 +71,42 @@ public class Client {
 					.handler(new ClientInitializer());
 			
 			// connects the client to the server using TCP
-			Channel channel = bootstrap.connect(host, port).sync().channel();
+			channel = bootstrap.connect(name, port).sync().channel();
 			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 			
 			
-			while (true) {
+			while (isRunning) {
 				// TODO: INCOMPLETE
-				String send = in.readLine();
-				channel.writeAndFlush(new SendChatMessage("hugo", send + "\r\n"));
+				channel.writeAndFlush(new SendChatMessage(name, in.readLine() + "\r\n"));
 			}
 		}
 		finally {
 			group.shutdownGracefully();
 		}
 	}
+	
+	public void connect() {
+		// TODO
+		channel.writeAndFlush(new ConnectMessage(name));
+	}
+	
+	public void disconnect() {
+		// TODO
+		channel.writeAndFlush(new DisconnectMessage(name));
+	}
+	
+	public void reportError(String reason) {
+		// TODO
+		channel.writeAndFlush(new ErrorMessage(name, reason));
+	}
+	
+	public void reportSuccess() {
+		// TODO
+		channel.writeAndFlush(new SuccessMessage(name));
+	}
+	
+	/*
+	 * public void updateGameState(GameState game) { 
+	 * channel.writeAndFlush(new UpdateGameStateMessage(name, game)); }
+	 */
 }

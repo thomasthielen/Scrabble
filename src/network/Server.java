@@ -25,6 +25,7 @@ public class Server {
 	 * @throws InterruptedException
 	 */
 	public static void main(String[] args) throws InterruptedException {
+		// TODO: Ausgabe der IP-Adr des Servers
 		new Server(8000).run();
 	}
 	
