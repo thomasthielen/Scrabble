@@ -71,7 +71,7 @@ public class Client {
 			
 			
 			while (true) {
-				// INCOMPLETE
+				// TODO: INCOMPLETE
 				String send = in.readLine();
 				channel.writeAndFlush(new SendChatMessage("hugo", send + "\r\n"));
 			}
