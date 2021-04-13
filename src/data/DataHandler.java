@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
+import data.AIDictionary.AIDictionaryHandler;
+
 /**
  * This class is used to handle all kinds of Data that has to be stored,
  * processed or used.
@@ -16,11 +18,13 @@ import java.util.HashMap;
 public class DataHandler {
 
 	/**
-	 * Imports the given file as the Dictionary of the current game. The File has to be in
+	 * Imports the given file as the dictionary of the current game. The File has to be in
 	 * the right format to be correctly read. Each (and also the first and last)
 	 * line has to start with the word that should be added to the dictionary. It
 	 * has to be separated from any following info in this line (if there is any) by
 	 * any whitespace.
+	 * Note: this file will be imported as the user dictionary & AI dictionary, so that both play 
+	 * with the same words.
 	 * 
 	 * @param file
 	 * @throws IOException
@@ -31,9 +35,15 @@ public class DataHandler {
 		try {
 			BufferedReader inputReader = new BufferedReader(new FileReader(file));
 			String z;
+			// initialize user Dictionary in order to be able to fill it
+			UserDictionary.initializeDict();
+
 			while ((z = inputReader.readLine()) != null) {
 				String[] a = z.split("\\s+");
-				Dictionary.addWord(a[0]);
+				// Add string to user dictionary
+				UserDictionary.addWord(a[0]);
+				// Add string to AI dictionary
+				AIDictionaryHandler.addWord(a[0]);
 			}
 			inputReader.close();
 		} catch (IOException e) {
@@ -42,7 +52,7 @@ public class DataHandler {
 	}
 	
 	/**
-	 * Returns true if the dictionary contains the given word.
+	 * Returns true if the user dictionary contains the given word.
 	 * 
 	 * @param string
 	 * @return boolean
@@ -50,7 +60,7 @@ public class DataHandler {
 	 * @author jluellig
 	 */
 	public static boolean checkWord(String string) {
-		return Dictionary.checkWord(string);
+		return UserDictionary.checkWord(string);
 	}
 	
 	/**
@@ -63,6 +73,7 @@ public class DataHandler {
 	 * @author jluellig
 	 */
 	public static void addPlayer(String username, String avatar) {
+		// TODO Use Enum as avatar String
 		Database.connect();
 		Database.addPlayer(username, avatar);
 		Database.disconnect();
