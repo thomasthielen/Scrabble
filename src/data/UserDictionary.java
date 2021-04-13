@@ -1,0 +1,59 @@
+package data;
+
+import java.util.HashMap;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+/**
+ * This class is in charge of everything related to the dictionary used in the game for the user (not the AI). 
+ * It stores words in the dictionary and provides methods to search the dictionary 
+ * or check if a word is a part of the dictionary.
+ *
+ * @author jluellig
+ */
+
+class UserDictionary {
+
+	private static HashMap<Character, HashMap<Character, SortedSet<String>>> dict;
+	
+	/**
+	 * This method initializes the HashMaps for the dictionary with each letter combination.
+	 *
+	 * @author jluellig
+	 */
+	protected static void initializeDict() {
+		dict = new HashMap<Character, HashMap<Character, SortedSet<String>>>();
+		for (char letter = 'A'; letter <= 'Z'; letter++) {
+			dict.put(letter, new HashMap<Character, SortedSet<String>>());
+			for (char letter2 = 'A'; letter2 <= 'Z'; letter2++) {
+				dict.get(letter).put(letter2, new TreeSet<String>());
+			}
+		}	
+	}
+	
+	/**
+	 * Adds the String s to the user dictionary.
+	 * 
+	 * @param string
+	 *
+	 * @author jluellig
+	 */
+	protected static void addWord(String string) {
+		string = string.toUpperCase();
+		dict.get(string.charAt(0)).get(string.charAt(1)).add(string);
+	}
+
+	/**
+	 * Returns true if the String s is a correct word in the dictionary.
+	 * 
+	 * @param string
+	 * @return isWord 
+	 *
+	 * @author jluellig
+	 */
+	protected static boolean checkWord(String string) {
+		string = string.toUpperCase();
+		return dict.get(string.charAt(0)).get(string.charAt(1)).contains(string);
+	}
+
+}
