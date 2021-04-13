@@ -79,4 +79,24 @@ public class Rack {
 
 		refillDraw();
 	}
+	
+	/**
+	 * Plays a tile to the board.
+	 * 
+	 * @author tthielen
+	 * @param tile
+	 */
+	public void playTile(Tile tile) {
+		this.tiles.remove(tile);
+	}
+	
+	/**
+	 * Adds a tile back to the rack.
+	 * 
+	 * @author tthielen
+	 * @param tile
+	 */
+	public void returnTile(Tile tile) {
+		this.tiles.add(tile);
+	}
 }

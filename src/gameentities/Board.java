@@ -27,7 +27,7 @@ public class Board {
 	}
 
 	/**
-	 * Places the given Tile on the Square.
+	 * Places the given tile on the square.
 	 * 
 	 * @author tthielen
 	 * @param posX
@@ -36,6 +36,17 @@ public class Board {
 	 */
 	public void placeTile(int posX, int posY, Tile tile) {
 		getSquare(posX, posY).placeTile(tile);
+	}
+
+	/**
+	 * Recalls the tile from the square.
+	 * 
+	 * @author tthielen
+	 * @param posX
+	 * @param posY
+	 */
+	public Tile recallTile(int posX, int posY) {
+		return getSquare(posX, posY).recallTile();
 	}
 
 	/**
@@ -82,6 +93,14 @@ public class Board {
 		}
 	}
 
+	public Square getLeftNeighbour(Square square) {
+		if (square.getX() > 1) {
+			return squares.get(squares.indexOf(square) - 15);
+		} else {
+			return null;
+		}
+	}
+
 	public Square getRightNeighbour(Square square) {
 		if (square.getX() < 15) {
 			return squares.get(squares.indexOf(square) + 15);
@@ -90,11 +109,55 @@ public class Board {
 		}
 	}
 
-	public Square getLeftNeighbour(Square square) {
-		if (square.getX() > 1) {
-			return squares.get(squares.indexOf(square) - 15);
+	// The following 3 methods are used in the secondary word check
+	// TODO: Use those in the main word check as well and delete the others
+	public Square getNextNeighbour(Square square, boolean rowMain) {
+		if (rowMain) {
+			if (square.getY() > 1) {
+				return squares.get(squares.indexOf(square) - 1);
+			} else {
+				return null;
+			}
 		} else {
-			return null;
+			if (square.getX() < 15) {
+				return squares.get(squares.indexOf(square) + 15);
+			} else {
+				return null;
+			}
+		}
+	}
+
+	public Square getPreviousNeighbour(Square square, boolean rowMain) {
+		if (rowMain) {
+			if (square.getY() < 15) {
+				return squares.get(squares.indexOf(square) + 1);
+			} else {
+				return null;
+			}
+		} else {
+			if (square.getX() > 1) {
+				return squares.get(squares.indexOf(square) - 15);
+			} else {
+				return null;
+			}
+		}
+	}
+
+	public boolean hasPreviouslyPlayedNeighbour(Square square, boolean rowMain) {
+		if (rowMain) {
+			if (this.getUpperNeighbour(square).isPreviouslyPlayed()
+					|| this.getLowerNeighbour(square).isPreviouslyPlayed()) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			if (this.getLeftNeighbour(square).isPreviouslyPlayed()
+					|| this.getRightNeighbour(square).isPreviouslyPlayed()) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 

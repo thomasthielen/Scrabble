@@ -44,6 +44,28 @@ public class Player {
 	}
 
 	/**
+	 * Plays a tile to the board.
+	 * 
+	 * @author tthielen
+	 * @param tile
+	 */
+	public void playTile(Tile tile) {
+		this.rack.playTile(tile);
+		;
+	}
+
+	/**
+	 * Adds a tile back to the rack.
+	 * 
+	 * @author tthielen
+	 * @param tile
+	 */
+	public void returnTile(Tile tile) {
+		this.rack.returnTile(tile);
+		;
+	}
+
+	/**
 	 * The Player chooses Tiles he wants to swap with new Tiles from the bag. Those
 	 * Tiles are returned to the Bag, and the new Tiles are drawn from the Bag
 	 * before that.
@@ -64,7 +86,7 @@ public class Player {
 	public void setUsername(String name) {
 		this.username = name;
 	}
-	
+
 	/**
 	 * Sets whether the it is the player's turn
 	 * 
@@ -104,7 +126,7 @@ public class Player {
 	public int getScore() {
 		return score;
 	}
-	
+
 	/**
 	 * Returns the player's avatar
 	 * 

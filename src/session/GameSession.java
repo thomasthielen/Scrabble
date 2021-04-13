@@ -17,15 +17,17 @@ public class GameSession {
 	private Board board; // The board of the game
 
 	private boolean isActive = false; // Indicates whether the game is live
+	private boolean isHost = false;
 
 	private Player ownPlayer; // The Player of this GameSession object
 
-	private ArrayList<Square> placedSquares = new ArrayList<Square>(); // List of squares on which the tiles of this
-																		// turn are (temporarly) placed
+	private ArrayList<Square> placedSquares = new ArrayList<Square>(); // List of temporary tiles
+
 	private int turnValue = 0; // Value of the current turn (including bonuses of premium squares)
 
-	int dwsCount = 0;
-	int twsCount = 0;
+	// Counters for word value (used in checkMove() & scoreSquare() )
+	private int dwsCount = 0;
+	private int twsCount = 0;
 
 	/**
 	 * Constructor: Creates a GameSession object and creates the player-list, the
@@ -46,8 +48,6 @@ public class GameSession {
 	 * @author tthielen
 	 */
 	public void initialise() {
-		// TODO: Implement addPlayer() through Database/Connection handling
-		// TODO: Implement function to choose first player / player order
 	}
 
 	/**
@@ -101,8 +101,9 @@ public class GameSession {
 
 	/**
 	 * Temporarily places the given tile on the square corresponding to the given
-	 * coordinates. Additionally, it saves the square in occupiedSquares, which is
-	 * used to test if a legal moved is being played.
+	 * coordinates. Removes the tile from the rack of the player. Additionally, it
+	 * saves the square in placedSquares, which is used to test if a legal moved is
+	 * being played.
 	 * 
 	 * @author tthielen
 	 * @param posX
@@ -111,7 +112,31 @@ public class GameSession {
 	 */
 	public void placeTile(int posX, int posY, Tile tile) {
 		board.placeTile(posX, posY, tile);
+		ownPlayer.playTile(tile);
 		placedSquares.add(board.getSquare(posX, posY));
+
+		// TODO: Send placedSquares to other players to show where the tiles are placed,
+		// but not which tiles!
+
+		if (checkMove()) {
+			// TODO: enable "SUBMIT"-Button
+		}
+	}
+
+	/**
+	 * Returns the temporarily placed tile from the board and places it back to the
+	 * rack of the player.
+	 * 
+	 * @author tthielen
+	 * @param posX
+	 * @param posY
+	 */
+	public void recallTile(int posX, int posY) {
+		ownPlayer.returnTile(board.recallTile(posX, posY));
+		placedSquares.remove(board.getSquare(posX, posY));
+
+		// TODO: Send placedSquares to other players to show where the tiles are placed,
+		// but not which tiles!
 
 		if (checkMove()) {
 			// TODO: enable "SUBMIT"-Button
@@ -182,6 +207,8 @@ public class GameSession {
 
 		// Checks whether the placed tiles are coherent (including already placed tiles)
 		// & CHECKS the MAIN word and calculates its VALUE
+		// TODO: Simplify the main word check into one single statement
+		
 
 		if (column) { // COLUMN
 
@@ -304,96 +331,53 @@ public class GameSession {
 
 		// CHECKS all OTHER words formed for correctness & calculates their VALUE
 
-		if (column) {
-			// Go through all squares with newly placed Tiles
-			for (Square s : placedSquares) {
+		for (Square s : placedSquares) {
 
-				// If a square has a Tile to the left or to the right
-				// (because we are in a column)
-				if (board.getRightNeighbour(s).isTaken() || board.getLeftNeighbour(s).isTaken()) {
+			// Check if the placedSquare has a neighbour
+			// If(row): On the y-axis
+			// If(!row): On the x-axis
 
-					StringBuffer sb = new StringBuffer();
-					int wordValue = 0;
-					dwsCount = 0;
-					twsCount = 0;
+			if (board.hasPreviouslyPlayedNeighbour(s, row)) {
 
-					Square iterator = s;
-					// Get the leftmost taken square
-					while (board.getLeftNeighbour(iterator).isTaken()) {
-						iterator = board.getLeftNeighbour(iterator);
-					}
-					// From Left to Right:
-					while (board.getRightNeighbour(iterator).isTaken()) {
+				StringBuffer sb = new StringBuffer();
+				int wordValue = 0;
+				dwsCount = 0;
+				twsCount = 0;
 
-						// Append the char of the tile to the StringBuffer
-						sb.append(iterator.getTile().getLetter());
+				Square iterator = s;
 
-						// Score the Tile
-						// Premium Squares apply only when newly placed tiles cover them
-						wordValue += scoreSquare(iterator);
-
-						iterator = board.getRightNeighbour(iterator);
-					}
-
-					for (int i = 0; i < dwsCount; i++) {
-						wordValue = 2 * wordValue;
-					}
-					for (int i = 0; i < twsCount; i++) {
-						wordValue = 3 * wordValue;
-					}
-
-					turnValue += wordValue;
-
-					String newWord = sb.toString();
-					if (data.DataHandler.checkWord(newWord)) {
-						return false;
-					}
+				// If(row): Get the top taken square
+				// If(!row): Get the leftmost taken square
+				while (board.getPreviousNeighbour(iterator, row).isTaken()) {
+					iterator = board.getPreviousNeighbour(iterator, row);
 				}
-			}
-		} else if (row) {
-			// Go through all squares with newly placed Tiles
-			for (Square s : placedSquares) {
 
-				// If a square has a Tile to the top or to the bottom
-				// (because we are in a row)
-				if (board.getUpperNeighbour(s).isTaken() || board.getLowerNeighbour(s).isTaken()) {
+				// If(row): From top to bottom
+				// If(!row): From left to right
+				while (board.getNextNeighbour(iterator, row).isTaken()) {
 
-					StringBuffer sb = new StringBuffer();
+					// Append the char of the tile to the StringBuffer
+					sb.append(iterator.getTile().getLetter());
 
-					dwsCount = 0;
-					twsCount = 0;
+					// Score the Tile
+					// Premium Squares apply only when newly placed tiles cover them
+					wordValue += scoreSquare(iterator);
 
-					int wordValue = 0;
+					iterator = board.getNextNeighbour(iterator, row);
+				}
 
-					Square iterator = s;
-					// Get the highest taken square
-					while (board.getUpperNeighbour(iterator).isTaken()) {
-						iterator = board.getUpperNeighbour(iterator);
-					}
-					// Append all chars from left to right to the StringBuffer
-					while (board.getLowerNeighbour(iterator).isTaken()) {
-						sb.append(iterator.getTile().getLetter());
+				for (int i = 0; i < dwsCount; i++) {
+					wordValue = 2 * wordValue;
+				}
+				for (int i = 0; i < twsCount; i++) {
+					wordValue = 3 * wordValue;
+				}
 
-						// Score the Tile
-						// Premium Squares apply only when newly placed tiles cover them
-						wordValue += scoreSquare(iterator);
+				turnValue += wordValue;
 
-						iterator = board.getLowerNeighbour(iterator);
-					}
-
-					for (int i = 0; i < dwsCount; i++) {
-						wordValue = 2 * wordValue;
-					}
-					for (int i = 0; i < twsCount; i++) {
-						wordValue = 3 * wordValue;
-					}
-
-					turnValue += wordValue;
-
-					String newWord = sb.toString();
-					if (data.DataHandler.checkWord(newWord)) {
-						return false;
-					}
+				String newWord = sb.toString();
+				if (data.DataHandler.checkWord(newWord)) {
+					return false;
 				}
 			}
 		}

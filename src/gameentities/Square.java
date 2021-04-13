@@ -116,6 +116,19 @@ public class Square {
 		this.tile = tile;
 		this.taken = true;
 	}
+	
+	/**
+	 * Recalls the tile from the square and returns it.
+	 * 
+	 * @author tthielen
+	 * @param tile
+	 */
+	public Tile recallTile() {
+		Tile returnTile = this.tile;
+		this.tile = null;
+		this.taken = false;
+		return returnTile;
+	}
 
 	/**
 	 * Returns the premium status of the square.

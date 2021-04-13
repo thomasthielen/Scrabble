@@ -24,7 +24,6 @@ public class GameState {
 	 * 
 	 * @author tthielen
 	 * @param players
-	 * @param currentPlayer
 	 * @param bag
 	 * @param board
 	 */
@@ -32,6 +31,10 @@ public class GameState {
 		this.players = players;
 		this.bag = bag;
 		this.board = board;
+	}
+	
+	public void addPlayer(Player player) {
+		this.players.add(player);
 	}
 
 	/**
