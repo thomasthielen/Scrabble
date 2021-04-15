@@ -9,12 +9,18 @@ import javafx.stage.Stage;
 
 public class StartScreen extends Application {
 	
+	private static Stage stage = new Stage();
+	
 	public static void main(String[] args) {
 		launch();
 	}
 	
 	public void start(Stage s) throws Exception{
-		s.setScene(new Scene(FXMLLoader.load(new File("StartScreen.fxml").toURI().toURL())));
-		s.show();
+		stage.setScene(new Scene(FXMLLoader.load(new File("ProfileSelectionScreen.fxml").toURI().toURL())));
+		stage.show();
+	}
+	
+	public static Stage getStage() {
+		return stage;
 	}
 }

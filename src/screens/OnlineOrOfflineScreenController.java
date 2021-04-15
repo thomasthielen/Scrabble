@@ -6,21 +6,26 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 
-public class StartScreenController {
+public class OnlineOrOfflineScreenController {
 	
     @FXML
     void onlineGame(ActionEvent event) throws Exception {
-    	Stage stage = new Stage();
-    	stage.setScene(new Scene(FXMLLoader.load(new File("OnlineScreen.fxml").toURI().toURL())));
-    	stage.show();
+    	StartScreen.getStage().setScene(new Scene(FXMLLoader.load(new File("OnlineScreen.fxml").toURI().toURL())));
+		StartScreen.getStage().show();
     }
 
     @FXML
     void offlineGame(ActionEvent event) throws Exception {
-    	Stage stage = new Stage();
-    	stage.setScene(new Scene(FXMLLoader.load(new File("OfflineScreen.fxml").toURI().toURL())));
-    	stage.show();
+    	StartScreen.getStage().setScene(new Scene(FXMLLoader.load(new File("OfflineScreen.fxml").toURI().toURL())));
+		StartScreen.getStage().show();
     }
+    
+
+    @FXML
+    void back(ActionEvent event) throws Exception{
+    	StartScreen.getStage().setScene(new Scene(FXMLLoader.load(new File("ProfileSelectionScreen.fxml").toURI().toURL())));
+		StartScreen.getStage().show();
+    }
+
 }

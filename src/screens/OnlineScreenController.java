@@ -13,14 +13,14 @@ public class OnlineScreenController {
 	   @FXML
 	    void hostNewGame(ActionEvent event) throws Exception {
 		   Stage stage = new Stage();
-		   stage.setScene(new Scene(FXMLLoader.load(new File("LogInScreen.fxml").toURI().toURL())));
+		   stage.setScene(new Scene(FXMLLoader.load(new File("ProfileSelectionScreen.fxml").toURI().toURL())));
 		   stage.show();
 	    }
 
 	    @FXML
 	    void joinExistingGame(ActionEvent event) throws Exception {
 	    	Stage stage = new Stage();
-	    	stage.setScene(new Scene(FXMLLoader.load(new File("LogInScreen.fxml").toURI().toURL())));
+	    	stage.setScene(new Scene(FXMLLoader.load(new File("ProfileSelectionScreen.fxml").toURI().toURL())));
 	    	stage.show();
 	    }
 }
