@@ -57,7 +57,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
 	 * @param ctx
 	 */
 	@Override
-	protected void messageReceived(ChannelHandlerContext ctx, Message msg) throws Exception {
+	protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
 		SendChatMessage message = (SendChatMessage) msg;
 		Channel	in = ctx.channel();
 		for (Channel channel : channels) {
