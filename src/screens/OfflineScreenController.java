@@ -11,13 +11,13 @@ public class OfflineScreenController {
 	
 	@FXML
     void playGame(ActionEvent event) throws Exception {
-		StartScreen.getStage().setScene(new Scene(FXMLLoader.load(new File("GameScreen.fxml").toURI().toURL())));
+		StartScreen.getStage().setScene(new Scene(FXMLLoader.load(new File("LobbyScreen.fxml").toURI().toURL())));
 		StartScreen.getStage().show();
     }
 
     @FXML
     void traningMode(ActionEvent event) throws Exception {
-    	StartScreen.getStage().setScene(new Scene(FXMLLoader.load(new File("GameScreen.fxml").toURI().toURL())));
+    	StartScreen.getStage().setScene(new Scene(FXMLLoader.load(new File("LobbyScreen.fxml").toURI().toURL())));
 		StartScreen.getStage().show();
     }
     

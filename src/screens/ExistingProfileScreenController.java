@@ -18,7 +18,7 @@ public class ExistingProfileScreenController {
 
     @FXML
     void back(ActionEvent event) throws Exception{
-    	StartScreen.getStage().setScene(new Scene(FXMLLoader.load(new File("ProfileSelectionScreen.fxml").toURI().toURL())));
+    	StartScreen.getStage().setScene(new Scene(FXMLLoader.load(new File("StartScreen.fxml").toURI().toURL())));
 		StartScreen.getStage().show();
     }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="562.0" prefWidth="1000.0" style="-fx-background-color: F4D896;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screens.ChooseServerScreenController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="50.0" layoutX="325.0" layoutY="21.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="350.0" />
+      <Text fill="WHITE" layoutX="385.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="THE BEST SCRABBLE">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Text>
+      <Text fill="#f88c00" layoutX="233.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter the IP-Adress of the Gameserver you like to join">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <TextField layoutX="233.0" layoutY="281.0" prefHeight="40.0" prefWidth="400.0" />
+      <Button layoutX="633.0" layoutY="281.0" mnemonicParsing="false" onAction="#joinGame" prefHeight="40.0" prefWidth="132.0" style="-fx-background-color: #f88c00;" text="Join Game" textFill="WHITE" />
+      <Button layoutX="22.0" layoutY="22.0" mnemonicParsing="false" onAction="#back" style="-fx-background-color: #f88c00;" text="Back" textFill="WHITE" />
+   </children>
+</Pane>

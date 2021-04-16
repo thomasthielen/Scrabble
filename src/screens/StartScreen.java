@@ -16,7 +16,7 @@ public class StartScreen extends Application {
 	}
 	
 	public void start(Stage s) throws Exception{
-		stage.setScene(new Scene(FXMLLoader.load(new File("ProfileSelectionScreen.fxml").toURI().toURL())));
+		stage.setScene(new Scene(FXMLLoader.load(new File("StartScreen.fxml").toURI().toURL())));
 		stage.show();
 	}
 	

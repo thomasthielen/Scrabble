@@ -15,12 +15,12 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Text>
-      <Button layoutX="300.0" layoutY="206.0" mnemonicParsing="false" onAction="#onlineGame" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="ONLINE" textFill="WHITE">
+      <Button layoutX="300.0" layoutY="206.0" mnemonicParsing="false" onAction="#createNewProfile" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="CREATE NEW PROFILE" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
-      <Button layoutX="300.0" layoutY="314.0" mnemonicParsing="false" onAction="#offlineGame" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="SINGLEPLAYER" textFill="WHITE">
+      <Button layoutX="300.0" layoutY="311.0" mnemonicParsing="false" onAction="#existingProfile" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="USE EXISTING PROFILE" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>

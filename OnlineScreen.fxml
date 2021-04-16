@@ -15,15 +15,16 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Text>
-      <Button layoutX="300.0" layoutY="206.0" mnemonicParsing="false" onAction="#hostNewGame" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="SPIEL ERSTELLEN" textFill="WHITE">
+      <Button layoutX="300.0" layoutY="206.0" mnemonicParsing="false" onAction="#hostGame" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="HOST GAME" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
-      <Button layoutX="300.0" layoutY="311.0" mnemonicParsing="false" onAction="#joinExistingGame" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="BESTEHENDEM SPIEL BEITRETEN" textFill="WHITE">
+      <Button layoutX="300.0" layoutY="311.0" mnemonicParsing="false" onAction="#joinGame" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="JOIN GAME" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
+      <Button layoutX="22.0" layoutY="22.0" mnemonicParsing="false" onAction="#back" style="-fx-background-color: #f88c00;" text="BACK" textFill="WHITE" />
    </children>
 </Pane>

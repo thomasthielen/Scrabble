@@ -6,21 +6,25 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 public class OnlineScreenController {
 	
-	   @FXML
-	    void hostNewGame(ActionEvent event) throws Exception {
-		   Stage stage = new Stage();
-		   stage.setScene(new Scene(FXMLLoader.load(new File("ProfileSelectionScreen.fxml").toURI().toURL())));
-		   stage.show();
-	    }
 
-	    @FXML
-	    void joinExistingGame(ActionEvent event) throws Exception {
-	    	Stage stage = new Stage();
-	    	stage.setScene(new Scene(FXMLLoader.load(new File("ProfileSelectionScreen.fxml").toURI().toURL())));
-	    	stage.show();
-	    }
+    @FXML
+    void hostGame(ActionEvent event) throws Exception {
+    	StartScreen.getStage().setScene(new Scene(FXMLLoader.load(new File("LobbyScreen.fxml").toURI().toURL())));
+		StartScreen.getStage().show();
+    }
+
+    @FXML
+    void joinGame(ActionEvent event) throws Exception {
+    	StartScreen.getStage().setScene(new Scene(FXMLLoader.load(new File("ChooseServerScreen.fxml").toURI().toURL())));
+		StartScreen.getStage().show();
+    }
+    
+    @FXML
+    void back(ActionEvent event) throws Exception {
+    	StartScreen.getStage().setScene(new Scene(FXMLLoader.load(new File("StartScreen.fxml").toURI().toURL())));
+		StartScreen.getStage().show();
+    }
 }
