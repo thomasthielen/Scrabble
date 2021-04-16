@@ -4,9 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
-
-import data.AIDictionary.AIDictionaryHandler;
 
 /**
  * This class is used to handle all kinds of Data that has to be stored,
@@ -37,13 +36,16 @@ public class DataHandler {
 			String z;
 			// initialize user Dictionary in order to be able to fill it
 			UserDictionary.initializeDict();
+			// initialize AI Dictionary
+			AIDictionary.initializeDict();
 
 			while ((z = inputReader.readLine()) != null) {
 				String[] a = z.split("\\s+");
+				if (a[0].length() < 2) { continue; }
 				// Add string to user dictionary
 				UserDictionary.addWord(a[0]);
 				// Add string to AI dictionary
-				AIDictionaryHandler.addWord(a[0]);
+				AIDictionary.addWord(a[0]);
 			}
 			inputReader.close();
 		} catch (IOException e) {
@@ -61,6 +63,21 @@ public class DataHandler {
 	 */
 	public static boolean checkWord(String string) {
 		return UserDictionary.checkWord(string);
+	}
+	
+	/**
+	 * Returns all prefix and suffix options which create, combined with the given string, an existing word of the dictionary.
+	 * Returns a HashMap with two ArrayLists, one for the Key "Prefixes" and one for the Key "Suffixes".
+	 * These ArrayLists give the right prefix / suffix combination for the same index.
+	 * 
+	 * @param string
+	 * @return bitoptions
+	 *
+	 * @author jluellig
+	 */
+	public static HashMap<String, ArrayList<String>> getBitOptions(String string) {
+		//TODO ENUM
+		return AIDictionary.getBitOptions(string);
 	}
 	
 	/**

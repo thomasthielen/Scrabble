@@ -14,6 +14,7 @@ import java.util.TreeSet;
 
 class UserDictionary {
 
+	// HashMap that stores every word of the dictionary in a specific SortedSet for the first two characters of the word
 	private static HashMap<Character, HashMap<Character, SortedSet<String>>> dict;
 	
 	/**
