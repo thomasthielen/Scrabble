@@ -99,4 +99,24 @@ public class Rack {
 	public void returnTile(Tile tile) {
 		this.tiles.add(tile);
 	}
+	
+	/**
+	 * Returns the rack's tiles
+	 * 
+	 * @author tthielen
+	 * @return rack
+	 */
+	public ArrayList<Tile> getTiles() {
+		return tiles;
+	}
+	
+	/**
+	 * Returns the tile at the given index
+	 * 
+	 * @author tthielen
+	 * @return rack
+	 */
+	public Tile getTile(int pos) {
+		return tiles.get(pos);
+	}
 }

@@ -138,6 +138,16 @@ public class Player {
 	}
 
 	/**
+	 * Returns the player's rack
+	 * 
+	 * @author tthielen
+	 * @return rack
+	 */
+	public Rack getRack() {
+		return rack;
+	}
+
+	/**
 	 * Returns whether it is the player's turn.
 	 * 
 	 * @author tthielen

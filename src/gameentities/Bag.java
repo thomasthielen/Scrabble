@@ -73,8 +73,11 @@ public class Bag {
 		}
 	}
 
-	private boolean isEmpty = true;
-	private ArrayList<TileContainer> remainingTiles = new ArrayList<TileContainer>();
+	private boolean isEmpty = true; // Indicates whether the bag is empty
+	// List of TileContainers, used to count the tile-types (e.g. 7x "E" remaining)
+	private ArrayList<TileContainer> tileCounter = new ArrayList<TileContainer>();
+	// List of actual Tiles
+	private ArrayList<Tile> remainingTiles = new ArrayList<Tile>();
 
 	/**
 	 * Constructor: Creates a Bag object and uses fillBag() to fill the
@@ -88,62 +91,76 @@ public class Bag {
 	}
 
 	/**
-	 * Fills the remainingTiles ArrayList with TileContainers containing the tiles
-	 * with its letter & value as well as the count of those tiles.
+	 * Fills the bag by filling tileCounter and remainingTiles of the bag
 	 * 
 	 * @author tthielen
 	 */
 	private void fillBag() {
-		remainingTiles.add(new TileContainer(new Tile('E', 1), 12));
-		remainingTiles.add(new TileContainer(new Tile('A', 1), 9));
-		remainingTiles.add(new TileContainer(new Tile('I', 1), 9));
-		remainingTiles.add(new TileContainer(new Tile('O', 1), 8));
-		remainingTiles.add(new TileContainer(new Tile('N', 1), 6));
-		remainingTiles.add(new TileContainer(new Tile('R', 1), 6));
-		remainingTiles.add(new TileContainer(new Tile('T', 1), 6));
-		remainingTiles.add(new TileContainer(new Tile('L', 1), 4));
-		remainingTiles.add(new TileContainer(new Tile('S', 1), 4));
-		remainingTiles.add(new TileContainer(new Tile('U', 1), 4));
-		remainingTiles.add(new TileContainer(new Tile('D', 2), 4));
-		remainingTiles.add(new TileContainer(new Tile('G', 2), 4));
-		remainingTiles.add(new TileContainer(new Tile('B', 3), 2));
-		remainingTiles.add(new TileContainer(new Tile('C', 3), 2));
-		remainingTiles.add(new TileContainer(new Tile('M', 3), 2));
-		remainingTiles.add(new TileContainer(new Tile('P', 3), 2));
-		remainingTiles.add(new TileContainer(new Tile('F', 4), 2));
-		remainingTiles.add(new TileContainer(new Tile('H', 4), 2));
-		remainingTiles.add(new TileContainer(new Tile('V', 4), 2));
-		remainingTiles.add(new TileContainer(new Tile('W', 4), 2));
-		remainingTiles.add(new TileContainer(new Tile('Y', 4), 2));
-		remainingTiles.add(new TileContainer(new Tile('K', 5), 1));
-		remainingTiles.add(new TileContainer(new Tile('J', 8), 1));
-		remainingTiles.add(new TileContainer(new Tile('X', 8), 1));
-		remainingTiles.add(new TileContainer(new Tile('Q', 10), 1));
-		remainingTiles.add(new TileContainer(new Tile('Z', 10), 1));
-		remainingTiles.add(new TileContainer(new Tile('*', 0), 2)); // Wildcard / Blank Tile
+		// Add the tiles and their counts in tileCounter
+		tileCounter.add(new TileContainer(new Tile('E', 1), 12));
+		tileCounter.add(new TileContainer(new Tile('A', 1), 9));
+		tileCounter.add(new TileContainer(new Tile('I', 1), 9));
+		tileCounter.add(new TileContainer(new Tile('O', 1), 8));
+		tileCounter.add(new TileContainer(new Tile('N', 1), 6));
+		tileCounter.add(new TileContainer(new Tile('R', 1), 6));
+		tileCounter.add(new TileContainer(new Tile('T', 1), 6));
+		tileCounter.add(new TileContainer(new Tile('L', 1), 4));
+		tileCounter.add(new TileContainer(new Tile('S', 1), 4));
+		tileCounter.add(new TileContainer(new Tile('U', 1), 4));
+		tileCounter.add(new TileContainer(new Tile('D', 2), 4));
+		tileCounter.add(new TileContainer(new Tile('G', 2), 3));
+		tileCounter.add(new TileContainer(new Tile('B', 3), 2));
+		tileCounter.add(new TileContainer(new Tile('C', 3), 2));
+		tileCounter.add(new TileContainer(new Tile('M', 3), 2));
+		tileCounter.add(new TileContainer(new Tile('P', 3), 2));
+		tileCounter.add(new TileContainer(new Tile('F', 4), 2));
+		tileCounter.add(new TileContainer(new Tile('H', 4), 2));
+		tileCounter.add(new TileContainer(new Tile('V', 4), 2));
+		tileCounter.add(new TileContainer(new Tile('W', 4), 2));
+		tileCounter.add(new TileContainer(new Tile('Y', 4), 2));
+		tileCounter.add(new TileContainer(new Tile('K', 5), 1));
+		tileCounter.add(new TileContainer(new Tile('J', 8), 1));
+		tileCounter.add(new TileContainer(new Tile('X', 8), 1));
+		tileCounter.add(new TileContainer(new Tile('Q', 10), 1));
+		tileCounter.add(new TileContainer(new Tile('Z', 10), 1));
+		tileCounter.add(new TileContainer(new Tile('*', 0), 2)); // Wildcard / Blank Tile
 
+		// Iterate through tileCounter and use the count to fill remainingTiles with the
+		// correct amounts of tiles
+		for (TileContainer tc : tileCounter) {
+			for (int i = 0; i < tc.getCount(); i++) {
+				remainingTiles.add(tc.getTile());
+			}
+		}
 	}
 
 	/**
-	 * Returns a random Tile and reduces the count in the corresponding
-	 * TileContainer. If the count is == 1, removes the TileContainer entirely.
+	 * Returns a random tile, reduces the count in the corresponding TileContainer
+	 * and removes the tile from remainingTiles.
 	 * 
 	 * @author tthielen
 	 * @return Tile, randomly drawn from the bag
 	 */
 	public Tile drawTile() {
 		if (!this.isEmpty) {
+			// Draw a random tile out of remainingTiles
 			int rand = (int) (remainingTiles.size() * Math.random());
-			TileContainer randTileContainer = remainingTiles.get(rand);
+			Tile randTile = remainingTiles.get(rand);
 
-			if (randTileContainer.getCount() == 1) {
-				remainingTiles.remove(randTileContainer);
-			} else {
-				randTileContainer.decCount();
+			// Remove the tile from remainingTiles
+			remainingTiles.remove(rand);
+
+			// Decrease the count of the respective tile in tileCounter
+			for (TileContainer tc : tileCounter) {
+				if (tc.getTile().equals(randTile)) {
+					tc.decCount();
+					break;
+				}
 			}
 
+			// Set isEmpty to true if
 			isEmpty = remainingTiles.size() == 0;
-			return randTileContainer.getTile();
+			return randTile;
 
 		} else {
 			System.out.println("The bag is empty.");
@@ -152,37 +169,42 @@ public class Bag {
 	}
 
 	/**
-	 * Tries to find a TileContainer in remainingTiles representing the given tile.
-	 * If it is found, increases the count of the TileContainer. If not, creates the
-	 * TileContainer with the given tile and a count of 1.
+	 * Adds the given tile to remaininTiles and increases the count in its
+	 * respective TileContainer in tileCounter.
 	 * 
 	 * @author tthielen
 	 * @param Tile to be added to the bag
 	 */
 	public void addTile(Tile t) {
-		for (TileContainer tc : remainingTiles) {
-			if (tc.getTile() == t) {
+		remainingTiles.add(t);
+		for (TileContainer tc : tileCounter) {
+			if (tc.getTile().equals(t)) {
 				tc.incCount();
-				return;
+				break;
 			}
 		}
-		remainingTiles.add(new TileContainer(t, 1));
 	}
 
 	/**
-	 * Returns the total count of remaining tiles.
+	 * Returns the total count of remaining tiles in the bag.
 	 * 
 	 * @author tthielen
 	 * @return count of tiles
 	 */
 	public int getRemainingCount() {
 		int count = 0;
-		for (TileContainer tc : remainingTiles) {
+		for (TileContainer tc : tileCounter) {
 			count += tc.getCount();
 		}
 		return count;
 	}
-	
+
+	/**
+	 * Returns whether the bag is empty.
+	 * 
+	 * @author tthielen
+	 * @return isEmpty
+	 */
 	public boolean isEmpty() {
 		return this.isEmpty;
 	}
