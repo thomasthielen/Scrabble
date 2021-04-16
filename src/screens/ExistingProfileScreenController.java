@@ -7,7 +7,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
+/**
+ * 
+ * @author jbleil
+ *
+ */
+
 public class ExistingProfileScreenController {
+	
+	/**
+	 * 
+	 * @author jbleil
+	 * @param event
+	 * @throws Exception
+	 */
 	
     @FXML
     void startGame(ActionEvent event) throws Exception{
@@ -15,6 +28,12 @@ public class ExistingProfileScreenController {
 		StartScreen.getStage().show();
     }
     
+    /**
+     * 
+     * @author jbleil
+     * @param event
+     * @throws Exception
+     */
 
     @FXML
     void back(ActionEvent event) throws Exception{
