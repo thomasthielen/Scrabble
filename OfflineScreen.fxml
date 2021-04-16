@@ -20,7 +20,7 @@
             <Font size="24.0" />
          </font>
       </Button>
-      <Button layoutX="300.0" layoutY="311.0" mnemonicParsing="false" onAction="#traningMode" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="TRANINGMODE" textFill="WHITE">
+      <Button layoutX="300.0" layoutY="311.0" mnemonicParsing="false" onAction="#traningMode" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="TRAININGMODE" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>

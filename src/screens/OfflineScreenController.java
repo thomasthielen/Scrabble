@@ -8,14 +8,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
 /**
+ * this class provides the controller for the Offline Screen
  * 
  * @author jbleil
- *
  */
 
 public class OfflineScreenController {
 	
 	/**
+	 * This method serves as the Listener for "PLAY GAME"-Button
+     * It redirects the user to the Lobby Screen
 	 * 
 	 * @author jbleil
 	 * @param event
@@ -29,6 +31,8 @@ public class OfflineScreenController {
     }
 	
 	/**
+	 * This method serves as the Listener for "TRAINING MODE"-Button
+     * It redirects the user to the Lobby Screen
 	 * 
 	 * @author jbleil
 	 * @param event
@@ -42,6 +46,8 @@ public class OfflineScreenController {
     }
     
     /**
+     * This method serves as the Listener for "Back"-Button
+     * It redirects the user to the Online or Offline Screen
      * 
      * @author jbleil
      * @param event
@@ -50,7 +56,7 @@ public class OfflineScreenController {
     
     @FXML
     void back(ActionEvent event) throws Exception{
-    	StartScreen.getStage().setScene(new Scene(FXMLLoader.load(new File("ProfileSelectionScreen.fxml").toURI().toURL())));
+    	StartScreen.getStage().setScene(new Scene(FXMLLoader.load(new File("OnlineOrOfflineScreen.fxml").toURI().toURL())));
 		StartScreen.getStage().show();
     }
 }

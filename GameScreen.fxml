@@ -9,9 +9,9 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="562.0" prefWidth="1000.0" style="-fx-background-color: #F4D896;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screens.GameScreenController">
    <children>
-      <Pane layoutX="260.0" layoutY="14.0" prefHeight="480.0" prefWidth="480.0" style="-fx-background-color: #FFFFFF;">
+      <Pane fx:id="gameBoardPane" layoutX="260.0" layoutY="14.0" prefHeight="480.0" prefWidth="480.0" style="-fx-background-color: #FFFFFF;">
          <children>
-            <GridPane gridLinesVisible="true" layoutX="68.0" layoutY="68.0" prefHeight="345.0" prefWidth="345.0">
+            <GridPane fx:id="gameBoard" gridLinesVisible="true" layoutX="68.0" layoutY="68.0" prefHeight="345.0" prefWidth="345.0">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -416,20 +416,117 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Text>
-         </children>
-      </Pane>
-      <Pane fx:id="chat" layoutX="753.0" layoutY="14.0" prefHeight="480.0" prefWidth="237.0" style="-fx-background-color: #FFFFFF;">
-         <children>
-            <TextArea layoutX="10.0" layoutY="51.0" prefHeight="380.0" prefWidth="219.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e9e9e9" height="30.0" layoutX="10.0" layoutY="10.0" stroke="#707070" strokeType="INSIDE" width="180.0" />
-            <Text fill="#707070" layoutX="78.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHAT" />
-            <Button layoutX="194.0" layoutY="10.0" mnemonicParsing="false" onAction="#closeChat" text="X">
+            <Button layoutX="203.0" layoutY="450.0" mnemonicParsing="false" onAction="#submitWord" prefWidth="75.0" style="-fx-background-color: #F88C00;" text="Submit" textFill="WHITE">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Button layoutX="90.0" layoutY="450.0" mnemonicParsing="false" onAction="#swapTiles" prefWidth="75.0" style="-fx-background-color: f88c00;" text="Swap" textFill="WHITE">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Button layoutX="315.0" layoutY="450.0" mnemonicParsing="false" onAction="#recallLetters" prefWidth="75.0" style="-fx-background-color: f88c00;" text="Recall" textFill="WHITE">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Button layoutX="7.0" layoutY="423.0" mnemonicParsing="false" onAction="#bag" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: f88c00;" text="BAG" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <TextField layoutX="10.0" layoutY="437.0" prefHeight="39.0" prefWidth="142.0" />
-            <Button layoutX="162.0" layoutY="437.0" mnemonicParsing="false" onAction="#sendMessage" style="-fx-background-color: #F88C00;" text="Send" textFill="#fffefe" />
+         </children>
+      </Pane>
+      <Pane fx:id="chatPane" layoutX="750.0" layoutY="14.0" prefHeight="480.0" prefWidth="240.0" style="-fx-background-color: #FFFFFF;">
+         <children>
+            <TextArea layoutX="8.0" layoutY="51.0" prefHeight="380.0" prefWidth="225.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e9e9e9" height="30.0" layoutX="8.0" layoutY="10.0" stroke="#707070" strokeType="INSIDE" width="190.0" />
+            <Text boundsType="VISUAL" fill="#707070" layoutX="77.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHAT" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font></Text>
+            <Button layoutX="203.0" layoutY="10.0" mnemonicParsing="false" onAction="#closeChat" prefHeight="30.0" prefWidth="30.0" text="X" textFill="#707070">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <TextField layoutX="8.0" layoutY="437.0" prefHeight="40.0" prefWidth="150.0" />
+            <Button layoutX="165.0" layoutY="437.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="40.0" prefWidth="67.0" style="-fx-background-color: #F88C00;" text="Send" textFill="#fffefe" />
          </children></Pane>
+      <Button layoutX="463.0" layoutY="509.0" mnemonicParsing="false" onAction="#chat" prefWidth="75.0" style="-fx-background-color: #f88c00;" text="CHAT" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button layoutX="575.0" layoutY="509.0" mnemonicParsing="false" onAction="#leaveGame" prefWidth="125.0" style="-fx-background-color: #f88c00;" text="Leave Game" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button layoutX="300.0" layoutY="509.0" mnemonicParsing="false" onAction="#playerStatistics" prefWidth="125.0" style="-fx-background-color: #f88c00;" text="Player Statistics" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Text fill="#707070" layoutX="20.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Place 1: Name, Points">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text fill="#707070" layoutX="20.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Place 2: Name, Points">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text fill="#707070" layoutX="20.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Place 3: Name, Points">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text fill="#707070" layoutX="20.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Place 4: Name, Points">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <ScrollPane fx:id="playerStatisticsPane" layoutX="10.0" layoutY="255.0" prefHeight="240.0" prefWidth="240.0">
+         <content>
+            <Pane prefHeight="240.0" prefWidth="240.0" style="-fx-background-color: #FFFFFF;">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e9e9e9" height="30.0" layoutX="10.0" layoutY="10.0" stroke="#707070" strokeType="INSIDE" width="180.0" />
+                  <Text fill="#707070" layoutX="10.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1: Name, Records">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#707070" layoutX="10.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2: Name, Records">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#707070" layoutX="10.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3: Name, Records">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#707070" layoutX="10.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 4: Name, Records">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#707070" layoutX="32.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player Statistics">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Button layoutX="195.0" layoutY="10.0" mnemonicParsing="false" onAction="#closePlayerStatistics" text="X" textFill="#707070">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+         </content>
+      </ScrollPane>
    </children>
 </Pane>

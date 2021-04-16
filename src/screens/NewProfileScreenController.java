@@ -8,14 +8,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
 /**
+ * this class provides the controller for the new Profile Screen
  * 
  * @author jbleil
- *
  */
 
 public class NewProfileScreenController {
 	
 	/**
+	 * This method serves as the Listener for "START GAME"-Button
+     * It redirects the user to the New Profile Screen
 	 * 
 	 * @author jbleil
 	 * @param event
@@ -29,6 +31,9 @@ public class NewProfileScreenController {
     }
 	
 	/**
+	 * TODO
+	 * This method serves as the Listener for TextField
+     * It allows the user to enter a new username
 	 * 
 	 * @author jbleil
 	 * @param event
@@ -41,6 +46,8 @@ public class NewProfileScreenController {
     }
     
     /**
+     * This method serves as the Listener for "Back"-Button
+     * It redirects the user to the Start Screen
      * 
      * @author jbleil
      * @param event

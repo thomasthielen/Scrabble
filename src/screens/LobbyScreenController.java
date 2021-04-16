@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
 /**
+ * This class provides the Controller for the Lobby Screen
  * 
  * @author jbleil
  *
@@ -16,6 +17,9 @@ import javafx.scene.Scene;
 public class LobbyScreenController {
 	
 	/**
+	 * TODO
+	 * This method serves as the Listener for "Upload dictionary"-Button
+     * It allows the user to upload his own dictionaries to the game
 	 * 
 	 * @author jbleil
 	 * @param event
@@ -28,6 +32,8 @@ public class LobbyScreenController {
     }
     
     /**
+     * This method serves as the Listener for "Leave Lobby"-Button
+     * It let's the user leave the Lobby and redirects him to the StartScreen
      * 
      * @author jbleil
      * @param event
@@ -41,6 +47,8 @@ public class LobbyScreenController {
     }
     
     /**
+     * This method serves as the Listener for "START GAME"-Button
+     * It let's the user start the game and redirects him to the GameScreen
      * 
      * @author jbleil
      * @param event

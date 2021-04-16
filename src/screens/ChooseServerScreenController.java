@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
 /**
+ * this class provides the controller for the Choose Server Screen
  * 
  * @author jbleil
  *
@@ -16,6 +17,8 @@ import javafx.scene.Scene;
 public class ChooseServerScreenController {
 	
 	/**
+	 * This method serves as the Listener for "JOIN GAME"-Button
+     * It redirects the user to the Lobby Screen
 	 * 
 	 * @author jbleil
 	 * @param event
@@ -29,6 +32,8 @@ public class ChooseServerScreenController {
     }
     
     /**
+     * This method serves as the Listener for "Back"-Button
+     * It redirects the user to the Start Screen
      * 
      * @author jbleil
      * @param event
