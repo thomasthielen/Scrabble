@@ -4,6 +4,8 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * A Server instance is created that hosts the game and
@@ -16,6 +18,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 public class Server {
 	
 	private final int port;
+	private boolean isRunning;
 	
 	/** 
 	 * main method starts a new server at port 8000 and its run method
@@ -23,6 +26,7 @@ public class Server {
 	 * @author tikrause
 	 * @param args
 	 * @throws InterruptedException
+	 * @throws UnknownHostException 
 	 */
 	public static void main(String[] args) throws InterruptedException {
 		// TODO: Ausgabe der IP-Adr des Servers
@@ -37,6 +41,7 @@ public class Server {
 	 */
 	public Server (int port) {
 		this.port = port;
+		isRunning = true;
 	}
 	
 	/**
@@ -58,8 +63,15 @@ public class Server {
 					.channel(NioServerSocketChannel.class)
 					.childHandler(new ServerInitializer());
 			
+			// TODO: Mitteilen der IP an die Clients
+			System.out.println(InetAddress.getLocalHost().getHostAddress());
+
+			
 			// creates a connection using UDP
 			bootstrap.bind(port).sync().channel().closeFuture().sync();
+		} catch (UnknownHostException uhe) {
+			// TODO
+			System.out.println("Bad gateway 502: No server");
 		}
 		
 		finally {
