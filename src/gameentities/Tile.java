@@ -12,6 +12,7 @@ public class Tile {
 
 	private char letter;
 	private int value;
+	private boolean wildcard;
 
 	/**
 	 * Constructor: Creates a tile object with the given letter + value.
@@ -23,10 +24,60 @@ public class Tile {
 	public Tile(char letter, int value) {
 		this.letter = letter;
 		this.value = value;
+		wildcard = (letter == '*');
 	}
 
 	/**
-	 * Returns the tile letter
+	 * Returns whether the given tile equals the tile it is called upon
+	 * 
+	 * @author Thomas
+	 * @param Tile
+	 * @return equals
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+
+		if (obj.getClass() != this.getClass()) {
+			return false;
+		}
+
+		final Tile OTHER = (Tile) obj;
+
+		if (this.letter != OTHER.getLetter()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Resets the letter to '*' if the tile is a wildcard.
+	 * 
+	 * @author tthielen
+	 */
+	public void resetLetter() {
+		if (this.wildcard) {
+			this.letter = '*';
+		}
+	}
+
+	/**
+	 * Sets the letter of the tile to the paramter char if the tile is a wildcard.
+	 * 
+	 * @author tthielen
+	 * @param letter
+	 */
+	public void setLetter(char letter) {
+		if (this.wildcard) {
+			this.letter = letter;
+		}
+	}
+
+	/**
+	 * Returns the tile letter.
 	 * 
 	 * @author tthielen
 	 * @return letter
@@ -36,13 +87,23 @@ public class Tile {
 	}
 
 	/**
-	 * Returns the tile value
+	 * Returns the tile value.
 	 * 
 	 * @author tthielen
 	 * @return value
 	 */
 	public int getValue() {
 		return this.value;
+	}
+
+	/**
+	 * Returns whether this tile is a wildcard tile.
+	 * 
+	 * @author tthielen
+	 * @return isWildcard
+	 */
+	public boolean isWildCard() {
+		return this.wildcard;
 	}
 
 }

@@ -1,6 +1,7 @@
 package session;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import gameentities.*;
 
@@ -39,6 +40,7 @@ public class GameSession {
 		players = new ArrayList<Player>();
 		bag = new Bag();
 		board = new Board();
+		ownPlayer = new Player("tthielen", null, this); // TODO: REMOVE, only for testing purposes in ConsoleGame
 		initialise();
 	}
 
@@ -118,9 +120,9 @@ public class GameSession {
 		// TODO: Send placedSquares to other players to show where the tiles are placed,
 		// but not which tiles!
 
-		if (checkMove()) {
-			// TODO: enable "SUBMIT"-Button
-		}
+//		if (checkMove()) {
+//			// TODO: enable "SUBMIT"-Button
+//		}
 	}
 
 	/**
@@ -132,7 +134,14 @@ public class GameSession {
 	 * @param posY
 	 */
 	public void recallTile(int posX, int posY) {
-		ownPlayer.returnTile(board.recallTile(posX, posY));
+
+		// Take the tile from the respective square
+		Tile rTile = board.recallTile(posX, posY);
+		// Reset the letter of the tile, should it have been a wildcard tile
+		rTile.resetLetter();
+		// Return the tile to the rack of the player
+		ownPlayer.returnTile(rTile);
+		// Remove the respective square from the list of placedSquares
 		placedSquares.remove(board.getSquare(posX, posY));
 
 		// TODO: Send placedSquares to other players to show where the tiles are placed,
@@ -141,6 +150,27 @@ public class GameSession {
 		if (checkMove()) {
 			// TODO: enable "SUBMIT"-Button
 		}
+	}
+
+	/**
+	 * Recalls ALL placed tiles to the rack.
+	 * 
+	 * @author tthielen
+	 */
+	public void recallAll() {
+		ArrayList<Integer> posXCollection = new ArrayList<Integer>();
+		ArrayList<Integer> posYCollection = new ArrayList<Integer>();
+
+		for (Square s : placedSquares) {
+			posXCollection.add(s.getX());
+			posYCollection.add(s.getY());
+		}
+
+		int iterations = placedSquares.size();
+		for (int i = 0; i < iterations; i++) {
+			recallTile(posXCollection.get(i), posYCollection.get(i));
+		}
+
 	}
 
 	/**
@@ -153,25 +183,50 @@ public class GameSession {
 	 */
 	public boolean checkMove() {
 
-		boolean column = true;
-		boolean row = true;
+		boolean column = false;
 		turnValue = 0;
 
-		// Checks whether a tile has already been placed.
+		// Checks whether a tile has already been placed
 		if (placedSquares.size() == 0) {
 			return false;
 		}
 
 		// Checks whether any tile of the placedSquares is adjacent to the a previously
-		// played square.
-		boolean adjacent = false;
-		for (Square s : placedSquares) {
-			if (board.hasPreviouslyPlayedNeighbour(s)) {
-				adjacent = true;
+		// played square OR, if it is the first move, at least one tile is placed on the
+		// STAR-square
+		boolean firstMove = true;
+		for (Square s : board.getSquareList()) {
+			if (s.isPreviouslyPlayed()) {
+				firstMove = false;
 				break;
 			}
 		}
-		if (!adjacent) {
+
+		if (firstMove) {
+			boolean starHit = false;
+			for (Square s : placedSquares) {
+				if (s.getPremium() == Premium.STAR) {
+					starHit = true;
+					break;
+				}
+			}
+			if (!starHit) {
+				return false;
+			}
+		} else {
+			boolean adjacent = false;
+			for (Square s : placedSquares) {
+				if (board.hasPreviouslyPlayedNeighbour(s)) {
+					adjacent = true;
+					break;
+				}
+			}
+			if (!adjacent) {
+				return false;
+			}
+		}
+
+		if (firstMove && placedSquares.size() < 2) {
 			return false;
 		}
 
@@ -183,24 +238,20 @@ public class GameSession {
 			int posY = placedSquares.get(0).getY();
 
 			if (posX == placedSquares.get(1).getX()) {
+				column = true;
 				for (Square s : placedSquares) {
 					if (s.getX() != posX) {
-						column = false;
-						break;
+						return false;
 					}
 				}
-			}
-
-			if (posY == placedSquares.get(1).getY()) {
+			} else if (posY == placedSquares.get(1).getY()) {
+				column = false;
 				for (Square s : placedSquares) {
 					if (s.getY() != posY) {
-						row = false;
-						break;
+						return false;
 					}
 				}
-			}
-
-			if (!(row || column)) {
+			} else {
 				return false;
 			}
 		}
@@ -208,7 +259,6 @@ public class GameSession {
 		// Checks whether the placed tiles are coherent (including already placed tiles)
 		// & CHECKS the MAIN word and calculates its VALUE
 		// TODO: Simplify the main word check into one single statement
-		
 
 		if (column) { // COLUMN
 
@@ -240,15 +290,18 @@ public class GameSession {
 			twsCount = 0;
 
 			// Go down to the lowest square with a tile
-			while (board.getLowerNeighbour(iterator).isTaken()) {
+			do {
 				sb.append(iterator.getTile().getLetter());
 
 				// Score the Tile
 				// Premium Squares apply only when newly placed tiles cover them
 				wordValue += scoreSquare(iterator);
-
-				iterator = board.getLowerNeighbour(iterator);
-			}
+				if (iterator.getY() > 1) {
+					iterator = board.getLowerNeighbour(iterator);
+				} else {
+					break;
+				}
+			} while (iterator.isTaken());
 
 			for (int i = 0; i < dwsCount; i++) {
 				wordValue = 2 * wordValue;
@@ -266,7 +319,11 @@ public class GameSession {
 			}
 
 			String newWord = sb.toString();
-			return data.DataHandler.checkWord(newWord);
+			if (sb.length() > 1) {
+				if (!data.DataHandler.checkWord(newWord)) {
+					return false;
+				}
+			}
 
 		} else { // ROW
 
@@ -298,15 +355,18 @@ public class GameSession {
 			twsCount = 0;
 
 			// Go to the right to the rightmost square with a tile
-			while (board.getRightNeighbour(iterator).isTaken()) {
+			do {
 				sb.append(iterator.getTile().getLetter());
 
 				// Score the Tile
 				// Premium Squares apply only when newly placed tiles cover them
 				wordValue += scoreSquare(iterator);
-
-				iterator = board.getRightNeighbour(iterator);
-			}
+				if (iterator.getX() < 15) {
+					iterator = board.getRightNeighbour(iterator);
+				} else {
+					break;
+				}
+			} while (iterator.isTaken());
 
 			for (int i = 0; i < dwsCount; i++) {
 				wordValue = 2 * wordValue;
@@ -324,20 +384,22 @@ public class GameSession {
 			}
 
 			String newWord = sb.toString();
-			if (!data.DataHandler.checkWord(newWord)) {
-				return false;
+			if (sb.length() > 1) {
+				if (!data.DataHandler.checkWord(newWord)) {
+					return false;
+				}
 			}
 		}
 
-		// CHECKS all OTHER words formed for correctness & calculates their VALUE
+		// CHECKS all SECONDARY words formed for correctness & calculates their VALUE
 
 		for (Square s : placedSquares) {
 
 			// Check if the placedSquare has a neighbour
-			// If(row): On the y-axis
-			// If(!row): On the x-axis
+			// If(!column): On the y-axis
+			// If(column): On the x-axis
 
-			if (board.hasPreviouslyPlayedNeighbour(s, row)) {
+			if (board.hasPreviouslyPlayedNeighbour(s, !column)) {
 
 				StringBuffer sb = new StringBuffer();
 				int wordValue = 0;
@@ -346,15 +408,15 @@ public class GameSession {
 
 				Square iterator = s;
 
-				// If(row): Get the top taken square
-				// If(!row): Get the leftmost taken square
-				while (board.getPreviousNeighbour(iterator, row).isTaken()) {
-					iterator = board.getPreviousNeighbour(iterator, row);
+				// If(!column): Get the top taken square
+				// If(column): Get the leftmost taken square
+				while (board.getPreviousNeighbour(iterator, !column).isTaken()) {
+					iterator = board.getPreviousNeighbour(iterator, !column);
 				}
 
-				// If(row): From top to bottom
-				// If(!row): From left to right
-				while (board.getNextNeighbour(iterator, row).isTaken()) {
+				// If(!column): From top to bottom
+				// If(column): From left to right
+				while (board.getNextNeighbour(iterator, !column).isTaken()) {
 
 					// Append the char of the tile to the StringBuffer
 					sb.append(iterator.getTile().getLetter());
@@ -363,8 +425,32 @@ public class GameSession {
 					// Premium Squares apply only when newly placed tiles cover them
 					wordValue += scoreSquare(iterator);
 
-					iterator = board.getNextNeighbour(iterator, row);
+					iterator = board.getNextNeighbour(iterator, !column);
 				}
+
+				do {
+					sb.append(iterator.getTile().getLetter());
+
+					// Score the Tile
+					// Premium Squares apply only when newly placed tiles cover them
+					wordValue += scoreSquare(iterator);
+
+					// Go to the next square, while the border is not reached yet
+					if (column) {
+						if (iterator.getX() < 15) {
+							iterator = board.getNextNeighbour(iterator, !column);
+						} else {
+							break;
+						}
+					} else {
+						if (iterator.getY() > 1) {
+							iterator = board.getNextNeighbour(iterator, !column);
+						} else {
+							break;
+						}
+					}
+
+				} while (iterator.isTaken());
 
 				for (int i = 0; i < dwsCount; i++) {
 					wordValue = 2 * wordValue;
@@ -434,6 +520,9 @@ public class GameSession {
 		ownPlayer.incScore(turnValue);
 		ownPlayer.refillRack();
 
+		for (Square s : placedSquares) {
+			s.setPreviouslyPlayed();
+		}
 		placedSquares.removeAll(placedSquares);
 
 		synchronise();
@@ -477,4 +566,53 @@ public class GameSession {
 		return bag;
 	}
 
+	/**
+	 * Returns the board of the session.
+	 * 
+	 * @author tthielen
+	 * @return board
+	 */
+	public Board getBoard() {
+		return board;
+	}
+
+	/**
+	 * Returns the ownPlayer of the session.
+	 * 
+	 * @author tthielen
+	 * @return ownPlayer
+	 */
+	public Player getPlayer() {
+		return ownPlayer;
+	}
+
+	/**
+	 * Returns the value of this turn.
+	 * 
+	 * @author tthielen
+	 * @return turnValue
+	 */
+	public int getTurnValue() {
+		return turnValue;
+	}
+
+	/**
+	 * Changes the isActive state of the GameSession.
+	 * 
+	 * @author tthielen
+	 * @param isActive
+	 */
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	/**
+	 * Returns whether the GameSession is active.
+	 * 
+	 * @author tthielen
+	 * @return isActive
+	 */
+	public boolean isActive() {
+		return this.isActive;
+	}
 }

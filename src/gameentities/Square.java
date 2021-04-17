@@ -129,6 +129,15 @@ public class Square {
 		this.taken = false;
 		return returnTile;
 	}
+	
+	/**
+	 * Sets that this square holds a tile from a previous move
+	 * 
+	 * @author tthielen
+	 */
+	public void setPreviouslyPlayed() {
+		this.previousPlay = true;
+	}
 
 	/**
 	 * Returns the premium status of the square.
@@ -161,7 +170,7 @@ public class Square {
 	}
 	
 	/**
-	 * Returns whether this Square holds a Tile from a previous move
+	 * Returns whether this square holds a tile from a previous move
 	 * 
 	 * @author tthielen
 	 * @return previousPlay
