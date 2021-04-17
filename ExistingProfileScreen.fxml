@@ -15,12 +15,28 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Text>
-      <Button layoutX="300.0" layoutY="437.0" mnemonicParsing="false" onAction="#startGame" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="START GAME" textFill="WHITE">
+      <Button layoutX="180.0" layoutY="437.0" mnemonicParsing="false" onAction="#startGame" prefHeight="75.0" prefWidth="300.0" style="-fx-background-color: #f88c00;" text="START GAME" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
-      <RadioButton layoutX="350.0" layoutY="182.0" mnemonicParsing="false" text="Name, Score" />
       <Button layoutX="22.0" layoutY="22.0" mnemonicParsing="false" onAction="#back" style="-fx-background-color: f88c00;" text="BACK" textFill="WHITE" />
+      <ScrollPane layoutX="300.0" layoutY="94.0" prefHeight="320.0" prefWidth="400.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <RadioButton layoutX="20.0" layoutY="20.0" mnemonicParsing="false" text="Name, Records" />
+                  <RadioButton layoutX="20.0" layoutY="60.0" mnemonicParsing="false" text="Name, Records" />
+                  <RadioButton layoutX="20.0" layoutY="100.0" mnemonicParsing="false" text="Name Records" />
+                  <RadioButton layoutX="20.0" layoutY="140.0" mnemonicParsing="false" text="Name Records" />
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+      <Button layoutX="520.0" layoutY="437.0" mnemonicParsing="false" onAction="#editProfile" prefHeight="75.0" prefWidth="300.0" style="-fx-background-color: f88c00;" text="EDIT PROFILE" textFill="WHITE">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
    </children>
 </Pane>

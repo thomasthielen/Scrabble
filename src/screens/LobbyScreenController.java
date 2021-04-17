@@ -60,4 +60,19 @@ public class LobbyScreenController {
 		StartScreen.getStage().setScene(new Scene(FXMLLoader.load(new File("GameScreen.fxml").toURI().toURL())));
 		StartScreen.getStage().show();
     }
+    
+    /**
+     * TODO
+     * This method serves as the Listener for "Add AI Player"-Button
+     * It allows the user to add AI Players to the Lobby/Game
+     * The Button is only enabled if there are less then 4 Players in the Lobby
+     * 
+     * @author jbleil
+     * @param event
+     */
+    
+    @FXML
+    void addAIPlayer(ActionEvent event) throws Exception {
+
+    }
 }

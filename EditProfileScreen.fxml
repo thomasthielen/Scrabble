@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="562.0" prefWidth="1000.0" style="-fx-background-color: F4D896;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screens.EditProfileScreenController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="50.0" layoutX="360.0" layoutY="22.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="300.0" />
+      <Text fill="WHITE" layoutX="395.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="THE BEST SCRABBLE" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Text>
+      <Button layoutX="22.0" layoutY="22.0" mnemonicParsing="false" onAction="#back" style="-fx-background-color: #f88c00;" text="BACK" textFill="WHITE" />
+      <Text fill="#f88c00" layoutX="250.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You can change your username in the field below">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <TextField layoutX="250.0" layoutY="214.0" prefHeight="42.0" prefWidth="322.0" />
+      <Button layoutX="572.0" layoutY="214.0" mnemonicParsing="false" onAction="#submitChanges" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #f88c00;" text="SUBMIT CHANGES" textFill="WHITE" />
+      <Text fill="#f88c00" layoutX="197.0" layoutY="366.0" strokeType="OUTSIDE" strokeWidth="0.0" text="or you can delete your profile by clicking the button blelow">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <Button layoutX="300.0" layoutY="437.0" mnemonicParsing="false" onAction="#deleteProfile" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="DELETE PROFILE" textFill="WHITE">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>

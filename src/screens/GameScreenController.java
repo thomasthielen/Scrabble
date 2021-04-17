@@ -2,6 +2,8 @@ package screens;
 
 import java.io.File;
 
+import com.sun.javafx.geom.Rectangle;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 /**
  * This class provides the Controller for the Game Screen and handles all the interaction

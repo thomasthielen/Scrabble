@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.text.*?>
@@ -408,6 +409,11 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Text>
+                  <ImageView fitHeight="23.0" fitWidth="23.0" GridPane.columnIndex="7" GridPane.rowIndex="7">
+                     <image>
+                        <Image url="@resources/Stern.jpg" />
+                     </image>
+                  </ImageView>
                </children>
             </GridPane>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="50.0" layoutX="90.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="300.0" />
@@ -436,6 +442,83 @@
                   <Font size="14.0" />
                </font>
             </Button>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="25.0" layoutX="228.0" layoutY="418.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="25.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="25.0" layoutX="263.0" layoutY="418.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="25.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="25.0" layoutX="298.0" layoutY="418.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="25.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="25.0" layoutX="333.0" layoutY="418.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="25.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="25.0" layoutX="193.0" layoutY="418.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="25.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="25.0" layoutX="158.0" layoutY="418.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="25.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="25.0" layoutX="123.0" layoutY="418.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="25.0" />
+            <Text fill="WHITE" layoutX="123.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="P" textAlignment="CENTER" wrappingWidth="25.0">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="158.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="O" textAlignment="CENTER" wrappingWidth="25.0">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="193.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="R" textAlignment="CENTER" wrappingWidth="25.0">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="228.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C" textAlignment="CENTER" wrappingWidth="25.0">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="263.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X" textAlignment="CENTER" wrappingWidth="25.0">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="298.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="R" textAlignment="CENTER" wrappingWidth="25.0">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="333.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E" textAlignment="CENTER" wrappingWidth="25.0">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="141.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="176.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="211.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="246.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="281.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="316.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="351.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
       <Pane fx:id="chatPane" layoutX="750.0" layoutY="14.0" prefHeight="480.0" prefWidth="240.0" style="-fx-background-color: #FFFFFF;">
@@ -454,7 +537,7 @@
             <TextField layoutX="8.0" layoutY="437.0" prefHeight="40.0" prefWidth="150.0" />
             <Button layoutX="165.0" layoutY="437.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="40.0" prefWidth="67.0" style="-fx-background-color: #F88C00;" text="Send" textFill="#fffefe" />
          </children></Pane>
-      <Button layoutX="463.0" layoutY="509.0" mnemonicParsing="false" onAction="#chat" prefWidth="75.0" style="-fx-background-color: #f88c00;" text="CHAT" textFill="WHITE">
+      <Button layoutX="463.0" layoutY="509.0" mnemonicParsing="false" onAction="#chat" prefWidth="75.0" style="-fx-background-color: #f88c00;" text="Chat" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
