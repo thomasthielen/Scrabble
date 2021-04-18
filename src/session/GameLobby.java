@@ -11,7 +11,7 @@ import gameentities.*;
  */
 public class GameLobby {
   private GameState gameState;
-  //	private Server host;
+  // private Server host;
 
   /**
    * Constructor: Creates a first GameState object and the necessary Server/Client objects of the

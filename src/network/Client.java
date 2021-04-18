@@ -104,7 +104,7 @@ public class Client {
   }
 
   /*
-   * public void updateGameState(GameState game) {
-   * channel.writeAndFlush(new UpdateGameStateMessage(name, game)); }
+   * public void updateGameState(GameState game) { channel.writeAndFlush(new
+   * UpdateGameStateMessage(name, game)); }
    */
 }

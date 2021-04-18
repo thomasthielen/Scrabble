@@ -118,9 +118,9 @@ public class GameSession {
     // TODO: Send placedSquares to other players to show where the tiles are placed,
     // but not which tiles!
 
-    //		if (checkMove()) {
-    //			// TODO: enable "SUBMIT"-Button
-    //		}
+    // if (checkMove()) {
+    // // TODO: enable "SUBMIT"-Button
+    // }
   }
 
   /**
