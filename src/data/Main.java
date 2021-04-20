@@ -2,8 +2,19 @@ package data;
 
 import java.io.File;
 
+/**
+ * This Class tests the dictionary
+ *
+ * @author jluellig
+ */
 public class Main {
 
+  /**
+   * Initializes a dictionary and tests it with some console outputs
+   *
+   * @param args
+   * @author jluellig
+   */
   public static void main(String[] args) {
     long before = System.currentTimeMillis();
     DataHandler.useDictionaryFile(new File("resources/Collins Scrabble Words (2019).txt"));
