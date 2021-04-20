@@ -102,7 +102,13 @@ public class GameScreenController {
   @FXML
   void leaveGame(ActionEvent event) throws Exception {
     StartScreen.getStage()
-        .setScene(new Scene(FXMLLoader.load(new File("StartScreen.fxml").toURI().toURL())));
+        .setScene(
+            new Scene(
+                FXMLLoader.load(
+                    new File(
+                            "resources" + System.getProperty("file.separator") + "StartScreen.fxml")
+                        .toURI()
+                        .toURL())));
     StartScreen.getStage().show();
   }
 

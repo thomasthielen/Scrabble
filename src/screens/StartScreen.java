@@ -22,7 +22,12 @@ public class StartScreen extends Application {
    * @author jbleil
    */
   public void start(Stage s) throws Exception {
-    stage.setScene(new Scene(FXMLLoader.load(new File("StartScreen.fxml").toURI().toURL())));
+    stage.setScene(
+        new Scene(
+            FXMLLoader.load(
+                new File("resources" + System.getProperty("file.separator") + "StartScreen.fxml")
+                    .toURI()
+                    .toURL())));
     stage.show();
   }
 

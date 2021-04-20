@@ -25,7 +25,15 @@ public class OnlineOrOfflineScreenController {
   @FXML
   void onlineGame(ActionEvent event) throws Exception {
     StartScreen.getStage()
-        .setScene(new Scene(FXMLLoader.load(new File("OnlineScreen.fxml").toURI().toURL())));
+        .setScene(
+            new Scene(
+                FXMLLoader.load(
+                    new File(
+                            "resources"
+                                + System.getProperty("file.separator")
+                                + "OnlineScreen.fxml")
+                        .toURI()
+                        .toURL())));
     StartScreen.getStage().show();
   }
 
@@ -40,7 +48,15 @@ public class OnlineOrOfflineScreenController {
   @FXML
   void offlineGame(ActionEvent event) throws Exception {
     StartScreen.getStage()
-        .setScene(new Scene(FXMLLoader.load(new File("OfflineScreen.fxml").toURI().toURL())));
+        .setScene(
+            new Scene(
+                FXMLLoader.load(
+                    new File(
+                            "resources"
+                                + System.getProperty("file.separator")
+                                + "OfflineScreen.fxml")
+                        .toURI()
+                        .toURL())));
     StartScreen.getStage().show();
   }
 
@@ -54,7 +70,13 @@ public class OnlineOrOfflineScreenController {
   @FXML
   void back(ActionEvent event) throws Exception {
     StartScreen.getStage()
-        .setScene(new Scene(FXMLLoader.load(new File("StartScreen.fxml").toURI().toURL())));
+        .setScene(
+            new Scene(
+                FXMLLoader.load(
+                    new File(
+                            "resources" + System.getProperty("file.separator") + "StartScreen.fxml")
+                        .toURI()
+                        .toURL())));
     StartScreen.getStage().show();
   }
 }

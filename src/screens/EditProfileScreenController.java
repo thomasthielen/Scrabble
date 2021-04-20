@@ -20,7 +20,14 @@ public class EditProfileScreenController {
   void submitChanges(ActionEvent event) throws Exception {
     StartScreen.getStage()
         .setScene(
-            new Scene(FXMLLoader.load(new File("ExistingProfileScreen.fxml").toURI().toURL())));
+            new Scene(
+                FXMLLoader.load(
+                    new File(
+                            "resources"
+                                + System.getProperty("file.separator")
+                                + "ExistingProfileScreen.fxml")
+                        .toURI()
+                        .toURL())));
     StartScreen.getStage().show();
   }
 
@@ -36,7 +43,14 @@ public class EditProfileScreenController {
   void deleteProfile(ActionEvent event) throws Exception {
     StartScreen.getStage()
         .setScene(
-            new Scene(FXMLLoader.load(new File("ExistingProfileScreen.fxml").toURI().toURL())));
+            new Scene(
+                FXMLLoader.load(
+                    new File(
+                            "resources"
+                                + System.getProperty("file.separator")
+                                + "ExistingProfileScreen.fxml")
+                        .toURI()
+                        .toURL())));
     StartScreen.getStage().show();
   }
 
@@ -51,7 +65,14 @@ public class EditProfileScreenController {
   void back(ActionEvent event) throws Exception {
     StartScreen.getStage()
         .setScene(
-            new Scene(FXMLLoader.load(new File("ExistingProfileScreen.fxml").toURI().toURL())));
+            new Scene(
+                FXMLLoader.load(
+                    new File(
+                            "resources"
+                                + System.getProperty("file.separator")
+                                + "ExistingProfileScreen.fxml")
+                        .toURI()
+                        .toURL())));
     StartScreen.getStage().show();
   }
 }

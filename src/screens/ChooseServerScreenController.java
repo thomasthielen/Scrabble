@@ -25,7 +25,13 @@ public class ChooseServerScreenController {
   @FXML
   void joinGame(ActionEvent event) throws Exception {
     StartScreen.getStage()
-        .setScene(new Scene(FXMLLoader.load(new File("LobbyScreen.fxml").toURI().toURL())));
+        .setScene(
+            new Scene(
+                FXMLLoader.load(
+                    new File(
+                            "resources" + System.getProperty("file.separator") + "LobbyScreen.fxml")
+                        .toURI()
+                        .toURL())));
     StartScreen.getStage().show();
   }
 
@@ -39,7 +45,13 @@ public class ChooseServerScreenController {
   @FXML
   void back(ActionEvent event) throws Exception {
     StartScreen.getStage()
-        .setScene(new Scene(FXMLLoader.load(new File("StartScreen.fxml").toURI().toURL())));
+        .setScene(
+            new Scene(
+                FXMLLoader.load(
+                    new File(
+                            "resources" + System.getProperty("file.separator") + "StartScreen.fxml")
+                        .toURI()
+                        .toURL())));
     StartScreen.getStage().show();
   }
 }

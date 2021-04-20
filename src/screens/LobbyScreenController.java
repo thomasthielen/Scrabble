@@ -36,7 +36,13 @@ public class LobbyScreenController {
   @FXML
   void leaveLobby(ActionEvent event) throws Exception {
     StartScreen.getStage()
-        .setScene(new Scene(FXMLLoader.load(new File("StartScreen.fxml").toURI().toURL())));
+        .setScene(
+            new Scene(
+                FXMLLoader.load(
+                    new File(
+                            "resources" + System.getProperty("file.separator") + "StartScreen.fxml")
+                        .toURI()
+                        .toURL())));
     StartScreen.getStage().show();
   }
 
@@ -51,7 +57,12 @@ public class LobbyScreenController {
   @FXML
   void startGame(ActionEvent event) throws Exception {
     StartScreen.getStage()
-        .setScene(new Scene(FXMLLoader.load(new File("GameScreen.fxml").toURI().toURL())));
+        .setScene(
+            new Scene(
+                FXMLLoader.load(
+                    new File("resources" + System.getProperty("file.separator") + "GameScreen.fxml")
+                        .toURI()
+                        .toURL())));
     StartScreen.getStage().show();
   }
 

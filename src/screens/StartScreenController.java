@@ -25,7 +25,15 @@ public class StartScreenController {
   @FXML
   void createNewProfile(ActionEvent event) throws Exception {
     StartScreen.getStage()
-        .setScene(new Scene(FXMLLoader.load(new File("NewProfileScreen.fxml").toURI().toURL())));
+        .setScene(
+            new Scene(
+                FXMLLoader.load(
+                    new File(
+                            "resources"
+                                + System.getProperty("file.separator")
+                                + "NewProfileScreen.fxml")
+                        .toURI()
+                        .toURL())));
     StartScreen.getStage().show();
   }
 
@@ -41,7 +49,14 @@ public class StartScreenController {
   void existingProfile(ActionEvent event) throws Exception {
     StartScreen.getStage()
         .setScene(
-            new Scene(FXMLLoader.load(new File("ExistingProfileScreen.fxml").toURI().toURL())));
+            new Scene(
+                FXMLLoader.load(
+                    new File(
+                            "resources"
+                                + System.getProperty("file.separator")
+                                + "ExistingProfileScreen.fxml")
+                        .toURI()
+                        .toURL())));
     StartScreen.getStage().show();
   }
 }

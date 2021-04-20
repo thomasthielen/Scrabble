@@ -26,7 +26,14 @@ public class NewProfileScreenController {
   void startGame(ActionEvent event) throws Exception {
     StartScreen.getStage()
         .setScene(
-            new Scene(FXMLLoader.load(new File("OnlineOrOfflineScreen.fxml").toURI().toURL())));
+            new Scene(
+                FXMLLoader.load(
+                    new File(
+                            "resources"
+                                + System.getProperty("file.separator")
+                                + "OnlineOrOfflineScreen.fxml")
+                        .toURI()
+                        .toURL())));
     StartScreen.getStage().show();
   }
 
@@ -51,7 +58,13 @@ public class NewProfileScreenController {
   @FXML
   void back(ActionEvent event) throws Exception {
     StartScreen.getStage()
-        .setScene(new Scene(FXMLLoader.load(new File("StartScreen.fxml").toURI().toURL())));
+        .setScene(
+            new Scene(
+                FXMLLoader.load(
+                    new File(
+                            "resources" + System.getProperty("file.separator") + "StartScreen.fxml")
+                        .toURI()
+                        .toURL())));
     StartScreen.getStage().show();
   }
 }
