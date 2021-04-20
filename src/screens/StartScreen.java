@@ -25,7 +25,12 @@ public class StartScreen extends Application {
     stage.setScene(
         new Scene(
             FXMLLoader.load(
-                new File("resources" + System.getProperty("file.separator") + "StartScreen.fxml")
+                new File(
+                        System.getProperty("user.dir")
+                            + System.getProperty("file.separator")
+                            + "resources"
+                            + System.getProperty("file.separator")
+                            + "StartScreen.fxml")
                     .toURI()
                     .toURL())));
     stage.show();
