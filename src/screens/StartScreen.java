@@ -17,16 +17,6 @@ public class StartScreen extends Application {
   private static Stage stage = new Stage();
 
   /**
-   * the main method launches the the Application
-   *
-   * @author jbleil
-   * @param args
-   */
-  public static void main(String[] args) {
-    launch();
-  }
-
-  /**
    * this method sets the scene for the Start screen
    *
    * @author jbleil
