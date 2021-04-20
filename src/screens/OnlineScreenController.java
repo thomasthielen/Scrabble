@@ -43,14 +43,15 @@ public class OnlineScreenController {
    */
   @FXML
   void joinGame(ActionEvent event) throws Exception {
-	  StartScreen.getStage();
-	    FXMLLoader loader = new FXMLLoader();
-	    loader.setLocation(
-	        getClass()
-	            .getResource("resources" + System.getProperty("file.separator") + "ChooseServerScreen.fxml"));
-	    Parent content = loader.load();
-	    StartScreen.getStage().setScene(new Scene(content));
-	    StartScreen.getStage().show();
+    StartScreen.getStage();
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(
+        getClass()
+            .getResource(
+                "resources" + System.getProperty("file.separator") + "ChooseServerScreen.fxml"));
+    Parent content = loader.load();
+    StartScreen.getStage().setScene(new Scene(content));
+    StartScreen.getStage().show();
   }
 
   /**

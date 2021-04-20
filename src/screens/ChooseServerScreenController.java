@@ -42,14 +42,13 @@ public class ChooseServerScreenController {
    */
   @FXML
   void back(ActionEvent event) throws Exception {
-	  StartScreen.getStage();
-	    FXMLLoader loader = new FXMLLoader();
-	    loader.setLocation(
-	        getClass()
-	            .getResource(
-	                "resources" + System.getProperty("file.separator") + "StartScreen.fxml"));
-	    Parent content = loader.load();
-	    StartScreen.getStage().setScene(new Scene(content));
-	    StartScreen.getStage().show();
+    StartScreen.getStage();
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(
+        getClass()
+            .getResource("resources" + System.getProperty("file.separator") + "StartScreen.fxml"));
+    Parent content = loader.load();
+    StartScreen.getStage().setScene(new Scene(content));
+    StartScreen.getStage().show();
   }
 }

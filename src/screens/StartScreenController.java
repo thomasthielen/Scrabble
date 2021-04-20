@@ -27,9 +27,7 @@ public class StartScreenController {
     loader.setLocation(
         getClass()
             .getResource(
-                "resources"
-                    + System.getProperty("file.separator")
-                    + "NewProfileScreen.fxml"));
+                "resources" + System.getProperty("file.separator") + "NewProfileScreen.fxml"));
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
@@ -49,9 +47,7 @@ public class StartScreenController {
     loader.setLocation(
         getClass()
             .getResource(
-                "resources"
-                    + System.getProperty("file.separator")
-                    + "ExistingProfileScreen.fxml"));
+                "resources" + System.getProperty("file.separator") + "ExistingProfileScreen.fxml"));
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
