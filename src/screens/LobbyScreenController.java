@@ -1,10 +1,9 @@
 package screens;
 
-import java.io.File;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 /**
@@ -35,14 +34,13 @@ public class LobbyScreenController {
    */
   @FXML
   void leaveLobby(ActionEvent event) throws Exception {
-    StartScreen.getStage()
-        .setScene(
-            new Scene(
-                FXMLLoader.load(
-                    new File(
-                            "resources" + System.getProperty("file.separator") + "StartScreen.fxml")
-                        .toURI()
-                        .toURL())));
+    StartScreen.getStage();
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(
+        getClass()
+            .getResource("resources" + System.getProperty("file.separator") + "StartScreen.fxml"));
+    Parent content = loader.load();
+    StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
 
@@ -56,13 +54,13 @@ public class LobbyScreenController {
    */
   @FXML
   void startGame(ActionEvent event) throws Exception {
-    StartScreen.getStage()
-        .setScene(
-            new Scene(
-                FXMLLoader.load(
-                    new File("resources" + System.getProperty("file.separator") + "GameScreen.fxml")
-                        .toURI()
-                        .toURL())));
+    StartScreen.getStage();
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(
+        getClass()
+            .getResource("resources" + System.getProperty("file.separator") + "GameScreen.fxml"));
+    Parent content = loader.load();
+    StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
 

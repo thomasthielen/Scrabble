@@ -1,10 +1,9 @@
 package screens;
 
-import java.io.File;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 /**
@@ -24,16 +23,15 @@ public class StartScreenController {
    */
   @FXML
   void createNewProfile(ActionEvent event) throws Exception {
-    StartScreen.getStage()
-        .setScene(
-            new Scene(
-                FXMLLoader.load(
-                    new File(
-                            "resources"
-                                + System.getProperty("file.separator")
-                                + "NewProfileScreen.fxml")
-                        .toURI()
-                        .toURL())));
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(
+        getClass()
+            .getResource(
+                "resources"
+                    + System.getProperty("file.separator")
+                    + "NewProfileScreen.fxml"));
+    Parent content = loader.load();
+    StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
 
@@ -47,16 +45,15 @@ public class StartScreenController {
    */
   @FXML
   void existingProfile(ActionEvent event) throws Exception {
-    StartScreen.getStage()
-        .setScene(
-            new Scene(
-                FXMLLoader.load(
-                    new File(
-                            "resources"
-                                + System.getProperty("file.separator")
-                                + "ExistingProfileScreen.fxml")
-                        .toURI()
-                        .toURL())));
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(
+        getClass()
+            .getResource(
+                "resources"
+                    + System.getProperty("file.separator")
+                    + "ExistingProfileScreen.fxml"));
+    Parent content = loader.load();
+    StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
 }

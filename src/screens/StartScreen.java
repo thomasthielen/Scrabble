@@ -1,9 +1,8 @@
 package screens;
 
-import java.io.File;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -22,17 +21,12 @@ public class StartScreen extends Application {
    * @author jbleil
    */
   public void start(Stage s) throws Exception {
-    stage.setScene(
-        new Scene(
-            FXMLLoader.load(
-                new File(
-                        System.getProperty("user.dir")
-                            + System.getProperty("file.separator")
-                            + "resources"
-                            + System.getProperty("file.separator")
-                            + "StartScreen.fxml")
-                    .toURI()
-                    .toURL())));
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(
+        getClass()
+            .getResource("resources" + System.getProperty("file.separator") + "StartScreen.fxml"));
+    Parent content = loader.load();
+    stage.setScene(new Scene(content));
     stage.show();
   }
 
