@@ -22,9 +22,7 @@ public class StartScreen extends Application {
    */
   public void start(Stage s) throws Exception {
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(
-        getClass()
-            .getResource("resources" + System.getProperty("file.separator") + "StartScreen.fxml"));
+    loader.setLocation(getClass().getResource("resources/StartScreen.fxml"));
     Parent content = loader.load();
     stage.setScene(new Scene(content));
     stage.show();

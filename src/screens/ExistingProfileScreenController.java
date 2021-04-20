@@ -25,10 +25,7 @@ public class ExistingProfileScreenController {
   void startGame(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(
-        getClass()
-            .getResource(
-                "resources" + System.getProperty("file.separator") + "OnlineOrOfflineScreen.fxml"));
+    loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
@@ -45,10 +42,7 @@ public class ExistingProfileScreenController {
   void editProfile(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(
-        getClass()
-            .getResource(
-                "resources" + System.getProperty("file.separator") + "EditProfileScreen.fxml"));
+    loader.setLocation(getClass().getResource("resources/EditProfileScreen.fxml"));
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
@@ -65,9 +59,7 @@ public class ExistingProfileScreenController {
   void back(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(
-        getClass()
-            .getResource("resources" + System.getProperty("file.separator") + "StartScreen.fxml"));
+    loader.setLocation(getClass().getResource("resources/StartScreen.fxml"));
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();

@@ -36,9 +36,7 @@ public class LobbyScreenController {
   void leaveLobby(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(
-        getClass()
-            .getResource("resources" + System.getProperty("file.separator") + "StartScreen.fxml"));
+    loader.setLocation(getClass().getResource("resources/StartScreen.fxml"));
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
@@ -56,9 +54,7 @@ public class LobbyScreenController {
   void startGame(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(
-        getClass()
-            .getResource("resources" + System.getProperty("file.separator") + "GameScreen.fxml"));
+    loader.setLocation(getClass().getResource("resources/GameScreen.fxml"));
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
