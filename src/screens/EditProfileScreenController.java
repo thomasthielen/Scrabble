@@ -19,7 +19,10 @@ public class EditProfileScreenController {
   void submitChanges(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/ExistingProfileScreen.fxml"));
+    loader.setLocation(
+        getClass()
+            .getResource(
+                "resources" + System.getProperty("file.separator") + "ExistingProfileScreen.fxml"));
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
@@ -37,7 +40,10 @@ public class EditProfileScreenController {
   void deleteProfile(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/ExistingProfileScreen.fxml"));
+    loader.setLocation(
+        getClass()
+            .getResource(
+                "resources" + System.getProperty("file.separator") + "ExistingProfileScreen.fxml"));
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
@@ -54,7 +60,10 @@ public class EditProfileScreenController {
   void back(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/ExistingProfileScreen.fxml"));
+    loader.setLocation(
+        getClass()
+            .getResource(
+                "resources" + System.getProperty("file.separator") + "ExistingProfileScreen.fxml"));
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();

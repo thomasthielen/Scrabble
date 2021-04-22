@@ -15,10 +15,10 @@ import java.util.HashMap;
 public class DataHandler {
 
   /**
-   * Imports the given file as the dictionary of the current game. The File has to be in the right
-   * format to be correctly read. Each (and also the first and last) line has to start with the word
-   * that should be added to the dictionary. It has to be separated from any following info in this
-   * line (if there is any) by any whitespace. Note: this file will be imported as the user
+   * Imports the given file as the dictionary of the current game. The txt-File has to be in the
+   * right format to be correctly read. Each (and also the first and last) line has to start with
+   * the word that should be added to the dictionary. It has to be separated from any following info
+   * in this line (if there is any) by any whitespace. Note: this file will be imported as the user
    * dictionary & AI dictionary, so that both play with the same words.
    *
    * @param file
@@ -28,10 +28,7 @@ public class DataHandler {
     try {
       BufferedReader inputReader = new BufferedReader(new FileReader(file));
       String z;
-      // initialize user Dictionary in order to be able to fill it
-      UserDictionary.initializeDict();
-      // initialize AI Dictionary
-      BotDictionary.initializeDict();
+      // TODO regex check
 
       while ((z = inputReader.readLine()) != null) {
         String[] a = z.split("\\s+");
@@ -98,6 +95,7 @@ public class DataHandler {
    */
   public static void alterPlayerUsername(String username, int ID) {
     Database.connect();
+    // TODO ID exist check
     Database.alterPlayerUsername(username, ID);
     Database.disconnect();
   }
@@ -111,6 +109,7 @@ public class DataHandler {
    */
   public static void alterPlayerAvatar(String avatar, int ID) {
     Database.connect();
+    // TODO ID exist check
     Database.alterPlayerAvatar(avatar, ID);
     Database.disconnect();
   }
@@ -140,6 +139,7 @@ public class DataHandler {
    */
   public static void deletePlayer(int ID) {
     Database.connect();
+    // TODO ID exist check
     Database.deletePlayer(ID);
     Database.disconnect();
   }
@@ -154,6 +154,7 @@ public class DataHandler {
    */
   public static void addStatistics(int ID, boolean win, int points) {
     Database.connect();
+    // TODO ID exist check
     if (win) {
       Database.addStatistics(ID, 1, points);
     } else {
@@ -172,6 +173,7 @@ public class DataHandler {
   public static HashMap<String, Integer> getStatistics(int ID) {
     HashMap<String, Integer> statistics = new HashMap<String, Integer>();
     Database.connect();
+    // TODO ID exist check
     statistics = Database.getStatistics(ID);
     // TODO create HashKey Enum
     Database.disconnect();

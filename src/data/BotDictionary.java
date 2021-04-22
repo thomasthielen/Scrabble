@@ -19,7 +19,7 @@ class BotDictionary {
    *
    * @author jluellig
    */
-  protected static void initializeDict() {
+  private static void initializeDict() {
     wordbits = new HashMap<String, WordBit>();
   }
 
@@ -30,6 +30,9 @@ class BotDictionary {
    * @author jluellig
    */
   protected static void addWord(String string) {
+    if (wordbits == null) {
+      initializeDict();
+    }
     string = string.toUpperCase();
     String prefix;
     String wordbit;
@@ -56,7 +59,7 @@ class BotDictionary {
    * Returns all prefix and suffix options which create, combined with the given string, an existing
    * word of the dictionary. Returns a HashMap with two ArrayLists, one for the Key "Prefixes" and
    * one for the Key "Suffixes". These ArrayLists give the right prefix / suffix combination for the
-   * same index.
+   * same index. Returns null if there are no prefixes or suffixes for this word.
    *
    * @param string
    * @return bitoptions
@@ -64,6 +67,9 @@ class BotDictionary {
    */
   protected static HashMap<String, ArrayList<String>> getBitOptions(String string) {
     string = string.toUpperCase();
+    if (wordbits == null || !wordbits.containsKey(string)) {
+      return null;
+    }
     HashMap<String, ArrayList<String>> bitOptions = new HashMap<String, ArrayList<String>>();
     // TODO ENUM
     WordBit wordbit = wordbits.get(string);
