@@ -6,21 +6,29 @@ package gameentities;
  * @author tthielen
  */
 public enum Avatar {
-  PIC1,
-  PIC2,
-  PIC3;
+  BLUE("url1"),
+  RED("url2"),
+  YELLOW("url3");
 
-  @Override
-  public String toString() {
-    switch (this) {
-      case PIC1:
-        return "Placeholder: url1";
-      case PIC2:
-        return "Placeholder: url2";
-      case PIC3:
-        return "Placeholder: url3";
-      default:
-        throw new IllegalArgumentException();
-    }
+  private final String url;
+
+  /**
+   * Constructor for Avatar with given String.
+   *
+   * @param url
+   * @author jluellig
+   */
+  Avatar(String url) {
+    this.url = url;
+  }
+
+  /**
+   * Returns the url of the Avatar.
+   *
+   * @return url
+   * @author jluellig
+   */
+  public String getUrl() {
+    return this.url;
   }
 }

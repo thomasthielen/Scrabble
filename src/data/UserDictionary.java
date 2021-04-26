@@ -40,6 +40,9 @@ class UserDictionary {
    * @author jluellig
    */
   protected static void addWord(String string) {
+    if (dict == null) {
+      initializeDict();
+    }
     string = string.toUpperCase();
     dict.get(string.charAt(0)).get(string.charAt(1)).add(string);
   }
@@ -53,6 +56,6 @@ class UserDictionary {
    */
   protected static boolean checkWord(String string) {
     string = string.toUpperCase();
-    return dict.get(string.charAt(0)).get(string.charAt(1)).contains(string);
+    return (dict != null && dict.get(string.charAt(0)).get(string.charAt(1)).contains(string));
   }
 }

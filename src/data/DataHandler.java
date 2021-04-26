@@ -6,6 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Pattern;
+
+import gameentities.Avatar;
 
 /**
  * This class is used to handle all kinds of Data that has to be stored, processed or used.
@@ -15,10 +18,10 @@ import java.util.HashMap;
 public class DataHandler {
 
   /**
-   * Imports the given file as the dictionary of the current game. The File has to be in the right
-   * format to be correctly read. Each (and also the first and last) line has to start with the word
-   * that should be added to the dictionary. It has to be separated from any following info in this
-   * line (if there is any) by any whitespace. Note: this file will be imported as the user
+   * Imports the given file as the dictionary of the current game. The txt-File has to be in the
+   * right format to be correctly read. Each (and also the first and last) line has to start with
+   * the word that should be added to the dictionary. It has to be separated from any following info
+   * in this line (if there is any) by any whitespace. Note: this file will be imported as the user
    * dictionary & AI dictionary, so that both play with the same words.
    *
    * @param file
@@ -27,15 +30,14 @@ public class DataHandler {
   public static void useDictionaryFile(File file) {
     try {
       BufferedReader inputReader = new BufferedReader(new FileReader(file));
-      String z;
-      // initialize user Dictionary in order to be able to fill it
+      // initialize user and AI dictionary in order to read a new dictionary
       UserDictionary.initializeDict();
-      // initialize AI Dictionary
       BotDictionary.initializeDict();
 
+      String z;
       while ((z = inputReader.readLine()) != null) {
         String[] a = z.split("\\s+");
-        if (a[0].length() < 2) {
+        if (!Pattern.matches("[a-zA-Z]{2,}", a[0])) {
           continue;
         }
         // Add string to user dictionary
@@ -62,16 +64,15 @@ public class DataHandler {
 
   /**
    * Returns all prefix and suffix options which create, combined with the given string, an existing
-   * word of the dictionary. Returns a HashMap with two ArrayLists, one for the Key "Prefixes" and
-   * one for the Key "Suffixes". These ArrayLists give the right prefix / suffix combination for the
-   * same index.
+   * word of the dictionary. Returns a HashMap with two ArrayLists, one for each Key from
+   * BitOptionKeys. These ArrayLists give the right prefix / suffix combination for the same index.
+   * Returns null if there are no prefixes or suffixes for this word.
    *
    * @param string
-   * @return bitoptions
+   * @return bitOptions
    * @author jluellig
    */
-  public static HashMap<String, ArrayList<String>> getBitOptions(String string) {
-    // TODO ENUM
+  public static HashMap<BitOptionKeys, ArrayList<String>> getBitOptions(String string) {
     return BotDictionary.getBitOptions(string);
   }
 
@@ -82,8 +83,7 @@ public class DataHandler {
    * @param avatar
    * @author jluellig
    */
-  public static void addPlayer(String username, String avatar) {
-    // TODO Use Enum as avatar String
+  public static void addPlayer(String username, Avatar avatar) {
     Database.connect();
     Database.addPlayer(username, avatar);
     Database.disconnect();
@@ -109,7 +109,7 @@ public class DataHandler {
    * @param ID
    * @author jluellig
    */
-  public static void alterPlayerAvatar(String avatar, int ID) {
+  public static void alterPlayerAvatar(Avatar avatar, int ID) {
     Database.connect();
     Database.alterPlayerAvatar(avatar, ID);
     Database.disconnect();
@@ -117,15 +117,15 @@ public class DataHandler {
 
   /**
    * Returns the Usernames, IDs, Avatars of the Players which are stored in the Database. The
-   * information is stored in a HashMap with the key beeing the player's ID with a String array for
-   * the player data as value. Note that in the String Array the index 0 marks the player's username
-   * and the index 1 the avatar.
+   * information is stored in a HashMap with the key beeing the player's ID with an array for the
+   * player data as value. Note that in this array the index 0 marks the player's username and the
+   * index 1 the avatar.
    *
    * @return playerInfo
    * @author jluellig
    */
-  public static HashMap<Integer, String[]> getPlayerInfo() {
-    HashMap<Integer, String[]> playerInfo = new HashMap<Integer, String[]>();
+  public static HashMap<Integer, Object[]> getPlayerInfo() {
+    HashMap<Integer, Object[]> playerInfo = new HashMap<Integer, Object[]>();
     Database.connect();
     playerInfo = Database.getPlayerInfo();
     Database.disconnect();
@@ -163,17 +163,17 @@ public class DataHandler {
   }
 
   /**
-   * Gives the statistics of the given player ID in a HashMap. Keys: Matches, Won, PointsAVG
+   * Gives the statistics of the given player ID in a HashMap. StatisticKeys represent the keys for
+   * this HashMap.
    *
-   * @return Statistics
+   * @return statistics
    * @param ID
    * @author jluellig
    */
-  public static HashMap<String, Integer> getStatistics(int ID) {
-    HashMap<String, Integer> statistics = new HashMap<String, Integer>();
+  public static HashMap<StatisticKeys, Integer> getStatistics(int ID) {
+    HashMap<StatisticKeys, Integer> statistics = new HashMap<StatisticKeys, Integer>();
     Database.connect();
     statistics = Database.getStatistics(ID);
-    // TODO create HashKey Enum
     Database.disconnect();
     return statistics;
   }

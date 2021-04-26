@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
 
+import gameentities.Avatar;
+
 /**
  * This class is in charge of everything related to the PlayerDB. It provides methods to create new
  * inputs, read data etc.
@@ -17,7 +19,7 @@ class Database {
   private static Connection con = null;
   private static Statement stm = null;
   private static ResultSet rs = null;
-  private static String url =
+  private static final String url =
       "jdbc:sqlite:"
           + System.getProperty("user.dir")
           + System.getProperty("file.separator")
@@ -49,7 +51,7 @@ class Database {
     try {
       stm = con.createStatement();
 
-      // create table PlayerInfo if it doesn't already exists
+      // create table PlayerInfo if it doesn't already exist
       stm.executeUpdate(
           "CREATE TABLE IF NOT EXISTS PlayerInfo (Username TEXT NOT NULL, Avatar TEXT NOT NULL, "
               + "ID INTEGER, PRIMARY KEY(ID AUTOINCREMENT))");
@@ -71,14 +73,17 @@ class Database {
    * @param avatar
    * @author jluellig
    */
-  protected static void addPlayer(String username, String avatar) {
+  protected static void addPlayer(String username, Avatar avatar) {
     try {
       stm = con.createStatement();
 
-      // TODO Use Enum as Avatar String
       // Add username and avatar to PlayerInfo
       stm.executeUpdate(
-          "INSERT INTO PlayerInfo(Username, Avatar) VALUES('" + username + "', '" + avatar + "')");
+          "INSERT INTO PlayerInfo(Username, Avatar) VALUES('"
+              + username
+              + "', '"
+              + avatar.toString()
+              + "')");
     } catch (Exception e) {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
     }
@@ -109,12 +114,13 @@ class Database {
    * @param ID
    * @author jluellig
    */
-  protected static void alterPlayerAvatar(String avatar, int ID) {
+  protected static void alterPlayerAvatar(Avatar avatar, int ID) {
     try {
       stm = con.createStatement();
 
       // Change the avatar of the given ID
-      stm.executeUpdate("UPDATE PlayerInfo SET Avatar = '" + avatar + "' WHERE ID = " + ID);
+      stm.executeUpdate(
+          "UPDATE PlayerInfo SET Avatar = '" + avatar.toString() + "' WHERE ID = " + ID);
     } catch (Exception e) {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
     }
@@ -122,15 +128,15 @@ class Database {
 
   /**
    * Gives back the ID, username and avatar of each player from the table PlayerInfo in PlayerDB. It
-   * returns a HashMap that uses the player's ID as the key and the player Data in a String Array as
-   * the value. Index 0 marks the username in the Array, while index 1 stands for the avatar.
+   * returns a HashMap that uses the player's ID as the key and the player data in an array as the
+   * value. Index 0 marks the username in the array, while index 1 stands for the avatar.
    *
    * @return playerInfo
    * @author jluellig
    */
-  protected static HashMap<Integer, String[]> getPlayerInfo() {
-    HashMap<Integer, String[]> playerInfo = new HashMap<Integer, String[]>();
-    String[] playerData;
+  protected static HashMap<Integer, Object[]> getPlayerInfo() {
+    HashMap<Integer, Object[]> playerInfo = new HashMap<Integer, Object[]>();
+    Object[] playerData;
 
     try {
       stm = con.createStatement();
@@ -142,7 +148,7 @@ class Database {
       while (rs.next()) {
         playerData = new String[2];
         playerData[0] = rs.getString("Username");
-        playerData[1] = rs.getString("Avatar");
+        playerData[1] = Avatar.valueOf(rs.getString("Avatar"));
         playerInfo.put(rs.getInt("ID"), playerData);
       }
 
@@ -202,14 +208,14 @@ class Database {
 
   /**
    * Gives the statistics of the given player ID from table Statistics in PlayerDB in a HashMap.
-   * Keys: Matches, Won, PointsAVG
+   * StatisticKeys represent the keys for this HashMap.
    *
    * @param ID
-   * @return
+   * @return statistics
    * @author jluellig
    */
-  protected static HashMap<String, Integer> getStatistics(int ID) {
-    HashMap<String, Integer> statistics = new HashMap<String, Integer>();
+  protected static HashMap<StatisticKeys, Integer> getStatistics(int ID) {
+    HashMap<StatisticKeys, Integer> statistics = new HashMap<StatisticKeys, Integer>();
 
     try {
       stm = con.createStatement();
@@ -218,21 +224,21 @@ class Database {
       rs = stm.executeQuery("SELECT COUNT(*) FROM Statistics WHERE PlayerID = " + ID);
       // add amount of matches to HashMap
       while (rs.next()) {
-        statistics.put("Matches", rs.getInt(1));
+        statistics.put(StatisticKeys.MATCHES, rs.getInt(1));
       }
 
       // get amount of wins from table Statistics
       rs = stm.executeQuery("SELECT SUM(Win) FROM Statistics WHERE PlayerID = " + ID);
       // add amount of wins to HashMap
       while (rs.next()) {
-        statistics.put("Won", rs.getInt(1));
+        statistics.put(StatisticKeys.WON, rs.getInt(1));
       }
 
       // get average points per game from table Statistics
       rs = stm.executeQuery("SELECT AVG(Points) FROM Statistics WHERE PlayerID = " + ID);
       // add average points per game to HashMap
       while (rs.next()) {
-        statistics.put("PointsAVG", rs.getInt(1));
+        statistics.put(StatisticKeys.POINTSAVG, rs.getInt(1));
       }
     } catch (Exception e) {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
