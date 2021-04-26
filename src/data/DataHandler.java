@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import gameentities.Avatar;
+
 /**
  * This class is used to handle all kinds of Data that has to be stored, processed or used.
  *
@@ -28,7 +30,7 @@ public class DataHandler {
     try {
       BufferedReader inputReader = new BufferedReader(new FileReader(file));
       String z;
-      // TODO regex check
+      // TODO regex check, initialize if 'new round'
 
       while ((z = inputReader.readLine()) != null) {
         String[] a = z.split("\\s+");
@@ -59,16 +61,15 @@ public class DataHandler {
 
   /**
    * Returns all prefix and suffix options which create, combined with the given string, an existing
-   * word of the dictionary. Returns a HashMap with two ArrayLists, one for the Key "Prefixes" and
-   * one for the Key "Suffixes". These ArrayLists give the right prefix / suffix combination for the
-   * same index.
+   * word of the dictionary. Returns a HashMap with two ArrayLists, one for each Key from
+   * BitOptionKeys. These ArrayLists give the right prefix / suffix combination for the same index.
+   * Returns null if there are no prefixes or suffixes for this word.
    *
    * @param string
-   * @return bitoptions
+   * @return bitOptions
    * @author jluellig
    */
-  public static HashMap<String, ArrayList<String>> getBitOptions(String string) {
-    // TODO ENUM
+  public static HashMap<BitOptionKeys, ArrayList<String>> getBitOptions(String string) {
     return BotDictionary.getBitOptions(string);
   }
 
@@ -79,8 +80,7 @@ public class DataHandler {
    * @param avatar
    * @author jluellig
    */
-  public static void addPlayer(String username, String avatar) {
-    // TODO Use Enum as avatar String
+  public static void addPlayer(String username, Avatar avatar) {
     Database.connect();
     Database.addPlayer(username, avatar);
     Database.disconnect();
@@ -95,7 +95,6 @@ public class DataHandler {
    */
   public static void alterPlayerUsername(String username, int ID) {
     Database.connect();
-    // TODO ID exist check
     Database.alterPlayerUsername(username, ID);
     Database.disconnect();
   }
@@ -107,24 +106,23 @@ public class DataHandler {
    * @param ID
    * @author jluellig
    */
-  public static void alterPlayerAvatar(String avatar, int ID) {
+  public static void alterPlayerAvatar(Avatar avatar, int ID) {
     Database.connect();
-    // TODO ID exist check
     Database.alterPlayerAvatar(avatar, ID);
     Database.disconnect();
   }
 
   /**
    * Returns the Usernames, IDs, Avatars of the Players which are stored in the Database. The
-   * information is stored in a HashMap with the key beeing the player's ID with a String array for
-   * the player data as value. Note that in the String Array the index 0 marks the player's username
-   * and the index 1 the avatar.
+   * information is stored in a HashMap with the key beeing the player's ID with an array for the
+   * player data as value. Note that in this array the index 0 marks the player's username and the
+   * index 1 the avatar.
    *
    * @return playerInfo
    * @author jluellig
    */
-  public static HashMap<Integer, String[]> getPlayerInfo() {
-    HashMap<Integer, String[]> playerInfo = new HashMap<Integer, String[]>();
+  public static HashMap<Integer, Object[]> getPlayerInfo() {
+    HashMap<Integer, Object[]> playerInfo = new HashMap<Integer, Object[]>();
     Database.connect();
     playerInfo = Database.getPlayerInfo();
     Database.disconnect();
@@ -139,7 +137,6 @@ public class DataHandler {
    */
   public static void deletePlayer(int ID) {
     Database.connect();
-    // TODO ID exist check
     Database.deletePlayer(ID);
     Database.disconnect();
   }
@@ -154,7 +151,6 @@ public class DataHandler {
    */
   public static void addStatistics(int ID, boolean win, int points) {
     Database.connect();
-    // TODO ID exist check
     if (win) {
       Database.addStatistics(ID, 1, points);
     } else {
@@ -164,18 +160,17 @@ public class DataHandler {
   }
 
   /**
-   * Gives the statistics of the given player ID in a HashMap. Keys: Matches, Won, PointsAVG
+   * Gives the statistics of the given player ID in a HashMap. StatisticKeys represent the keys for
+   * this HashMap.
    *
-   * @return Statistics
+   * @return statistics
    * @param ID
    * @author jluellig
    */
-  public static HashMap<String, Integer> getStatistics(int ID) {
-    HashMap<String, Integer> statistics = new HashMap<String, Integer>();
+  public static HashMap<StatisticKeys, Integer> getStatistics(int ID) {
+    HashMap<StatisticKeys, Integer> statistics = new HashMap<StatisticKeys, Integer>();
     Database.connect();
-    // TODO ID exist check
     statistics = Database.getStatistics(ID);
-    // TODO create HashKey Enum
     Database.disconnect();
     return statistics;
   }

@@ -40,11 +40,7 @@ class BotDictionary {
     char[] word = string.toCharArray();
 
     for (int i = 0; i < word.length; i++) {
-      int x = word.length;
-      if (i != 0) {
-        x += 1;
-      }
-      for (int j = 1; j + i < x; j++) {
+      for (int j = 1; j + i < word.length + Integer.signum(i); j++) {
         prefix = String.valueOf(word, 0, i);
         wordbit = String.valueOf(word, i, j);
         suffix = String.valueOf(word, j + i, word.length - (j + i));
@@ -57,24 +53,23 @@ class BotDictionary {
 
   /**
    * Returns all prefix and suffix options which create, combined with the given string, an existing
-   * word of the dictionary. Returns a HashMap with two ArrayLists, one for the Key "Prefixes" and
-   * one for the Key "Suffixes". These ArrayLists give the right prefix / suffix combination for the
+   * word of the dictionary. Returns a HashMap with two ArrayLists, one for each Key from
+   * BitOptionKeys. These ArrayLists give the right prefix / suffix combination for the
    * same index. Returns null if there are no prefixes or suffixes for this word.
    *
    * @param string
-   * @return bitoptions
+   * @return bitOptions
    * @author jluellig
    */
-  protected static HashMap<String, ArrayList<String>> getBitOptions(String string) {
+  protected static HashMap<BitOptionKeys, ArrayList<String>> getBitOptions(String string) {
     string = string.toUpperCase();
     if (wordbits == null || !wordbits.containsKey(string)) {
       return null;
     }
-    HashMap<String, ArrayList<String>> bitOptions = new HashMap<String, ArrayList<String>>();
-    // TODO ENUM
+    HashMap<BitOptionKeys, ArrayList<String>> bitOptions = new HashMap<BitOptionKeys, ArrayList<String>>();
     WordBit wordbit = wordbits.get(string);
-    bitOptions.put("Prefixes", wordbit.getPrefixes());
-    bitOptions.put("Suffixes", wordbit.getSuffixes());
+    bitOptions.put(BitOptionKeys.PREFIXES, wordbit.getPrefixes());
+    bitOptions.put(BitOptionKeys.SUFFIXES, wordbit.getSuffixes());
     return bitOptions;
   }
 }
