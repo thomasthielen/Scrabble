@@ -23,7 +23,7 @@ class UserDictionary {
    *
    * @author jluellig
    */
-  private static void initializeDict() {
+  protected static void initializeDict() {
     dict = new HashMap<Character, HashMap<Character, SortedSet<String>>>();
     for (char letter = 'A'; letter <= 'Z'; letter++) {
       dict.put(letter, new HashMap<Character, SortedSet<String>>());

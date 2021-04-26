@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 import gameentities.Avatar;
 
@@ -29,12 +30,14 @@ public class DataHandler {
   public static void useDictionaryFile(File file) {
     try {
       BufferedReader inputReader = new BufferedReader(new FileReader(file));
-      String z;
-      // TODO regex check, initialize if 'new round'
+      // initialize user and AI dictionary in order to read a new dictionary
+      UserDictionary.initializeDict();
+      BotDictionary.initializeDict();
 
+      String z;
       while ((z = inputReader.readLine()) != null) {
         String[] a = z.split("\\s+");
-        if (a[0].length() < 2) {
+        if (!Pattern.matches("[a-zA-Z]{2,}", a[0])) {
           continue;
         }
         // Add string to user dictionary

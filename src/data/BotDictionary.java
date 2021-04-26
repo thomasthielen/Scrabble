@@ -11,7 +11,7 @@ import java.util.HashMap;
  */
 class BotDictionary {
 
-  // HashMap that stores a Wordbit for every (partial) string of the dictionary
+  // HashMap that stores a WordBit for every (partial) string of the dictionary
   private static HashMap<String, WordBit> wordbits;
 
   /**
@@ -19,7 +19,7 @@ class BotDictionary {
    *
    * @author jluellig
    */
-  private static void initializeDict() {
+  protected static void initializeDict() {
     wordbits = new HashMap<String, WordBit>();
   }
 
@@ -54,8 +54,8 @@ class BotDictionary {
   /**
    * Returns all prefix and suffix options which create, combined with the given string, an existing
    * word of the dictionary. Returns a HashMap with two ArrayLists, one for each Key from
-   * BitOptionKeys. These ArrayLists give the right prefix / suffix combination for the
-   * same index. Returns null if there are no prefixes or suffixes for this word.
+   * BitOptionKeys. These ArrayLists give the right prefix / suffix combination for the same index.
+   * Returns null if there are no prefixes or suffixes for this word.
    *
    * @param string
    * @return bitOptions
@@ -66,7 +66,8 @@ class BotDictionary {
     if (wordbits == null || !wordbits.containsKey(string)) {
       return null;
     }
-    HashMap<BitOptionKeys, ArrayList<String>> bitOptions = new HashMap<BitOptionKeys, ArrayList<String>>();
+    HashMap<BitOptionKeys, ArrayList<String>> bitOptions =
+        new HashMap<BitOptionKeys, ArrayList<String>>();
     WordBit wordbit = wordbits.get(string);
     bitOptions.put(BitOptionKeys.PREFIXES, wordbit.getPrefixes());
     bitOptions.put(BitOptionKeys.SUFFIXES, wordbit.getSuffixes());
