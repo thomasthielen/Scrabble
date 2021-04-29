@@ -17,8 +17,8 @@ public class Square {
 
   private Tile tile; // Saves the Tile which is put on the Square
   private boolean taken = false; // Indicates whether the Square is taken
-  private boolean previousPlay =
-      false; // Indicates whether this Square holds a Tile from a previous move
+  private boolean previousPlay = false; // Whether this Square holds a Tile from a previous move
+  private boolean currentPlay = false; // Whether this square holds a tile from the current move
 
   /**
    * Constructor: Creates a Square object, saves the coordinates and checks whether those require a
@@ -114,6 +114,7 @@ public class Square {
   public void placeTile(Tile tile) {
     this.tile = tile;
     this.taken = true;
+    this.currentPlay = true;
   }
 
   /**
@@ -126,6 +127,7 @@ public class Square {
     Tile returnTile = this.tile;
     this.tile = null;
     this.taken = false;
+    this.currentPlay = false;
     return returnTile;
   }
 
@@ -135,6 +137,7 @@ public class Square {
    * @author tthielen
    */
   public void setPreviouslyPlayed() {
+    this.currentPlay = false;
     this.previousPlay = true;
   }
 
@@ -176,6 +179,16 @@ public class Square {
    */
   public boolean isPreviouslyPlayed() {
     return this.previousPlay;
+  }
+
+  /**
+   * Returns whether this square holds a tile from the current move
+   *
+   * @author tthielen
+   * @return currentlyPlay
+   */
+  public boolean isCurrentlyPlayed() {
+    return this.currentPlay;
   }
 
   /**

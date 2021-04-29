@@ -534,6 +534,8 @@ public class GameSession {
    */
   public void nextPlayer() {
     // TODO: Missing: Current player order is only connected to order of insertion
+    // don't know if we ever want to change that
+
     turnValue = 0;
     for (Player p : players) {
       if (p.isCurrentlyPlaying()) {
