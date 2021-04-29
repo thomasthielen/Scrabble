@@ -46,6 +46,7 @@ public class GameScreenController {
   private static Text[] numbers = new Text[7];
 
   private GameSession gameSession = new GameSession();
+  private ArrayList<Tile> swapTiles = new ArrayList<Tile>();
 
   /**
    * TODO - set Chat and Player Statistic visibility = false - set 7 Tiles in the Rack - fill the
@@ -237,10 +238,20 @@ public class GameScreenController {
    */
   @FXML
   void swapTiles(ActionEvent event) throws Exception {
-    ArrayList<Tile> swapTiles = new ArrayList<Tile>();
     // TODO: zu tauschende Tiles zur ArrayList hinzufügen
     swapTiles.add(null);
-    // muss bei seperatem Button Event ausgeführt werden
+  }
+
+  /**
+   * TODO This method serves as the Listener for the Submit Button in the popUp-Window which opens
+   * when you click the "Swap"-Button from the gameBoardPane
+   *
+   * @author jbleil
+   * @param event
+   * @throws Exception
+   */
+  @FXML
+  void submitSwapTiles(ActionEvent event) throws Exception {
     gameSession.exchangeTiles(swapTiles);
   }
 }
