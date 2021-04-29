@@ -12,66 +12,6 @@ import java.util.ArrayList;
  */
 public class Bag {
 
-  /**
-   * Object that holds a type of tile as well as its current count within the bag.
-   *
-   * @author tthielen
-   */
-  class TileContainer {
-    private Tile tile;
-    private int count;
-
-    /**
-     * Creates a TileContainer with the tile as well as its count within the bag.
-     *
-     * @author tthielen
-     * @param tile
-     * @param count
-     */
-    public TileContainer(Tile tile, int count) {
-      this.tile = tile;
-      this.count = count;
-    }
-
-    /**
-     * Increases the count of the tile.
-     *
-     * @author tthielen
-     */
-    public void incCount() {
-      this.count++;
-    }
-
-    /**
-     * Decreases the count of the tile.
-     *
-     * @author tthielen
-     */
-    public void decCount() {
-      this.count--;
-    }
-
-    /**
-     * Returns the count of the tile.
-     *
-     * @author tthielen
-     * @return count
-     */
-    public int getCount() {
-      return this.count;
-    }
-
-    /**
-     * Returns the tile of the TileContainer.
-     *
-     * @author tthielen
-     * @return tile
-     */
-    public Tile getTile() {
-      return this.tile;
-    }
-  }
-
   private boolean isEmpty = true; // Indicates whether the bag is empty
   // List of TileContainers, used to count the tile-types (e.g. 7x "E" remaining)
   private ArrayList<TileContainer> tileCounter = new ArrayList<TileContainer>();
@@ -196,6 +136,18 @@ public class Bag {
     }
     return count;
   }
+  
+  /**
+   * Returns the whole tileCounter ArrayList
+   * 
+   * @author tthielen
+   * @return tileCounter
+   */
+  public ArrayList<TileContainer> getTileCounter(){
+	  return tileCounter;
+  }
+
+
 
   /**
    * Returns whether the bag is empty.

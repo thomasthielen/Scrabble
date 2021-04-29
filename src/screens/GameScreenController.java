@@ -1,6 +1,8 @@
 package screens;
 
-import gameentities.Tile;
+import java.util.ArrayList;
+
+import gameentities.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +14,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import session.*;
 
 /**
  * This class provides the Controller for the Game Screen and handles all the interaction with the
@@ -37,16 +41,24 @@ public class GameScreenController {
   private Pane chatPane;
 
   /** playerStatisticsPane represents the Container for the Player Statistics */
+
   @FXML 
   private ScrollPane playerStatisticsPane;  
-  
+
+
+  private static ArrayList<Rectangle> rack = new ArrayList<Rectangle>();
+
+  private static ArrayList<Text> letters = new ArrayList<Text>();
+
+  private static ArrayList<Text> numbers = new ArrayList<Text>();
+
+  private GameSession gameSession = new GameSession();
+  private ArrayList<Tile> swapTiles = new ArrayList<Tile>();
+
   /**
-   * TODO
-   * - set Chat and Player Statistic visibility = false
-   * - set 7 Tiles in the Rack
-   * - fill the board with Rectangles -> opacity = 100 (see through)
-   * - fill gridPane with Rectangles
-   * 
+   * TODO - set Chat and Player Statistic visibility = false - set 7 Tiles in the Rack - fill the
+   * board with Rectangles -> opacity = 100 (see through) - fill gridPane with Rectangles
+   *
    * @author jbleil
    * @throws Exception
    */
@@ -55,34 +67,41 @@ public class GameScreenController {
 	  Rectangle rect = new Rectangle(20, 20);
 	  rect.setFill(Paint.valueOf("RED"));
 	  gameBoard.add(rect, 4, 4);
+    // System.out.println("Test");
   }
-  
-  public static void setRack() {
-	  
+
+  public void setRack() {
+    Rack r = gameSession.getPlayer().getRack();
+    ArrayList<Tile> tiles = new ArrayList<Tile>();
+    tiles = r.getTiles();
+    for (Tile t : tiles) {
+      Rectangle rectangle = new Rectangle(20, 20);
+      rectangle.setFill(Paint.valueOf("#f88c00"));
+      rack.add(rectangle);
+      Text text = new Text();
+      text.setText(String.valueOf(t.getLetter()));
+      letters.add(text);
+    }
   }
-  
+
   /**
-   * TODO
-   * - initialize a new tile
-   * 
+   * TODO - initialize a new tile
+   *
    * @author jbleil
    * @throws Exception
    */
-  
-  public static Tile setTile() throws Exception{
-	  return null; //dummy return
+  public static Tile setTile() throws Exception {
+    return null; // dummy return
   }
-  
+
   /**
-   * TODO
-   * - get the color, the letter and the number of the currently selected Tile
-   * - set the box of the 
-   * 
+   * TODO - get the color, the letter and the number of the currently selected Tile - set the box of
+   * the
+   *
    * @author jbleil
    * @param event
    * @throws Exception
    */
-  
   @FXML
   void gameBoardClicked(ActionEvent event) throws Exception {
 	  int x = 0;
@@ -192,9 +211,15 @@ public class GameScreenController {
    * @param event
    * @throws Exception
    */
-  
   @FXML
-  void bag(ActionEvent event) throws Exception {}
+  void bag(ActionEvent event) throws Exception {
+    ArrayList<TileContainer> tileCounter = new ArrayList<TileContainer>();
+    tileCounter = gameSession.getBag().getTileCounter();
+    for (TileContainer tc : tileCounter) {
+      char c = tc.getTile().getLetter();
+      int count = tc.getCount();
+    }
+  }
 
   /**
    * TODO This method serves as the Listener for "Recall"-Button from the gameBoardPane It allows
@@ -204,9 +229,10 @@ public class GameScreenController {
    * @param event
    * @throws Exception
    */
-  
   @FXML
-  void recallLetters(ActionEvent event) throws Exception {}
+  void recallLetters(ActionEvent event) throws Exception {
+    gameSession.recallAll();
+  }
 
   /**
    * TODO This method serves as the Listener for "Submit"-Button from the gameBoardPane The Button
@@ -217,9 +243,10 @@ public class GameScreenController {
    * @param event
    * @throws Exception
    */
-  
   @FXML
-  void submitWord(ActionEvent event) throws Exception {}
+  void submitWord(ActionEvent event) throws Exception {
+    gameSession.makePlay();
+  }
 
   /**
    * TODO This method serves as the Listener for "Swap"-Button from the gameBoardPane Opens a
@@ -230,7 +257,22 @@ public class GameScreenController {
    * @param event
    * @throws Exception
    */
-  
   @FXML
-  void swapTiles(ActionEvent event) throws Exception {}
+  void swapTiles(ActionEvent event) throws Exception {
+    // TODO: zu tauschende Tiles zur ArrayList hinzufügen
+    swapTiles.add(null);
+  }
+
+  /**
+   * TODO This method serves as the Listener for the Submit Button in the popUp-Window which opens
+   * when you click the "Swap"-Button from the gameBoardPane
+   *
+   * @author jbleil
+   * @param event
+   * @throws Exception
+   */
+  @FXML
+  void submitSwapTiles(ActionEvent event) throws Exception {
+    gameSession.exchangeTiles(swapTiles);
+  }
 }
