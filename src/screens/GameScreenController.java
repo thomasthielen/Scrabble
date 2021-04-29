@@ -38,70 +38,60 @@ public class GameScreenController {
 
   /** playerStatisticsPane represents the Container for the Player Statistics */
   @FXML private ScrollPane playerStatisticsPane;
-  
+
   private static Rectangle[] rack = new Rectangle[7];
-  
+
   private static Text[] letters = new Text[7];
-  
+
   private static Text[] numbers = new Text[7];
-  
+
   private GameSession gameSession = new GameSession();
-  
+
   /**
-   * TODO
-   * - set Chat and Player Statistic visibility = false
-   * - set 7 Tiles in the Rack
-   * - fill the board with Rectangles -> opacity = 100 (see through)
-   * - fill gridPane with Rectangles
-   * 
+   * TODO - set Chat and Player Statistic visibility = false - set 7 Tiles in the Rack - fill the
+   * board with Rectangles -> opacity = 100 (see through) - fill gridPane with Rectangles
+   *
    * @author jbleil
    * @throws Exception
    */
-  
-  public static void initialize() throws Exception{
-	  Rectangle rec = new Rectangle(20, 20, 100, 100);
-	  rec.setFill(Paint.valueOf("#000000"));
-	  gameBoardPane.getChildren().add(rec);
-	  rec.setVisible(true);
-	  
-	  //System.out.println("Test");
+  public static void initialize() throws Exception {
+    Rectangle rec = new Rectangle(20, 20, 100, 100);
+    rec.setFill(Paint.valueOf("#000000"));
+    gameBoardPane.getChildren().add(rec);
+    rec.setVisible(true);
+
+    // System.out.println("Test");
   }
-  
+
   public static void setRack() {
-	  for(int i = 0; i < 7; i++) {
-		  rack[i] = new Rectangle(100 + 20 * i, 500, 20, 20);
-		  rack[i].setFill(Paint.valueOf("#f88c00"));
-		  
-		  letters[i].setText(null);
-	  }
+    for (int i = 0; i < 7; i++) {
+      rack[i] = new Rectangle(100 + 20 * i, 500, 20, 20);
+      rack[i].setFill(Paint.valueOf("#f88c00"));
+
+      letters[i].setText(null);
+    }
   }
-  
+
   /**
-   * TODO
-   * - initialize a new tile
-   * 
+   * TODO - initialize a new tile
+   *
    * @author jbleil
    * @throws Exception
    */
-  
-  public static Tile setTile() throws Exception{
-	  return null; //dummy return
+  public static Tile setTile() throws Exception {
+    return null; // dummy return
   }
-  
+
   /**
-   * TODO
-   * - get the color, the letter and the number of the currently selected Tile
-   * - set the box of the 
-   * 
+   * TODO - get the color, the letter and the number of the currently selected Tile - set the box of
+   * the
+   *
    * @author jbleil
    * @param event
    * @throws Exception
    */
-  
   @FXML
-  void gameBoardClicked(ActionEvent event) throws Exception {
-	  
-  }
+  void gameBoardClicked(ActionEvent event) throws Exception {}
 
   /**
    * This method serves as the Listener for "Player Statistics"-Button If the Statistics are open it
@@ -199,15 +189,14 @@ public class GameScreenController {
    * @param event
    * @throws Exception
    */
-  
   @FXML
   void bag(ActionEvent event) throws Exception {
-	  ArrayList<TileContainer> tileCounter = new ArrayList<TileContainer>();
-	  tileCounter = gameSession.getBag().getTileCounter();
-	  for(TileContainer tc : tileCounter) {
-		  char c = tc.getTile().getLetter();
-		  int count = tc.getCount();
-	  }
+    ArrayList<TileContainer> tileCounter = new ArrayList<TileContainer>();
+    tileCounter = gameSession.getBag().getTileCounter();
+    for (TileContainer tc : tileCounter) {
+      char c = tc.getTile().getLetter();
+      int count = tc.getCount();
+    }
   }
 
   /**
@@ -218,10 +207,9 @@ public class GameScreenController {
    * @param event
    * @throws Exception
    */
-  
   @FXML
   void recallLetters(ActionEvent event) throws Exception {
-	  gameSession.recallAll();
+    gameSession.recallAll();
   }
 
   /**
@@ -233,10 +221,9 @@ public class GameScreenController {
    * @param event
    * @throws Exception
    */
-  
   @FXML
   void submitWord(ActionEvent event) throws Exception {
-	  gameSession.makePlay();
+    gameSession.makePlay();
   }
 
   /**
@@ -248,13 +235,12 @@ public class GameScreenController {
    * @param event
    * @throws Exception
    */
-  
   @FXML
   void swapTiles(ActionEvent event) throws Exception {
-	  ArrayList<Tile> swapTiles = new ArrayList<Tile>();
-	  //TODO: zu tauschende Tiles zur ArrayList hinzufügen
-	  swapTiles.add(null);
-	  //muss bei seperatem Button Event ausgeführt werden
-	  gameSession.exchangeTiles(swapTiles);
+    ArrayList<Tile> swapTiles = new ArrayList<Tile>();
+    // TODO: zu tauschende Tiles zur ArrayList hinzufügen
+    swapTiles.add(null);
+    // muss bei seperatem Button Event ausgeführt werden
+    gameSession.exchangeTiles(swapTiles);
   }
 }
