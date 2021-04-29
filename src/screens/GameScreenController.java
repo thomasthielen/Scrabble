@@ -39,11 +39,11 @@ public class GameScreenController {
   /** playerStatisticsPane represents the Container for the Player Statistics */
   @FXML private ScrollPane playerStatisticsPane;
 
-  private static Rectangle[] rack = new Rectangle[7];
+  private static ArrayList<Rectangle> rack = new ArrayList<Rectangle>();
 
-  private static Text[] letters = new Text[7];
+  private static ArrayList<Text> letters = new ArrayList<Text>();
 
-  private static Text[] numbers = new Text[7];
+  private static ArrayList<Text> numbers = new ArrayList<Text>();
 
   private GameSession gameSession = new GameSession();
   private ArrayList<Tile> swapTiles = new ArrayList<Tile>();
@@ -64,12 +64,17 @@ public class GameScreenController {
     // System.out.println("Test");
   }
 
-  public static void setRack() {
-    for (int i = 0; i < 7; i++) {
-      rack[i] = new Rectangle(100 + 20 * i, 500, 20, 20);
-      rack[i].setFill(Paint.valueOf("#f88c00"));
-
-      letters[i].setText(null);
+  public void setRack() {
+    Rack r = gameSession.getPlayer().getRack();
+    ArrayList<Tile> tiles = new ArrayList<Tile>();
+    tiles = r.getTiles();
+    for (Tile t : tiles) {
+      Rectangle rectangle = new Rectangle(20, 20);
+      rectangle.setFill(Paint.valueOf("#f88c00"));
+      rack.add(rectangle);
+      Text text = new Text();
+      text.setText(String.valueOf(t.getLetter()));
+      letters.add(text);
     }
   }
 
