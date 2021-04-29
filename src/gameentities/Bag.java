@@ -198,20 +198,16 @@ public class Bag {
   }
   
   /**
-   * Returns the count of the given tile char
+   * Returns the whole tileCounter ArrayList
    * 
    * @author tthielen
-   * @param character
-   * @return 
+   * @return tileCounter
    */
-  public int getRemainingTileCount(char c) {
-    for (TileContainer tc : tileCounter) {
-      if (tc.getTile().getLetter() == c) {
-        return tc.getCount();
-      }
-    }
-    return 0; // dummy return
+  public ArrayList<TileContainer> getTileCounter(){
+	  return tileCounter;
   }
+
+
 
   /**
    * Returns whether the bag is empty.
