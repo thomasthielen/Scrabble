@@ -5,7 +5,7 @@ package gameentities;
  *
  * @author tthielen
  */
-class TileContainer {
+public class TileContainer {
   private Tile tile;
   private int count;
 

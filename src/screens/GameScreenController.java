@@ -1,6 +1,8 @@
 package screens;
 
-import gameentities.Tile;
+import java.util.ArrayList;
+
+import gameentities.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import session.*;
 
 /**
  * This class provides the Controller for the Game Screen and handles all the interaction with the
@@ -41,6 +44,8 @@ public class GameScreenController {
   private static Text[] letters = new Text[7];
   
   private static Text[] numbers = new Text[7];
+  
+  private GameSession gameSession = new GameSession();
   
   /**
    * TODO
@@ -196,7 +201,14 @@ public class GameScreenController {
    */
   
   @FXML
-  void bag(ActionEvent event) throws Exception {}
+  void bag(ActionEvent event) throws Exception {
+	  ArrayList<TileContainer> tileCounter = new ArrayList<TileContainer>();
+	  tileCounter = gameSession.getBag().getTileCounter();
+	  for(TileContainer tc : tileCounter) {
+		  char c = tc.getTile().getLetter();
+		  int count = tc.getCount();
+	  }
+  }
 
   /**
    * TODO This method serves as the Listener for "Recall"-Button from the gameBoardPane It allows
