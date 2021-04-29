@@ -6,10 +6,12 @@ import gameentities.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
@@ -64,10 +66,13 @@ public class GameScreenController {
    */
   
   public void initialize() throws Exception{
-	  Rectangle rect = new Rectangle(20, 20);
-	  rect.setFill(Paint.valueOf("RED"));
-	  gameBoard.add(rect, 4, 4);
-    // System.out.println("Test");
+	  
+	  System.out.println(gameBoard.getColumnConstraints());
+	  for(int i = 0; i <= 14; i++) {
+		  for(int j = 0; j <= 14; j++) {
+			  gameBoard.add(new Rectangle(23, 23, Paint.valueOf("RED")), i, j);
+		  }
+	  }
   }
 
   public void setRack() {
@@ -104,13 +109,28 @@ public class GameScreenController {
    */
   @FXML
   void gameBoardClicked(ActionEvent event) throws Exception {
-	  int x = 0;
-	  int y = 0;
+	  
   }
   
+  /**
+   * TODO
+   * this methods serves as a Listener for the GridPane, which displays the the GameBoard
+   * If a Tile from the Rack is selected it is 
+   * 
+   * @author jbleil
+   * @param event
+   * @throws Exception
+   */
+  
   @FXML
-  void tileClicked(ActionEvent event) throws Exception {
-
+  void tileClicked(MouseEvent event) throws Exception {
+	  for(Node node : gameBoard.getChildren()) {
+		  if(node instanceof Rectangle) {
+			  if(node.getBoundsInParent().contains(event.getX(),  event.getY())) {
+				  ((Rectangle)node).setFill(Paint.valueOf("BLACK"));
+			  }
+		  }
+	  }
   }
 
   /**
