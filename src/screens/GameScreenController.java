@@ -1,5 +1,6 @@
 package screens;
 
+import gameentities.Tile;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,6 +9,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 /**
  * This class provides the Controller for the Game Screen and handles all the interaction with the
@@ -24,13 +28,75 @@ public class GameScreenController {
   @FXML private GridPane gameBoard;
 
   /** gameBoardPane represents the Container for the Game Board and */
-  @FXML private Pane gameBoardPane;
+  @FXML private static Pane gameBoardPane;
 
   /** chatPane represents the Container for the Chat */
   @FXML private Pane chatPane;
 
   /** playerStatisticsPane represents the Container for the Player Statistics */
   @FXML private ScrollPane playerStatisticsPane;
+  
+  private static Rectangle[] rack = new Rectangle[7];
+  
+  private static Text[] letters = new Text[7];
+  
+  private static Text[] numbers = new Text[7];
+  
+  /**
+   * TODO
+   * - set Chat and Player Statistic visibility = false
+   * - set 7 Tiles in the Rack
+   * - fill the board with Rectangles -> opacity = 100 (see through)
+   * - fill gridPane with Rectangles
+   * 
+   * @author jbleil
+   * @throws Exception
+   */
+  
+  public static void initialize() throws Exception{
+	  Rectangle rec = new Rectangle(20, 20, 100, 100);
+	  rec.setFill(Paint.valueOf("#000000"));
+	  gameBoardPane.getChildren().add(rec);
+	  rec.setVisible(true);
+	  
+	  //System.out.println("Test");
+  }
+  
+  public static void setRack() {
+	  for(int i = 0; i < 7; i++) {
+		  rack[i] = new Rectangle(100 + 20 * i, 500, 20, 20);
+		  rack[i].setFill(Paint.valueOf("#f88c00"));
+		  
+		  letters[i].setText(null);
+	  }
+  }
+  
+  /**
+   * TODO
+   * - initialize a new tile
+   * 
+   * @author jbleil
+   * @throws Exception
+   */
+  
+  public static Tile setTile() throws Exception{
+	  return null; //dummy return
+  }
+  
+  /**
+   * TODO
+   * - get the color, the letter and the number of the currently selected Tile
+   * - set the box of the 
+   * 
+   * @author jbleil
+   * @param event
+   * @throws Exception
+   */
+  
+  @FXML
+  void gameBoardClicked(ActionEvent event) throws Exception {
+	  
+  }
 
   /**
    * This method serves as the Listener for "Player Statistics"-Button If the Statistics are open it
@@ -128,6 +194,7 @@ public class GameScreenController {
    * @param event
    * @throws Exception
    */
+  
   @FXML
   void bag(ActionEvent event) throws Exception {}
 
@@ -139,6 +206,7 @@ public class GameScreenController {
    * @param event
    * @throws Exception
    */
+  
   @FXML
   void recallLetters(ActionEvent event) throws Exception {}
 
@@ -151,6 +219,7 @@ public class GameScreenController {
    * @param event
    * @throws Exception
    */
+  
   @FXML
   void submitWord(ActionEvent event) throws Exception {}
 
@@ -163,6 +232,7 @@ public class GameScreenController {
    * @param event
    * @throws Exception
    */
+  
   @FXML
   void swapTiles(ActionEvent event) throws Exception {}
 }

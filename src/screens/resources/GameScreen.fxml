@@ -12,7 +12,7 @@
    <children>
       <Pane fx:id="gameBoardPane" layoutX="260.0" layoutY="14.0" prefHeight="480.0" prefWidth="480.0" style="-fx-background-color: #FFFFFF;">
          <children>
-            <GridPane fx:id="gameBoard" gridLinesVisible="true" layoutX="68.0" layoutY="68.0" prefHeight="345.0" prefWidth="345.0">
+            <GridPane fx:id="gameBoard" gridLinesVisible="true" layoutX="68.0" layoutY="68.0" onMouseClicked="#tileClicked" prefHeight="345.0" prefWidth="345.0">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -442,83 +442,6 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="25.0" layoutX="228.0" layoutY="418.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="25.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="25.0" layoutX="263.0" layoutY="418.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="25.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="25.0" layoutX="298.0" layoutY="418.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="25.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="25.0" layoutX="333.0" layoutY="418.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="25.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="25.0" layoutX="193.0" layoutY="418.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="25.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="25.0" layoutX="158.0" layoutY="418.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="25.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="25.0" layoutX="123.0" layoutY="418.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="25.0" />
-            <Text fill="WHITE" layoutX="123.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="P" textAlignment="CENTER" wrappingWidth="25.0">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Text>
-            <Text fill="WHITE" layoutX="158.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="O" textAlignment="CENTER" wrappingWidth="25.0">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Text>
-            <Text fill="WHITE" layoutX="193.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="R" textAlignment="CENTER" wrappingWidth="25.0">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Text>
-            <Text fill="WHITE" layoutX="228.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C" textAlignment="CENTER" wrappingWidth="25.0">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Text>
-            <Text fill="WHITE" layoutX="263.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X" textAlignment="CENTER" wrappingWidth="25.0">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Text>
-            <Text fill="WHITE" layoutX="298.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="R" textAlignment="CENTER" wrappingWidth="25.0">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Text>
-            <Text fill="WHITE" layoutX="333.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E" textAlignment="CENTER" wrappingWidth="25.0">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Text>
-            <Text fill="WHITE" layoutX="141.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4">
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Text>
-            <Text fill="WHITE" layoutX="176.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2">
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Text>
-            <Text fill="WHITE" layoutX="211.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1">
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Text>
-            <Text fill="WHITE" layoutX="246.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4">
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Text>
-            <Text fill="WHITE" layoutX="281.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8">
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Text>
-            <Text fill="WHITE" layoutX="316.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1">
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Text>
-            <Text fill="WHITE" layoutX="351.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1">
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Text>
          </children>
       </Pane>
       <Pane fx:id="chatPane" layoutX="750.0" layoutY="14.0" prefHeight="480.0" prefWidth="240.0" style="-fx-background-color: #FFFFFF;">
