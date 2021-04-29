@@ -220,7 +220,9 @@ public class GameScreenController {
    */
   
   @FXML
-  void recallLetters(ActionEvent event) throws Exception {}
+  void recallLetters(ActionEvent event) throws Exception {
+	  gameSession.recallAll();
+  }
 
   /**
    * TODO This method serves as the Listener for "Submit"-Button from the gameBoardPane The Button
@@ -233,7 +235,9 @@ public class GameScreenController {
    */
   
   @FXML
-  void submitWord(ActionEvent event) throws Exception {}
+  void submitWord(ActionEvent event) throws Exception {
+	  gameSession.makePlay();
+  }
 
   /**
    * TODO This method serves as the Listener for "Swap"-Button from the gameBoardPane Opens a
@@ -246,5 +250,11 @@ public class GameScreenController {
    */
   
   @FXML
-  void swapTiles(ActionEvent event) throws Exception {}
+  void swapTiles(ActionEvent event) throws Exception {
+	  ArrayList<Tile> swapTiles = new ArrayList<Tile>();
+	  //TODO: zu tauschende Tiles zur ArrayList hinzufügen
+	  swapTiles.add(null);
+	  //muss bei seperatem Button Event ausgeführt werden
+	  gameSession.exchangeTiles(swapTiles);
+  }
 }
