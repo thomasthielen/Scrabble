@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.SortedSet;
 import java.util.regex.Pattern;
 
 import gameentities.Avatar;
@@ -77,6 +78,26 @@ public class DataHandler {
   }
 
   /**
+   * Returns the already read User Dictionary.
+   *
+   * @return userDictionary
+   * @author jluellig
+   */
+  public static HashMap<Character, HashMap<Character, SortedSet<String>>> getUserDictionary() {
+    return UserDictionary.getDict();
+  }
+
+  /**
+   * Returns the already read Bot Dictionary.
+   *
+   * @return botDictionary
+   * @author jluellig
+   */
+  public static HashMap<String, WordBit> getBotDictionary() {
+    return BotDictionary.getDict();
+  }
+
+  /**
    * Creates a new player in the PlayerInfo table of PlayerDB with the given username and avatar.
    *
    * @param username
@@ -90,7 +111,7 @@ public class DataHandler {
   }
 
   /**
-   * Changes the username of the player in the database
+   * Changes the username of the player in the database.
    *
    * @param username
    * @param ID
@@ -103,7 +124,7 @@ public class DataHandler {
   }
 
   /**
-   * Changes the avatar of the player in the database
+   * Changes the avatar of the player in the database.
    *
    * @param avatar
    * @param ID
@@ -133,7 +154,7 @@ public class DataHandler {
   }
 
   /**
-   * Deletes the player of given ID in the PlayerDB
+   * Deletes the player of given ID in the PlayerDB.
    *
    * @param ID
    * @author jluellig
