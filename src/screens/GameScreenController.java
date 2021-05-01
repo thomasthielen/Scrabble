@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -42,7 +43,9 @@ public class GameScreenController {
 
   /** playerStatisticsPane represents the Container for the Player Statistics */
   @FXML private ScrollPane playerStatisticsPane;
-
+  
+  private FlowPane rackPane = new FlowPane();
+  
   private static ArrayList<Rectangle> rack = new ArrayList<Rectangle>();
 
   private static ArrayList<Text> letters = new ArrayList<Text>();
@@ -67,12 +70,8 @@ public class GameScreenController {
         gameBoard.add(new Rectangle(22, 22, Color.TRANSPARENT), i, j);
       }
     }
-    
-    StackPane tile = new StackPane();
-    tile.getChildren().addAll(new Rectangle(20, 20, Color.ALICEBLUE), new Text("C"), new Text("2"));
-    tile.relocate(50, 420);
-    gameBoardPane.getChildren().add(tile);
-
+    rackPane.setHgap(40);
+    rackPane.relocate(60, 420);
     setRack();
   }
 
@@ -81,8 +80,8 @@ public class GameScreenController {
     r.initialDraw();
     ArrayList<Tile> tiles = new ArrayList<Tile>();
     tiles = r.getTiles();
-
-    int help = 110;
+    
+    int counter = 0;
 
     for (Tile t : tiles) {
       Rectangle rectangle = new Rectangle(22, 22);
@@ -97,10 +96,12 @@ public class GameScreenController {
       number.setText(String.valueOf(t.getValue()));
       numbers.add(number);
 
-      rectangle.relocate(help, 420);
-      help += 40;
-      gameBoardPane.getChildren().add(rectangle);
+      StackPane stackPane = new StackPane();
+      stackPane.getChildren().addAll(rectangle, text, number);
+      rackPane.getChildren().add(stackPane);
     }
+    gameBoardPane.getChildren().add(rackPane);
+    //rackPane.relocate(60, 420);
   }
 
   /**
