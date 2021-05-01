@@ -43,9 +43,9 @@ public class GameScreenController {
 
   /** playerStatisticsPane represents the Container for the Player Statistics */
   @FXML private ScrollPane playerStatisticsPane;
-  
+
   private FlowPane rackPane = new FlowPane();
-  
+
   private static ArrayList<Rectangle> rack = new ArrayList<Rectangle>();
 
   private static ArrayList<Text> letters = new ArrayList<Text>();
@@ -70,8 +70,6 @@ public class GameScreenController {
         gameBoard.add(new Rectangle(22, 22, Color.TRANSPARENT), i, j);
       }
     }
-    rackPane.setHgap(40);
-    rackPane.relocate(60, 420);
     setRack();
   }
 
@@ -80,8 +78,6 @@ public class GameScreenController {
     r.initialDraw();
     ArrayList<Tile> tiles = new ArrayList<Tile>();
     tiles = r.getTiles();
-    
-    int counter = 0;
 
     for (Tile t : tiles) {
       Rectangle rectangle = new Rectangle(22, 22);
@@ -100,8 +96,8 @@ public class GameScreenController {
       stackPane.getChildren().addAll(rectangle, text, number);
       rackPane.getChildren().add(stackPane);
     }
+    rackPane.relocate(60, 420);
     gameBoardPane.getChildren().add(rackPane);
-    //rackPane.relocate(60, 420);
   }
 
   /**
@@ -138,7 +134,7 @@ public class GameScreenController {
     for (Node node : gameBoard.getChildren()) {
       if (node instanceof Rectangle) {
         if (node.getBoundsInParent().contains(event.getX(), event.getY())) {
-        	((Rectangle)node).setFill(Paint.valueOf("#f88c00"));
+          ((Rectangle) node).setFill(Paint.valueOf("#f88c00"));
         }
       }
     }
