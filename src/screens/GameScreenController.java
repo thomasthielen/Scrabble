@@ -9,11 +9,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -31,22 +32,16 @@ public class GameScreenController {
    * gameBoard represents the Container for the Game Board, the tiles and the (for the game flow
    * necessary) buttons
    */
-  @FXML 
-  private GridPane gameBoard;
+  @FXML private GridPane gameBoard;
 
   /** gameBoardPane represents the Container for the Game Board and */
-  @FXML 
-  private Pane gameBoardPane;
+  @FXML private Pane gameBoardPane;
 
   /** chatPane represents the Container for the Chat */
-  @FXML 
-  private Pane chatPane;
+  @FXML private Pane chatPane;
 
   /** playerStatisticsPane represents the Container for the Player Statistics */
-
-  @FXML 
-  private ScrollPane playerStatisticsPane;  
-
+  @FXML private ScrollPane playerStatisticsPane;
 
   private static ArrayList<Rectangle> rack = new ArrayList<Rectangle>();
 
@@ -64,28 +59,47 @@ public class GameScreenController {
    * @author jbleil
    * @throws Exception
    */
-  
-  public void initialize() throws Exception{
-	  
-	  System.out.println(gameBoard.getColumnConstraints());
-	  for(int i = 0; i <= 14; i++) {
-		  for(int j = 0; j <= 14; j++) {
-			  gameBoard.add(new Rectangle(23, 23, Paint.valueOf("RED")), i, j);
-		  }
-	  }
+  public void initialize() throws Exception {
+
+    System.out.println(gameBoard.getColumnConstraints());
+    for (int i = 0; i <= 14; i++) {
+      for (int j = 0; j <= 14; j++) {
+        gameBoard.add(new Rectangle(22, 22, Color.TRANSPARENT), i, j);
+      }
+    }
+    
+    StackPane tile = new StackPane();
+    tile.getChildren().addAll(new Rectangle(20, 20, Color.ALICEBLUE), new Text("C"), new Text("2"));
+    tile.relocate(50, 420);
+    gameBoardPane.getChildren().add(tile);
+
+    setRack();
   }
 
   public void setRack() {
     Rack r = gameSession.getPlayer().getRack();
+    r.initialDraw();
     ArrayList<Tile> tiles = new ArrayList<Tile>();
     tiles = r.getTiles();
+
+    int help = 110;
+
     for (Tile t : tiles) {
-      Rectangle rectangle = new Rectangle(20, 20);
+      Rectangle rectangle = new Rectangle(22, 22);
       rectangle.setFill(Paint.valueOf("#f88c00"));
       rack.add(rectangle);
+
       Text text = new Text();
       text.setText(String.valueOf(t.getLetter()));
       letters.add(text);
+
+      Text number = new Text();
+      number.setText(String.valueOf(t.getValue()));
+      numbers.add(number);
+
+      rectangle.relocate(help, 420);
+      help += 40;
+      gameBoardPane.getChildren().add(rectangle);
     }
   }
 
@@ -108,29 +122,25 @@ public class GameScreenController {
    * @throws Exception
    */
   @FXML
-  void gameBoardClicked(ActionEvent event) throws Exception {
-	  
-  }
-  
+  void gameBoardClicked(ActionEvent event) throws Exception {}
+
   /**
-   * TODO
-   * this methods serves as a Listener for the GridPane, which displays the the GameBoard
-   * If a Tile from the Rack is selected it is 
-   * 
+   * TODO this methods serves as a Listener for the GridPane, which displays the the GameBoard If a
+   * Tile from the Rack is selected it is
+   *
    * @author jbleil
    * @param event
    * @throws Exception
    */
-  
   @FXML
   void tileClicked(MouseEvent event) throws Exception {
-	  for(Node node : gameBoard.getChildren()) {
-		  if(node instanceof Rectangle) {
-			  if(node.getBoundsInParent().contains(event.getX(),  event.getY())) {
-				  ((Rectangle)node).setFill(Paint.valueOf("BLACK"));
-			  }
-		  }
-	  }
+    for (Node node : gameBoard.getChildren()) {
+      if (node instanceof Rectangle) {
+        if (node.getBoundsInParent().contains(event.getX(), event.getY())) {
+        	((Rectangle)node).setFill(Paint.valueOf("#f88c00"));
+        }
+      }
+    }
   }
 
   /**
@@ -148,8 +158,6 @@ public class GameScreenController {
     } else {
       playerStatisticsPane.setVisible(true);
     }
-    
-    initialize();
   }
 
   /**

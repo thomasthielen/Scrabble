@@ -448,7 +448,7 @@
          <children>
             <TextArea layoutX="8.0" layoutY="51.0" prefHeight="380.0" prefWidth="225.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e9e9e9" height="30.0" layoutX="8.0" layoutY="10.0" stroke="#707070" strokeType="INSIDE" width="190.0" />
-            <Text boundsType="VISUAL" fill="#707070" layoutX="77.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHAT" textAlignment="CENTER">
+            <Text boundsType="VISUAL" fill="#707070" layoutX="77.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHAT" textAlignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font></Text>
