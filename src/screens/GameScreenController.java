@@ -6,6 +6,7 @@ import gameentities.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,6 +19,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import session.*;
 
@@ -44,7 +46,7 @@ public class GameScreenController {
   /** playerStatisticsPane represents the Container for the Player Statistics */
   @FXML private ScrollPane playerStatisticsPane;
 
-  private FlowPane rackPane = new FlowPane();
+  private FlowPane rackPane = new FlowPane(20, 0);
 
   private static ArrayList<Rectangle> rack = new ArrayList<Rectangle>();
 
@@ -70,6 +72,8 @@ public class GameScreenController {
         gameBoard.add(new Rectangle(22, 22, Color.TRANSPARENT), i, j);
       }
     }
+    chatPane.setVisible(false);
+    playerStatisticsPane.setVisible(false);
     setRack();
   }
 
@@ -84,19 +88,21 @@ public class GameScreenController {
       rectangle.setFill(Paint.valueOf("#f88c00"));
       rack.add(rectangle);
 
-      Text text = new Text();
-      text.setText(String.valueOf(t.getLetter()));
+      Text text = new Text(String.valueOf(t.getLetter()));
+      text.setFill(Color.WHITE);
       letters.add(text);
 
-      Text number = new Text();
-      number.setText(String.valueOf(t.getValue()));
+      Text number = new Text(String.valueOf(t.getValue()));
+      number.setFont(new Font(10));
+      number.setFill(Color.WHITE);
       numbers.add(number);
 
       StackPane stackPane = new StackPane();
       stackPane.getChildren().addAll(rectangle, text, number);
-      rackPane.getChildren().add(stackPane);
+      StackPane.setAlignment(number, Pos.BOTTOM_RIGHT);
+      rackPane.getChildren().add(stackPane);      
     }
-    rackPane.relocate(60, 420);
+    rackPane.relocate(103, 420);
     gameBoardPane.getChildren().add(rackPane);
   }
 
