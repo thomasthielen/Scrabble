@@ -409,11 +409,6 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Text>
-                  <ImageView fitHeight="23.0" fitWidth="23.0" GridPane.columnIndex="7" GridPane.rowIndex="7">
-                     <image>
-                        <Image url="@resources/Stern.jpg" />
-                     </image>
-                  </ImageView>
                </children>
             </GridPane>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="50.0" layoutX="90.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="300.0" />
@@ -442,6 +437,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
+            <FlowPane fx:id="rackPane" hgap="20.0" layoutX="103.0" layoutY="420.0" onMouseClicked="#rackClicked" prefHeight="22.0" />
          </children>
       </Pane>
       <Pane fx:id="chatPane" layoutX="750.0" layoutY="14.0" prefHeight="480.0" prefWidth="240.0" style="-fx-background-color: #FFFFFF;">

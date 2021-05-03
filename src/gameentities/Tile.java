@@ -12,6 +12,10 @@ public class Tile {
   private char letter;
   private int value;
   private boolean wildcard;
+  
+  private boolean placedTemporarily;
+  private boolean placedFinally;
+  private boolean selected;
 
   /**
    * Constructor: Creates a tile object with the given letter + value.
@@ -103,5 +107,29 @@ public class Tile {
    */
   public boolean isWildCard() {
     return this.wildcard;
+  }
+  
+  public boolean getPlacedTemporarily() {
+	  return placedTemporarily;
+  }
+  
+  public void setPlacedTemporarily(boolean b) {
+	  placedTemporarily = b;
+  }
+  
+  public boolean getPlacedFinally() {
+	  return placedFinally;
+  }
+  
+  public void setPlacedFinally(boolean b) {
+	  placedFinally = b;
+  }
+  
+  public boolean getSelected() {
+	  return selected;
+  }
+  
+  public void setSelected(boolean b) {
+	  selected = b;
   }
 }

@@ -46,16 +46,21 @@ public class GameScreenController {
   /** playerStatisticsPane represents the Container for the Player Statistics */
   @FXML private ScrollPane playerStatisticsPane;
 
-  private FlowPane rackPane = new FlowPane(20, 0);
+  @FXML private FlowPane rackPane;
 
   private static ArrayList<Rectangle> rack = new ArrayList<Rectangle>();
 
   private static ArrayList<Text> letters = new ArrayList<Text>();
 
   private static ArrayList<Text> numbers = new ArrayList<Text>();
+  
+  private ArrayList<StackPane> rackPanes = new ArrayList<StackPane>();
 
   private GameSession gameSession = new GameSession();
+  
   private ArrayList<Tile> swapTiles = new ArrayList<Tile>();
+  
+  private ArrayList<Tile> rackTiles = new ArrayList<Tile>();
 
   /**
    * TODO - set Chat and Player Statistic visibility = false - set 7 Tiles in the Rack - fill the
@@ -80,10 +85,10 @@ public class GameScreenController {
   public void setRack() {
     Rack r = gameSession.getPlayer().getRack();
     r.initialDraw();
-    ArrayList<Tile> tiles = new ArrayList<Tile>();
-    tiles = r.getTiles();
+    //ArrayList<Tile> tiles = new ArrayList<Tile>();
+    rackTiles = r.getTiles();
 
-    for (Tile t : tiles) {
+    for (Tile t : rackTiles) {
       Rectangle rectangle = new Rectangle(22, 22);
       rectangle.setFill(Paint.valueOf("#f88c00"));
       rack.add(rectangle);
@@ -99,11 +104,22 @@ public class GameScreenController {
 
       StackPane stackPane = new StackPane();
       stackPane.getChildren().addAll(rectangle, text, number);
+      rackPanes.add(stackPane);
       StackPane.setAlignment(number, Pos.BOTTOM_RIGHT);
-      rackPane.getChildren().add(stackPane);      
+      rackPane.getChildren().add(stackPane);
     }
-    rackPane.relocate(103, 420);
-    gameBoardPane.getChildren().add(rackPane);
+  }
+
+  @FXML
+  void rackClicked(MouseEvent event) {
+    for (Node node : rackPane.getChildren()) {
+      if (node instanceof StackPane) {
+        if (node.getBoundsInParent().contains(event.getX(), event.getY())) {
+        	rackTiles.get(rackPanes.indexOf(node)).setSelected(true);
+        	System.out.println(rackTiles.get(rackPanes.indexOf(node)).getSelected());
+        }
+      }
+    }
   }
 
   /**
@@ -140,7 +156,7 @@ public class GameScreenController {
     for (Node node : gameBoard.getChildren()) {
       if (node instanceof Rectangle) {
         if (node.getBoundsInParent().contains(event.getX(), event.getY())) {
-          ((Rectangle) node).setFill(Paint.valueOf("#f88c00"));
+          
         }
       }
     }
