@@ -46,6 +46,7 @@ public class GameScreenController {
   /** playerStatisticsPane represents the Container for the Player Statistics */
   @FXML private ScrollPane playerStatisticsPane;
 
+  /** rackPane represents the Container for the Tiles in the Rack */
   @FXML private FlowPane rackPane;
 
   private static ArrayList<Rectangle> rack = new ArrayList<Rectangle>();
@@ -53,13 +54,15 @@ public class GameScreenController {
   private static ArrayList<Text> letters = new ArrayList<Text>();
 
   private static ArrayList<Text> numbers = new ArrayList<Text>();
-  
+
   private ArrayList<StackPane> rackPanes = new ArrayList<StackPane>();
 
   private GameSession gameSession = new GameSession();
-  
+
+  private ArrayList<Tile> gameBoardTiles = new ArrayList<Tile>();
+
   private ArrayList<Tile> swapTiles = new ArrayList<Tile>();
-  
+
   private ArrayList<Tile> rackTiles = new ArrayList<Tile>();
 
   /**
@@ -74,7 +77,7 @@ public class GameScreenController {
     System.out.println(gameBoard.getColumnConstraints());
     for (int i = 0; i <= 14; i++) {
       for (int j = 0; j <= 14; j++) {
-        gameBoard.add(new Rectangle(22, 22, Color.TRANSPARENT), i, j);
+        gameBoard.add(new StackPane(), i, j);
       }
     }
     chatPane.setVisible(false);
@@ -85,7 +88,7 @@ public class GameScreenController {
   public void setRack() {
     Rack r = gameSession.getPlayer().getRack();
     r.initialDraw();
-    //ArrayList<Tile> tiles = new ArrayList<Tile>();
+    // ArrayList<Tile> tiles = new ArrayList<Tile>();
     rackTiles = r.getTiles();
 
     for (Tile t : rackTiles) {
@@ -110,13 +113,18 @@ public class GameScreenController {
     }
   }
 
+  /**
+   * If the Rack is clicked the clicked Tile is set as selected
+   *
+   * @author jbleil
+   * @param event
+   */
   @FXML
   void rackClicked(MouseEvent event) {
     for (Node node : rackPane.getChildren()) {
       if (node instanceof StackPane) {
         if (node.getBoundsInParent().contains(event.getX(), event.getY())) {
-        	rackTiles.get(rackPanes.indexOf(node)).setSelected(true);
-        	System.out.println(rackTiles.get(rackPanes.indexOf(node)).getSelected());
+          rackTiles.get(rackPanes.indexOf(node)).setSelected(true);
         }
       }
     }
@@ -154,9 +162,15 @@ public class GameScreenController {
   @FXML
   void tileClicked(MouseEvent event) throws Exception {
     for (Node node : gameBoard.getChildren()) {
-      if (node instanceof Rectangle) {
+      if (node instanceof StackPane) {
         if (node.getBoundsInParent().contains(event.getX(), event.getY())) {
-          
+          for (Tile tile : rackTiles) {
+            if (tile.getSelected()) {
+              ((StackPane) node).getChildren().add(new Rectangle(22, 22, Paint.valueOf("#f88c00")));
+              ((StackPane) node).getChildren().add(new Text(String.valueOf(tile.getLetter())));
+              ((StackPane) node).getChildren().add(new Text(String.valueOf(tile.getValue())));
+            }
+          }
         }
       }
     }
