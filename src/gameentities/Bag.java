@@ -67,7 +67,7 @@ public class Bag {
     // correct amounts of tiles
     for (TileContainer tc : tileCounter) {
       for (int i = 0; i < tc.getCount(); i++) {
-        remainingTiles.add(tc.getTile());
+        remainingTiles.add(new Tile (tc.getTile()));
       }
     }
   }
