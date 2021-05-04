@@ -64,6 +64,8 @@ public class GameScreenController {
   private ArrayList<Tile> swapTiles = new ArrayList<Tile>();
 
   private ArrayList<Tile> rackTiles = new ArrayList<Tile>();
+  
+  private Tile[] rackArray = new Tile[7];
 
   /**
    * TODO - set Chat and Player Statistic visibility = false - set 7 Tiles in the Rack - fill the
@@ -90,8 +92,12 @@ public class GameScreenController {
     r.initialDraw();
     // ArrayList<Tile> tiles = new ArrayList<Tile>();
     rackTiles = r.getTiles();
+    
+    for (int i = 0; i < rackArray.length; i++) {
+    	rackArray[i] = rackTiles.get(i);
+    }
 
-    for (Tile t : rackTiles) {
+    for (Tile t : rackArray) {
       Rectangle rectangle = new Rectangle(22, 22);
       rectangle.setFill(Paint.valueOf("#f88c00"));
       rack.add(rectangle);
@@ -175,9 +181,14 @@ public class GameScreenController {
               ((StackPane) node).getChildren().add(new Text(String.valueOf(tile.getValue())));
             }           
           }
-          for (Tile tile : tilesToPlace) {
-        	  gameSession.placeTile(1 + GridPane.getColumnIndex(node), 15 - GridPane.getRowIndex(node), tile);
-          }
+//          for (Tile tile : tilesToPlace) {
+//        	  gameSession.placeTile(1 + GridPane.getColumnIndex(node), 15 - GridPane.getRowIndex(node), tile);
+//        	  for (int i = 0; i < rackArray.length; i++) {
+//        		  if (tile == rackArray[i]) {
+//        			  rackArray[i] = null;
+//        		  }
+//        	  }
+//          }
         }
       }
     }
