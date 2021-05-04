@@ -179,6 +179,7 @@ public class GameScreenController {
               ((StackPane) node).getChildren().add(new Rectangle(22, 22, Paint.valueOf("#f88c00")));
               ((StackPane) node).getChildren().add(new Text(String.valueOf(tile.getLetter())));
               ((StackPane) node).getChildren().add(new Text(String.valueOf(tile.getValue())));
+              rackPanes.get(rackTiles.indexOf(tile)).setOpacity(0.5);
             }           
           }
 //          for (Tile tile : tilesToPlace) {
