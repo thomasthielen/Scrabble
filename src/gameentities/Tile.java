@@ -29,6 +29,12 @@ public class Tile {
     this.value = value;
     wildcard = (letter == '*');
   }
+  
+  public Tile(Tile tile) {
+	  this.letter = tile.getLetter();
+	  this.value = tile.getValue();
+	  this.wildcard = tile.isWildCard();
+  }
 
   /**
    * Returns whether the given tile equals the tile it is called upon

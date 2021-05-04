@@ -176,20 +176,13 @@ public class GameScreenController {
               tile.setSelected(false);
               tile.setPlacedTemporarily(true);
               tilesToPlace.add(tile);
+              System.out.println(rackTiles.indexOf(tile));
+              rackPanes.get(rackTiles.indexOf(tile)).setOpacity(0.5);
               ((StackPane) node).getChildren().add(new Rectangle(22, 22, Paint.valueOf("#f88c00")));
               ((StackPane) node).getChildren().add(new Text(String.valueOf(tile.getLetter())));
               ((StackPane) node).getChildren().add(new Text(String.valueOf(tile.getValue())));
-              rackPanes.get(rackTiles.indexOf(tile)).setOpacity(0.5);
             }           
           }
-//          for (Tile tile : tilesToPlace) {
-//        	  gameSession.placeTile(1 + GridPane.getColumnIndex(node), 15 - GridPane.getRowIndex(node), tile);
-//        	  for (int i = 0; i < rackArray.length; i++) {
-//        		  if (tile == rackArray[i]) {
-//        			  rackArray[i] = null;
-//        		  }
-//        	  }
-//          }
         }
       }
     }
