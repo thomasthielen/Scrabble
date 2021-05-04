@@ -164,12 +164,19 @@ public class GameScreenController {
     for (Node node : gameBoard.getChildren()) {
       if (node instanceof StackPane) {
         if (node.getBoundsInParent().contains(event.getX(), event.getY())) {
+          ArrayList<Tile> tilesToPlace = new ArrayList<Tile>();
           for (Tile tile : rackTiles) {
             if (tile.getSelected()) {
+              tile.setSelected(false);
+              tile.setPlacedTemporarily(true);
+              tilesToPlace.add(tile);
               ((StackPane) node).getChildren().add(new Rectangle(22, 22, Paint.valueOf("#f88c00")));
               ((StackPane) node).getChildren().add(new Text(String.valueOf(tile.getLetter())));
               ((StackPane) node).getChildren().add(new Text(String.valueOf(tile.getValue())));
-            }
+            }           
+          }
+          for (Tile tile : tilesToPlace) {
+        	  gameSession.placeTile(1 + GridPane.getColumnIndex(node), 15 - GridPane.getRowIndex(node), tile);
           }
         }
       }
@@ -306,6 +313,7 @@ public class GameScreenController {
    */
   @FXML
   void submitWord(ActionEvent event) throws Exception {
+	//tile.setPlacedFinally(true);
     gameSession.makePlay();
   }
 
