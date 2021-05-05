@@ -57,6 +57,8 @@ public class GameScreenController {
 
   private ArrayList<StackPane> rackPanes = new ArrayList<StackPane>();
 
+  private ArrayList<StackPane> boardPanes = new ArrayList<StackPane>();
+
   private GameSession gameSession = new GameSession();
 
   private ArrayList<Tile> gameBoardTiles = new ArrayList<Tile>();
@@ -64,13 +66,13 @@ public class GameScreenController {
   private ArrayList<Tile> swapTiles = new ArrayList<Tile>();
 
   private ArrayList<Tile> rackTiles = new ArrayList<Tile>();
-  
+
   private ArrayList<Tile> tilesToPlace = new ArrayList<Tile>();
-  
-  private ArrayList<StackPane> temporarilyPlacedStackPanes = new ArrayList<StackPane>();
+
+  private ArrayList<SquarePane> squarePanes = new ArrayList<SquarePane>();
 
   private double eventX = 0;
-  
+
   private double eventY = 0;
 
   /**
@@ -85,7 +87,9 @@ public class GameScreenController {
     System.out.println(gameBoard.getColumnConstraints());
     for (int i = 0; i <= 14; i++) {
       for (int j = 0; j <= 14; j++) {
-        gameBoard.add(new StackPane(), i, j);
+        SquarePane sp = new SquarePane(gameSession.getBoard().getSquare(i + 1, 15 - j));
+        squarePanes.add(sp);
+        gameBoard.add(sp.getStackPane(), i, j);
       }
     }
     chatPane.setVisible(false);
@@ -176,7 +180,7 @@ public class GameScreenController {
           for (Tile tile : rackTiles) {
             if (tile.getSelected() && !tile.getPlacedTemporarily()) {
               tilesToPlace.add(tile);
-            
+
               Text text = new Text(String.valueOf(tile.getLetter()));
               text.setFill(Color.WHITE);
 
@@ -189,8 +193,6 @@ public class GameScreenController {
               ((StackPane) node).getChildren().add(new Rectangle(22, 22, Paint.valueOf("#f88c00")));
               ((StackPane) node).getChildren().add(text);
               ((StackPane) node).getChildren().add(number);
-              
-              temporarilyPlacedStackPanes.add((StackPane) node);
 
               tile.setSelected(false);
               tile.setPlacedTemporarily(true);
@@ -329,8 +331,18 @@ public class GameScreenController {
         rackPanes.get(rackPanes.indexOf(node)).setOpacity(1);
       }
     }
-    temporarilyPlacedStackPanes.removeAll(temporarilyPlacedStackPanes);
     gameSession.recallAll();
+    for (SquarePane sp : squarePanes) {
+      if (sp.getSquare().getTile() != null) {
+        if (sp.getSquare().getTile().getPlacedTemporarily()) {
+          sp.getStackPane();
+          // Fehler finden
+        }
+      }
+    }
+    for (Tile tile : rackTiles) {
+    	tile.setPlacedTemporarily(false);
+    }
   }
 
   /**
