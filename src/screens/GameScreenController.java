@@ -65,7 +65,13 @@ public class GameScreenController {
 
   private ArrayList<Tile> rackTiles = new ArrayList<Tile>();
   
-  private Tile[] rackArray = new Tile[7];
+  private ArrayList<Tile> tilesToPlace = new ArrayList<Tile>();
+  
+  private ArrayList<StackPane> temporarilyPlacedStackPanes = new ArrayList<StackPane>();
+
+  private double eventX = 0;
+  
+  private double eventY = 0;
 
   /**
    * TODO - set Chat and Player Statistic visibility = false - set 7 Tiles in the Rack - fill the
@@ -90,14 +96,9 @@ public class GameScreenController {
   public void setRack() {
     Rack r = gameSession.getPlayer().getRack();
     r.initialDraw();
-    // ArrayList<Tile> tiles = new ArrayList<Tile>();
     rackTiles = r.getTiles();
-    
-    for (int i = 0; i < rackArray.length; i++) {
-    	rackArray[i] = rackTiles.get(i);
-    }
 
-    for (Tile t : rackArray) {
+    for (Tile t : rackTiles) {
       Rectangle rectangle = new Rectangle(22, 22);
       rectangle.setFill(Paint.valueOf("#f88c00"));
       rack.add(rectangle);
@@ -127,9 +128,11 @@ public class GameScreenController {
    */
   @FXML
   void rackClicked(MouseEvent event) {
+    eventX = event.getX();
+    eventY = event.getY();
     for (Node node : rackPane.getChildren()) {
       if (node instanceof StackPane) {
-        if (node.getBoundsInParent().contains(event.getX(), event.getY())) {
+        if (node.getBoundsInParent().contains(eventX, eventY)) {
           rackTiles.get(rackPanes.indexOf(node)).setSelected(true);
         }
       }
@@ -170,19 +173,36 @@ public class GameScreenController {
     for (Node node : gameBoard.getChildren()) {
       if (node instanceof StackPane) {
         if (node.getBoundsInParent().contains(event.getX(), event.getY())) {
-          ArrayList<Tile> tilesToPlace = new ArrayList<Tile>();
           for (Tile tile : rackTiles) {
-            if (tile.getSelected()) {
+            if (tile.getSelected() && !tile.getPlacedTemporarily()) {
+              tilesToPlace.add(tile);
+            
+              Text text = new Text(String.valueOf(tile.getLetter()));
+              text.setFill(Color.WHITE);
+
+              Text number = new Text(String.valueOf(tile.getValue()));
+              number.setFont(new Font(10));
+              number.setFill(Color.WHITE);
+
+              StackPane.setAlignment(number, Pos.BOTTOM_RIGHT);
+
+              ((StackPane) node).getChildren().add(new Rectangle(22, 22, Paint.valueOf("#f88c00")));
+              ((StackPane) node).getChildren().add(text);
+              ((StackPane) node).getChildren().add(number);
+              
+              temporarilyPlacedStackPanes.add((StackPane) node);
+
               tile.setSelected(false);
               tile.setPlacedTemporarily(true);
-              tilesToPlace.add(tile);
-              System.out.println(rackTiles.indexOf(tile));
-              rackPanes.get(rackTiles.indexOf(tile)).setOpacity(0.5);
-              ((StackPane) node).getChildren().add(new Rectangle(22, 22, Paint.valueOf("#f88c00")));
-              ((StackPane) node).getChildren().add(new Text(String.valueOf(tile.getLetter())));
-              ((StackPane) node).getChildren().add(new Text(String.valueOf(tile.getValue())));
-            }           
+            }
           }
+        }
+      }
+    }
+    for (Node node : rackPane.getChildren()) {
+      if (node instanceof StackPane) {
+        if (node.getBoundsInParent().contains(eventX, eventY)) {
+          rackPanes.get(rackPanes.indexOf(node)).setOpacity(0.5);
         }
       }
     }
@@ -304,6 +324,12 @@ public class GameScreenController {
    */
   @FXML
   void recallLetters(ActionEvent event) throws Exception {
+    for (Node node : rackPane.getChildren()) {
+      if (node instanceof StackPane) {
+        rackPanes.get(rackPanes.indexOf(node)).setOpacity(1);
+      }
+    }
+    temporarilyPlacedStackPanes.removeAll(temporarilyPlacedStackPanes);
     gameSession.recallAll();
   }
 
@@ -318,7 +344,7 @@ public class GameScreenController {
    */
   @FXML
   void submitWord(ActionEvent event) throws Exception {
-	//tile.setPlacedFinally(true);
+    // tile.setPlacedFinally(true);
     gameSession.makePlay();
   }
 
