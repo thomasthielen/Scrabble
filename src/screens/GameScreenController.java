@@ -88,8 +88,8 @@ public class GameScreenController {
   public void initialize() throws Exception {
 
     System.out.println(gameBoard.getColumnConstraints());
-    for (int i = 0; i <= 14; i++) {
-      for (int j = 0; j <= 14; j++) {
+    for (int j = 0; j <= 14; j++) {
+      for (int i = 0; i <= 14; i++) {
         SquarePane sp = new SquarePane(gameSession.getBoard().getSquare(i + 1, 15 - j));
         squarePanes.add(sp);
         gameBoard.add(sp.getStackPane(), i, j);
@@ -97,6 +97,9 @@ public class GameScreenController {
     }
     chatPane.setVisible(false);
     playerStatisticsPane.setVisible(false);
+    for (SquarePane sp : squarePanes) {
+    	boardPanes.add(sp.getStackPane());
+    }
     setRack();
   }
 
@@ -140,7 +143,11 @@ public class GameScreenController {
     for (Node node : rackPane.getChildren()) {
       if (node instanceof StackPane) {
         if (node.getBoundsInParent().contains(eventX, eventY)) {
+          for (Tile t : rackTiles) {
+        	  t.setSelected(false);
+          }
           rackTiles.get(rackPanes.indexOf(node)).setSelected(true);
+          //TODO: wrong Tile selected
         }
       }
     }
@@ -169,11 +176,23 @@ public class GameScreenController {
     for (Node node : gameBoard.getChildren()) {
       if (node instanceof StackPane) {
         if (node.getBoundsInParent().contains(event.getX(), event.getY())) {
-        	for (Tile tile : gameBoardTiles) {
-        		
-        	}
+          int x = (int) event.getX();
+          int y = (int) event.getY();
+          x = (x / 23) + 1;
+          y = 16 - ((y / 23) + 1);
+
+          for (Tile t : gameBoardTiles) {
+            t.setSelected(false);
+          }
+          Tile tile = gameSession.getBoard().getSquare(x, y).getTile();
+          if (tile != null) {
+            tile.setSelected(true);
+          }
         }
       }
+    }
+    for (Tile t : rackTiles) {
+    	t.setSelected(false);
     }
   }
 
@@ -194,16 +213,10 @@ public class GameScreenController {
             if (tile.getSelected() && !tile.getPlacedTemporarily()) {
 
               tilesToPlace.add(tile);
-
-              // Converter for the axis (NEW STUFF HERE)
-              int x = (int) event.getX();
-              int y = (int) event.getY();
-              x = (x / 23) + 1;
-              y = 16 - ((y / 23) + 1);
-              tilesToPlaceX.add(Integer.valueOf(x));
-              tilesToPlaceY.add(Integer.valueOf(y));
-              // TODO: Bug: When clicking on the lefthand border of a square, the chosen square on
-              // the GUI differentiates to the chosen square in the back end
+              
+              int index = boardPanes.indexOf(node);
+              tilesToPlaceX.add(index % 15 + 1);
+              tilesToPlaceY.add(15 - index / 15);
 
               Text text = new Text(String.valueOf(tile.getLetter()));
               text.setFill(Color.WHITE);
@@ -217,10 +230,10 @@ public class GameScreenController {
               ((StackPane) node).getChildren().add(new Rectangle(22, 22, Paint.valueOf("#f88c00")));
               ((StackPane) node).getChildren().add(text);
               ((StackPane) node).getChildren().add(number);
-              
+
               tile.setSelected(false);
               tile.setPlacedTemporarily(true);
-              
+
               gameBoardTiles.add(tile);
             }
           }
@@ -241,7 +254,7 @@ public class GameScreenController {
       int x = tilesToPlaceX.get(i);
       int y = tilesToPlaceY.get(i);
       Tile t = tilesToPlace.get(i);
-      gameSession.getBoard().placeTile(x, y, t);
+      gameSession.placeTile(x, y, t);
     }
     tilesToPlace.clear();
     tilesToPlaceX.clear();
@@ -369,7 +382,6 @@ public class GameScreenController {
         rackPanes.get(rackPanes.indexOf(node)).setOpacity(1);
       }
     }
-    gameSession.recallAll();
 
     for (SquarePane sp : squarePanes) {
       if (sp.getSquare().getTile() != null) {
@@ -383,6 +395,7 @@ public class GameScreenController {
     for (Tile tile : rackTiles) {
       tile.setPlacedTemporarily(false);
     }
+    gameSession.recallAll();
     gameBoardTiles.clear();
   }
 
