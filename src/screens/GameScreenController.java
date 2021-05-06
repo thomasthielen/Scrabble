@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
@@ -68,7 +69,7 @@ public class GameScreenController {
   private ArrayList<Tile> rackTiles = new ArrayList<Tile>();
 
   private ArrayList<Tile> tilesToPlace = new ArrayList<Tile>();
-  // NEW STUFF HERE
+
   private ArrayList<Integer> tilesToPlaceX = new ArrayList<Integer>();
   private ArrayList<Integer> tilesToPlaceY = new ArrayList<Integer>();
 
@@ -98,7 +99,7 @@ public class GameScreenController {
     chatPane.setVisible(false);
     playerStatisticsPane.setVisible(false);
     for (SquarePane sp : squarePanes) {
-    	boardPanes.add(sp.getStackPane());
+      boardPanes.add(sp.getStackPane());
     }
     setRack();
   }
@@ -106,7 +107,10 @@ public class GameScreenController {
   public void setRack() {
     Rack r = gameSession.getPlayer().getRack();
     r.initialDraw();
-    rackTiles = r.getTiles();
+
+    for (Tile t : r.getTiles()) {
+      rackTiles.add(t);
+    }
 
     for (Tile t : rackTiles) {
       Rectangle rectangle = new Rectangle(22, 22);
@@ -144,10 +148,9 @@ public class GameScreenController {
       if (node instanceof StackPane) {
         if (node.getBoundsInParent().contains(eventX, eventY)) {
           for (Tile t : rackTiles) {
-        	  t.setSelected(false);
+            t.setSelected(false);
           }
           rackTiles.get(rackPanes.indexOf(node)).setSelected(true);
-          //TODO: wrong Tile selected
         }
       }
     }
@@ -192,7 +195,7 @@ public class GameScreenController {
       }
     }
     for (Tile t : rackTiles) {
-    	t.setSelected(false);
+      t.setSelected(false);
     }
   }
 
@@ -213,7 +216,7 @@ public class GameScreenController {
             if (tile.getSelected() && !tile.getPlacedTemporarily()) {
 
               tilesToPlace.add(tile);
-              
+
               int index = boardPanes.indexOf(node);
               tilesToPlaceX.add(index % 15 + 1);
               tilesToPlaceY.add(15 - index / 15);
@@ -248,8 +251,6 @@ public class GameScreenController {
         }
       }
     }
-
-    // NEW STUFF HERE
     for (int i = 0; i < tilesToPlace.size(); i++) {
       int x = tilesToPlaceX.get(i);
       int y = tilesToPlaceY.get(i);
@@ -386,7 +387,6 @@ public class GameScreenController {
     for (SquarePane sp : squarePanes) {
       if (sp.getSquare().getTile() != null) {
         if (sp.getSquare().getTile().getPlacedTemporarily()) {
-          // NEW STUFF HERE
           sp.getStackPane().getChildren().clear();
         }
       }
@@ -410,6 +410,14 @@ public class GameScreenController {
    */
   @FXML
   void submitWord(ActionEvent event) throws Exception {
+    for (Node node : gameBoardPane.getChildren()) {
+      if (node instanceof Button) {
+        Button button = (Button) node;
+        if (button.equals("Submit")) {
+          //button.setDisable(true);
+        }
+      }
+    }
     // tile.setPlacedFinally(true);
     gameSession.makePlay();
   }
