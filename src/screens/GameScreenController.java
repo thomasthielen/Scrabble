@@ -68,6 +68,9 @@ public class GameScreenController {
   private ArrayList<Tile> rackTiles = new ArrayList<Tile>();
 
   private ArrayList<Tile> tilesToPlace = new ArrayList<Tile>();
+  // NEW STUFF HERE
+  private ArrayList<Integer> tilesToPlaceX = new ArrayList<Integer>();
+  private ArrayList<Integer> tilesToPlaceY = new ArrayList<Integer>();
 
   private ArrayList<SquarePane> squarePanes = new ArrayList<SquarePane>();
 
@@ -179,7 +182,18 @@ public class GameScreenController {
         if (node.getBoundsInParent().contains(event.getX(), event.getY())) {
           for (Tile tile : rackTiles) {
             if (tile.getSelected() && !tile.getPlacedTemporarily()) {
+
               tilesToPlace.add(tile);
+
+              // Converter for the axis (NEW STUFF HERE)
+              int x = (int) event.getX();
+              int y = (int) event.getY();
+              x = (x / 23) + 1;
+              y = 16 - ((y / 23) + 1);
+              tilesToPlaceX.add(Integer.valueOf(x));
+              tilesToPlaceY.add(Integer.valueOf(y));
+              // TODO: Bug: When clicking on the lefthand border of a square, the chosen square on
+              // the GUI differentiates to the chosen square in the back end
 
               Text text = new Text(String.valueOf(tile.getLetter()));
               text.setFill(Color.WHITE);
@@ -201,6 +215,7 @@ public class GameScreenController {
         }
       }
     }
+
     for (Node node : rackPane.getChildren()) {
       if (node instanceof StackPane) {
         if (node.getBoundsInParent().contains(eventX, eventY)) {
@@ -208,6 +223,17 @@ public class GameScreenController {
         }
       }
     }
+
+    // NEW STUFF HERE
+    for (int i = 0; i < tilesToPlace.size(); i++) {
+      int x = tilesToPlaceX.get(i);
+      int y = tilesToPlaceY.get(i);
+      Tile t = tilesToPlace.get(i);
+      gameSession.getBoard().placeTile(x, y, t);
+    }
+    tilesToPlace.clear();
+    tilesToPlaceX.clear();
+    tilesToPlaceY.clear();
   }
 
   /**
@@ -332,16 +358,18 @@ public class GameScreenController {
       }
     }
     gameSession.recallAll();
+
     for (SquarePane sp : squarePanes) {
       if (sp.getSquare().getTile() != null) {
         if (sp.getSquare().getTile().getPlacedTemporarily()) {
-          sp.getStackPane();
-          // Fehler finden
+          // NEW STUFF HERE
+          sp.getStackPane().getChildren().clear();
         }
       }
     }
+
     for (Tile tile : rackTiles) {
-    	tile.setPlacedTemporarily(false);
+      tile.setPlacedTemporarily(false);
     }
   }
 
