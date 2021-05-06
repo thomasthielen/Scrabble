@@ -165,7 +165,17 @@ public class GameScreenController {
    * @throws Exception
    */
   @FXML
-  void gameBoardClicked(ActionEvent event) throws Exception {}
+  void gameBoardClicked(MouseEvent event) throws Exception {
+    for (Node node : gameBoard.getChildren()) {
+      if (node instanceof StackPane) {
+        if (node.getBoundsInParent().contains(event.getX(), event.getY())) {
+        	for (Tile tile : gameBoardTiles) {
+        		
+        	}
+        }
+      }
+    }
+  }
 
   /**
    * TODO this methods serves as a Listener for the GridPane, which displays the the GameBoard If a
@@ -207,9 +217,11 @@ public class GameScreenController {
               ((StackPane) node).getChildren().add(new Rectangle(22, 22, Paint.valueOf("#f88c00")));
               ((StackPane) node).getChildren().add(text);
               ((StackPane) node).getChildren().add(number);
-
+              
               tile.setSelected(false);
               tile.setPlacedTemporarily(true);
+              
+              gameBoardTiles.add(tile);
             }
           }
         }
@@ -371,6 +383,7 @@ public class GameScreenController {
     for (Tile tile : rackTiles) {
       tile.setPlacedTemporarily(false);
     }
+    gameBoardTiles.clear();
   }
 
   /**
