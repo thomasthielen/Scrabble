@@ -1,13 +1,15 @@
 package network;
 
+import java.io.File;
+
+import data.DataHandler;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
-import network.messages.Message;
-import network.messages.SendChatMessage;
+import network.messages.*;
 
 /**
  * Handles the received messages of the server
@@ -30,7 +32,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
   public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
     Channel in = ctx.channel();
     for (Channel channel : channels) {
-      channel.writeAndFlush("[SERVER] - " + in.remoteAddress() + " has joined!\n");
+      channel.writeAndFlush(new ConnectMessage(in.remoteAddress().toString()));
     }
     channels.add(ctx.channel());
   }
@@ -45,7 +47,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
   public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
     Channel in = ctx.channel();
     for (Channel channel : channels) {
-      channel.writeAndFlush("[SERVER] - " + in.remoteAddress() + " has left!\n");
+      channel.writeAndFlush(new DisconnectMessage(in.remoteAddress().toString()));
     }
     channels.remove(ctx.channel());
   }
@@ -58,13 +60,23 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
    */
   @Override
   protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
-    SendChatMessage message = (SendChatMessage) msg;
     Channel in = ctx.channel();
     for (Channel channel : channels) {
       if (channel != in) {
-        channel.writeAndFlush(
-            new SendChatMessage(
-                "client", "[" + in.remoteAddress() + "] " + message.getMessage() + "\n"));
+        if (msg.getMessageType() == MessageType.SEND_CHAT) {
+          SendChatMessage sm = (SendChatMessage) msg;
+          // TODO
+          if (sm.getMessage().equals("txt")) {
+            System.out.println("coole sache bro");
+
+            channel.writeAndFlush(new NewDictionaryMessage("hugo", new File("resources/Collins Scrabble Words (2019).txt")));
+            System.out.println("dictionary wurde erstellt"); 
+          } else {
+            channel.writeAndFlush(msg);
+          }
+        } else {
+          channel.writeAndFlush(msg);
+        }
       }
     }
   }
