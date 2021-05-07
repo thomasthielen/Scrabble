@@ -27,7 +27,7 @@ public class ClientInitializer extends ChannelInitializer<SocketChannel> {
     // implements list of channel handlers for the client channel
     pipeline.addLast(
         new ObjectEncoder(),
-        new ObjectDecoder(ClassResolvers.cacheDisabled(getClass().getClassLoader())),
+        new ObjectDecoder(536870912, ClassResolvers.cacheDisabled(getClass().getClassLoader())),
         new ClientHandler());
   }
 }

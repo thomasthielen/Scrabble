@@ -10,7 +10,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import network.messages.*;
-// import session.GameState;
+import session.GameState;
 
 /**
  * For each client that joins the game a Client instance is created which connects to the server and
@@ -76,7 +76,7 @@ public class Client {
 
       while (isRunning) {
         // TODO: INCOMPLETE
-        channel.writeAndFlush(new SendChatMessage(name, in.readLine() + "\r\n"));
+        channel.writeAndFlush(new SendChatMessage(name, in.readLine()));
       }
     } finally {
       group.shutdownGracefully();
@@ -84,7 +84,7 @@ public class Client {
   }
 
   public void connect() {
-    // TODO
+    // TODO wird nicht gehen, da bei Beitritt automatisch handlerAdded in ServerHandler
     channel.writeAndFlush(new ConnectMessage(name));
   }
 
@@ -103,8 +103,7 @@ public class Client {
     channel.writeAndFlush(new SuccessMessage(name));
   }
 
-  /*
-   * public void updateGameState(GameState game) { channel.writeAndFlush(new
-   * UpdateGameStateMessage(name, game)); }
-   */
+  public void updateGameState(GameState game) {
+    channel.writeAndFlush(new UpdateGameStateMessage(name, game));
+  }
 }
