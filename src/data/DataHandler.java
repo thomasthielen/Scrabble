@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.SortedSet;
 import java.util.regex.Pattern;
 
 import gameentities.Avatar;
@@ -20,20 +19,19 @@ public class DataHandler {
 
   /**
    * Imports the given file as the dictionary of the current game. The txt-File has to be in the
-   * right format to be correctly read. Each (and also the first and last) line has to start with
+   * right format to be correctly read: Each (and also the first and last) line has to start with
    * the word that should be added to the dictionary. It has to be separated from any following info
-   * in this line (if there is any) by any whitespace. Note: this file will be imported as the user
-   * dictionary & AI dictionary, so that both play with the same words.
+   * in this line (if there is any) by any whitespace. This file will be imported as the user
+   * dictionary.
    *
    * @param file
    * @author jluellig
    */
-  public static void useDictionaryFile(File file) {
+  public static void userDictionaryFile(File file) {
     try {
       BufferedReader inputReader = new BufferedReader(new FileReader(file));
-      // initialize user and AI dictionary in order to read a new dictionary
+      // initialize user dictionary in order to read a new dictionary
       UserDictionary.initializeDict();
-      BotDictionary.initializeDict();
 
       String z;
       while ((z = inputReader.readLine()) != null) {
@@ -43,7 +41,32 @@ public class DataHandler {
         }
         // Add string to user dictionary
         UserDictionary.addWord(a[0]);
-        // Add string to AI dictionary
+      }
+      inputReader.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Same import of the dictionary txt-file as for the user dictionary, but for the bot dictionary.
+   *
+   * @param file
+   * @author jluellig
+   */
+  public static void botDictionaryFile(File file) {
+    try {
+      BufferedReader inputReader = new BufferedReader(new FileReader(file));
+      // initialize bot dictionary in order to read a new dictionary
+      BotDictionary.initializeDict();
+
+      String z;
+      while ((z = inputReader.readLine()) != null) {
+        String[] a = z.split("\\s+");
+        if (!Pattern.matches("[a-zA-Z]{2,}", a[0])) {
+          continue;
+        }
+        // Add string to bot dictionary
         BotDictionary.addWord(a[0]);
       }
       inputReader.close();
@@ -75,26 +98,6 @@ public class DataHandler {
    */
   public static HashMap<BitOptionKeys, ArrayList<String>> getBitOptions(String string) {
     return BotDictionary.getBitOptions(string);
-  }
-
-  /**
-   * Returns the already read User Dictionary.
-   *
-   * @return userDictionary
-   * @author jluellig
-   */
-  public static HashMap<Character, HashMap<Character, SortedSet<String>>> getUserDictionary() {
-    return UserDictionary.getDict();
-  }
-
-  /**
-   * Returns the already read Bot Dictionary.
-   *
-   * @return botDictionary
-   * @author jluellig
-   */
-  public static HashMap<String, WordBit> getBotDictionary() {
-    return BotDictionary.getDict();
   }
 
   /**

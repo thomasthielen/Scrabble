@@ -33,7 +33,7 @@ public class ConsoleGame {
    * @throws IOExceptions
    */
   public static void main(String[] args) throws IOException {
-    DataHandler.useDictionaryFile(
+    DataHandler.userDictionaryFile(
         new File("resources/Collins Scrabble Words (2019) with definitions.txt"));
 
     gs.setActive(true);

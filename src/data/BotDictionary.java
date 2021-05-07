@@ -24,15 +24,6 @@ class BotDictionary {
   }
 
   /**
-   * Returns the Bot Dictionary.
-   *
-   * @return botDict
-   * @author jluellig
-   */
-  protected static HashMap<String, WordBit> getDict() {
-    return wordbits;
-  }
-  /**
    * This method adds the given word to the AI dictionary.
    *
    * @param string

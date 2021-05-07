@@ -3,7 +3,7 @@ package gameentities;
 /**
  * Enum to be able to choose from several preset avatars (currently only placeholders).
  *
- * @author tthielen
+ * @author jluellig
  */
 public enum Avatar {
   BLUE("url1"),
@@ -18,7 +18,7 @@ public enum Avatar {
    * @param url
    * @author jluellig
    */
-  Avatar(String url) {
+  private Avatar(String url) {
     this.url = url;
   }
 

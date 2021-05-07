@@ -34,15 +34,6 @@ class UserDictionary {
   }
 
   /**
-   * Returns the User Dictionary.
-   *
-   * @return userDict
-   * @author jluellig
-   */
-  protected static HashMap<Character, HashMap<Character, SortedSet<String>>> getDict() {
-    return dict;
-  }
-  /**
    * Adds the String s to the user dictionary.
    *
    * @param string
