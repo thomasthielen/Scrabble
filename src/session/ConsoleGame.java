@@ -33,12 +33,14 @@ public class ConsoleGame {
    * @throws IOExceptions
    */
   public static void main(String[] args) throws IOException {
-    DataHandler.userDictionaryFile(
-        new File("resources/Collins Scrabble Words (2019) with definitions.txt"));
+
+    DataHandler.userDictionaryFile(new File("resources/Collins Scrabble Words (2019).txt"));
 
     gs.setActive(true);
 
     board = gs.getBoard();
+    //    board.placeTile(8, 8, new Tile('A',1));
+    //    board.getSquare(8, 8).setPreviouslyPlayed();
     p1 = gs.getPlayer();
 
     p1.getRack().initialDraw();

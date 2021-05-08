@@ -38,7 +38,7 @@ public class LobbyScreenController {
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("resources/StartScreen.fxml"));
     Parent content = loader.load();
-    StartScreen.getStage().setScene(new Scene(content));
+    StartScreen.getStage().setScene(new Scene(content));    
     StartScreen.getStage().show();
   }
 
@@ -59,6 +59,7 @@ public class LobbyScreenController {
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
+
 
   /**
    * TODO This method serves as the Listener for "Add AI Player"-Button It allows the user to add AI

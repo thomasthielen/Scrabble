@@ -110,6 +110,7 @@ public class Board {
 
   // The following 3 methods are used in the secondary word check
   // TODO: Use those in the main word check as well and delete the others
+  // TODO: Simplify them, for god's sake, those are a nightmare
   public Square getNextNeighbour(Square square, boolean rowMain) {
     if (rowMain) {
       if (square.getY() > 1) {
