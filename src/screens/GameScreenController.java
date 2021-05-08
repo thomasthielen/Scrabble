@@ -279,7 +279,30 @@ public class GameScreenController {
             }
           }
 
-          if (!rackSelected) {}
+          // If no tile on the rack is selected
+          if (!rackSelected) {
+
+            // Get the square on which the user clicked
+            int index = boardPanes.indexOf(node);
+            int x = index % 15 + 1;
+            int y = 15 - index / 15;
+            Square square = gameSession.getBoard().getSquare(x, y);
+
+            // If the square holds a tile
+            if (square.getTile() != null) {
+            	// Unselect all tiles
+            	for (Tile t : rackTiles) {
+            		t.setSelected(false);
+            	}
+            	for (Tile t : gameBoardTiles) {
+            		t.setSelected(false);
+            	}
+            	// Select the tile of the square
+            	square.getTile().setSelected(true);
+            	// Mark the selected tile
+            	// TODO: Outsource in methods, this is getting out of hand
+            }
+          }
         }
       }
     }
@@ -300,7 +323,6 @@ public class GameScreenController {
       }
       gameSession.placeTile(tileToPlaceX, tileToPlaceY, tileToPlace);
     }
-
 
     if (gameSession.checkMove()) {
       submitButton.setDisable(false);
