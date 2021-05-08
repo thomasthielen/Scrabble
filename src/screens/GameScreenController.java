@@ -85,6 +85,8 @@ public class GameScreenController {
 	private double eventX = 0;
 
 	private double eventY = 0;
+	
+	private Button submitButton;
 
 	/**
 	 * TODO - set Chat and Player Statistic visibility = false - set 7 Tiles in the
@@ -101,7 +103,8 @@ public class GameScreenController {
 			if (node instanceof Button) {
 				Button button = (Button) node;
 				if (button.getText().contains("Submit")) {
-					button.setDisable(true);
+					submitButton = button;
+					submitButton.setDisable(true);
 				}
 			}
 		}
@@ -211,10 +214,10 @@ public class GameScreenController {
 		for (Node node : gameBoard.getChildren()) {
 			if (node instanceof StackPane) {
 				if (node.getBoundsInParent().contains(event.getX(), event.getY())) {
-					int x = (int) event.getX();
-					int y = (int) event.getY();
-					x = (x / 23) + 1;
-					y = 16 - ((y / 23) + 1);
+					int index = boardPanes.indexOf(node);
+					int x = index % 15 + 1;
+					int y = 15 - index / 15;
+					System.out.println(x + ", " + y ); 
 
 					for (Tile t : gameBoardTiles) {
 						t.setSelected(false);
@@ -288,20 +291,16 @@ public class GameScreenController {
 			int y = tilesToPlaceY.get(i);
 			Tile t = tilesToPlace.get(i);
 			gameSession.placeTile(x, y, t);
-			for (Node node : gameBoardPane.getChildren()) {
-				if (node instanceof Button) {
-					Button button = (Button) node;
-					if (button.getText().contains("Submit")) {
-						if (gameSession.checkMove()) {
-							button.setDisable(false);
-							button.setText("Submit +" + gameSession.getTurnValue());
-						} else {
-							button.setDisable(true);
-							button.setText("Submit");
-						}
-					}
-				}
+			
+			if (gameSession.checkMove()) {
+				submitButton.setDisable(false);
+				submitButton.setText("Submit +" + gameSession.getTurnValue());
+			} else {
+				submitButton.setDisable(true);
+				submitButton.setText("Submit");
 			}
+			
+
 		}
 		tilesToPlace.clear();
 		tilesToPlaceX.clear();
@@ -446,6 +445,13 @@ public class GameScreenController {
 			tile.setPlacedTemporarily(false);
 		}
 		gameSession.recallAll();
+		if (gameSession.checkMove()) {
+			submitButton.setDisable(false);
+			submitButton.setText("Submit +" + gameSession.getTurnValue());
+		} else {
+			submitButton.setDisable(true);
+			submitButton.setText("Submit");
+		}
 		gameBoardTiles.clear();
 	}
 
@@ -484,7 +490,7 @@ public class GameScreenController {
 	 */
 	@FXML
 	void swapTiles(ActionEvent event) throws Exception {
-		// TODO: zu tauschende Tiles zur ArrayList hinzufügen
+		// TODO: zu tauschende Tiles zur ArrayList hinzufï¿½gen
 		swapTiles.add(null);
 	}
 
