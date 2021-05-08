@@ -167,7 +167,22 @@ public class GameScreenController {
 					for (Tile t : rackTiles) {
 						t.setSelected(false);
 					}
+					for (StackPane sp : rackPanes) {
+						for(Node n : sp.getChildren()) {
+							if (n instanceof Rectangle) {
+								Rectangle rectangle = (Rectangle) n;
+								rectangle.setFill(Paint.valueOf("#f88c00"));
+							}
+						}
+					}
 					rackTiles.get(rackPanes.indexOf(node)).setSelected(true);
+					StackPane sp = (StackPane) node;
+					for(Node n : sp.getChildren()) {
+						if (n instanceof Rectangle) {
+							Rectangle rectangle = (Rectangle) n;
+							rectangle.setFill(Paint.valueOf("#f8d200"));
+						}
+					}
 				}
 			}
 		}
