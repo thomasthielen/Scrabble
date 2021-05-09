@@ -12,7 +12,7 @@ public class Tile {
   private char letter;
   private int value;
   private boolean wildcard;
-  
+
   private boolean placedTemporarily;
   private boolean placedFinally;
   private boolean selected;
@@ -29,38 +29,41 @@ public class Tile {
     this.value = value;
     wildcard = (letter == '*');
   }
-  
+
   public Tile(Tile tile) {
-	  this.letter = tile.getLetter();
-	  this.value = tile.getValue();
-	  this.wildcard = tile.isWildCard();
+    this.letter = tile.getLetter();
+    this.value = tile.getValue();
+    this.wildcard = tile.isWildCard();
   }
 
   /**
-   * Returns whether the given tile equals the tile it is called upon
+   * Returns whether the given tile equals the tile it is called upon.
    *
    * @author Thomas
    * @param Tile
    * @return equals
    */
-  @Override
-  public boolean equals(Object obj) {
-    if (obj == null) {
-      return false;
-    }
-
-    if (obj.getClass() != this.getClass()) {
-      return false;
-    }
-
-    final Tile OTHER = (Tile) obj;
-
-    if (this.letter != OTHER.getLetter()) {
-      return false;
-    }
-
-    return true;
-  }
+  // TODO: This method was commented out because it messed with the indexOf()-method.
+  // If, contrary to expectation, it is required, then I will have to get creative.
+  //
+  //  @Override
+  //  public boolean equals(Object obj) {
+  //    if (obj == null) {
+  //      return false;
+  //    }
+  //
+  //    if (obj.getClass() != this.getClass()) {
+  //      return false;
+  //    }
+  //
+  //    final Tile OTHER = (Tile) obj;
+  //
+  //    if (this.letter != OTHER.getLetter()) {
+  //      return false;
+  //    }
+  //
+  //    return true;
+  //  }
 
   /**
    * Resets the letter to '*' if the tile is a wildcard.
@@ -114,28 +117,28 @@ public class Tile {
   public boolean isWildCard() {
     return this.wildcard;
   }
-  
-  public boolean getPlacedTemporarily() {
-	  return placedTemporarily;
+
+  public boolean isPlacedTemporarily() {
+    return placedTemporarily;
   }
-  
+
   public void setPlacedTemporarily(boolean b) {
-	  placedTemporarily = b;
+    placedTemporarily = b;
   }
-  
+
   public boolean getPlacedFinally() {
-	  return placedFinally;
+    return placedFinally;
   }
-  
+
   public void setPlacedFinally(boolean b) {
-	  placedFinally = b;
+    placedFinally = b;
   }
-  
-  public boolean getSelected() {
-	  return selected;
+
+  public boolean isSelected() {
+    return selected;
   }
-  
+
   public void setSelected(boolean b) {
-	  selected = b;
+    selected = b;
   }
 }
