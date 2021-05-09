@@ -41,7 +41,7 @@ public class GameScreenController {
   @FXML private GridPane gameBoard;
 
   /** gameBoardPane represents the Container for the Game Board and */
-  @FXML private Pane gameBoardPane;
+  @FXML private Pane gameBoardPane; // TODO: Might want to rename this compared to gameBoard
 
   /** chatPane represents the Container for the Chat */
   @FXML private Pane chatPane;
@@ -91,7 +91,10 @@ public class GameScreenController {
    */
   public void initialize() throws Exception {
 
+    // Load the dictionary TODO: Outsource this! Especially to be able to choose the dictionary
     DataHandler.userDictionaryFile(new File("resources/Collins Scrabble Words (2019).txt"));
+    
+    // Initialise the submit button and disable it
     for (Node node : gameBoardPane.getChildren()) {
       if (node instanceof Button) {
         Button button = (Button) node;
@@ -101,6 +104,8 @@ public class GameScreenController {
         }
       }
     }
+    
+    // Fill the gameBoard with SquarePanes which are also held in squarePanes (!)
     System.out.println(gameBoard.getColumnConstraints());
     for (int j = 0; j <= 14; j++) {
       for (int i = 0; i <= 14; i++) {
@@ -109,11 +114,15 @@ public class GameScreenController {
         gameBoard.add(sp.getStackPane(), i, j);
       }
     }
-    chatPane.setVisible(false);
-    playerStatisticsPane.setVisible(false);
+    // Fill the StackPanes of squarePanes into boardPanes
     for (SquarePane sp : squarePanes) {
       boardPanes.add(sp.getStackPane());
     }
+    
+    // Set the openable windows to invisible
+    chatPane.setVisible(false);
+    playerStatisticsPane.setVisible(false);
+    
     setRack();
   }
 
@@ -280,7 +289,7 @@ public class GameScreenController {
               number.setFill(Color.WHITE);
               StackPane.setAlignment(number, Pos.BOTTOM_RIGHT);
               // Add those to the corresponding StackPane
-              ((StackPane) node).getChildren().add(new Rectangle(22, 22, Paint.valueOf("#f88c00")));
+              ((StackPane) node).getChildren().add(new Rectangle(21, 21, Paint.valueOf("#f88c00")));
               ((StackPane) node).getChildren().add(text);
               ((StackPane) node).getChildren().add(number);
 
@@ -509,6 +518,7 @@ public class GameScreenController {
   void swapTiles(ActionEvent event) throws Exception {
     // TODO: zu tauschende Tiles zur ArrayList hinzuf�gen
     swapTiles.add(null);
+    // this.gameBoard = modifyPane(gameBoard); // Test for GridPane exchange
   }
 
   /**
@@ -543,5 +553,15 @@ public class GameScreenController {
       submitButton.setDisable(true);
       submitButton.setText("Submit");
     }
+  }
+
+  // Test method for GridPane exchange
+  public GridPane modifyPane(GridPane pane) {
+    for (Node node : pane.getChildren()) {
+      if (node instanceof StackPane) {
+        ((StackPane) node).getChildren().clear();
+      }
+    }
+    return pane;
   }
 }
