@@ -435,8 +435,25 @@ public class GameScreenController {
                   }
                 }
               }
-            } else if (clickedOnTile == null) {
+              // OPTION 2.4: Move the selected tile to an empty location
+            } else if (clickedOnTile == null && boardSelected) {
+              gameSession.recallTile(boardSelectedX, boardSelectedY);
+              gameSession.placeTile(clickedOnX, clickedOnY, selectedTile);
 
+              // Find the corresponding SquarePane and thus the StackPane
+              Square selectedSquare =
+                  gameSession.getBoard().getSquare(boardSelectedX, boardSelectedY);
+              StackPane selectedStackPane = null;
+              for (SquarePane sp : squarePanes) {
+                if (sp.getSquare() == selectedSquare) {
+                  selectedStackPane = sp.getStackPane();
+                }
+              }
+              
+              placeTileOnBoard(selectedTile, (StackPane) node);
+              selectedStackPane.getChildren().clear();
+              
+              deselectAll();
             }
           }
         }
