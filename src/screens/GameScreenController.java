@@ -633,7 +633,7 @@ public class GameScreenController {
    * @throws Exception
    */
   @FXML
-  void openSwapPane(ActionEvent event) throws Exception {
+  void swapTiles(ActionEvent event) throws Exception {
     // TODO: zu tauschende Tiles zur ArrayList hinzuf�gen
     swapTiles.add(null);
     // this.gameBoard = modifyPane(gameBoard); // Test for GridPane exchange
