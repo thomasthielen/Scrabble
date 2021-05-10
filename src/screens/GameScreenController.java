@@ -196,7 +196,6 @@ public class GameScreenController {
 
           // OPTION 1: Tile on board selected AND tile on rack not placed temporarily
           if (boardSelected && !clickedOnTile.isPlacedTemporarily()) {
-
             // Exchange both tiles
 
             // Back end methods
@@ -235,13 +234,36 @@ public class GameScreenController {
             gameBoardTiles.add(clickedOnTile);
             gameBoardTiles.remove(returnTile);
 
-            // OPTION 2: The clicked on tile is currently selected:
+            // OPTION 2: The clicked on tile is the selected tile
+          } else if (boardSelected && clickedOnTile == returnTile) {
+            deselectAll();
+            gameSession.recallTile(boardSelectedX, boardSelectedY);
+            clickedOnTile.setPlacedTemporarily(false);
+
+            // Find the corresponding SquarePane and thus the StackPane
+            Square boardSquare = gameSession.getBoard().getSquare(boardSelectedX, boardSelectedY);
+            StackPane boardStackPane = null;
+
+            for (SquarePane sp : squarePanes) {
+              if (sp.getSquare() == boardSquare) {
+                boardStackPane = sp.getStackPane();
+              }
+            }
+
+            boardStackPane.getChildren().clear();
+
+            // Reset the opacity of the returned tile on the rack
+            int i = rackTiles.indexOf(clickedOnTile);
+            Node n = rackPane.getChildren().get(i);
+            rackPanes.get(rackPanes.indexOf(n)).setOpacity(1);
+
+            // OPTION 3: The clicked on tile is currently selected:
           } else if (clickedOnTile.isSelected()) {
             // Deselect the tile (and all others)
             deselectAll();
             paintAllAsDeselected();
 
-            // OPTION 3: The clicked on tile can be selected:
+            // OPTION 4: The clicked on tile can be selected:
           } else if (!clickedOnTile.isPlacedTemporarily()) {
             // Deselect all tiles in the back end
             deselectAll();
@@ -252,11 +274,6 @@ public class GameScreenController {
             // Paint the tile to the "selected colour"
             StackPane sp = (StackPane) node;
             paintTileAsSelected(sp);
-
-            // OPTION 4: The clicked on tile is the selected tile
-          } else if (boardSelected && clickedOnTile == returnTile) {
-            
-            
           }
         }
       }
