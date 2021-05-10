@@ -51,6 +51,12 @@ public class GameScreenController {
 
   /** rackPane represents the Container for the Tiles in the Rack */
   @FXML private FlowPane rackPane;
+  
+  /** swapRack */
+  @FXML private FlowPane swapRack;
+  
+  /** swapPane has */
+  @FXML private Pane swapPane;
 
   private static ArrayList<Rectangle> rack = new ArrayList<Rectangle>();
 
@@ -365,20 +371,20 @@ public class GameScreenController {
           if (!rackSelected) {
 
             Tile clickedOnTile = square.getTile();
-
+            
+            // Check whether a tile on the board is selected
+            boolean boardSelected = false;
+            Tile selectedTile = null;
+            for (Tile t : gameBoardTiles) {
+              if (t.isSelected()) {
+                boardSelected = true;
+                selectedTile = t;
+                break;
+              }
+            }
+            
             // If the square holds a tile
             if (clickedOnTile != null) {
-
-              // Check whether a tile on the board is selected
-              boolean boardSelected = false;
-              Tile selectedTile = null;
-              for (Tile t : gameBoardTiles) {
-                if (t.isSelected()) {
-                  boardSelected = true;
-                  selectedTile = t;
-                  break;
-                }
-              }
 
               // OPTION 2.1: The clicked on tile is selected:
               if (clickedOnTile.isSelected()) {
@@ -430,6 +436,8 @@ public class GameScreenController {
                   }
                 }
               }
+            } else if (clickedOnTile == null) {
+              
             }
           }
         }
@@ -633,7 +641,7 @@ public class GameScreenController {
    * @throws Exception
    */
   @FXML
-  void swapTiles(ActionEvent event) throws Exception {
+  void openSwapPane(ActionEvent event) throws Exception {
     // TODO: zu tauschende Tiles zur ArrayList hinzuf�gen
     swapTiles.add(null);
     // this.gameBoard = modifyPane(gameBoard); // Test for GridPane exchange
