@@ -51,10 +51,10 @@ public class GameScreenController {
 
   /** rackPane represents the Container for the Tiles in the Rack */
   @FXML private FlowPane rackPane;
-  
+
   /** swapRack */
   @FXML private FlowPane swapRack;
-  
+
   /** swapPane has */
   @FXML private Pane swapPane;
 
@@ -131,6 +131,7 @@ public class GameScreenController {
     // Set the openable windows to invisible
     chatPane.setVisible(false);
     playerStatisticsPane.setVisible(false);
+    swapPane.setVisible(false);
 
     setRack();
   }
@@ -262,8 +263,6 @@ public class GameScreenController {
             int i = rackTiles.indexOf(clickedOnTile);
             Node n = rackPane.getChildren().get(i);
             rackPanes.get(rackPanes.indexOf(n)).setOpacity(1);
-            
-
 
             // OPTION 3: The clicked on tile is currently selected:
           } else if (clickedOnTile.isSelected()) {
@@ -371,7 +370,7 @@ public class GameScreenController {
           if (!rackSelected) {
 
             Tile clickedOnTile = square.getTile();
-            
+
             // Check whether a tile on the board is selected
             boolean boardSelected = false;
             Tile selectedTile = null;
@@ -382,7 +381,7 @@ public class GameScreenController {
                 break;
               }
             }
-            
+
             // If the square holds a tile
             if (clickedOnTile != null) {
 
@@ -437,7 +436,7 @@ public class GameScreenController {
                 }
               }
             } else if (clickedOnTile == null) {
-              
+
             }
           }
         }
@@ -642,6 +641,7 @@ public class GameScreenController {
    */
   @FXML
   void openSwapPane(ActionEvent event) throws Exception {
+    swapPane.setVisible(true);
     // TODO: zu tauschende Tiles zur ArrayList hinzuf�gen
     swapTiles.add(null);
     // this.gameBoard = modifyPane(gameBoard); // Test for GridPane exchange
@@ -659,6 +659,14 @@ public class GameScreenController {
   void submitSwapTiles(ActionEvent event) throws Exception {
     gameSession.exchangeTiles(swapTiles);
   }
+
+  @FXML
+  void closeSwapPane(ActionEvent event) throws Exception {
+    swapPane.setVisible(false);
+  }
+
+  @FXML
+  void swapTiles(ActionEvent event) throws Exception {}
 
   // All following methods are functions used multiple times in the methods above
 
