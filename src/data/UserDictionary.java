@@ -13,13 +13,13 @@ import java.util.TreeSet;
  */
 class UserDictionary {
 
-  // HashMap that stores every word of the dictionary in a specific SortedSet for
-  // the first two
+  // HashMap that stores every word of the user dictionary in a specific SortedSet for the first two
   // characters of the word
   private static HashMap<Character, HashMap<Character, SortedSet<String>>> dict;
 
   /**
-   * This method initializes the HashMaps for the dictionary with each letter combination.
+   * This method initializes the HashMaps for the user dictionary {@link #dict} with each letter
+   * combination.
    *
    * @author jluellig
    */
@@ -34,28 +34,28 @@ class UserDictionary {
   }
 
   /**
-   * Adds the String s to the user dictionary.
+   * Adds the String to the user dictionary {@link #dict}.
    *
-   * @param string
+   * @param word new word for the user dictionary
    * @author jluellig
    */
-  protected static void addWord(String string) {
+  protected static void addWord(String word) {
     if (dict == null) {
       initializeDict();
     }
-    string = string.toUpperCase();
-    dict.get(string.charAt(0)).get(string.charAt(1)).add(string);
+    word = word.toUpperCase();
+    dict.get(word.charAt(0)).get(word.charAt(1)).add(word);
   }
 
   /**
-   * Returns true if the String s is a correct word in the dictionary.
+   * Returns true if the word is a correct word in the dictionary {@link #dict}.
    *
-   * @param string
+   * @param word word that should be checked if it is a correct word in the dictionary
    * @return isWord
    * @author jluellig
    */
-  protected static boolean checkWord(String string) {
-    string = string.toUpperCase();
-    return (dict != null && dict.get(string.charAt(0)).get(string.charAt(1)).contains(string));
+  protected static boolean checkWord(String word) {
+    word = word.toUpperCase();
+    return (dict != null && dict.get(word.charAt(0)).get(word.charAt(1)).contains(word));
   }
 }

@@ -1,12 +1,11 @@
 package data;
 
+import gameentities.Avatar;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
-
-import gameentities.Avatar;
 
 /**
  * This class is in charge of everything related to the PlayerDB. It provides methods to create new
@@ -28,7 +27,7 @@ class Database {
           + "PlayerDB.db";
 
   /**
-   * Connects to the PlayerDB database
+   * Connects to the PlayerDB database.
    *
    * @author jluellig
    */
@@ -59,18 +58,19 @@ class Database {
       // create table Statistics if it doesn't already exist
       stm.executeUpdate(
           "CREATE TABLE IF NOT EXISTS Statistics (PlayerID INTEGER NOT NULL, Date TEXT NOT NULL, "
-              + "Win INTEGER NOT NULL, Points INTEGER NOT NULL, PRIMARY KEY(Date), FOREIGN KEY(PlayerID) "
-              + "references PlayerInfo (ID))");
+              + "Win INTEGER NOT NULL, Points INTEGER NOT NULL, PRIMARY KEY(Date), "
+              + "FOREIGN KEY(PlayerID) references PlayerInfo (ID))");
     } catch (Exception e) {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
     }
   }
 
   /**
-   * Adds a new Player to the PlayerInfo table of PlayerDB
+   * Adds a new Player with username and {@link gameentities.Avatar} to the PlayerInfo table of
+   * PlayerDB.
    *
-   * @param username
-   * @param avatar
+   * @param username name the user chooses for his profile
+   * @param avatar avatar the user chooses for his profile
    * @author jluellig
    */
   protected static void addPlayer(String username, Avatar avatar) {
@@ -90,46 +90,48 @@ class Database {
   }
 
   /**
-   * Changes the username of the player with the given ID in the table PlayerInfo of PlayerDB
+   * Changes the username of the player with the given ID in the table PlayerInfo of PlayerDB.
    *
-   * @param username
-   * @param ID
+   * @param username new name the user chooses for his profile
+   * @param id user id for the username that should be changed
    * @author jluellig
    */
-  protected static void alterPlayerUsername(String username, int ID) {
+  protected static void alterPlayerUsername(String username, int id) {
     try {
       stm = con.createStatement();
 
       // Change the username of the given ID
-      stm.executeUpdate("UPDATE PlayerInfo SET Username = '" + username + "' WHERE ID = " + ID);
+      stm.executeUpdate("UPDATE PlayerInfo SET Username = '" + username + "' WHERE ID = " + id);
     } catch (Exception e) {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
     }
   }
 
   /**
-   * Changes the avatar of the player with the given ID in the table PlayerInfo of PlayerDB
+   * Changes the {@link gameentities.Avatar} of the player with the given ID in the table PlayerInfo
+   * of PlayerDB
    *
-   * @param avatar
-   * @param ID
+   * @param avatar new avatar the user chooses for his profile
+   * @param id user id for the avatar that should be changed
    * @author jluellig
    */
-  protected static void alterPlayerAvatar(Avatar avatar, int ID) {
+  protected static void alterPlayerAvatar(Avatar avatar, int id) {
     try {
       stm = con.createStatement();
 
       // Change the avatar of the given ID
       stm.executeUpdate(
-          "UPDATE PlayerInfo SET Avatar = '" + avatar.toString() + "' WHERE ID = " + ID);
+          "UPDATE PlayerInfo SET Avatar = '" + avatar.toString() + "' WHERE ID = " + id);
     } catch (Exception e) {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
     }
   }
 
   /**
-   * Gives back the ID, username and avatar of each player from the table PlayerInfo in PlayerDB. It
-   * returns a HashMap that uses the player's ID as the key and the player data in an array as the
-   * value. Index 0 marks the username in the array, while index 1 stands for the avatar.
+   * Gives back the ID, username and {@link gameentities.Avatar} of each player from the table
+   * PlayerInfo in PlayerDB. It returns a HashMap that uses the player's ID as the key and the
+   * player data in an array as the value. Index 0 marks the username in the array, while index 1
+   * stands for the {@link gameentities.Avatar}.
    *
    * @return playerInfo
    * @author jluellig
@@ -159,20 +161,20 @@ class Database {
   }
 
   /**
-   * Deletes the info of the given player ID and its statistics in PlayerDB
+   * Deletes the info of the given player ID and its statistics in PlayerDB.
    *
-   * @param ID
+   * @param id user id that should be deleted
    * @author jluellig
    */
-  protected static void deletePlayer(int ID) {
+  protected static void deletePlayer(int id) {
     try {
       stm = con.createStatement();
 
       // delete player with given ID from PlayerInfo table in PlayerDB
-      stm.executeUpdate("DELETE FROM PlayerInfo WHERE ID = " + ID);
+      stm.executeUpdate("DELETE FROM PlayerInfo WHERE ID = " + id);
 
       // delete player with given ID from Statistics table in PlayerDB
-      stm.executeUpdate("DELETE FROM Statistics WHERE PlayerID = " + ID);
+      stm.executeUpdate("DELETE FROM Statistics WHERE PlayerID = " + id);
     } catch (Exception e) {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
     }
@@ -180,21 +182,21 @@ class Database {
 
   /**
    * Adds statistics (Win, Points) for one game to the given player ID into Statistics table in
-   * PlayerDB
+   * PlayerDB.
    *
-   * @param ID
-   * @param win
-   * @param points
+   * @param id user id for the statistics that should be added
+   * @param win if the user won the game or not
+   * @param points how many points the user scored in this game
    * @author jluellig
    */
-  protected static void addStatistics(int ID, int win, int points) {
+  protected static void addStatistics(int id, int win, int points) {
     try {
       stm = con.createStatement();
 
       // add Statistics for given ID to Statistics table
       stm.executeUpdate(
           "INSERT INTO Statistics(PlayerID, Date, Win, Points) VALUES("
-              + ID
+              + id
               + ", "
               + "datetime('now', 'localtime'), "
               + win
@@ -208,34 +210,34 @@ class Database {
 
   /**
    * Gives the statistics of the given player ID from table Statistics in PlayerDB in a HashMap.
-   * StatisticKeys represent the keys for this HashMap.
+   * {@link StatisticKeys} represent the keys for this HashMap.
    *
-   * @param ID
+   * @param id user id for the statistics that should be returned
    * @return statistics
    * @author jluellig
    */
-  protected static HashMap<StatisticKeys, Integer> getStatistics(int ID) {
+  protected static HashMap<StatisticKeys, Integer> getStatistics(int id) {
     HashMap<StatisticKeys, Integer> statistics = new HashMap<StatisticKeys, Integer>();
 
     try {
       stm = con.createStatement();
 
       // get amount of matches from table Statistics
-      rs = stm.executeQuery("SELECT COUNT(*) FROM Statistics WHERE PlayerID = " + ID);
+      rs = stm.executeQuery("SELECT COUNT(*) FROM Statistics WHERE PlayerID = " + id);
       // add amount of matches to HashMap
       while (rs.next()) {
         statistics.put(StatisticKeys.MATCHES, rs.getInt(1));
       }
 
       // get amount of wins from table Statistics
-      rs = stm.executeQuery("SELECT SUM(Win) FROM Statistics WHERE PlayerID = " + ID);
+      rs = stm.executeQuery("SELECT SUM(Win) FROM Statistics WHERE PlayerID = " + id);
       // add amount of wins to HashMap
       while (rs.next()) {
         statistics.put(StatisticKeys.WON, rs.getInt(1));
       }
 
       // get average points per game from table Statistics
-      rs = stm.executeQuery("SELECT AVG(Points) FROM Statistics WHERE PlayerID = " + ID);
+      rs = stm.executeQuery("SELECT AVG(Points) FROM Statistics WHERE PlayerID = " + id);
       // add average points per game to HashMap
       while (rs.next()) {
         statistics.put(StatisticKeys.POINTSAVG, rs.getInt(1));
@@ -247,7 +249,7 @@ class Database {
   }
 
   /**
-   * Disconnects the PlayerDB Database
+   * Disconnects the PlayerDB Database.
    *
    * @author jluellig
    */

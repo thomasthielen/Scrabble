@@ -15,7 +15,7 @@ public enum Avatar {
   /**
    * Constructor for Avatar with given String.
    *
-   * @param url
+   * @param url the url of the given Avatar
    * @author jluellig
    */
   private Avatar(String url) {

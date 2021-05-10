@@ -16,8 +16,8 @@ class WordBit {
   /**
    * Creates a new WordBit with the given prefix and suffix.
    *
-   * @param prefix
-   * @param suffix
+   * @param prefix new prefix for a wordbit
+   * @param suffix new suffix for a wordbit
    * @author jluellig
    */
   protected WordBit(String prefix, String suffix) {
@@ -30,8 +30,8 @@ class WordBit {
   /**
    * Adds a prefix and suffix to the WordBit.
    *
-   * @param prefix
-   * @param suffix
+   * @param prefix new prefix for a wordbit
+   * @param suffix new suffix for a wordbit
    * @author jluellig
    */
   protected void addBit(String prefix, String suffix) {
@@ -40,7 +40,7 @@ class WordBit {
   }
 
   /**
-   * Returns the prefixes of this WordBit.
+   * Returns the {@link #prefixes} of this WordBit.
    *
    * @return prefixes
    * @author jluellig
@@ -50,7 +50,7 @@ class WordBit {
   }
 
   /**
-   * Returns the suffixes of this WordBit.
+   * Returns the {@link #suffixes} of this WordBit.
    *
    * @return suffixes
    * @author jluellig
