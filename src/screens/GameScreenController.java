@@ -234,7 +234,7 @@ public class GameScreenController {
             gameBoardTiles.add(clickedOnTile);
             gameBoardTiles.remove(returnTile);
 
-            // OPTION 2: The clicked on tile is the selected tile
+            // OPTION 2: The clicked on tile is the selected tile on the board
           } else if (boardSelected && clickedOnTile == returnTile) {
             deselectAll();
             gameSession.recallTile(boardSelectedX, boardSelectedY);
@@ -256,6 +256,8 @@ public class GameScreenController {
             int i = rackTiles.indexOf(clickedOnTile);
             Node n = rackPane.getChildren().get(i);
             rackPanes.get(rackPanes.indexOf(n)).setOpacity(1);
+            
+
 
             // OPTION 3: The clicked on tile is currently selected:
           } else if (clickedOnTile.isSelected()) {
@@ -278,6 +280,7 @@ public class GameScreenController {
         }
       }
     }
+    refreshSubmit();
   }
 
   /**
@@ -288,38 +291,6 @@ public class GameScreenController {
    */
   public static Tile setTile() throws Exception {
     return null; // dummy return
-  }
-
-  /**
-   * TODO - get the color, the letter and the number of the currently selected Tile - set the box of
-   * the
-   *
-   * @author jbleil
-   * @param event
-   * @throws Exceptions
-   */
-  @FXML
-  void gameBoardClicked(MouseEvent event) throws Exception {
-    // TODO: This method is never called, its functionality should be implemented in tileClicked()
-    for (Node node : gameBoard.getChildren()) {
-      if (node instanceof StackPane) {
-        if (node.getBoundsInParent().contains(event.getX(), event.getY())) {
-          int index = boardPanes.indexOf(node);
-          int x = index % 15 + 1;
-          int y = 15 - index / 15;
-          System.out.println(x + ", " + y);
-
-          deselectAll();
-          Tile tile = gameSession.getBoard().getSquare(x, y).getTile();
-          if (tile != null) {
-            tile.setSelected(true);
-          }
-        }
-      }
-    }
-    for (Tile t : rackTiles) {
-      t.setSelected(false);
-    }
   }
 
   /**
@@ -662,7 +633,7 @@ public class GameScreenController {
    * @throws Exception
    */
   @FXML
-  void swapTiles(ActionEvent event) throws Exception {
+  void openSwapPane(ActionEvent event) throws Exception {
     // TODO: zu tauschende Tiles zur ArrayList hinzuf�gen
     swapTiles.add(null);
     // this.gameBoard = modifyPane(gameBoard); // Test for GridPane exchange
