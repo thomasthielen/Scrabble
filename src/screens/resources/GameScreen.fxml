@@ -422,7 +422,7 @@
                   <Font size="10.0" />
                </font>
             </Button>
-            <Button layoutX="90.0" layoutY="450.0" mnemonicParsing="false" onAction="#swapTiles" prefWidth="75.0" style="-fx-background-color: f88c00;" text="Swap" textFill="WHITE">
+            <Button layoutX="90.0" layoutY="450.0" mnemonicParsing="false" onAction="#openSwapPane" prefWidth="75.0" style="-fx-background-color: f88c00;" text="Swap" textFill="WHITE">
                <font>
                   <Font size="10.0" />
                </font>
@@ -438,6 +438,21 @@
                </font>
             </Button>
             <FlowPane fx:id="rackPane" hgap="20.0" layoutX="103.0" layoutY="420.0" onMouseClicked="#rackClicked" prefHeight="22.0" />
+            <Pane fx:id="swapPane" layoutX="68.0" layoutY="416.0" prefHeight="62.0" prefWidth="345.0" style="-fx-background-color: #EEEEEE;">
+               <children>
+                  <Button layoutX="321.0" layoutY="3.0" mnemonicParsing="false" onAction="#closeSwapPane" text="X">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="154.0" layoutY="31.0" mnemonicParsing="false" onAction="#swapTiles" style="-fx-background-color: f88c00;" text="Swap" textFill="WHITE">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Button>
+                  <FlowPane fx:id="swapRack" layoutX="17.0" layoutY="4.0" prefHeight="21.0" prefWidth="312.0" />
+               </children>
+            </Pane>
          </children>
       </Pane>
       <Pane fx:id="chatPane" layoutX="750.0" layoutY="14.0" prefHeight="480.0" prefWidth="240.0" style="-fx-background-color: #FFFFFF;">
@@ -471,26 +486,6 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Text fill="#707070" layoutX="20.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Place 1: Name, Points">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Text>
-      <Text fill="#707070" layoutX="20.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Place 2: Name, Points">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Text>
-      <Text fill="#707070" layoutX="20.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Place 3: Name, Points">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Text>
-      <Text fill="#707070" layoutX="20.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Place 4: Name, Points">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Text>
       <ScrollPane fx:id="playerStatisticsPane" layoutX="10.0" layoutY="255.0" prefHeight="240.0" prefWidth="240.0">
          <content>
             <Pane prefHeight="240.0" prefWidth="240.0" style="-fx-background-color: #FFFFFF;">
