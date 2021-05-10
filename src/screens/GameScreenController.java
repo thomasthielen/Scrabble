@@ -196,7 +196,7 @@ public class GameScreenController {
 
           // OPTION 1: Tile on board selected AND tile on rack not placed temporarily
           if (boardSelected && !clickedOnTile.isPlacedTemporarily()) {
-            
+
             // Exchange both tiles
 
             // Back end methods
@@ -204,12 +204,10 @@ public class GameScreenController {
             returnTile.setPlacedTemporarily(false);
 
             // Get the correct square via the coordinates taken in the board selection
-            int x = boardSelectedX;
-            int y = boardSelectedY;
-            gameSession.recallTile(x, y);
+            gameSession.recallTile(boardSelectedX, boardSelectedY);
 
             // Find the corresponding SquarePane and thus the StackPane
-            Square boardSquare = gameSession.getBoard().getSquare(x, y);
+            Square boardSquare = gameSession.getBoard().getSquare(boardSelectedX, boardSelectedY);
             StackPane boardStackPane = null;
 
             for (SquarePane sp : squarePanes) {
@@ -218,14 +216,10 @@ public class GameScreenController {
               }
             }
 
-            // Clear the corresponding StackPane
-            boardStackPane.getChildren().clear();
-
             // Reset the opacity of the returned tile on the rack
             int i = rackTiles.indexOf(returnTile);
             Node n = rackPane.getChildren().get(i);
             rackPanes.get(rackPanes.indexOf(n)).setOpacity(1);
-
 
             // Call placeTileOnBoard
             placeTileOnBoard(clickedOnTile, boardStackPane);
@@ -236,15 +230,11 @@ public class GameScreenController {
             // Set the back end values
             clickedOnTile.setSelected(false);
             clickedOnTile.setPlacedTemporarily(true);
-            gameSession.placeTile(x, y, clickedOnTile);
+            gameSession.placeTile(boardSelectedX, boardSelectedY, clickedOnTile);
 
             gameBoardTiles.add(clickedOnTile);
             gameBoardTiles.remove(returnTile);
 
-            //TODO: Remove
-            for (Tile t : gameBoardTiles) {
-              System.out.println(t.getLetter() ); 
-            }
           } else {
 
             // OPTION 2: The clicked on tile is currently selected:
@@ -334,9 +324,9 @@ public class GameScreenController {
 
           // Get the square from the index
           int index = boardPanes.indexOf(node);
-          int x = index % 15 + 1;
-          int y = 15 - index / 15;
-          Square square = gameSession.getBoard().getSquare(x, y);
+          int clickedOnX = index % 15 + 1;
+          int clickedOnY = 15 - index / 15;
+          Square square = gameSession.getBoard().getSquare(clickedOnX, clickedOnY);
 
           // Check if any tile on the rack is selected
           for (Tile tile : rackTiles) {
@@ -344,8 +334,8 @@ public class GameScreenController {
               // OPTION 1: Yes, the tile on the rack will be placed...
 
               tileToPlace = tile;
-              tileToPlaceX = x;
-              tileToPlaceY = y;
+              tileToPlaceX = clickedOnX;
+              tileToPlaceY = clickedOnY;
 
               // Check if the clicked on square is already taken
               if (square.isTaken()) {
@@ -353,18 +343,16 @@ public class GameScreenController {
                 // OPTION 1.1: Exchange both tiles
 
                 // back end methods
-                Tile returnTile = gameSession.getBoard().getTile(x, y);
+                Tile returnTile = gameSession.getBoard().getTile(clickedOnX, clickedOnY);
                 returnTile.setSelected(false);
                 returnTile.setPlacedTemporarily(false);
-                gameSession.recallTile(x, y);
+                gameSession.recallTile(clickedOnX, clickedOnY);
 
-                // Clear the corresponding StackPane
-                ((StackPane) node).getChildren().clear();
                 // Reset the opacity of the returned tile on the rack
                 int i = rackTiles.indexOf(returnTile);
                 Node n = rackPane.getChildren().get(i);
                 rackPanes.get(rackPanes.indexOf(n)).setOpacity(1);
-                
+
                 gameBoardTiles.remove(returnTile);
               }
 
@@ -383,21 +371,73 @@ public class GameScreenController {
             }
           }
 
-          // OPTION 2: No, and therefore the tile on the board will be selected
+          // OPTION 2: No, and therefore a tile on the board is selected or will be selected
           if (!rackSelected) {
 
-            // If the square holds a tile
-            if (square.getTile() != null) {
+            Tile clickedOnTile = square.getTile();
 
-              // deselect all tiles & select the tile of the square
-              deselectAll();
-              square.getTile().setSelected(true);
-              boardSelectedX = square.getX();
-              boardSelectedY = square.getY();
-              // Mark the selected tile
-              for (SquarePane sp : squarePanes) {
-                if (sp.getSquare() == square) {
-                  paintTileAsSelected(sp.getStackPane());
+            // If the square holds a tile
+            if (clickedOnTile != null) {
+
+              // Check whether a tile on the board is selected
+              boolean boardSelected = false;
+              Tile selectedTile = null;
+              for (Tile t : gameBoardTiles) {
+                if (t.isSelected()) {
+                  boardSelected = true;
+                  selectedTile = t;
+                  break;
+                }
+              }
+
+              // OPTION 2.1: The clicked on tile is selected:
+              if (clickedOnTile.isSelected()) {
+                // deselect it
+                deselectAll();
+                paintAllAsDeselected();
+
+                // OPTION 2.2: Another tile on the board is selected:
+              } else if (boardSelected) {
+                // Swap the tiles!
+
+                // recall both tiles in the back end
+                gameSession.recallTile(clickedOnX, clickedOnY); // the clicked on tile
+                gameSession.recallTile(boardSelectedX, boardSelectedY); // the selected tile
+                // place both tiles at their new positions in the back end
+                gameSession.placeTile(boardSelectedX, boardSelectedY, clickedOnTile);
+                gameSession.placeTile(clickedOnX, clickedOnY, selectedTile);
+                
+                // update the GUI:
+                
+                // Find the corresponding SquarePane and thus the StackPane
+                Square selectedSquare = gameSession.getBoard().getSquare(boardSelectedX, boardSelectedY);
+                StackPane selectedStackPane = null;
+                for (SquarePane sp : squarePanes) {
+                  if (sp.getSquare() == selectedSquare) {
+                    selectedStackPane = sp.getStackPane();
+                  }
+                }
+                
+                // place the tiles on the GUI
+                placeTileOnBoard(clickedOnTile, selectedStackPane);
+                placeTileOnBoard(selectedTile, (StackPane) node);
+                
+                // deselect all tiles in the back end
+                deselectAll();
+                
+
+                // OPTION 2.3: Select the clicked on tile:
+              } else {
+                // deselect all tiles & select the tile of the square
+                deselectAll();
+                clickedOnTile.setSelected(true);
+                boardSelectedX = square.getX();
+                boardSelectedY = square.getY();
+                // Mark the selected tile
+                for (SquarePane sp : squarePanes) {
+                  if (sp.getSquare() == square) {
+                    paintTileAsSelected(sp.getStackPane());
+                  }
                 }
               }
             }
@@ -644,6 +684,7 @@ public class GameScreenController {
   }
 
   private void placeTileOnBoard(Tile tile, StackPane sp) {
+    sp.getChildren().clear();
     // Set the text of the newly placed tile
     Text text = new Text(String.valueOf(tile.getLetter()));
     text.setFill(Color.WHITE);
