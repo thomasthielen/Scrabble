@@ -183,6 +183,7 @@ public class GameScreenController {
 
           boolean boardSelected = false;
           Tile returnTile = null;
+          Tile clickedOnTile = rackTiles.get(rackPanes.indexOf(node));
 
           // Check if any tile on the board is selected
           for (Tile t : gameBoardTiles) {
@@ -193,7 +194,9 @@ public class GameScreenController {
             }
           }
 
-          if (boardSelected) {
+          // OPTION 1: Tile on board selected AND tile on rack not placed temporarily
+          if (boardSelected && !clickedOnTile.isPlacedTemporarily()) {
+            
             // Exchange both tiles
 
             // Back end methods
@@ -223,37 +226,39 @@ public class GameScreenController {
             Node n = rackPane.getChildren().get(i);
             rackPanes.get(rackPanes.indexOf(n)).setOpacity(1);
 
-            // Get the clicked on tile on the rack
-            int index = rackPanes.indexOf(node);
-            Tile tile = rackTiles.get(index);
+
             // Call placeTileOnBoard
-            placeTileOnBoard(tile, boardStackPane);
+            placeTileOnBoard(clickedOnTile, boardStackPane);
 
             // Reduce the opacity of the tile on the rack
             rackPanes.get(rackPanes.indexOf(node)).setOpacity(0.5);
 
             // Set the back end values
-            tile.setSelected(false);
-            tile.setPlacedTemporarily(true);
-            gameSession.placeTile(x, y, tile);
+            clickedOnTile.setSelected(false);
+            clickedOnTile.setPlacedTemporarily(true);
+            gameSession.placeTile(x, y, clickedOnTile);
 
-            gameBoardTiles.add(tile);
+            gameBoardTiles.add(clickedOnTile);
+            gameBoardTiles.remove(returnTile);
 
+            //TODO: Remove
+            for (Tile t : gameBoardTiles) {
+              System.out.println(t.getLetter() ); 
+            }
           } else {
-            // If the tile on the rack hasn't been placed yet:
-            if (!rackTiles.get(rackPanes.indexOf(node)).isPlacedTemporarily()) {
+
+            // OPTION 2: The clicked on tile is currently selected:
+            if (clickedOnTile.isSelected()) {
+              // Deselect the tile (and all others)
+              deselectAll();
+              paintAllAsDeselected();
+
+              // OPTION 3: The clicked on tile can be selected:
+            } else if (!clickedOnTile.isPlacedTemporarily()) {
               // Deselect all tiles in the back end
               deselectAll();
-              // Paint all tiles in the rack to the "unselected colour"
-              // TODO: Outsource this as well as the painting of all tiles on the board
-              for (StackPane sp : rackPanes) {
-                for (Node n : sp.getChildren()) {
-                  if (n instanceof Rectangle) {
-                    Rectangle rectangle = (Rectangle) n;
-                    rectangle.setFill(Paint.valueOf("#f88c00"));
-                  }
-                }
-              }
+              // Paint all tiles to the "unselected colour"
+              paintAllAsDeselected();
               // Set the clicked on tile as selected in the back end
               rackTiles.get(rackPanes.indexOf(node)).setSelected(true);
               // Paint the tile to the "selected colour"
@@ -359,6 +364,8 @@ public class GameScreenController {
                 int i = rackTiles.indexOf(returnTile);
                 Node n = rackPane.getChildren().get(i);
                 rackPanes.get(rackPanes.indexOf(n)).setOpacity(1);
+                
+                gameBoardTiles.remove(returnTile);
               }
 
               // OPTION 1.2: Simply place the tile on the square
@@ -656,6 +663,25 @@ public class GameScreenController {
       if (n instanceof Rectangle) {
         Rectangle rectangle = (Rectangle) n;
         rectangle.setFill(Paint.valueOf("#f8d200"));
+      }
+    }
+  }
+
+  private void paintAllAsDeselected() {
+    for (StackPane sp : rackPanes) {
+      for (Node n : sp.getChildren()) {
+        if (n instanceof Rectangle) {
+          Rectangle rectangle = (Rectangle) n;
+          rectangle.setFill(Paint.valueOf("#f88c00"));
+        }
+      }
+    }
+    for (StackPane sp : boardPanes) {
+      for (Node n : sp.getChildren()) {
+        if (n instanceof Rectangle) {
+          Rectangle rectangle = (Rectangle) n;
+          rectangle.setFill(Paint.valueOf("#f88c00"));
+        }
       }
     }
   }
