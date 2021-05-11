@@ -29,7 +29,7 @@ public class Bag {
   }
 
   /**
-   * Fills the bag by filling tileCounter and remainingTiles of the bag
+   * Fills the bag by filling tileCounter and remainingTiles of the bag.
    *
    * @author tthielen
    */
@@ -67,7 +67,7 @@ public class Bag {
     // correct amounts of tiles
     for (TileContainer tc : tileCounter) {
       for (int i = 0; i < tc.getCount(); i++) {
-        remainingTiles.add(new Tile (tc.getTile()));
+        remainingTiles.add(new Tile(tc.getTile()));
       }
     }
   }
@@ -107,16 +107,16 @@ public class Bag {
   }
 
   /**
-   * Adds the given tile to remaininTiles and increases the count in its respective TileContainer in
-   * tileCounter.
+   * Adds the given tile to remainingTiles and increases the count in its respective TileContainer
+   * in tileCounter.
    *
    * @author tthielen
-   * @param Tile to be added to the bag
+   * @param tile the tile which is meant to be added to the bag
    */
-  public void addTile(Tile t) {
-    remainingTiles.add(t);
+  public void addTile(Tile tile) {
+    remainingTiles.add(tile);
     for (TileContainer tc : tileCounter) {
-      if (tc.getTile().equals(t)) {
+      if (tc.getTile().equals(tile)) {
         tc.incCount();
         break;
       }
@@ -136,18 +136,16 @@ public class Bag {
     }
     return count;
   }
-  
+
   /**
-   * Returns the whole tileCounter ArrayList
-   * 
+   * Returns the whole tileCounter ArrayList.
+   *
    * @author tthielen
    * @return tileCounter
    */
-  public ArrayList<TileContainer> getTileCounter(){
-	  return tileCounter;
+  public ArrayList<TileContainer> getTileCounter() {
+    return tileCounter;
   }
-
-
 
   /**
    * Returns whether the bag is empty.

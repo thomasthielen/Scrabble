@@ -21,10 +21,12 @@ public class Player {
   private boolean currentlyPlaying = false;
 
   /**
-   * Constructor: Creates a player object with the given username.
+   * Creates a player object with the given username.
    *
    * @author tthielen
-   * @param username
+   * @param username the username of the player
+   * @param avatar one of the avatar enums for the player
+   * @param gameReference used to create a rack for the player
    */
   public Player(String username, Avatar avatar, GameSession gameReference) {
     this.username = username;
