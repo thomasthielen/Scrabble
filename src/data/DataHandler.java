@@ -1,6 +1,8 @@
 package data;
 
 import gameentities.Avatar;
+import gameentities.Player;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -15,6 +17,9 @@ import java.util.regex.Pattern;
  * @author jluellig
  */
 public class DataHandler {
+
+  private static Player ownPlayer;
+  private static int ownPlayerID;
 
   /**
    * Imports the given file as the dictionary of the current game. The txt-File has to be in the
@@ -209,5 +214,46 @@ public class DataHandler {
     statistics = Database.getStatistics(id);
     Database.disconnect();
     return statistics;
+  }
+
+  /**
+   * Sets the users own Player object.
+   *
+   * @param ownPlayer the Player object that should be used as the user's player.
+   * @author jluellig
+   */
+  public static void setOwnPlayer(Player ownPlayer) {
+    DataHandler.ownPlayer = ownPlayer;
+  }
+
+  /**
+   * Returns the player object of the user.
+   *
+   * @return ownPlayer
+   * @author jluellig
+   */
+  public static Player getOwnPlayer() {
+    return DataHandler.ownPlayer;
+  }
+
+  /**
+   * Sets the users own database ID.
+   *
+   * @param id ID for the user's database entry
+   * @author jluellig
+   */
+  public static void setOwnPlayerId(int id) {
+    // TODO set ID when creating new player & when choosing existing player
+    DataHandler.ownPlayerID = id;
+  }
+
+  /**
+   * Returns the id of the user in the database.
+   *
+   * @return ownPlayerID
+   * @author jluellig
+   */
+  public static int getOwnPlayerID() {
+    return DataHandler.ownPlayerID;
   }
 }

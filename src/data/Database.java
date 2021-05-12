@@ -109,7 +109,7 @@ class Database {
 
   /**
    * Changes the {@link gameentities.Avatar} of the player with the given ID in the table PlayerInfo
-   * of PlayerDB
+   * of PlayerDB.
    *
    * @param avatar new avatar the user chooses for his profile
    * @param id user id for the avatar that should be changed
