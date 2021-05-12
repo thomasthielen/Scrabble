@@ -725,6 +725,11 @@ public class GameScreenController {
     closeSwapPane(event);
     setRack(false);
   }
+  
+  @FXML
+  void swapPaneClicked(ActionEvent event) {
+
+  }
 
   // All following methods are functions used multiple times in the methods above
 

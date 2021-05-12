@@ -450,7 +450,7 @@
                         <Font size="10.0" />
                      </font>
                   </Button>
-                  <FlowPane fx:id="swapRack" layoutX="17.0" layoutY="4.0" prefHeight="21.0" prefWidth="312.0" />
+                  <FlowPane fx:id="swapRack" layoutX="17.0" layoutY="4.0" onMouseClicked="#swapPaneClicked" prefHeight="21.0" prefWidth="312.0" />
                </children>
             </Pane>
          </children>
