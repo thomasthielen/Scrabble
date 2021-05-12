@@ -19,7 +19,7 @@
             <Font size="24.0" />
          </font>
       </Button>
-      <TextField layoutX="300.0" layoutY="281.0" onInputMethodTextChanged="#newName" prefWidth="400.0" />
+      <TextField fx:id="inputForm" layoutX="300.0" layoutY="281.0" prefWidth="400.0" />
       <Text fill="#f88c00" layoutX="276.0" layoutY="189.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a username in the field below">
          <font>
             <Font size="24.0" />
