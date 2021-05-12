@@ -75,6 +75,7 @@ public class GameScreenController {
   private ArrayList<Tile> gameBoardTiles = new ArrayList<Tile>();
 
   private ArrayList<Tile> swapTiles = new ArrayList<Tile>();
+  private ArrayList<Integer> positions = new ArrayList<Integer>();
 
   private ArrayList<Tile> rackTiles = new ArrayList<Tile>();
 
@@ -89,6 +90,7 @@ public class GameScreenController {
   private double eventY = 0;
 
   private Button submitButton;
+  private Button recallButton;
 
   private int boardSelectedX = 0;
   private int boardSelectedY = 0;
@@ -111,7 +113,10 @@ public class GameScreenController {
         Button button = (Button) node;
         if (button.getText().contains("Submit")) {
           submitButton = button;
-          submitButton.setDisable(true);
+          submitButton.setDisable(true);          
+        } else if (button.getText().equals("Recall")) {
+          recallButton = button;
+          recallButton.setDisable(true);
         }
       }
     }
@@ -148,10 +153,10 @@ public class GameScreenController {
 
     Rack r = gameSession.getPlayer().getRack();
     if (isFirstTime) {
-      // Call the initial draw of tiles in the back end      
+      // Call the initial draw of tiles in the back end
       r.initialDraw();
     }
-    
+
     // Save those tiles in the ArrayList rackTiles
     for (Tile t : r.getTiles()) {
       rackTiles.add(t);
@@ -291,11 +296,12 @@ public class GameScreenController {
             rackTiles.get(rackPanes.indexOf(node)).setSelected(true);
             // Paint the tile to the "selected colour"
             StackPane sp = (StackPane) node;
-            paintTileAsSelected(sp);
+            paintTileAsSelected(sp, true);
           }
         }
       }
     }
+    refreshRecall();
     refreshSubmit();
   }
 
@@ -442,7 +448,7 @@ public class GameScreenController {
                 // Mark the selected tile
                 for (SquarePane sp : squarePanes) {
                   if (sp.getSquare() == square) {
-                    paintTileAsSelected(sp.getStackPane());
+                    paintTileAsSelected(sp.getStackPane(), true);
                   }
                 }
               }
@@ -489,7 +495,7 @@ public class GameScreenController {
       // and call the back end method
       gameSession.placeTile(tileToPlaceX, tileToPlaceY, tileToPlace);
     }
-
+    refreshRecall();
     refreshSubmit();
   }
 
@@ -633,6 +639,7 @@ public class GameScreenController {
     refreshSubmit();
 
     gameBoardTiles.clear();
+    recallButton.setDisable(true);
   }
 
   /**
@@ -670,7 +677,10 @@ public class GameScreenController {
   @FXML
   void openSwapPane(ActionEvent event) throws Exception {
     recallLetters(event);
+    deselectAll();
+    paintAllAsDeselected();
     swapPane.setVisible(true);
+    swapPanes.clear();
     swapRack.setHgap(20);
     swapRack.setAlignment(Pos.CENTER);
     rack.clear();
@@ -721,14 +731,36 @@ public class GameScreenController {
 
   @FXML
   void swapTiles(ActionEvent event) throws Exception {
-    gameSession.exchangeTiles(rackTiles);
+    gameSession.exchangeTiles(swapTiles, positions);
+    swapTiles.clear();
     closeSwapPane(event);
     setRack(false);
   }
-  
-  @FXML
-  void swapPaneClicked(ActionEvent event) {
 
+  @FXML
+  void swapPaneClicked(MouseEvent event) {
+    // Extract the coordinates from the event
+    double eventX = event.getX();
+    double eventY = event.getY();
+    // Go through all elements of the swapRack
+    for (Node node : swapRack.getChildren()) {
+      if (node instanceof StackPane) {
+        if (node.getBoundsInParent().contains(eventX, eventY)) {
+          Tile clickedOnTile = rackTiles.get(swapPanes.indexOf(node));
+          if (clickedOnTile.isSelected()) {
+            clickedOnTile.setSelected(false);
+            positions.remove(swapTiles.indexOf(clickedOnTile));
+            swapTiles.remove(clickedOnTile);
+            paintTileAsSelected((StackPane) node, false);
+          } else {
+            clickedOnTile.setSelected(true);
+            swapTiles.add(clickedOnTile);
+            positions.add(rackTiles.indexOf(clickedOnTile));
+            paintTileAsSelected((StackPane) node, true);
+          }
+        }
+      }
+    }
   }
 
   // All following methods are functions used multiple times in the methods above
@@ -768,11 +800,15 @@ public class GameScreenController {
     sp.getChildren().add(number);
   }
 
-  private void paintTileAsSelected(StackPane sp) {
+  private void paintTileAsSelected(StackPane sp, boolean selected) {
     for (Node n : sp.getChildren()) {
       if (n instanceof Rectangle) {
         Rectangle rectangle = (Rectangle) n;
-        rectangle.setFill(Paint.valueOf("#f8d200"));
+        if (selected) {
+          rectangle.setFill(Paint.valueOf("#f8d200"));
+        } else {
+          rectangle.setFill(Paint.valueOf("#f88c00"));
+        }
       }
     }
   }
@@ -796,6 +832,14 @@ public class GameScreenController {
     }
   }
 
+  private void refreshRecall() {
+    if (gameBoardTiles.size() > 0) {
+      recallButton.setDisable(false);
+    } else {
+      recallButton.setDisable(true);
+    }
+  }
+  
   // Test method for GridPane exchange
   public GridPane modifyPane(GridPane pane) {
     for (Node node : pane.getChildren()) {

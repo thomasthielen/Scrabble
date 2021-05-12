@@ -72,8 +72,8 @@ public class Player {
    * @author tthielen
    * @param Tiles that are meant to be swapped
    */
-  public void exchangeTiles(ArrayList<Tile> swapTiles) {
-    rack.exchangeTiles(swapTiles);
+  public void exchangeTiles(ArrayList<Tile> swapTiles, ArrayList<Integer> positions) {
+    rack.exchangeTiles(swapTiles, positions);
   }
 
   /**

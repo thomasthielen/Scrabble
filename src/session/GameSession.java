@@ -93,8 +93,8 @@ public class GameSession {
    * @author tthielen
    * @param swapTiles
    */
-  public void exchangeTiles(ArrayList<Tile> swapTiles) {
-    ownPlayer.exchangeTiles(swapTiles);
+  public void exchangeTiles(ArrayList<Tile> swapTiles, ArrayList<Integer> positions) {
+    ownPlayer.exchangeTiles(swapTiles, positions);
     nextPlayer();
   }
 

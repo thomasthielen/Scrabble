@@ -52,6 +52,17 @@ public class Rack {
       tiles.add(bag.drawTile());
     }
   }
+  
+  public void refillDraw(ArrayList<Integer> positions) {
+    int i = 0;
+    while (this.tiles.size() < 7 && i < positions.size()) { 
+      if (bag.isEmpty()) {
+        return;
+      }
+      tiles.add(positions.get(i).intValue(), bag.drawTile());
+      i++;
+    }
+  }
 
   /**
    * The Player chooses Tiles he wants to swap with new Tiles from the bag. Those Tiles are returned
@@ -60,7 +71,7 @@ public class Rack {
    * @author tthielen
    * @param Tiles that are meant to be swapped
    */
-  public void exchangeTiles(ArrayList<Tile> swapTiles) {
+  public void exchangeTiles(ArrayList<Tile> swapTiles, ArrayList<Integer> positions) {
     ArrayList<Tile> returnTiles = new ArrayList<Tile>();
 
     for (Tile t : swapTiles) {
@@ -76,7 +87,7 @@ public class Rack {
       this.bag.addTile(t);
     }
 
-    refillDraw();
+    refillDraw(positions);
   }
 
   /**
