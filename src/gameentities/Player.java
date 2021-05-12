@@ -26,12 +26,20 @@ public class Player {
    * @author tthielen
    * @param username the username of the player
    * @param avatar one of the avatar enums for the player
-   * @param gameReference used to create a rack for the player
    */
   public Player(String username, Avatar avatar) {
     this.username = username;
     this.avatar = avatar;
-    //this.rack = new Rack(gameReference);
+  }
+
+  /**
+   * Creates a rack for the player according to the given GameSession.
+   *
+   * @author tthielen
+   * @param gameReference used to create a rack for the player
+   */
+  public void createRack(GameSession gameReference) {
+    this.rack = new Rack(gameReference);
   }
 
   /**

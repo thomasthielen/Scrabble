@@ -751,6 +751,7 @@ public class GameScreenController {
   void swapTiles(ActionEvent event) throws Exception {
     gameSession.exchangeTiles(swapTiles, positions);
     swapTiles.clear();
+    positions.clear();
     closeSwapPane(event);
     setRack(false);
   }

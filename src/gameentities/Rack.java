@@ -14,6 +14,8 @@ import session.GameSession;
  */
 public class Rack {
   private ArrayList<Tile> tiles = new ArrayList<Tile>();
+  // 2
+  private Tile[] tileArray = new Tile[7];
   // References
   private Bag bag;
 
@@ -37,8 +39,11 @@ public class Rack {
     for (int i = 0; i < 7; i++) {
       tiles.add(bag.drawTile());
     }
+    for (int i = 0; i < 7; i++) {
+      tileArray[i] = tiles.get(i);
+    }
   }
-
+  
   /**
    * Redraws tiles until there are 7 tiles on the rack again or the bag is empty.
    *
@@ -49,18 +54,20 @@ public class Rack {
       if (bag.isEmpty()) {
         return;
       }
-      tiles.add(bag.drawTile());
-    }
-  }
-  
-  public void refillDraw(ArrayList<Integer> positions) {
-    int i = 0;
-    while (this.tiles.size() < 7 && i < positions.size()) { 
-      if (bag.isEmpty()) {
-        return;
+      Tile newTile = bag.drawTile();
+      tiles.add(newTile);
+      for (int i = 0; i < tileArray.length; i++) {
+        if (tileArray[i] == null) {
+          tileArray[i] = newTile;
+          break;
+        }
       }
-      tiles.add(positions.get(i).intValue(), bag.drawTile());
-      i++;
+    }
+    tiles.clear();
+    for (int i = 0; i < tileArray.length; i++) {
+      if (tileArray[i] != null) {
+        tiles.add(tileArray[i]);
+      }
     }
   }
 
@@ -77,7 +84,16 @@ public class Rack {
     for (Tile t : swapTiles) {
       if (this.tiles.contains(t)) {
         returnTiles.add(t);
+        
         this.tiles.remove(t);
+        
+        for (int i = 0; i < tileArray.length; i++) {
+          if (tileArray[i] == t) {
+            tileArray[i] = null;
+            break;
+          }
+        }
+        
       } else {
         System.out.println("Error: Chosen tile does not exist on rack!");
       }
@@ -87,7 +103,7 @@ public class Rack {
       this.bag.addTile(t);
     }
 
-    refillDraw(positions);
+    refillDraw();
   }
 
   /**
@@ -97,7 +113,18 @@ public class Rack {
    * @param tile
    */
   public void playTile(Tile tile) {
-    this.tiles.remove(tile);
+    for (int i = 0; i < tileArray.length; i++) {
+      if (tileArray[i] == tile) {
+        tileArray[i] = null;
+        break;
+      }
+    }
+    this.tiles.clear();
+    for (int i = 0; i < tileArray.length; i++) {
+      if (tileArray[i] != null) {
+        tiles.add(tileArray[i]);
+      }
+    }
   }
 
   /**
@@ -107,7 +134,18 @@ public class Rack {
    * @param tile
    */
   public void returnTile(Tile tile) {
-    this.tiles.add(tile);
+    for (int i = 0; i < tileArray.length; i++) {
+      if (tileArray[i] == null) {
+        tileArray[i] = tile;
+        break;
+      }
+    }
+    this.tiles.clear();
+    for (int i = 0; i < tileArray.length; i++) {
+      if (tileArray[i] != null) {
+        tiles.add(tileArray[i]);
+      }
+    }
   }
 
   /**

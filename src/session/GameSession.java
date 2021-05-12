@@ -1,7 +1,6 @@
 package session;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import gameentities.*;
 
@@ -18,7 +17,6 @@ public class GameSession {
   private Board board; // The board of the game
 
   private boolean isActive = false; // Indicates whether the game is live
-  private boolean isHost = false;
 
   private Player ownPlayer; // The Player of this GameSession object
 
@@ -40,8 +38,8 @@ public class GameSession {
     bag = new Bag();
     board = new Board();
     ownPlayer =
-        new Player(
-            "tthielen", null); // TODO: REMOVE, only for testing purposes in ConsoleGame
+        new Player("tthielen", null); // TODO: REMOVE, only for testing purposes in ConsoleGame
+    ownPlayer.createRack(this);
     initialise();
   }
 
@@ -85,7 +83,7 @@ public class GameSession {
   }
 
   // 2: Swap tiles
-
+  
   /**
    * Swaps the selected tiles for new ones by calling the exchangeTiles() function of the
    * currentPlayer.
