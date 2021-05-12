@@ -1,10 +1,15 @@
 package screens;
 
+import java.io.File;
+
+import data.DataHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.stage.FileChooser;
 
 /**
  * This class provides the Controller for the Lobby Screen
@@ -13,16 +18,23 @@ import javafx.scene.Scene;
  */
 public class LobbyScreenController {
 
+	@FXML private Button fileForm;
+	
   /**
-   * TODO This method serves as the Listener for "Upload dictionary"-Button It allows the user to
-   * upload his own dictionaries to the game
+   * This method serves as the listener for the "Upload dictionary"-Button. It allows the user to
+   * upload his own dictionary for the game.
    *
-   * @author jbleil
-   * @param event
+   * @author jluellig
+   * @param event ActionEvent when the "Upload dictionary"-Button is clicked
    * @throws Exception
    */
   @FXML
-  void uploadDictionary(ActionEvent event) throws Exception {}
+  void uploadDictionary(ActionEvent event) throws Exception {
+	  FileChooser fileChooser = new FileChooser();
+	  File file = fileChooser.showOpenDialog(StartScreen.getStage());
+	  DataHandler.userDictionaryFile(file);
+	  fileForm.setText(file.getName());
+  }
 
   /**
    * This method serves as the Listener for "Leave Lobby"-Button It let's the user leave the Lobby

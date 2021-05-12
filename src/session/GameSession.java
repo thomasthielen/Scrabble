@@ -41,7 +41,7 @@ public class GameSession {
     board = new Board();
     ownPlayer =
         new Player(
-            "tthielen", null, this); // TODO: REMOVE, only for testing purposes in ConsoleGame
+            "tthielen", null); // TODO: REMOVE, only for testing purposes in ConsoleGame
     initialise();
   }
 

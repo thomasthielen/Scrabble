@@ -28,10 +28,10 @@ public class Player {
    * @param avatar one of the avatar enums for the player
    * @param gameReference used to create a rack for the player
    */
-  public Player(String username, Avatar avatar, GameSession gameReference) {
+  public Player(String username, Avatar avatar) {
     this.username = username;
     this.avatar = avatar;
-    this.rack = new Rack(gameReference);
+    //this.rack = new Rack(gameReference);
   }
 
   /**

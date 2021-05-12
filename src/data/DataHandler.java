@@ -243,7 +243,7 @@ public class DataHandler {
    * @author jluellig
    */
   public static void setOwnPlayerId(int id) {
-    // TODO set ID when creating new player & when choosing existing player
+    // TODO set ID when choosing existing player
     DataHandler.ownPlayerID = id;
   }
 

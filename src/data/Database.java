@@ -84,6 +84,9 @@ class Database {
               + "', '"
               + avatar.toString()
               + "')");
+      // get user ID
+      rs = stm.executeQuery("SELECT last_insert_rowid()");
+      DataHandler.setOwnPlayerId(rs.getInt(1));
     } catch (Exception e) {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
     }

@@ -55,7 +55,7 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <Button layoutX="410.0" layoutY="363.0" mnemonicParsing="false" onAction="#uploadDictionary" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Upload dictionary" textFill="WHITE" />
+      <Button fx:id="fileForm" layoutX="410.0" layoutY="363.0" mnemonicParsing="false" onAction="#uploadDictionary" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Upload dictionary" textFill="WHITE" />
       <Button layoutX="300.0" layoutY="473.0" mnemonicParsing="false" onAction="#startGame" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="START GAME" textFill="WHITE">
          <font>
             <Font size="24.0" />
