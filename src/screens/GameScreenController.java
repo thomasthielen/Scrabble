@@ -66,6 +66,8 @@ public class GameScreenController {
 
   private ArrayList<StackPane> rackPanes = new ArrayList<StackPane>();
 
+  private ArrayList<StackPane> swapPanes = new ArrayList<StackPane>();
+
   private ArrayList<StackPane> boardPanes = new ArrayList<StackPane>();
 
   private GameSession gameSession = new GameSession();
@@ -133,14 +135,23 @@ public class GameScreenController {
     playerStatisticsPane.setVisible(false);
     swapPane.setVisible(false);
 
-    setRack();
+    setRack(true);
   }
 
-  public void setRack() {
-    // Call the initial draw of tiles in the back end
-    Rack r = gameSession.getPlayer().getRack();
-    r.initialDraw();
+  public void setRack(boolean isFirstTime) {
+    rack.clear();
+    letters.clear();
+    numbers.clear();
+    rackPanes.clear();
+    rackPane.getChildren().clear();
+    rackTiles.clear();
 
+    Rack r = gameSession.getPlayer().getRack();
+    if (isFirstTime) {
+      // Call the initial draw of tiles in the back end      
+      r.initialDraw();
+    }
+    
     // Save those tiles in the ArrayList rackTiles
     for (Tile t : r.getTiles()) {
       rackTiles.add(t);
@@ -449,10 +460,10 @@ public class GameScreenController {
                   selectedStackPane = sp.getStackPane();
                 }
               }
-              
+
               placeTileOnBoard(selectedTile, (StackPane) node);
               selectedStackPane.getChildren().clear();
-              
+
               deselectAll();
             }
           }
@@ -658,9 +669,36 @@ public class GameScreenController {
    */
   @FXML
   void openSwapPane(ActionEvent event) throws Exception {
+    recallLetters(event);
     swapPane.setVisible(true);
-    // TODO: zu tauschende Tiles zur ArrayList hinzuf�gen
-    swapTiles.add(null);
+    swapRack.setHgap(20);
+    swapRack.setAlignment(Pos.CENTER);
+    rack.clear();
+    letters.clear();
+    numbers.clear();
+
+    for (Tile t : rackTiles) {
+      // Set a rectangle
+      Rectangle rectangle = new Rectangle(22, 22);
+      rectangle.setFill(Paint.valueOf("#f88c00"));
+      rack.add(rectangle);
+      // Set the letter
+      Text text = new Text(String.valueOf(t.getLetter()));
+      text.setFill(Color.WHITE);
+      letters.add(text);
+      // Set the value
+      Text number = new Text(String.valueOf(t.getValue()));
+      number.setFont(new Font(10));
+      number.setFill(Color.WHITE);
+      numbers.add(number);
+
+      // And add those as children to a StackPane, which is saved in rackPanes
+      StackPane stackPane = new StackPane();
+      stackPane.getChildren().addAll(rectangle, text, number);
+      swapPanes.add(stackPane);
+      StackPane.setAlignment(number, Pos.BOTTOM_RIGHT);
+      swapRack.getChildren().add(stackPane);
+    }
     // this.gameBoard = modifyPane(gameBoard); // Test for GridPane exchange
   }
 
@@ -673,17 +711,20 @@ public class GameScreenController {
    * @throws Exception
    */
   @FXML
-  void submitSwapTiles(ActionEvent event) throws Exception {
-    gameSession.exchangeTiles(swapTiles);
-  }
+  void submitSwapTiles(ActionEvent event) throws Exception {}
 
   @FXML
   void closeSwapPane(ActionEvent event) throws Exception {
     swapPane.setVisible(false);
+    swapRack.getChildren().clear();
   }
 
   @FXML
-  void swapTiles(ActionEvent event) throws Exception {}
+  void swapTiles(ActionEvent event) throws Exception {
+    gameSession.exchangeTiles(rackTiles);
+    closeSwapPane(event);
+    setRack(false);
+  }
 
   // All following methods are functions used multiple times in the methods above
 
