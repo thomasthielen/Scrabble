@@ -1,8 +1,5 @@
 package network;
 
-import java.io.File;
-
-import data.DataHandler;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -54,9 +51,16 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
   @Override
   protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
     Channel in = ctx.channel();
-    for (Channel channel : channels) {
-      if (channel != in) {
+    MessageType mt = msg.getMessageType();
+    if (mt == MessageType.CONNECT) {
+      for (Channel channel : channels) {
         channel.writeAndFlush(msg);
+      }
+    } else {
+      for (Channel channel : channels) {
+        if (channel != in) {
+          channel.writeAndFlush(msg);
+        }
       }
     }
   }

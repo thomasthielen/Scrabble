@@ -2,8 +2,8 @@ package session;
 
 import java.net.BindException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 
+import data.DataHandler;
 import gameentities.Player;
 import network.Server;
 import network.Client;
@@ -31,9 +31,8 @@ public class MultiPlayerLobby extends SinglePlayerLobby {
         // TODO
         System.out.println(
             "Your lobby has been created. IP: " + Server.getIp() + ", Port: " + Server.getPort());
-        // TODO host player's name
         Client.initialiseClient("localhost", port, true);
-        Client.connectToServer("tikrause");
+        Client.connectToServer(DataHandler.getOwnPlayer().getUsername(), DataHandler.getOwnPlayer().getPlayerStatistics());
         break;
       } catch (BindException e) {
         port++;
@@ -43,10 +42,5 @@ public class MultiPlayerLobby extends SinglePlayerLobby {
         // TODO
       }
     }
-  }
-
-  // @author tikrause
-  public void joinPlayer(Client c) {
-    //this.getGameState().addPlayer(c.getPlayer());
   }
 }

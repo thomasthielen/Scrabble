@@ -62,7 +62,7 @@ public class OfflineScreenController {
   void back(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/OfflineOrOfflineScreen.fxml"));
+    loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();

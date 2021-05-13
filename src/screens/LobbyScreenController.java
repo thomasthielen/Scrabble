@@ -54,12 +54,12 @@ public class LobbyScreenController {
   void leaveLobby(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/StartScreen.fxml"));
+    loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));    
     StartScreen.getStage().show();
     // TODO
-    Client.disconnectClient("tikrause");
+    Client.disconnectClient(DataHandler.getOwnPlayer().getUsername());
     Server.serverShutdown();
   }
 
@@ -94,9 +94,11 @@ public class LobbyScreenController {
   void addAIPlayer(ActionEvent event) throws Exception {}
   
   public static void addIPAndPort() {
-    Text IP = new Text(100, 100, "IP");
-    Text Port = new Text(100, 150, "Port");
-    lobbyPane.getChildren().add(IP);
-    lobbyPane.getChildren().add(Port);
+    Text ip = new Text(100, 100, Client.getIp());
+    Text port = new Text(100, 150, "" + Client.getPort());
+    lobbyPane = new Pane();
+    lobbyPane.getChildren().add(ip);
+    lobbyPane.getChildren().add(port);
+    lobbyPane.setVisible(true);
   }
 }

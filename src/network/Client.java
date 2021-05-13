@@ -9,6 +9,9 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+
+import data.StatisticKeys;
 import network.messages.*;
 import session.GameSession;
 import session.GameState;
@@ -42,7 +45,7 @@ public class Client {
   public static void main(String[] args) throws InterruptedException, IOException {
     // TODO: nicht mit localhost, sondern mit Server-IP verbinden
     Client.initialiseClient("localhost", 8000, false);
-    Client.connectToServer(ip);
+    Client.connectToServer(ip, null);
   }
 
   /**
@@ -65,7 +68,7 @@ public class Client {
    *
    * @author tikrause
    */
-  public static void connectToServer(String username) {
+  public static void connectToServer(String username,  HashMap<StatisticKeys, Integer> playerStatistics) {
     group = new NioEventLoopGroup();
 
     try {
@@ -79,7 +82,7 @@ public class Client {
       // connects the client to the server using TCP
       cf = bootstrap.connect(ip, port).sync();
       isRunning = true;
-      cf.channel().writeAndFlush(new ConnectMessage(username));
+      cf.channel().writeAndFlush(new ConnectMessage(username, playerStatistics));
       gameSession = new GameSession();
       // BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
@@ -124,7 +127,7 @@ public class Client {
   public static void disconnectClient(String name) throws InterruptedException {
     cf.channel().writeAndFlush(new DisconnectMessage(name, isHost));
     isRunning = false;
-    cf.channel().closeFuture().sync();
+    cf.channel().close().sync();
     group.shutdownGracefully();
     group = null;
     cf = null;
@@ -148,6 +151,14 @@ public class Client {
    */
   public static boolean isHost() {
     return isHost;
+  }
+
+  public static String getIp() {
+    return ip;
+  }
+
+  public static int getPort() {
+    return port;
   }
 
   public static void updateGameSession(GameState gameState) {

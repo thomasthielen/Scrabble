@@ -27,6 +27,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
       case CONNECT:
         ConnectMessage cm = (ConnectMessage) msg;
         System.out.println(cm.getFrom() + " has joined!");
+        System.out.println(cm.getPlayerStatistics());
         break;
       case DISCONNECT:
         DisconnectMessage dcm = (DisconnectMessage) msg;

@@ -20,7 +20,7 @@ public class SinglePlayerLobby {
    */
   public SinglePlayerLobby(Player p) {
     players = new ArrayList<Player>();
-    joinPlayer(p);
+    //joinPlayer(p);
     Bag bag = new Bag();
     Board board = new Board();
     this.gameState = new GameState(players, bag, board);
