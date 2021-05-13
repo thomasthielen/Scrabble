@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 
 /**
  * this class provides the controller for the Choose Server Screen
@@ -35,6 +36,7 @@ public class ChooseServerScreenController {
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
+    LobbyScreenController.addIPAndPort();
   }
 
   /**

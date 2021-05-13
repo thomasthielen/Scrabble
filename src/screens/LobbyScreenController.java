@@ -9,6 +9,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import network.Client;
 import network.Server;
@@ -21,6 +23,8 @@ import network.Server;
 public class LobbyScreenController {
 
 	@FXML private Button fileForm;
+	
+    @FXML private static Pane lobbyPane;
 	
   /**
    * This method serves as the listener for the "Upload dictionary"-Button. It allows the user to
@@ -88,4 +92,11 @@ public class LobbyScreenController {
    */
   @FXML
   void addAIPlayer(ActionEvent event) throws Exception {}
+  
+  public static void addIPAndPort() {
+    Text IP = new Text(100, 100, "IP");
+    Text Port = new Text(100, 150, "Port");
+    lobbyPane.getChildren().add(IP);
+    lobbyPane.getChildren().add(Port);
+  }
 }

@@ -29,6 +29,7 @@ public class OfflineScreenController {
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
+    LobbyScreenController.addIPAndPort();
   }
 
   /**

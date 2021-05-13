@@ -31,6 +31,7 @@ public class OnlineScreenController {
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
+    LobbyScreenController.addIPAndPort();
     // TODO @author tikrause
     createMultiPlayerLobby();
   }
