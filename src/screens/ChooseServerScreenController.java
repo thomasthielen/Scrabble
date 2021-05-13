@@ -13,6 +13,12 @@ import javafx.scene.Scene;
  */
 public class ChooseServerScreenController {
 
+  @FXML
+  private TextField ipField;
+
+  @FXML
+  private TextField portField;
+  
   /**
    * This method serves as the Listener for "JOIN GAME"-Button It redirects the user to the Lobby
    * Screen

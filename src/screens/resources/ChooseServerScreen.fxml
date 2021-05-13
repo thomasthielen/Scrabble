@@ -6,7 +6,6 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="562.0" prefWidth="1000.0" style="-fx-background-color: F4D896;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screens.ChooseServerScreenController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="50.0" layoutX="325.0" layoutY="21.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="350.0" />
@@ -15,13 +14,19 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Text>
-      <Text fill="#f88c00" layoutX="233.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter the IP-Adress of the Gameserver you like to join">
+      <Text fill="#f88c00" layoutX="149.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter the IP address of the game server you like to join in the field below">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
-      <TextField layoutX="233.0" layoutY="281.0" prefHeight="40.0" prefWidth="400.0" />
-      <Button layoutX="633.0" layoutY="281.0" mnemonicParsing="false" onAction="#joinGame" prefHeight="40.0" prefWidth="132.0" style="-fx-background-color: #f88c00;" text="Join Game" textFill="WHITE" />
+      <TextField fx:id="ipField" layoutX="300.0" layoutY="221.0" prefHeight="40.0" prefWidth="400.0" />
+      <Button layoutX="434.0" layoutY="440.0" mnemonicParsing="false" onAction="#joinGame" prefHeight="40.0" prefWidth="132.0" style="-fx-background-color: #f88c00;" text="Join Game" textFill="WHITE" />
       <Button layoutX="22.0" layoutY="22.0" mnemonicParsing="false" onAction="#back" style="-fx-background-color: #f88c00;" text="Back" textFill="WHITE" />
+      <TextField fx:id="portField" layoutX="300.0" layoutY="345.0" prefHeight="40.0" prefWidth="400.0" />
+      <Text fill="#f88c00" layoutX="180.0" layoutY="312.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter the port of the game server you like to join in the field below">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
    </children>
 </Pane>
