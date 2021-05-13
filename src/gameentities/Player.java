@@ -25,9 +25,9 @@ public class Player {
   private boolean currentlyPlaying = false;
 
   /**
-   * Creates a player object with the given username.
+   * Creates a player object for the current user of the game.
    *
-   * @author tthielen
+   * @author jluellig
    * @param username the username of the player
    * @param avatar one of the avatar enums for the player
    */
@@ -35,6 +35,20 @@ public class Player {
     this.username = username;
     this.avatar = avatar;
     this.playerStatistics = DataHandler.getStatistics(DataHandler.getOwnPlayerID());
+  }
+
+  /**
+   * Overloaded constructor for foreign players with different statistics.
+   *
+   * @author jluellig
+   * @param username the username of the player
+   * @param avatar one of the avatar enums for the player
+   * @param playerStatistics the statistics of the player
+   */
+  public Player(String username, Avatar avatar, HashMap<StatisticKeys, Integer> playerStatistics) {
+    this.username = username;
+    this.avatar = avatar;
+    this.playerStatistics = playerStatistics;
   }
 
   /**
@@ -168,15 +182,14 @@ public class Player {
   public boolean isCurrentlyPlaying() {
     return currentlyPlaying;
   }
-  
+
   /**
    * Returns the staticstics hash map of the given player.
-   * 
-   * @return playerStatistics
    *
+   * @return playerStatistics
    * @author jluellig
    */
   public HashMap<StatisticKeys, Integer> getPlayerStatistics() {
-	  return this.playerStatistics;
+    return this.playerStatistics;
   }
 }
