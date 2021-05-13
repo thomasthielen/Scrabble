@@ -1,7 +1,10 @@
 package gameentities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import data.DataHandler;
+import data.StatisticKeys;
 import session.GameSession;
 
 /**
@@ -17,6 +20,7 @@ public class Player {
   private Avatar avatar;
   private int score = 0;
   private Rack rack;
+  private HashMap<StatisticKeys, Integer> playerStatistics;
 
   private boolean currentlyPlaying = false;
 
@@ -30,6 +34,7 @@ public class Player {
   public Player(String username, Avatar avatar) {
     this.username = username;
     this.avatar = avatar;
+    this.playerStatistics = DataHandler.getStatistics(DataHandler.getOwnPlayerID());
   }
 
   /**
@@ -162,5 +167,16 @@ public class Player {
    */
   public boolean isCurrentlyPlaying() {
     return currentlyPlaying;
+  }
+  
+  /**
+   * Returns the staticstics hash map of the given player.
+   * 
+   * @return playerStatistics
+   *
+   * @author jluellig
+   */
+  public HashMap<StatisticKeys, Integer> getPlayerStatistics() {
+	  return this.playerStatistics;
   }
 }

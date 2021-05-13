@@ -25,7 +25,7 @@ public class NewProfileScreenController {
    * Profile Screen and a new Player instance is created and added to the database.
    *
    * @author jluellig
-   * @param event
+   * @param event ActionEvent when the "Start Game"-Button is clicked
    * @throws Exception
    */
   @FXML
