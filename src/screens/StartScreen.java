@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * This class runs the initial start of the UI and sets the stage for all thefollowing scenes
+ * This class runs the initial start of the UI and sets the stage for all the following scenes
  *
  * @author jbleil
  */
@@ -22,7 +22,7 @@ public class StartScreen extends Application {
    */
   public void start(Stage s) throws Exception {
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/LobbyScreen.fxml"));
+    loader.setLocation(getClass().getResource("resources/StartScreen.fxml"));
     Parent content = loader.load();
     stage.setScene(new Scene(content));
     stage.show();

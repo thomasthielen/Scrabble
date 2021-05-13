@@ -1,10 +1,13 @@
 package screens;
 
+import data.DataHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import session.MultiPlayerLobby;
+import session.SinglePlayerLobby;
 
 /**
  * this class provides the controller for the Online or Offline Screen
@@ -47,6 +50,8 @@ public class OnlineOrOfflineScreenController {
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
+    // TODO @author tikrause
+    createSinglePlayerLobby();
   }
 
   /**
@@ -64,5 +69,14 @@ public class OnlineOrOfflineScreenController {
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
+  }
+
+  /**
+   * creates a new lobby for a Singleplayer game
+   *
+   * @author tikrause
+   */
+  void createSinglePlayerLobby() {
+    SinglePlayerLobby spl = new SinglePlayerLobby(DataHandler.getOwnPlayer());
   }
 }

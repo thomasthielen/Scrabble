@@ -10,6 +10,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.FileChooser;
+import network.Client;
+import network.Server;
 
 /**
  * This class provides the Controller for the Lobby Screen
@@ -52,6 +54,9 @@ public class LobbyScreenController {
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));    
     StartScreen.getStage().show();
+    // TODO
+    Client.disconnectClient("tikrause");
+    Server.serverShutdown();
   }
 
   /**
