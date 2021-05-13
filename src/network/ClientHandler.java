@@ -4,6 +4,7 @@ import data.DataHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import network.messages.*;
+import session.GameState;
 
 /**
  * Handles the received messages of the client
@@ -29,7 +30,11 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         break;
       case DISCONNECT:
         DisconnectMessage dcm = (DisconnectMessage) msg;
-        System.out.println(dcm.getFrom() + " has left!");
+        if (dcm.isHost()) {
+          System.out.println("The host has left!");
+        } else {
+          System.out.println(dcm.getFrom() + " has left!");
+        }
         break;
       case ERROR:
         break;
@@ -40,14 +45,17 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         System.out.println("[" + scm.getFrom() + "]: " + scm.getMessage());
         break;
       case UPDATE_GAME_STATE:
+        UpdateGameStateMessage ugsm = (UpdateGameStateMessage) msg;
+        GameState gs = ugsm.getGameState();
+        Client.updateGameSession(gs);
         break;
       case DICTIONARY:
-    	  break;
+        break;
       case NEW_DICTIONARY:
-    	  // TODO
-    	  NewDictionaryMessage ndm = (NewDictionaryMessage) msg;
-    	  DataHandler.userDictionaryFile(ndm.getFile());
-    	  System.out.println(DataHandler.checkWord("mall")); 
+        // TODO
+        NewDictionaryMessage ndm = (NewDictionaryMessage) msg;
+        DataHandler.userDictionaryFile(ndm.getFile());
+        System.out.println(DataHandler.checkWord("mall"));
         break;
     }
   }

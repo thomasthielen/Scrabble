@@ -30,10 +30,6 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
    */
   @Override
   public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-    Channel in = ctx.channel();
-    for (Channel channel : channels) {
-      channel.writeAndFlush(new ConnectMessage(in.remoteAddress().toString()));
-    }
     channels.add(ctx.channel());
   }
 
@@ -45,10 +41,6 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
    */
   @Override
   public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-    Channel in = ctx.channel();
-    for (Channel channel : channels) {
-      channel.writeAndFlush(new DisconnectMessage(in.remoteAddress().toString()));
-    }
     channels.remove(ctx.channel());
   }
 
@@ -57,26 +49,14 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
    *
    * @author tikrause
    * @param ctx
+   * @param msg
    */
   @Override
   protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
     Channel in = ctx.channel();
     for (Channel channel : channels) {
       if (channel != in) {
-        if (msg.getMessageType() == MessageType.SEND_CHAT) {
-          SendChatMessage sm = (SendChatMessage) msg;
-          // TODO
-          if (sm.getMessage().equals("txt")) {
-            System.out.println("coole sache bro");
-
-            channel.writeAndFlush(new NewDictionaryMessage("hugo", new File("resources/Collins Scrabble Words (2019).txt")));
-            System.out.println("dictionary wurde erstellt"); 
-          } else {
-            channel.writeAndFlush(msg);
-          }
-        } else {
-          channel.writeAndFlush(msg);
-        }
+        channel.writeAndFlush(msg);
       }
     }
   }

@@ -3,6 +3,7 @@ package session;
 import java.util.ArrayList;
 
 import gameentities.*;
+import network.Client;
 
 /**
  * Class used to manage all game entities and necessary methods.
@@ -53,16 +54,13 @@ public class GameSession {
   /**
    * Synchronises the GameState objects between players
    *
-   * @author tthielen
+   * @author tikrause
    */
-  public void synchronise() {
+  public void synchronise(GameState overrideGameState) {
     // If the own turn is over: Create a GameState object and send it
     if (ownPlayer.isCurrentlyPlaying()) {
-      GameState gs = new GameState(this.players, this.bag, this.board);
-      // TODO: Send GameState object to other users
+    	Client.updateGameState(ownPlayer.getUsername(), overrideGameState);      // TODO: Send GameState object to other users
     } else {
-      // TODO: Replace "new GameState(xxx)" with the received GameState message
-      GameState overrideGameState = new GameState(this.players, this.bag, this.board);
       this.players = overrideGameState.getPlayers();
       this.bag = overrideGameState.getBag();
       this.board = overrideGameState.getBoard();
@@ -518,7 +516,7 @@ public class GameSession {
     }
     placedSquares.removeAll(placedSquares);
 
-    synchronise();
+    // TODO synchronise();
     nextPlayer();
   }
 

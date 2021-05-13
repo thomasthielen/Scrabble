@@ -1,15 +1,16 @@
 package network;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
+import gameentities.Player;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import network.messages.*;
+import session.GameSession;
 import session.GameState;
 
 /**
@@ -20,10 +21,15 @@ import session.GameState;
  */
 public class Client {
 
-  private final String name;
-  private final int port;
-  private boolean isRunning;
-  private Channel channel;
+  private static String ip;
+  private static int port;
+  private static boolean isRunning = false;
+  private static ChannelFuture cf;
+  private static boolean isHost;
+  private static EventLoopGroup group;
+
+  private Player player;
+  private static GameSession gameSession;
 
   /**
    * main method starts a new client and its run method
@@ -35,20 +41,22 @@ public class Client {
    */
   public static void main(String[] args) throws InterruptedException, IOException {
     // TODO: nicht mit localhost, sondern mit Server-IP verbinden
-    new Client("localhost", 8000).run();
+    Client.initialiseClient("localhost", 8000, false);
+    Client.connectToServer(ip);
   }
 
   /**
    * Constructor: creates a Client object at the existing server port
    *
    * @author tikrause
-   * @param name
+   * @param username
+   * @param ip
    * @param port
    */
-  public Client(String name, int port) {
-    this.name = name;
-    this.port = port;
-    isRunning = true;
+  public static void initialiseClient(String ipKey, int bindPort, boolean host) {
+    ip = ipKey;
+    port = bindPort;
+    isHost = host;
   }
 
   /**
@@ -56,11 +64,9 @@ public class Client {
    * or receive messages and to update the game status
    *
    * @author tikrause
-   * @throws InterruptedException
-   * @throws IOException
    */
-  public void run() throws InterruptedException, IOException {
-    EventLoopGroup group = new NioEventLoopGroup();
+  public static void connectToServer(String username) {
+    group = new NioEventLoopGroup();
 
     try {
       // simplifies the connecting process
@@ -71,39 +77,80 @@ public class Client {
               .handler(new ClientInitializer());
 
       // connects the client to the server using TCP
-      channel = bootstrap.connect(name, port).sync().channel();
-      BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+      cf = bootstrap.connect(ip, port).sync();
+      isRunning = true;
+      cf.channel().writeAndFlush(new ConnectMessage(username));
+      gameSession = new GameSession();
+      // BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
-      while (isRunning) {
+      while (!isRunning) {
         // TODO: INCOMPLETE
-        channel.writeAndFlush(new SendChatMessage(name, in.readLine()));
+        // channel.writeAndFlush(new SendChatMessage(ip, in.readLine()));
       }
-    } finally {
-      group.shutdownGracefully();
+    } catch (InterruptedException e) {
+      // TODO
+    } // catch (IOException e) {
+    // TODO
+    finally {
+      // group.shutdownGracefully();
     }
   }
 
-  public void connect() {
-    // TODO wird nicht gehen, da bei Beitritt automatisch handlerAdded in ServerHandler
-    channel.writeAndFlush(new ConnectMessage(name));
+  public static void sendChat(String name, String msg) {
+    cf.channel().writeAndFlush(new SendChatMessage(name, msg));
   }
 
-  public void disconnect() {
+  public static void reportError(String name, String reason) {
     // TODO
-    channel.writeAndFlush(new DisconnectMessage(name));
+    cf.channel().writeAndFlush(new ErrorMessage(name, reason));
   }
 
-  public void reportError(String reason) {
+  public static void reportSuccess(String name) {
     // TODO
-    channel.writeAndFlush(new ErrorMessage(name, reason));
+    cf.channel().writeAndFlush(new SuccessMessage(name));
   }
 
-  public void reportSuccess() {
-    // TODO
-    channel.writeAndFlush(new SuccessMessage(name));
+  public static void updateGameState(String name, GameState game) {
+    cf.channel().writeAndFlush(new UpdateGameStateMessage(name, game));
   }
 
-  public void updateGameState(GameState game) {
-    channel.writeAndFlush(new UpdateGameStateMessage(name, game));
+  /**
+   * disconnects the client from the server and informs the other clients that the player with the
+   * given username has left
+   *
+   * @author tikrause
+   * @param name
+   */
+  public static void disconnectClient(String name) throws InterruptedException {
+    cf.channel().writeAndFlush(new DisconnectMessage(name, isHost));
+    isRunning = false;
+    cf.channel().closeFuture().sync();
+    group.shutdownGracefully();
+    group = null;
+    cf = null;
+  }
+
+  /**
+   * getter method for the current status of the run flag
+   *
+   * @author tikrause
+   * @return isRunning
+   */
+  public static boolean isActive() {
+    return isRunning;
+  }
+
+  /**
+   * getter method if the client is a host
+   *
+   * @author tikrause
+   * @return isHost
+   */
+  public static boolean isHost() {
+    return isHost;
+  }
+
+  public static void updateGameSession(GameState gameState) {
+    gameSession.synchronise(gameState);
   }
 }

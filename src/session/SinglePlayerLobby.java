@@ -4,28 +4,26 @@ import java.util.ArrayList;
 import gameentities.*;
 
 /**
- * GameLobby is started by the host of the game itself. It is used to collect the Player objects and
- * synchronise the first GameState message.
+ * SinglePlayerLobby is started by the host of the game itself. It is used to collect the Player
+ * objects and synchronize the first GameState message.
  *
  * @author tthielen
  */
-public class GameLobby {
+public class SinglePlayerLobby {
   private GameState gameState;
-  // private Server host;
+  private ArrayList<Player> players;
 
   /**
-   * Constructor: Creates a first GameState object and the necessary Server/Client objects of the
-   * host.
+   * Constructor: Creates a first GameState object
    *
    * @author tthielen
    */
-  public GameLobby() {
-    ArrayList<Player> players = new ArrayList<Player>();
+  public SinglePlayerLobby(Player p) {
+    players = new ArrayList<Player>();
+    joinPlayer(p);
     Bag bag = new Bag();
     Board board = new Board();
     this.gameState = new GameState(players, bag, board);
-    // TODO: Create the Server (from the host)
-    // TODO: Create the Client (of the host)
   }
 
   /**
@@ -36,5 +34,11 @@ public class GameLobby {
    */
   public void joinPlayer(Player player) {
     gameState.addPlayer(player);
+  }
+
+  
+  // @author tikrause
+  public GameState getGameState() {
+    return this.gameState;
   }
 }

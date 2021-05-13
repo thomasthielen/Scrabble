@@ -14,6 +14,8 @@ public class DisconnectMessage extends Message {
    * @author lsteltma
    */
   private static final long serialVersionUID = 1L;
+  
+  private boolean host;
 
   /**
    * Constructor: Creates a DisconnectMessage by using the MessageType.DISCONNECT and the String
@@ -22,7 +24,12 @@ public class DisconnectMessage extends Message {
    * @author lsteltma
    * @param name
    */
-  public DisconnectMessage(String name) {
+  public DisconnectMessage(String name, boolean host) {
     super(MessageType.DISCONNECT, name);
+    this.host = host;
+  }
+  
+  public boolean isHost() {
+	  return this.host;
   }
 }
