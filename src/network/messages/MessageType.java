@@ -1,7 +1,7 @@
 package network.messages;
 
 /**
- * enum for all types a message can be an instance of
+ * enum for all types a message can be an instance of.
  *
  * @author tikrause
  */
@@ -11,7 +11,7 @@ public enum MessageType {
   ERROR,
   SUCCESS,
   SEND_CHAT,
-  UPDATE_GAME_STATE,
+  GAME_STATE,
   NEW_DICTIONARY,
   DICTIONARY;
 }

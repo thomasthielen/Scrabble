@@ -1,5 +1,6 @@
 package network;
 
+import data.DataHandler;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -9,13 +10,8 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import network.messages.*;
 import session.GameState;
 
-import java.util.ArrayList;
-
-import data.DataHandler;
-import gameentities.Player;
-
 /**
- * Handles the received messages of the server
+ * Handles the received messages of the server.
  *
  * @author tikrause
  */
@@ -26,10 +22,10 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
       new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
   /**
-   * notifies all connected channels that a new client has been added
+   * adds the new channel to the channel list when a client has connected to the server.
    *
    * @author tikrause
-   * @param ctx
+   * @param ctx channel that has joined the server
    */
   @Override
   public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
@@ -37,10 +33,10 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
   }
 
   /**
-   * notifies all connected channels that a new client has been removed
+   * removes the channel that has left when a client has disconnected from the server.
    *
    * @author tikrause
-   * @param ctx
+   * @param ctx channel that has left the server
    */
   @Override
   public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
@@ -48,7 +44,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
   }
 
   /**
-   * specifies and handles all received messages
+   * specifies and handles all received messages.
    *
    * @author tikrause
    * @param ctx
@@ -65,7 +61,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
       for (Channel channel : channels) {
         channel.writeAndFlush(msg);
         channel.writeAndFlush(
-            new UpdateGameStateMessage(
+            new GameStateMessage(
                 DataHandler.getOwnPlayer(),
                 new GameState(
                     Server.getPlayerList(),
@@ -79,7 +75,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
       for (Channel channel : channels) {
         channel.writeAndFlush(msg);
         channel.writeAndFlush(
-            new UpdateGameStateMessage(
+            new GameStateMessage(
                 DataHandler.getOwnPlayer(), new GameState(Server.getPlayerList())));
       }
     } else {

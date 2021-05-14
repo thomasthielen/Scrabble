@@ -14,7 +14,7 @@ import gameentities.Player;
 
 /**
  * A Server is initialised to host the game and to allow clients to connect and to communicate with
- * each other
+ * each other.
  *
  * @author tikrause
  */
@@ -28,17 +28,9 @@ public class Server {
   // responsible for network reading and writing
   private static EventLoopGroup workerGroup;
   private static Channel channel;
-  
+
   private static ArrayList<Player> players = new ArrayList<Player>();
 
-  /**
-   * main method starts a new server at port 8000 and its run method
-   *
-   * @author tikrause
-   * @param args
-   * @throws InterruptedException
-   * @throws UnknownHostException
-   */
   public static void main(String[] args) throws InterruptedException, UnknownHostException {
     // TODO: Ausgabe der IP-Adr des Servers
     int p = 8000;
@@ -53,10 +45,11 @@ public class Server {
   }
 
   /**
-   * creates a new server that waits for connections at the given port
+   * initialises the server, lets the server wait for connections at the given port and opens a UDP
+   * connection that can be used to send or receive messages and to update the game status.
    *
    * @author tikrause
-   * @param port
+   * @param bindPort port where the server should wait for connections
    * @throws UnknownHostException
    * @throws BindException
    * @throws InterruptedException
@@ -92,20 +85,20 @@ public class Server {
   }
 
   /**
-   * getter method for the port number on which the server is running
+   * getter method for the port number on which the server is running.
    *
    * @author tikrause
-   * @return port
+   * @return port port number on which the server waits for connections
    */
   public static int getPort() {
     return port;
   }
 
   /**
-   * getter method for the IP address of the server
+   * getter method for the IP address of the server.
    *
    * @author tikrause
-   * @return ip
+   * @return ip IP address of the server
    */
   public static String getIp() {
     return ip;
@@ -130,16 +123,16 @@ public class Server {
   public static boolean isActive() {
     return isRunning;
   }
-  
+
   public static void addPlayer(Player p) {
-	  players.add(p);
+    players.add(p);
   }
-  
+
   public static void removePlayer(Player p) {
-	  players.remove(p);
+    players.remove(p);
   }
-  
+
   public static ArrayList<Player> getPlayerList() {
-	  return players;
+    return players;
   }
 }

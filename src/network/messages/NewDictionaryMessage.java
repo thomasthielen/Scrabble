@@ -1,8 +1,7 @@
 package network.messages;
 
-import java.io.File;
-
 import gameentities.Player;
+import java.io.File;
 
 /**
  * Implementation of the NewDictionaryMessage. A NewDictionaryMessage is created to send the
@@ -13,18 +12,18 @@ import gameentities.Player;
  */
 public class NewDictionaryMessage extends Message {
 
-  /** Default serialization UID */
+  // Default serialization UID
   private static final long serialVersionUID = 1L;
 
   private File file;
 
   /**
-   * Constructor: creating a NewDictionaryMessage with the MessageType.NEW_DICTIONARY, the name of
-   * the creator and the file that should be sent to the other clients
+   * Constructor: creating a NewDictionaryMessage with the MessageType.NEW_DICTIONARY, the player
+   * object of the creator and the file that should be sent to the other clients.
    *
    * @author tikrause
-   * @param from
-   * @param message
+   * @param p player object that has sent the message
+   * @param file dictionary file that should be sent
    */
   public NewDictionaryMessage(Player p, File file) {
     super(MessageType.NEW_DICTIONARY, p);
@@ -32,10 +31,10 @@ public class NewDictionaryMessage extends Message {
   }
 
   /**
-   * getter method for the dictionary file that is sent
+   * getter method for the dictionary file that is sent.
    *
    * @author tikrause
-   * @return file
+   * @return file dictionary file that should be sent
    */
   public File getFile() {
     return this.file;

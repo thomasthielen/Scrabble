@@ -16,8 +16,7 @@ import session.GameSession;
 import session.GameState;
 
 /**
- * For each client that joins the game a Client instance is created which connects to the server and
- * can send or receive any messages or notifications
+ * The Client class is responsible for the network communication at the client side.
  *
  * @author tikrause
  */
@@ -32,14 +31,6 @@ public class Client {
 
   private static GameSession gameSession;
 
-  /**
-   * main method starts a new client and its run method
-   *
-   * @author tikrause
-   * @param args
-   * @throws InterruptedException
-   * @throws IOException
-   */
   public static void main(String[] args) throws InterruptedException, IOException {
     // TODO: nicht mit localhost, sondern mit Server-IP verbinden
     Client.initialiseClient("localhost", 8000, false);
@@ -47,12 +38,14 @@ public class Client {
   }
 
   /**
-   * Constructor: creates a Client object at the existing server port
+   * Initialises the client with the server data to enable the communication to the server.
+   *
+   * <p>initialiseClient() must be invoked before connectToServer()
    *
    * @author tikrause
-   * @param username
-   * @param ip
-   * @param port
+   * @param ipKey IP address of the server that should be communicated to
+   * @param bindPort port that is used by the server for the communication
+   * @param host boolean if the connecting client is the host of the game session
    */
   public static void initialiseClient(String ipKey, int bindPort, boolean host) {
     ip = ipKey;
@@ -61,10 +54,13 @@ public class Client {
   }
 
   /**
-   * connects the client instance to the server and opens a TCP connection that can be used to send
-   * or receive messages and to update the game status
+   * Connects the client instance to the server and opens a TCP connection that can be used to send
+   * or receive messages and to update the game status.
+   *
+   * <p>initialiseClient() must be invoked before connectToServer()
    *
    * @author tikrause
+   * @param p player instance that should be connected to the game
    */
   public static void connectToServer(Player p) {
     group = new NioEventLoopGroup();
@@ -97,6 +93,21 @@ public class Client {
     }
   }
 
+  /**
+   * Disconnects the client from the server and informs the other clients that the player has left.
+   *
+   * @author tikrause
+   * @param p player instance that should be disconnected from the game
+   */
+  public static void disconnectClient(Player p) throws InterruptedException {
+    cf.channel().writeAndFlush(new DisconnectMessage(p, isHost));
+    isRunning = false;
+    cf.channel().close().sync();
+    group.shutdownGracefully();
+    group = null;
+    cf = null;
+  }
+
   public static void sendChat(Player p, String msg) {
     cf.channel().writeAndFlush(new SendChatMessage(p, msg));
   }
@@ -112,23 +123,7 @@ public class Client {
   }
 
   public static void updateGameState(Player p, GameState game) {
-    cf.channel().writeAndFlush(new UpdateGameStateMessage(p, game));
-  }
-
-  /**
-   * disconnects the client from the server and informs the other clients that the player with the
-   * given username has left
-   *
-   * @author tikrause
-   * @param name
-   */
-  public static void disconnectClient(Player p) throws InterruptedException {
-    cf.channel().writeAndFlush(new DisconnectMessage(p, isHost));
-    isRunning = false;
-    cf.channel().close().sync();
-    group.shutdownGracefully();
-    group = null;
-    cf = null;
+    cf.channel().writeAndFlush(new GameStateMessage(p, game));
   }
 
   /**
@@ -142,7 +137,7 @@ public class Client {
   }
 
   /**
-   * getter method if the client is a host
+   * getter method if the client is the host of the game session.
    *
    * @author tikrause
    * @return isHost
@@ -162,8 +157,8 @@ public class Client {
   public static void updateGameSession(GameState gameState) {
     gameSession.synchronise(gameState);
   }
-  
+
   public static GameSession getGameSession() {
-	  return gameSession;
+    return gameSession;
   }
 }

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import gameentities.Player;
 
 /**
- * Abstract class for all messages that can be sent between the server and the clients
+ * Abstract class for all messages that can be sent between the server and the clients.
  *
  * <p>class implements methods that should be contained in all messages that are sent
  *
@@ -13,48 +13,48 @@ import gameentities.Player;
 public abstract class Message implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  private MessageType mType;
+  private MessageType type;
   private Player from;
 
   /**
-   * Constructor: creates a message that contains the message type and the owner of the message
+   * Constructor: creates a message that contains the message type and the creator of the message.
    *
    * @author tikrause
-   * @param type
-   * @param from
+   * @param type type of the message that has been sent
+   * @param p player object that has sent the message
    */
   public Message(MessageType type, Player p) {
-    this.mType = type;
+    this.type = type;
     this.from = p;
   }
 
   /**
-   * getter method for the message type
+   * getter method for the message type.
    *
    * @author tikrause
-   * @return message type
+   * @return type type of the message that has been sent
    */
   public MessageType getMessageType() {
-    return this.mType;
+    return this.type;
   }
 
   /**
-   * getter method for the message owner
+   * getter method for the message creator.
    *
    * @author tikrause
-   * @return from
+   * @return from player object that has sent the message
    */
-  public Player getFrom() {
+  public Player getPlayer() {
     return this.from;
   }
 
   /**
-   * setter method for the message owner
+   * setter method for the message creator.
    *
    * @author tikrause
-   * @param name
+   * @param p player object that should be the creator of the message
    */
-  public void setFrom(Player p) {
+  public void setPlayer(Player p) {
     this.from = p;
   }
 }

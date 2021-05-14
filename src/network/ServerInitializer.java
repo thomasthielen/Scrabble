@@ -8,14 +8,14 @@ import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 
 /**
- * Initializes the server so that messages can be received and sent
+ * Initializes the server so that messages can be received and sent.
  *
  * @author tikrause
  */
 public class ServerInitializer extends ChannelInitializer<SocketChannel> {
 
   /**
-   * initializes the server channel
+   * initializes the server channel.
    *
    * @author tikrause
    * @param socketCh

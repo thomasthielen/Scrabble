@@ -11,18 +11,18 @@ import session.Dictionary;
  */
 public class DictionaryMessage extends Message {
 
-  /** Default serialization UID */
+  // Default serialization UID
   private static final long serialVersionUID = 1L;
 
   private Dictionary url;
 
   /**
-   * Constructor: creating a DictionaryMessage with the MessageType.DICTIONARY, the name of the
-   * creator and the URL which is represented by an enum of all available dictionaries
+   * Constructor: creates a DictionaryMessage with the MessageType.DICTIONARY, the player object of
+   * the creator and the URL which is represented by an enum of all available dictionaries.
    *
    * @author tikrause
-   * @param from
-   * @param message
+   * @param p player object that has sent the message
+   * @param url chosen dictionary
    */
   public DictionaryMessage(Player p, Dictionary url) {
     super(MessageType.DICTIONARY, p);
@@ -30,10 +30,10 @@ public class DictionaryMessage extends Message {
   }
 
   /**
-   * TODO getter method for the text of the message that is sent
+   * getter method for the enum of the chosen dictionary.
    *
    * @author tikrause
-   * @return file
+   * @return url chosen dictionary
    */
   public Dictionary getUrl() {
     return this.url;

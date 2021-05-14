@@ -8,18 +8,18 @@ import session.GameState;
 import gameentities.Player;
 
 /**
- * Handles the received messages of the client
+ * Handles the received messages of the client.
  *
  * @author tikrause
  */
 public class ClientHandler extends SimpleChannelInboundHandler<Message> {
 
   /**
-   * specifies and handles the messages received from the server
+   * specifies and handles the messages received from the server.
    *
    * @author tikrause
-   * @param ctx
-   * @param msg
+   * @param ctx channel from which the message has been received
+   * @param msg message that has been received
    */
   @Override
   protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
@@ -29,7 +29,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
       case CONNECT:
         // TODO
         ConnectMessage cm = (ConnectMessage) msg;
-        System.out.println(cm.getFrom() + " has joined!");
+        System.out.println(cm.getPlayer().getUsername() + " has joined!");
         System.out.println(cm.getPlayer().getPlayerStatistics());
         break;
       case DISCONNECT:
@@ -38,7 +38,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         if (dcm.isHost()) {
           System.out.println("The host has left!");
         } else {
-          System.out.println(dcm.getFrom() + " has left!");
+          System.out.println(dcm.getPlayer().getUsername() + " has left!");
         }
         break;
       case ERROR:
@@ -50,12 +50,12 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
       case SEND_CHAT:
         // TODO
         SendChatMessage scm = (SendChatMessage) msg;
-        System.out.println("[" + scm.getFrom() + "]: " + scm.getMessage());
+        System.out.println("[" + scm.getPlayer().getUsername() + "]: " + scm.getMessage());
         break;
-      case UPDATE_GAME_STATE:
+      case GAME_STATE:
         // TODO
-        UpdateGameStateMessage ugsm = (UpdateGameStateMessage) msg;
-        GameState gs = ugsm.getGameState();
+        GameStateMessage gsm = (GameStateMessage) msg;
+        GameState gs = gsm.getGameState();
         Client.updateGameSession(gs);
         for (Player p : Client.getGameSession().getPlayerList()) {
           System.out.println(p.getUsername());
@@ -69,6 +69,8 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         NewDictionaryMessage ndm = (NewDictionaryMessage) msg;
         DataHandler.userDictionaryFile(ndm.getFile());
         System.out.println(DataHandler.checkWord("mall"));
+        break;
+      default:
         break;
     }
   }
