@@ -9,9 +9,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 
-import data.StatisticKeys;
+import data.DataHandler;
 import network.messages.*;
 import session.GameSession;
 import session.GameState;
@@ -31,7 +30,6 @@ public class Client {
   private static boolean isHost;
   private static EventLoopGroup group;
 
-  private Player player;
   private static GameSession gameSession;
 
   /**
@@ -46,7 +44,6 @@ public class Client {
     // TODO: nicht mit localhost, sondern mit Server-IP verbinden
     Client.initialiseClient("localhost", 8000, false);
     Client.connectToServer(new Player("tikrause", null));
-    Client.updateGameState("tikrause", new GameState(null, null, null));
   }
 
   /**
@@ -83,8 +80,8 @@ public class Client {
       // connects the client to the server using TCP
       cf = bootstrap.connect(ip, port).sync();
       isRunning = true;
-      cf.channel().writeAndFlush(new ConnectMessage(p));
       gameSession = new GameSession();
+      cf.channel().writeAndFlush(new ConnectMessage(p));
       // BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
       while (!isRunning) {
@@ -100,26 +97,22 @@ public class Client {
     }
   }
 
-  public static void sendChat(String name, String msg) {
-    cf.channel().writeAndFlush(new SendChatMessage(name, msg));
+  public static void sendChat(Player p, String msg) {
+    cf.channel().writeAndFlush(new SendChatMessage(p, msg));
   }
 
-  public static void reportError(String name, String reason) {
+  public static void reportError(Player p, String reason) {
     // TODO
-    cf.channel().writeAndFlush(new ErrorMessage(name, reason));
+    cf.channel().writeAndFlush(new ErrorMessage(p, reason));
   }
 
-  public static void reportSuccess(String name) {
+  public static void reportSuccess(Player p) {
     // TODO
-    cf.channel().writeAndFlush(new SuccessMessage(name));
+    cf.channel().writeAndFlush(new SuccessMessage(p));
   }
 
-  public static void updateGameState(String name, GameState game) {
-    cf.channel().writeAndFlush(new UpdateGameStateMessage(name, game));
-  }
-
-  public static void sendPlayer(Player p) {
-    cf.channel().writeAndFlush(new PlayerMessage(p));
+  public static void updateGameState(Player p, GameState game) {
+    cf.channel().writeAndFlush(new UpdateGameStateMessage(p, game));
   }
 
   /**
@@ -129,8 +122,8 @@ public class Client {
    * @author tikrause
    * @param name
    */
-  public static void disconnectClient(String name) throws InterruptedException {
-    cf.channel().writeAndFlush(new DisconnectMessage(name, isHost));
+  public static void disconnectClient(Player p) throws InterruptedException {
+    cf.channel().writeAndFlush(new DisconnectMessage(p, isHost));
     isRunning = false;
     cf.channel().close().sync();
     group.shutdownGracefully();
@@ -168,5 +161,9 @@ public class Client {
 
   public static void updateGameSession(GameState gameState) {
     gameSession.synchronise(gameState);
+  }
+  
+  public static GameSession getGameSession() {
+	  return gameSession;
   }
 }

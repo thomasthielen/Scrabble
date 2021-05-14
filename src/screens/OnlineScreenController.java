@@ -1,12 +1,16 @@
 package screens;
 
+import java.net.BindException;
+import java.net.UnknownHostException;
+
 import data.DataHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import session.MultiPlayerLobby;
+import network.Client;
+import network.Server;
 
 /**
  * this class provides the controller for the Online Screen
@@ -78,6 +82,23 @@ public class OnlineScreenController {
    * @author tikrause
    */
   void createMultiPlayerLobby() {
-    MultiPlayerLobby mpl = new MultiPlayerLobby(DataHandler.getOwnPlayer());
+    int port = 8000;
+    while (port < 65535) {
+      try {
+        Server.createServer(port);
+        // TODO
+        System.out.println(
+            "Your lobby has been created. IP: " + Server.getIp() + ", Port: " + Server.getPort());
+        Client.initialiseClient("localhost", port, true);
+        Client.connectToServer(DataHandler.getOwnPlayer());
+        break;
+      } catch (BindException e) {
+        port++;
+      } catch (UnknownHostException e) {
+        // TODO
+      } catch (InterruptedException e) {
+        // TODO
+      }
+    }
   }
 }

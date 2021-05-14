@@ -59,11 +59,13 @@ public class GameSession {
   public void synchronise(GameState overrideGameState) {
     // If the own turn is over: Create a GameState object and send it
     if (ownPlayer.isCurrentlyPlaying()) {
-    	Client.updateGameState(ownPlayer.getUsername(), overrideGameState);      // TODO: Send GameState object to other users
+      Client.updateGameState(ownPlayer, overrideGameState);
     } else {
       this.players = overrideGameState.getPlayers();
-      this.bag = overrideGameState.getBag();
-      this.board = overrideGameState.getBoard();
+      if (overrideGameState.getBag() != null) {
+        this.bag = overrideGameState.getBag();
+        this.board = overrideGameState.getBoard();
+      }
     }
   }
 
@@ -81,7 +83,7 @@ public class GameSession {
   }
 
   // 2: Swap tiles
-  
+
   /**
    * Swaps the selected tiles for new ones by calling the exchangeTiles() function of the
    * currentPlayer.
@@ -575,6 +577,16 @@ public class GameSession {
    */
   public Player getPlayer() {
     return ownPlayer;
+  }
+
+  /**
+   * Returns the ownPlayer of the session.
+   *
+   * @author tthielen
+   * @return ownPlayer
+   */
+  public ArrayList<Player> getPlayerList() {
+    return players;
   }
 
   /**

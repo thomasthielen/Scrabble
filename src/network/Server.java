@@ -8,6 +8,9 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import java.net.BindException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+
+import gameentities.Player;
 
 /**
  * A Server is initialised to host the game and to allow clients to connect and to communicate with
@@ -25,6 +28,8 @@ public class Server {
   // responsible for network reading and writing
   private static EventLoopGroup workerGroup;
   private static Channel channel;
+  
+  private static ArrayList<Player> players = new ArrayList<Player>();
 
   /**
    * main method starts a new server at port 8000 and its run method
@@ -124,5 +129,17 @@ public class Server {
    */
   public static boolean isActive() {
     return isRunning;
+  }
+  
+  public static void addPlayer(Player p) {
+	  players.add(p);
+  }
+  
+  public static void removePlayer(Player p) {
+	  players.remove(p);
+  }
+  
+  public static ArrayList<Player> getPlayerList() {
+	  return players;
   }
 }

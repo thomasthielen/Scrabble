@@ -35,6 +35,18 @@ public class GameState implements Serializable {
     this.board = board;
   }
 
+  /**
+   * Constructor: Creates a GameState object with the player list to send the initial game session object.
+   *
+   * @author tikrause
+   * @param players
+   * @param bag
+   * @param board
+   */
+  public GameState(ArrayList<Player> players) {
+    this.players = players;
+  }
+  
   public void addPlayer(Player player) {
     this.players.add(player);
   }

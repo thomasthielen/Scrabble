@@ -22,10 +22,10 @@ import network.Server;
  */
 public class LobbyScreenController {
 
-	@FXML private Button fileForm;
-	
-    @FXML private static Pane lobbyPane;
-	
+  @FXML private Button fileForm;
+
+  @FXML private static Pane lobbyPane;
+
   /**
    * This method serves as the listener for the "Upload dictionary"-Button. It allows the user to
    * upload his own dictionary for the game.
@@ -36,10 +36,10 @@ public class LobbyScreenController {
    */
   @FXML
   void uploadDictionary(ActionEvent event) throws Exception {
-	  FileChooser fileChooser = new FileChooser();
-	  File file = fileChooser.showOpenDialog(StartScreen.getStage());
-	  DataHandler.userDictionaryFile(file);
-	  fileForm.setText(file.getName());
+    FileChooser fileChooser = new FileChooser();
+    File file = fileChooser.showOpenDialog(StartScreen.getStage());
+    DataHandler.userDictionaryFile(file);
+    fileForm.setText(file.getName());
   }
 
   /**
@@ -56,10 +56,10 @@ public class LobbyScreenController {
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
     Parent content = loader.load();
-    StartScreen.getStage().setScene(new Scene(content));    
+    StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
     // TODO
-    Client.disconnectClient(DataHandler.getOwnPlayer().getUsername());
+    Client.disconnectClient(DataHandler.getOwnPlayer());
     Server.serverShutdown();
   }
 
@@ -73,14 +73,17 @@ public class LobbyScreenController {
    */
   @FXML
   void startGame(ActionEvent event) throws Exception {
-    StartScreen.getStage();
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/GameScreen.fxml"));
-    Parent content = loader.load();
-    StartScreen.getStage().setScene(new Scene(content));
-    StartScreen.getStage().show();
+    if (Client.isHost()) {
+      StartScreen.getStage();
+      FXMLLoader loader = new FXMLLoader();
+      loader.setLocation(getClass().getResource("resources/GameScreen.fxml"));
+      Parent content = loader.load();
+      StartScreen.getStage().setScene(new Scene(content));
+      StartScreen.getStage().show();
+    } else {
+      // TODO player is not a host and not allowed to start the game
+    }
   }
-
 
   /**
    * TODO This method serves as the Listener for "Add AI Player"-Button It allows the user to add AI
@@ -92,7 +95,7 @@ public class LobbyScreenController {
    */
   @FXML
   void addAIPlayer(ActionEvent event) throws Exception {}
-  
+
   public static void addIPAndPort() {
     Text ip = new Text(100, 100, Client.getIp());
     Text port = new Text(100, 150, "" + Client.getPort());
