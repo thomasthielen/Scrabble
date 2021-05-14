@@ -1,11 +1,10 @@
 package gameentities;
 
+import data.DataHandler;
+import data.StatisticKeys;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import data.DataHandler;
-import data.StatisticKeys;
 import session.GameSession;
 
 /**
@@ -36,7 +35,7 @@ public class Player implements Serializable {
   public Player(String username, Avatar avatar) {
     this.username = username;
     this.avatar = avatar;
-    this.playerStatistics = DataHandler.getStatistics(DataHandler.getOwnPlayerID());
+    this.playerStatistics = DataHandler.getStatistics(DataHandler.getOwnPlayerId());
   }
 
   /**
@@ -64,7 +63,7 @@ public class Player implements Serializable {
   }
 
   /**
-   * Fills the Rack of the Player to 7 Tiles
+   * Fills the Rack of the Player to 7 Tiles.
    *
    * @author tthielen
    */
@@ -76,7 +75,7 @@ public class Player implements Serializable {
    * Plays a tile to the board.
    *
    * @author tthielen
-   * @param tile
+   * @param tile the tile that should be played
    */
   public void playTile(Tile tile) {
     this.rack.playTile(tile);
@@ -87,7 +86,7 @@ public class Player implements Serializable {
    * Adds a tile back to the rack.
    *
    * @author tthielen
-   * @param tile
+   * @param tile the tile that should be added back to the player's rack
    */
   public void returnTile(Tile tile) {
     this.rack.returnTile(tile);
@@ -99,27 +98,28 @@ public class Player implements Serializable {
    * to the Bag, and the new Tiles are drawn from the Bag before that.
    *
    * @author tthielen
-   * @param Tiles that are meant to be swapped
+   * @param swapTiles tiles that are meant to be swapped
+   * @param postions the postions of the tiles
    */
   public void exchangeTiles(ArrayList<Tile> swapTiles, ArrayList<Integer> positions) {
     rack.exchangeTiles(swapTiles, positions);
   }
 
   /**
-   * Sets the player's username
+   * Sets the player's username.
    *
    * @author tthielen
-   * @param username
+   * @param username the username of the player
    */
   public void setUsername(String name) {
     this.username = name;
   }
 
   /**
-   * Sets whether the it is the player's turn
+   * Sets whether it is the player's turn.
    *
    * @author tthielen
-   * @param currentlyPlaying
+   * @param currentlyPlaying true if the player is currently playing, otherwise false
    */
   public void setCurrentlyPlaying(boolean currentlyPlaying) {
     this.currentlyPlaying = currentlyPlaying;
@@ -129,14 +129,15 @@ public class Player implements Serializable {
    * Increases the player score by the given value.
    *
    * @author tthielen
-   * @param score
+   * @param score the amount of points that were scored and should be added to the player's total
+   *     score for the game
    */
   public void incScore(int score) {
     this.score += score;
   }
 
   /**
-   * Returns the player's username
+   * Returns the player's username.
    *
    * @author tthielen
    * @return username
@@ -146,7 +147,7 @@ public class Player implements Serializable {
   }
 
   /**
-   * Returns the player's score
+   * Returns the player's score.
    *
    * @author tthielen
    * @return score
@@ -156,7 +157,7 @@ public class Player implements Serializable {
   }
 
   /**
-   * Returns the player's avatar
+   * Returns the player's avatar.
    *
    * @author tthielen
    * @return avatar
@@ -166,7 +167,7 @@ public class Player implements Serializable {
   }
 
   /**
-   * Returns the player's rack
+   * Returns the player's rack.
    *
    * @author tthielen
    * @return rack

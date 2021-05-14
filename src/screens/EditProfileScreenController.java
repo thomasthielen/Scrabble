@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 
 public class EditProfileScreenController {
 
-  private static int profileId;
+  private static int profileID;
 
   /**
    * This method serves as the Listener for "SUBMIT CHANGES"-Button TODO It allows the user to save
@@ -67,7 +67,7 @@ public class EditProfileScreenController {
    * @author jluellig
    */
   protected static void setProfileId(int id) {
-    profileId = id;
-    System.out.println(profileId);
+    profileID = id;
+    System.out.println(profileID);
   }
 }

@@ -253,7 +253,7 @@ public class DataHandler {
    * @return ownPlayerID
    * @author jluellig
    */
-  public static int getOwnPlayerID() {
+  public static int getOwnPlayerId() {
     return DataHandler.ownPlayerID;
   }
 }

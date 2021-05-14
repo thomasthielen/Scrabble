@@ -1,17 +1,14 @@
 package screens;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-
 import data.DataHandler;
 import gameentities.Avatar;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Iterator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
@@ -21,9 +18,6 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 /**
  * this class provides the controller for the Existing Profile Screen
@@ -39,8 +33,8 @@ public class ExistingProfileScreenController {
   @FXML private static Pane test = new Pane();
 
   /**
-   * This method serves as the Listener for "START GAME"-Button It redirects the user to the Online
-   * or Offline Screen
+   * This method serves as the Listener for "START GAME"-Button. It redirects the user to the Online
+   * or Offline Screen.
    *
    * @author jbleil
    * @param event
@@ -61,7 +55,7 @@ public class ExistingProfileScreenController {
    * play or to edit.
    *
    * @author jluellig
- * @throws FileNotFoundException 
+   * @throws FileNotFoundException
    */
   protected static void addProfiles() throws FileNotFoundException {
     buttonGroup = new ToggleGroup();
@@ -74,17 +68,17 @@ public class ExistingProfileScreenController {
       tb.setToggleGroup(buttonGroup);
       profileList.getChildren().add(tb);
     }
-//    StackPane sp = new StackPane();
-//    Rectangle r = new Rectangle(22,22);
-//    r.setFill(Color.AZURE);
-//    sp.getChildren().add(r);
-//    test.getChildren().add(sp);
-//    System.out.println("blau");
+    //    StackPane sp = new StackPane();
+    //    Rectangle r = new Rectangle(22,22);
+    //    r.setFill(Color.AZURE);
+    //    sp.getChildren().add(r);
+    //    test.getChildren().add(sp);
+    //    System.out.println("blau");
   }
 
   /**
-   * This method serves as the Listener for "EDIT PROFILE"-Button It redirects the user to the Edit
-   * Profile Screen
+   * This method serves as the Listener for "EDIT PROFILE"-Button. It redirects the user to the Edit
+   * Profile Screen.
    *
    * @author jluellig
    * @param event
@@ -99,23 +93,24 @@ public class ExistingProfileScreenController {
       int id = 0;
       Iterator<Integer> it = profiles.keySet().iterator();
       for (Toggle t : buttonGroup.getToggles()) {
-    	  if (t.isSelected()) {
-    		  id = it.next();
-    		  break;
-    	  } else {
-    		  it.next();
-    	  }
+        if (t.isSelected()) {
+          id = it.next();
+          break;
+        } else {
+          it.next();
+        }
       }
       EditProfileScreenController.setProfileId(id);
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
     } else {
-    	// TODO
+      // TODO
     }
   }
 
   /**
-   * This method serves as the Listener for "Back"-Button It redirects the user to the Start Screen
+   * This method serves as the Listener for "Back"-Button. It redirects the user to the Start
+   * Screen.
    *
    * @author jbleil
    * @param event
