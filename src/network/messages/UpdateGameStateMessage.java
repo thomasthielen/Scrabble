@@ -1,5 +1,6 @@
 package network.messages;
 
+import gameentities.Player;
 import session.GameState;
 
 /**
@@ -27,8 +28,8 @@ public class UpdateGameStateMessage extends Message {
    * @param from
    * @param game
    */
-  public UpdateGameStateMessage(String name, GameState game) {
-    super(MessageType.UPDATE_GAME_STATE, name);
+  public UpdateGameStateMessage(Player p, GameState game) {
+    super(MessageType.UPDATE_GAME_STATE, p);
     this.game = game;
   }
 

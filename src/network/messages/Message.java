@@ -1,7 +1,7 @@
-/** */
 package network.messages;
 
 import java.io.Serializable;
+import gameentities.Player;
 
 /**
  * Abstract class for all messages that can be sent between the server and the clients
@@ -14,7 +14,7 @@ public abstract class Message implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private MessageType mType;
-  private String from;
+  private Player from;
 
   /**
    * Constructor: creates a message that contains the message type and the owner of the message
@@ -23,9 +23,9 @@ public abstract class Message implements Serializable {
    * @param type
    * @param from
    */
-  public Message(MessageType type, String from) {
+  public Message(MessageType type, Player p) {
     this.mType = type;
-    this.from = new String(from);
+    this.from = p;
   }
 
   /**
@@ -44,7 +44,7 @@ public abstract class Message implements Serializable {
    * @author tikrause
    * @return from
    */
-  public String getFrom() {
+  public Player getFrom() {
     return this.from;
   }
 
@@ -54,7 +54,7 @@ public abstract class Message implements Serializable {
    * @author tikrause
    * @param name
    */
-  public void setFrom(String name) {
-    this.from = name;
+  public void setFrom(Player p) {
+    this.from = p;
   }
 }

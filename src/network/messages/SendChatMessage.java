@@ -1,5 +1,7 @@
 package network.messages;
 
+import gameentities.Player;
+
 /**
  * Implementation of the SendChatMessage. A SendChatMessage is created to send network messages
  *
@@ -20,8 +22,8 @@ public class SendChatMessage extends Message {
    * @param from
    * @param message
    */
-  public SendChatMessage(String name, String message) {
-    super(MessageType.SEND_CHAT, name);
+  public SendChatMessage(Player p, String message) {
+    super(MessageType.SEND_CHAT, p);
     this.message = message;
   }
 

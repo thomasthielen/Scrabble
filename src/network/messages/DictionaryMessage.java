@@ -1,5 +1,6 @@
 package network.messages;
 
+import gameentities.Player;
 import session.Dictionary;
 
 /**
@@ -23,8 +24,8 @@ public class DictionaryMessage extends Message {
    * @param from
    * @param message
    */
-  public DictionaryMessage(String name, Dictionary url) {
-    super(MessageType.DICTIONARY, name);
+  public DictionaryMessage(Player p, Dictionary url) {
+    super(MessageType.DICTIONARY, p);
     this.url = url;
   }
 

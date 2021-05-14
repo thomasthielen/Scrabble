@@ -1,5 +1,7 @@
 package network.messages;
 
+import gameentities.Player;
+
 /**
  * Implementation of the error message. A ErrorMessage is created when something is not going as
  * planned
@@ -25,8 +27,8 @@ public class ErrorMessage extends Message {
    * @param name
    * @param errorType
    */
-  public ErrorMessage(String name, String errorType) {
-    super(MessageType.ERROR, name);
+  public ErrorMessage(Player p, String errorType) {
+    super(MessageType.ERROR, p);
     this.errorType = errorType;
   }
 

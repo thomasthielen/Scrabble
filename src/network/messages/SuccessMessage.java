@@ -1,5 +1,7 @@
 package network.messages;
 
+import gameentities.Player;
+
 /**
  * Implementation of the success message. A SuccessMessage is created to send a message that
  * something succeeded as it should
@@ -21,7 +23,7 @@ public class SuccessMessage extends Message {
    * @author lsteltma
    * @param name
    */
-  public SuccessMessage(String name) {
-    super(MessageType.SUCCESS, name);
+  public SuccessMessage(Player p) {
+    super(MessageType.SUCCESS, p);
   }
 }

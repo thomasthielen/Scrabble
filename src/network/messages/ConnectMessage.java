@@ -28,7 +28,7 @@ public class ConnectMessage extends Message {
    * @param p
    */
   public ConnectMessage(Player p) {
-    super(MessageType.CONNECT, p.getUsername());
+    super(MessageType.CONNECT, p);
     this.p = p;
   }
 

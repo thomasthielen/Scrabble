@@ -2,6 +2,8 @@ package network.messages;
 
 import java.io.File;
 
+import gameentities.Player;
+
 /**
  * Implementation of the NewDictionaryMessage. A NewDictionaryMessage is created to send the
  * dictionary file to all clients, if a custom dictionary has been chosen which is not in the
@@ -24,8 +26,8 @@ public class NewDictionaryMessage extends Message {
    * @param from
    * @param message
    */
-  public NewDictionaryMessage(String name, File file) {
-    super(MessageType.NEW_DICTIONARY, name);
+  public NewDictionaryMessage(Player p, File file) {
+    super(MessageType.NEW_DICTIONARY, p);
     this.file = file;
   }
 
