@@ -1,5 +1,7 @@
 package gameentities;
 
+import java.io.Serializable;
+
 /**
  * Implementation of the Tile objects.
  *
@@ -7,7 +9,8 @@ package gameentities;
  *
  * @author tthielen
  */
-public class Tile {
+public class Tile implements Serializable {
+  private static final long serialVersionUID = 1L;
 
   private char letter;
   private int value;

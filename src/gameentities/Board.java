@@ -1,5 +1,6 @@
 package gameentities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -9,7 +10,9 @@ import java.util.ArrayList;
  *
  * @author tthielen
  */
-public class Board {
+public class Board implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   private ArrayList<Square> squares = new ArrayList<Square>();
 
   /**
@@ -223,7 +226,6 @@ public class Board {
    * @param square the square which gives the relative position
    * @return the square relative to the given square and boolean
    */
-
   public boolean hasPreviouslyPlayedNeighbour(Square square) {
     if (this.getUpperNeighbour(square).isPreviouslyPlayed()
         || this.getLeftNeighbour(square).isPreviouslyPlayed()

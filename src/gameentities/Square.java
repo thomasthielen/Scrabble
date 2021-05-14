@@ -1,5 +1,7 @@
 package gameentities;
 
+import java.io.Serializable;
+
 /**
  * Implementation of the Square objects.
  *
@@ -8,7 +10,8 @@ package gameentities;
  *
  * @author tthielen
  */
-public class Square {
+public class Square implements Serializable {
+  private static final long serialVersionUID = 1L;
 
   Premium premium = Premium.NONE; // Indicates Premium variant
 

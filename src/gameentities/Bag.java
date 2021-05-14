@@ -1,5 +1,6 @@
 package gameentities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -10,7 +11,9 @@ import java.util.ArrayList;
  *
  * @author tthielen
  */
-public class Bag {
+public class Bag implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private boolean isEmpty = true; // Indicates whether the bag is empty
   // List of TileContainers, used to count the tile-types (e.g. 7x "E" remaining)

@@ -1,11 +1,15 @@
 package gameentities;
 
+import java.io.Serializable;
+
 /**
  * Object that holds a type of tile as well as its current count within the bag.
  *
  * @author tthielen
  */
-public class TileContainer {
+public class TileContainer implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   private Tile tile;
   private int count;
 
