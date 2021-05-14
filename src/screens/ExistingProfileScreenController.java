@@ -21,6 +21,9 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 /**
  * this class provides the controller for the Existing Profile Screen
@@ -33,6 +36,7 @@ public class ExistingProfileScreenController {
   @FXML private static Pane profileList = new Pane();
   private static ToggleGroup buttonGroup;
   private static HashMap<Integer, String[]> profiles;
+  @FXML private static Pane test = new Pane();
 
   /**
    * This method serves as the Listener for "START GAME"-Button It redirects the user to the Online
@@ -70,6 +74,12 @@ public class ExistingProfileScreenController {
       tb.setToggleGroup(buttonGroup);
       profileList.getChildren().add(tb);
     }
+//    StackPane sp = new StackPane();
+//    Rectangle r = new Rectangle(22,22);
+//    r.setFill(Color.AZURE);
+//    sp.getChildren().add(r);
+//    test.getChildren().add(sp);
+//    System.out.println("blau");
   }
 
   /**

@@ -40,10 +40,10 @@ public class StartScreenController {
    */
   @FXML
   void existingProfile(ActionEvent event) throws Exception {
+	ExistingProfileScreenController.addProfiles();
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("resources/ExistingProfileScreen.fxml"));
     Parent content = loader.load();
-    ExistingProfileScreenController.addProfiles();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
