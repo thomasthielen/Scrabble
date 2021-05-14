@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 
 public class EditProfileScreenController {
 
+  private static int profileId;
+
   /**
    * This method serves as the Listener for "SUBMIT CHANGES"-Button TODO It allows the user to save
    * the changes to the Profile and redirects him back to the Existing Profile Screen
@@ -58,5 +60,14 @@ public class EditProfileScreenController {
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
+  }
+
+  /**
+   * @param id the id of the selected profile in the database that is going to be changed.
+   * @author jluellig
+   */
+  protected static void setProfileId(int id) {
+    profileId = id;
+    System.out.println(profileId);
   }
 }

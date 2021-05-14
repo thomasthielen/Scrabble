@@ -161,8 +161,8 @@ public class DataHandler {
    * @return playerInfo
    * @author jluellig
    */
-  public static HashMap<Integer, Object[]> getPlayerInfo() {
-    HashMap<Integer, Object[]> playerInfo = new HashMap<Integer, Object[]>();
+  public static HashMap<Integer, String[]> getPlayerInfo() {
+    HashMap<Integer, String[]> playerInfo = new HashMap<Integer, String[]>();
     Database.connect();
     playerInfo = Database.getPlayerInfo();
     Database.disconnect();

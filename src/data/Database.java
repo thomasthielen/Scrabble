@@ -139,9 +139,9 @@ class Database {
    * @return playerInfo
    * @author jluellig
    */
-  protected static HashMap<Integer, Object[]> getPlayerInfo() {
-    HashMap<Integer, Object[]> playerInfo = new HashMap<Integer, Object[]>();
-    Object[] playerData;
+  protected static HashMap<Integer, String[]> getPlayerInfo() {
+    HashMap<Integer, String[]> playerInfo = new HashMap<Integer, String[]>();
+    String[] playerData;
 
     try {
       stm = con.createStatement();
@@ -153,7 +153,7 @@ class Database {
       while (rs.next()) {
         playerData = new String[2];
         playerData[0] = rs.getString("Username");
-        playerData[1] = Avatar.valueOf(rs.getString("Avatar"));
+        playerData[1] = rs.getString("Avatar");
         playerInfo.put(rs.getInt("ID"), playerData);
       }
 

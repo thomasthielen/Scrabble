@@ -43,6 +43,7 @@ public class StartScreenController {
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("resources/ExistingProfileScreen.fxml"));
     Parent content = loader.load();
+    ExistingProfileScreenController.addProfiles();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }

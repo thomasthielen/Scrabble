@@ -6,7 +6,7 @@ package gameentities;
  * @author jluellig
  */
 public enum Avatar {
-  BLUE("url1"),
+  BLUE("resources/test.png"),
   RED("url2"),
   YELLOW("url3");
 
