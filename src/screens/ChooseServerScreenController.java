@@ -41,7 +41,7 @@ public class ChooseServerScreenController {
         StartScreen.getStage().setScene(new Scene(content));
         StartScreen.getStage().show();
         Client.initialiseClient(ipField.getText().trim(), Integer.valueOf(portField.getText().trim()), false);
-        Client.connectToServer(DataHandler.getOwnPlayer().getUsername(), DataHandler.getOwnPlayer().getPlayerStatistics());
+        Client.connectToServer(DataHandler.getOwnPlayer());
         LobbyScreenController.addIPAndPort();
       } else {
         // TODO

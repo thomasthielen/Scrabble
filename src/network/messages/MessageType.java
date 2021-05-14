@@ -13,5 +13,6 @@ public enum MessageType {
   SEND_CHAT,
   UPDATE_GAME_STATE,
   NEW_DICTIONARY,
-  DICTIONARY;
+  DICTIONARY,
+  PLAYER;
 }

@@ -27,7 +27,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
       case CONNECT:
         ConnectMessage cm = (ConnectMessage) msg;
         System.out.println(cm.getFrom() + " has joined!");
-        System.out.println(cm.getPlayerStatistics());
+        System.out.println(cm.getPlayer().getPlayerStatistics());
         break;
       case DISCONNECT:
         DisconnectMessage dcm = (DisconnectMessage) msg;
@@ -57,6 +57,10 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         NewDictionaryMessage ndm = (NewDictionaryMessage) msg;
         DataHandler.userDictionaryFile(ndm.getFile());
         System.out.println(DataHandler.checkWord("mall"));
+        break;
+      case PLAYER:
+        PlayerMessage pm = (PlayerMessage) msg;
+        System.out.println(pm.getPlayer().getUsername());
         break;
     }
   }

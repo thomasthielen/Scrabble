@@ -8,7 +8,7 @@ import gameentities.Player;
  *
  * @author lsteltma
  */
-public class ConnectMessage extends Message {
+public class PlayerMessage extends Message {
 
   /**
    * Default serialization UID
@@ -17,7 +17,8 @@ public class ConnectMessage extends Message {
    */
   private static final long serialVersionUID = 1L;
 
-  private Player p;
+  
+  private Player player;
 
   /**
    * Constructor: Creates a ConnectMessage by using the MessageType.CONNECT and the String name of
@@ -25,18 +26,20 @@ public class ConnectMessage extends Message {
    *
    * @author lsteltma
    * @param name
-   * @param p
+   * @param stats
    */
-  public ConnectMessage(Player p) {
-    super(MessageType.CONNECT, p.getUsername());
-    this.p = p;
+  public PlayerMessage(Player p) {
+    super(MessageType.PLAYER, p.getUsername());
+    this.player = p;
+    System.out.println("wird erzeugt");
   }
 
   /**
+   * 
    * @author tikrause
-   * @return p
+   * @return playerStatistics
    */
   public Player getPlayer() {
-    return this.p;
+    return this.player;
   }
 }

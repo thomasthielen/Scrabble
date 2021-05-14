@@ -1,5 +1,6 @@
 package gameentities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,7 +15,8 @@ import session.GameSession;
  *
  * @author tthielen
  */
-public class Player {
+public class Player implements Serializable {
+  private static final long serialVersionUID = 1L;
 
   private String username;
   private Avatar avatar;

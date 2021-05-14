@@ -32,7 +32,7 @@ public class MultiPlayerLobby extends SinglePlayerLobby {
         System.out.println(
             "Your lobby has been created. IP: " + Server.getIp() + ", Port: " + Server.getPort());
         Client.initialiseClient("localhost", port, true);
-        Client.connectToServer(DataHandler.getOwnPlayer().getUsername(), DataHandler.getOwnPlayer().getPlayerStatistics());
+        Client.connectToServer(DataHandler.getOwnPlayer());
         break;
       } catch (BindException e) {
         port++;

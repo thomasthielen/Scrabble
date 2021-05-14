@@ -1,5 +1,6 @@
 package session;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import gameentities.Bag;
@@ -13,7 +14,9 @@ import gameentities.Player;
  *
  * @author tthielen
  */
-public class GameState {
+public class GameState implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   private ArrayList<Player> players;
   private Bag bag;
   private Board board;

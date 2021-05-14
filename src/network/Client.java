@@ -45,7 +45,8 @@ public class Client {
   public static void main(String[] args) throws InterruptedException, IOException {
     // TODO: nicht mit localhost, sondern mit Server-IP verbinden
     Client.initialiseClient("localhost", 8000, false);
-    Client.connectToServer(ip, null);
+    Client.connectToServer(new Player("tikrause", null));
+    Client.updateGameState("tikrause", new GameState(null, null, null));
   }
 
   /**
@@ -68,7 +69,7 @@ public class Client {
    *
    * @author tikrause
    */
-  public static void connectToServer(String username,  HashMap<StatisticKeys, Integer> playerStatistics) {
+  public static void connectToServer(Player p) {
     group = new NioEventLoopGroup();
 
     try {
@@ -82,7 +83,7 @@ public class Client {
       // connects the client to the server using TCP
       cf = bootstrap.connect(ip, port).sync();
       isRunning = true;
-      cf.channel().writeAndFlush(new ConnectMessage(username, playerStatistics));
+      cf.channel().writeAndFlush(new ConnectMessage(p));
       gameSession = new GameSession();
       // BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
@@ -115,6 +116,10 @@ public class Client {
 
   public static void updateGameState(String name, GameState game) {
     cf.channel().writeAndFlush(new UpdateGameStateMessage(name, game));
+  }
+
+  public static void sendPlayer(Player p) {
+    cf.channel().writeAndFlush(new PlayerMessage(p));
   }
 
   /**
