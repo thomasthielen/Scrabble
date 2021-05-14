@@ -19,10 +19,10 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <TextField fx:id="ipField" layoutX="300.0" layoutY="221.0" prefHeight="40.0" prefWidth="400.0" />
+      <TextField fx:id="ipField" layoutX="300.0" layoutY="221.0" onAction="#onEnter" prefHeight="40.0" prefWidth="400.0" />
       <Button layoutX="434.0" layoutY="440.0" mnemonicParsing="false" onAction="#joinGame" prefHeight="40.0" prefWidth="132.0" style="-fx-background-color: #f88c00;" text="Join Game" textFill="WHITE" />
       <Button layoutX="22.0" layoutY="22.0" mnemonicParsing="false" onAction="#back" style="-fx-background-color: #f88c00;" text="Back" textFill="WHITE" />
-      <TextField fx:id="portField" layoutX="300.0" layoutY="345.0" prefHeight="40.0" prefWidth="400.0" />
+      <TextField fx:id="portField" layoutX="300.0" layoutY="345.0" onAction="#onEnter2" prefHeight="40.0" prefWidth="400.0" />
       <Text fill="#f88c00" layoutX="180.0" layoutY="312.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter the port of the game server you like to join in the field below">
          <font>
             <Font size="20.0" />

@@ -35,17 +35,9 @@ public class NewProfileScreenController {
   @FXML
   void startGame(ActionEvent event) throws Exception {
     // TODO add avatar listener
-    // check if the input matches an already created username
-    boolean isAlreadyUsed = false;
-    HashMap<Integer, String[]> profiles = DataHandler.getPlayerInfo();
-    for (int key : profiles.keySet()) {
-      String s = (String) profiles.get(key)[0];
-      if (s.equals(inputForm.getText().trim())) {
-    	  isAlreadyUsed = true;
-    	  break;
-      }
-    }
-    if (Pattern.matches("[a-zA-Z0-9]{2,15}", inputForm.getText().trim()) & !isAlreadyUsed) {
+    boolean alreadyUsed = false;
+    if (Pattern.matches("[a-zA-Z0-9]{2,15}", inputForm.getText().trim())
+        && !(alreadyUsed = isAlreadyUsed(inputForm.getText().trim()))) {
       String playerName = inputForm.getText().trim();
       Avatar a = Avatar.BLUE;
       DataHandler.addPlayer(playerName, a);
@@ -56,7 +48,7 @@ public class NewProfileScreenController {
       Parent content = loader.load();
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
-    } else if (isAlreadyUsed) {
+    } else if (alreadyUsed) {
       Alert errorAlert = new Alert(AlertType.ERROR);
       errorAlert.setHeaderText("Username already exists.");
       errorAlert.setContentText("Try a different username.");
@@ -64,12 +56,25 @@ public class NewProfileScreenController {
       inputForm.clear();
     } else {
       Alert errorAlert = new Alert(AlertType.ERROR);
-      errorAlert.setHeaderText("Input not valid");
+      errorAlert.setHeaderText("Input not valid.");
       errorAlert.setContentText(
           "The username must contain 2-15 letters or numbers. It can't contain any special characters.");
       errorAlert.showAndWait();
       inputForm.clear();
     }
+  }
+
+  /**
+   * This method serves as the Listener for the Enter-key in the text field. It serves as an
+   * alternative to the start game button.
+   *
+   * @param event ActionEvent when enter is pressed in the text field
+   * @throws Exception
+   * @author jluellig
+   */
+  @FXML
+  void onEnter(ActionEvent event) throws Exception {
+    startGame(event);
   }
 
   /**
@@ -88,5 +93,24 @@ public class NewProfileScreenController {
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
+  }
+
+  /**
+   * Checks if the given username is already used in the database.
+   * 
+   * @param username the input username that should be checked
+   * @return true if the given username is already a username in the database, otherwise false
+   *
+   * @author jluellig
+   */
+  private boolean isAlreadyUsed(String username) {
+    HashMap<Integer, String[]> profiles = DataHandler.getPlayerInfo();
+    for (int key : profiles.keySet()) {
+      String s = (String) profiles.get(key)[0];
+      if (s.equals(inputForm.getText().trim())) {
+        return true;
+      }
+    }
+    return false;
   }
 }

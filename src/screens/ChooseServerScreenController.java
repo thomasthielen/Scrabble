@@ -50,6 +50,32 @@ public class ChooseServerScreenController {
       // TODO
     }
   }
+  
+  /**
+   * This method serves as the Listener for the Enter-key in the first text field. It serves as an
+   * alternative to the join game button.
+   *
+   * @param event ActionEvent when enter is pressed in the text field
+   * @throws Exception
+   * @author jluellig
+   */
+  @FXML
+  void onEnter(ActionEvent event) throws Exception {
+    joinGame(event);
+  }
+  
+  /**
+   * This method serves as the Listener for the Enter-key in the second text field. It serves as an
+   * alternative to the join game button.
+   *
+   * @param event ActionEvent when enter is pressed in the text field
+   * @throws Exception
+   * @author jluellig
+   */
+  @FXML
+  void onEnter2(ActionEvent event) throws Exception {
+    joinGame(event);
+  }
 
   /**
    * This method serves as the Listener for "Back"-Button It redirects the user to the Start Screen
