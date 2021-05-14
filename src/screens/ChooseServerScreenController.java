@@ -62,7 +62,7 @@ public class ChooseServerScreenController {
   void back(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/StartScreen.fxml"));
+    loader.setLocation(getClass().getResource("resources/OnlineScreen.fxml"));
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
