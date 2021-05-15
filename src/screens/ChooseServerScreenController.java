@@ -1,14 +1,17 @@
 package screens;
 
-import java.util.regex.Pattern;
-
 import data.DataHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+import java.net.BindException;
+import java.net.ConnectException;
+import java.util.regex.Pattern;
 import network.Client;
 
 /**
@@ -32,25 +35,46 @@ public class ChooseServerScreenController {
    */
   @FXML
   void joinGame(ActionEvent event) throws Exception {
-    if (Pattern.matches("[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}", ipField.getText().trim())) {
-      if (Pattern.matches("[0-9]{4,5}", portField.getText().trim())) {
-        StartScreen.getStage();
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("resources/LobbyScreen.fxml"));
-        Parent content = loader.load();
-        StartScreen.getStage().setScene(new Scene(content));
-        StartScreen.getStage().show();
-        Client.initialiseClient(ipField.getText().trim(), Integer.valueOf(portField.getText().trim()), false);
-        Client.connectToServer(DataHandler.getOwnPlayer());
-        LobbyScreenController.addIPAndPort();
+    try {
+      if (Pattern.matches(
+          "[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}", ipField.getText().trim())) {
+        if (Pattern.matches("[0-9]{4,5}", portField.getText().trim())) {
+          Client.initialiseClient(
+              ipField.getText().trim(), Integer.valueOf(portField.getText().trim()), false);
+          Client.connectToServer(DataHandler.getOwnPlayer());
+          StartScreen.getStage();
+          FXMLLoader loader = new FXMLLoader();
+          loader.setLocation(getClass().getResource("resources/LobbyScreen.fxml"));
+          Parent content = loader.load();
+          StartScreen.getStage().setScene(new Scene(content));
+          StartScreen.getStage().show();
+          LobbyScreenController.addIPAndPort();
+        } else {
+          Alert errorAlert = new Alert(AlertType.ERROR);
+          errorAlert.setHeaderText("Input not valid.");
+          errorAlert.setContentText("The port number is not correct.");
+          errorAlert.showAndWait();
+          portField.clear();
+        }
       } else {
-        // TODO
+        Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setHeaderText("Input not valid.");
+        errorAlert.setContentText(
+            "The IP address is not in the correct format and therefore no valid address.");
+        errorAlert.showAndWait();
+        ipField.clear();
       }
-    } else {
-      // TODO
+    } catch (BindException | ConnectException e) {
+      // TODO dauert ewig und stürzt fast ab, bevor das AlertFenster erscheint
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("Input not valid.");
+      errorAlert.setContentText("There is no server running on the given IP address and port.");
+      errorAlert.showAndWait();
+      ipField.clear();
+      portField.clear();
     }
   }
-  
+
   /**
    * This method serves as the Listener for the Enter-key in the first text field. It serves as an
    * alternative to the join game button.
@@ -63,7 +87,7 @@ public class ChooseServerScreenController {
   void onEnter(ActionEvent event) throws Exception {
     joinGame(event);
   }
-  
+
   /**
    * This method serves as the Listener for the Enter-key in the second text field. It serves as an
    * alternative to the join game button.
