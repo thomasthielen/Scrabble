@@ -76,6 +76,7 @@ public class Server {
   }
 
   public static void serverShutdown() throws InterruptedException {
+    resetPlayerList();
     channel.close().sync();
     bossGroup.shutdownGracefully();
     workerGroup.shutdownGracefully();
@@ -130,6 +131,10 @@ public class Server {
 
   public static void removePlayer(Player p) {
     players.remove(p);
+  }
+
+  public static void resetPlayerList() {
+    players.clear();
   }
 
   public static ArrayList<Player> getPlayerList() {

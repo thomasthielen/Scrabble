@@ -8,7 +8,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -36,10 +38,17 @@ public class LobbyScreenController {
    */
   @FXML
   void uploadDictionary(ActionEvent event) throws Exception {
-    FileChooser fileChooser = new FileChooser();
-    File file = fileChooser.showOpenDialog(StartScreen.getStage());
-    DataHandler.userDictionaryFile(file);
-    fileForm.setText(file.getName());
+    try {
+      FileChooser fileChooser = new FileChooser();
+      File file = fileChooser.showOpenDialog(StartScreen.getStage());
+      DataHandler.userDictionaryFile(file);
+      fileForm.setText(file.getName());
+    } catch (NullPointerException npe) {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("No choice made.");
+      errorAlert.setContentText("You haven't chosen a file to upload your own dictionary.");
+      errorAlert.showAndWait();
+    }
   }
 
   /**
@@ -60,7 +69,9 @@ public class LobbyScreenController {
     StartScreen.getStage().show();
     // TODO
     Client.disconnectClient(DataHandler.getOwnPlayer());
-    Server.serverShutdown();
+    if (Client.isHost()) {
+      Server.serverShutdown();
+    }
   }
 
   /**

@@ -5,6 +5,8 @@ import data.StatisticKeys;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
+
 import session.GameSession;
 
 /**
@@ -187,12 +189,35 @@ public class Player implements Serializable {
   }
 
   /**
-   * Returns the staticstics hash map of the given player.
+   * Returns the statistics hash map of the given player.
    *
    * @return playerStatistics
    * @author jluellig
    */
   public HashMap<StatisticKeys, Integer> getPlayerStatistics() {
     return this.playerStatistics;
+  }
+
+  /**
+   * Returns if two player objects are the same.
+   * 
+   * @author tikrause
+   * @return if two player objects are the same
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null) {
+      return false;
+    }
+    if (this.getClass() != o.getClass()) {
+      return false;
+    }
+    Player p = (Player) o;
+    return Objects.equals(this.username, p.getUsername())
+        && Objects.equals(this.avatar, p.getAvatar())
+        && Objects.equals(this.playerStatistics, p.getPlayerStatistics());
   }
 }
