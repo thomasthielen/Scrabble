@@ -1,8 +1,11 @@
 package session;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import gameentities.*;
+import javafx.application.Platform;
 import network.Client;
 import screens.GameScreenController;
 
@@ -23,8 +26,16 @@ public class GameSession {
   private Player ownPlayer; // The Player of this GameSession object
 
   private ArrayList<Square> placedSquares = new ArrayList<Square>(); // List of temporary tiles
-  
+
   private GameScreenController gameScreenController;
+
+  private Timer timer;
+
+  private int seconds = 10;
+
+  private boolean isRunning = false;
+
+  private int successiveScorelessTurns = 0;
 
   private int turnValue = 0; // Value of the current turn (including bonuses of premium squares)
 
@@ -51,7 +62,24 @@ public class GameSession {
    *
    * @author tthielen
    */
-  public void initialise() {}
+  public void initialise() {
+    timer = new Timer();
+    timer.scheduleAtFixedRate(
+        new TimerTask() {
+          @Override
+          public void run() {
+            if (isRunning) {
+              seconds--;
+              if (seconds <= 0) {
+                kickPlayer();
+              }
+              System.out.println(printTime());
+            }
+          }
+        },
+        1000,
+        1000);
+  }
 
   /**
    * Synchronises the GameState objects between players
@@ -70,8 +98,8 @@ public class GameSession {
       }
     }
   }
-  
-  public void setGameScreenController (GameScreenController gsc) {
+
+  public void setGameScreenController(GameScreenController gsc) {
     this.gameScreenController = gsc;
   }
 
@@ -85,6 +113,7 @@ public class GameSession {
    * @author tthielen
    */
   public void skipTurn() {
+    successiveScorelessTurns++;
     nextPlayer();
   }
 
@@ -99,6 +128,7 @@ public class GameSession {
    */
   public void exchangeTiles(ArrayList<Tile> swapTiles, ArrayList<Integer> positions) {
     ownPlayer.exchangeTiles(swapTiles, positions);
+    successiveScorelessTurns++;
     nextPlayer();
   }
 
@@ -518,6 +548,9 @@ public class GameSession {
   public void makePlay() {
     ownPlayer.incScore(turnValue);
     ownPlayer.refillRack();
+    if (checkEndCondition()) {
+      endGame();
+    }
 
     for (Square s : placedSquares) {
       s.setPreviouslyPlayed();
@@ -525,6 +558,7 @@ public class GameSession {
     placedSquares.removeAll(placedSquares);
 
     // TODO synchronise();
+    successiveScorelessTurns = 0;
     nextPlayer();
   }
 
@@ -537,7 +571,7 @@ public class GameSession {
    * @author tthielen
    */
   public void nextPlayer() {
-
+    seconds = 600;
     turnValue = 0;
     for (Player p : players) {
       if (p.isCurrentlyPlaying()) {
@@ -604,6 +638,13 @@ public class GameSession {
     return turnValue;
   }
 
+  public int getSuccessiveScorelessTurns() {
+    return successiveScorelessTurns;
+  }
+
+  public void setIsRunning(boolean running) {
+    this.isRunning = running;
+  }
   /**
    * Changes the isActive state of the GameSession.
    *
@@ -622,5 +663,42 @@ public class GameSession {
    */
   public boolean isActive() {
     return this.isActive;
+  }
+
+  private boolean checkEndCondition() {
+    return ownPlayer.getRack().getTiles().isEmpty() && bag.isEmpty();
+  }
+
+  public void endGame() {}
+
+  private void kickPlayer() {
+    if (ownPlayer.isCurrentlyPlaying()) {
+      nextPlayer();
+      Platform.runLater(
+          new Runnable() {
+            @Override
+            public void run() {
+              gameScreenController.leave();
+            }
+          });
+      timer.cancel();
+    }
+  }
+
+  public String printTime() {
+    int minutes = this.seconds / 60;
+    int seconds = this.seconds % 60;
+    String minutesText, secondsText;
+    if (minutes == 10) {
+      minutesText = "" + minutes;
+    } else {
+      minutesText = "0" + minutes;
+    }
+    if (seconds < 10) {
+      secondsText = "0" + seconds;
+    } else {
+      secondsText = "" + seconds;
+    }
+    return minutesText + ":" + secondsText;
   }
 }

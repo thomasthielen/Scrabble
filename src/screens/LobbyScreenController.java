@@ -84,6 +84,7 @@ public class LobbyScreenController {
    */
   @FXML
   void startGame(ActionEvent event) throws Exception {
+    Client.getGameSession().setIsRunning(true);
     if (Client.isHost()) {
       Client.getGameSession().getPlayer().setCurrentlyPlaying(true); 
       StartScreen.getStage();

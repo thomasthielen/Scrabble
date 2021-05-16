@@ -1,6 +1,7 @@
 package screens;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import data.DataHandler;
@@ -106,6 +107,7 @@ public class GameScreenController {
   private Button submitButton;
   private Button recallButton;
   private Button swapButton;
+  private Button endGameButton;
 
   private Text currentlyPlaying = new Text();
 
@@ -184,12 +186,18 @@ public class GameScreenController {
     rackTiles.clear();
 
     for (Player p : gameSession.getPlayerList()) {
-      System.out.println(p.isCurrentlyPlaying() + " Username:" + p.getUsername());
       if (p.isCurrentlyPlaying()) {
         currentlyPlaying.setText(p.getUsername());
         currentlyPlaying.setFill(Color.BLACK);
         break;
       }
+    }
+    
+    if (gameSession.getSuccessiveScorelessTurns() >= 6) {
+      System.out.println("Button visible" ); 
+//      endGameButton.setVisible(true);
+    } else {
+//      endGameButton.setVisible(false);
     }
 
     Rack r = gameSession.getPlayer().getRack();
@@ -638,12 +646,7 @@ public class GameScreenController {
    */
   @FXML
   void leaveGame(ActionEvent event) throws Exception {
-    StartScreen.getStage();
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/StartScreen.fxml"));
-    Parent content = loader.load();
-    StartScreen.getStage().setScene(new Scene(content));
-    StartScreen.getStage().show();
+    leave();
   }
 
   /**
@@ -982,6 +985,19 @@ public class GameScreenController {
     } 
   }
 
+  public void leave() {
+    StartScreen.getStage();
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(getClass().getResource("resources/StartScreen.fxml"));
+    Parent content;
+    try {
+      content = loader.load();
+      StartScreen.getStage().setScene(new Scene(content));
+      StartScreen.getStage().show();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }  
+  }
   // Test method for GridPane exchange
   public GridPane modifyPane(GridPane pane) {
     for (Node node : pane.getChildren()) {
