@@ -223,7 +223,7 @@ public class GameScreenController {
       if (t.isWildCard()) {
         number.setFill(Paint.valueOf("dad3f2"));
       } else {
-        text.setFill(Color.WHITE);
+        number.setFill(Color.WHITE);
       }
       numbers.add(number);
 
