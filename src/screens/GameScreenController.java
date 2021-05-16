@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import data.DataHandler;
 import gameentities.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -63,6 +65,8 @@ public class GameScreenController {
   @FXML private TextField wildcardTextField;
 
   @FXML private Pane wildcardPane;
+  
+  private Button submitWildcardButton;
 
   private static ArrayList<Rectangle> rack = new ArrayList<Rectangle>();
 
@@ -88,6 +92,10 @@ public class GameScreenController {
   private Tile tileToPlace;
   private int tileToPlaceX;
   private int tileToPlaceY;
+  
+  private Tile wildcardTile;
+  private StackPane wildcardStackPane;
+  private char wildcardChar;
 
   private ArrayList<SquarePane> squarePanes = new ArrayList<SquarePane>();
 
@@ -135,6 +143,14 @@ public class GameScreenController {
         }
       }
     }
+    
+    // Initialise the submitWildcardButton
+    for (Node node : wildcardPane.getChildren()) {
+      if (node instanceof Button) {
+        submitWildcardButton = (Button) node;
+        submitWildcardButton.setDisable(true);
+      }
+    }
 
     // Fill the gameBoard with SquarePanes which are also held in squarePanes (!)
     System.out.println(gameBoard.getColumnConstraints());
@@ -154,6 +170,7 @@ public class GameScreenController {
     chatPane.setVisible(false);
     playerStatisticsPane.setVisible(false);
     swapPane.setVisible(false);
+    wildcardPane.setVisible(false);
 
     setRack(true);
   }
@@ -194,12 +211,20 @@ public class GameScreenController {
       rack.add(rectangle);
       // Set the letter
       Text text = new Text(String.valueOf(t.getLetter()));
-      text.setFill(Color.WHITE);
+      if (t.isWildCard()) {
+        text.setFill(Paint.valueOf("dad3f2"));
+      } else {
+        text.setFill(Color.WHITE);
+      }
       letters.add(text);
       // Set the value
       Text number = new Text(String.valueOf(t.getValue()));
       number.setFont(new Font(10));
-      number.setFill(Color.WHITE);
+      if (t.isWildCard()) {
+        number.setFill(Paint.valueOf("dad3f2"));
+      } else {
+        text.setFill(Color.WHITE);
+      }
       numbers.add(number);
 
       // And add those as children to a StackPane, which is saved in rackPanes
@@ -272,6 +297,9 @@ public class GameScreenController {
 
             // Reduce the opacity of the tile on the rack
             rackPanes.get(rackPanes.indexOf(node)).setOpacity(0.5);
+
+            // If the clicked on tile is a wildcard, a selection dialog will open
+            chooseWildcard(clickedOnTile);
 
             // Set the back end values
             clickedOnTile.setSelected(false);
@@ -402,6 +430,12 @@ public class GameScreenController {
                 }
 
                 // OPTION 1.2: Simply place the tile on the square
+
+                wildcardTile = tile;
+                wildcardStackPane = (StackPane) node;
+                
+                // If the selected tile on the rack is a wildcard, a selection dialog will open
+                chooseWildcard(tile);
 
                 placeTileOnBoard(tile, (StackPane) node);
 
@@ -808,7 +842,11 @@ public class GameScreenController {
   }
 
   @FXML
-  void submitWildcard(ActionEvent event) {}
+  void submitWildcard(ActionEvent event) {
+    wildcardPane.setVisible(false);
+    wildcardTile.setLetter(wildcardChar);
+    placeTileOnBoard(wildcardTile, wildcardStackPane);
+  }
 
   // All following methods are functions used multiple times in the methods above
 
@@ -833,13 +871,24 @@ public class GameScreenController {
 
   private void placeTileOnBoard(Tile tile, StackPane sp) {
     sp.getChildren().clear();
+    
     // Set the text of the newly placed tile
     Text text = new Text(String.valueOf(tile.getLetter()));
-    text.setFill(Color.WHITE);
+    if (tile.isWildCard()) {
+      text.setFill(Paint.valueOf("dad3f2"));
+    } else {
+      text.setFill(Color.WHITE);
+    }
+    
     // Set the number of the newly placed tile
     Text number = new Text(String.valueOf(tile.getValue()));
     number.setFont(new Font(10));
-    number.setFill(Color.WHITE);
+    if (tile.isWildCard()) {
+      number.setFill(Paint.valueOf("dad3f2"));
+    } else {
+      number.setFill(Color.WHITE);
+    }
+    
     StackPane.setAlignment(number, Pos.BOTTOM_RIGHT);
     // Add those to the corresponding StackPane
     sp.getChildren().add(new Rectangle(21, 21, Paint.valueOf("#f88c00")));
@@ -903,6 +952,32 @@ public class GameScreenController {
       swapButton.setVisible(true);
       currentlyPlaying.setVisible(false);
     }
+  }
+
+  private void chooseWildcard(Tile clickedTile) {
+    if (clickedTile.isWildCard()) {
+      wildcardTextField.setText("");
+      wildcardPane.setVisible(true);
+
+      wildcardTextField
+          .textProperty()
+          .addListener(
+              new ChangeListener<String>() {
+                @Override
+                public void changed(
+                    ObservableValue<? extends String> observable,
+                    String oldValue,
+                    String newValue) {
+                  if (newValue.matches("[a-zA-Z]")) {
+                    submitWildcardButton.setDisable(false);
+                    newValue = newValue.toUpperCase();
+                    wildcardChar = newValue.charAt(0);
+                  } else {
+                    submitWildcardButton.setDisable(true);
+                  }
+                }
+              });
+    } 
   }
 
   // Test method for GridPane exchange

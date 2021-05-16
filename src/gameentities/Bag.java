@@ -65,6 +65,7 @@ public class Bag implements Serializable {
     tileCounter.add(new TileContainer(new Tile('Q', 10), 1));
     tileCounter.add(new TileContainer(new Tile('Z', 10), 1));
     tileCounter.add(new TileContainer(new Tile('*', 0), 2)); // Wildcard / Blank Tile
+    // TODO: Implement self-selection of value & count
 
     // Iterate through tileCounter and use the count to fill remainingTiles with the
     // correct amounts of tiles
