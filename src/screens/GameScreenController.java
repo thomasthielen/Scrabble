@@ -24,6 +24,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import network.Client;
 import session.*;
 
 /**
@@ -70,7 +71,7 @@ public class GameScreenController {
 
   private ArrayList<StackPane> boardPanes = new ArrayList<StackPane>();
 
-  private GameSession gameSession = new GameSession();
+  private GameSession gameSession;
 
   private ArrayList<Tile> gameBoardTiles = new ArrayList<Tile>();
 
@@ -91,6 +92,9 @@ public class GameScreenController {
 
   private Button submitButton;
   private Button recallButton;
+  private Button swapButton;
+  
+  private Text currentlyPlaying = new Text();
 
   private int boardSelectedX = 0;
   private int boardSelectedY = 0;
@@ -106,6 +110,9 @@ public class GameScreenController {
 
     // Load the dictionary TODO: Outsource this! Especially to be able to choose the dictionary
     DataHandler.userDictionaryFile(new File("resources/Collins Scrabble Words (2019).txt"));
+    
+    gameSession = Client.getGameSession();
+    gameSession.setGameScreenController(this);
 
     // Initialise the submit button and disable it
     for (Node node : gameBoardPane.getChildren()) {
@@ -117,6 +124,9 @@ public class GameScreenController {
         } else if (button.getText().equals("Recall")) {
           recallButton = button;
           recallButton.setDisable(true);
+        } else if (button.getText().equals("Swap")) {
+          swapButton = button;
+          swapButton.setDisable(false);
         }
       }
     }
@@ -150,6 +160,15 @@ public class GameScreenController {
     rackPanes.clear();
     rackPane.getChildren().clear();
     rackTiles.clear();
+    
+    for (Player p : gameSession.getPlayerList()) {
+      System.out.println(p.isCurrentlyPlaying() + " Username:" + p.getUsername()); 
+      if (p.isCurrentlyPlaying()) {
+        currentlyPlaying.setText(p.getUsername());
+        currentlyPlaying.setFill(Color.BLACK);
+        break;
+      }
+    }
 
     Rack r = gameSession.getPlayer().getRack();
     if (isFirstTime) {
@@ -662,7 +681,7 @@ public class GameScreenController {
    * @throws Exception
    */
   @FXML
-  void submitWord(ActionEvent event) throws Exception {
+  void submitWord(ActionEvent event) throws Exception {    
     for (Tile t : gameBoardTiles) {
       t.setPlacedTemporarily(false);
       t.setPlacedFinally(true);
@@ -681,6 +700,7 @@ public class GameScreenController {
     setRack(false);
     refreshSubmit();
     refreshRecall();
+    setPlayable(gameSession.getPlayer().isCurrentlyPlaying());
   }
 
   /**
@@ -860,6 +880,20 @@ public class GameScreenController {
       recallButton.setDisable(false);
     } else {
       recallButton.setDisable(true);
+    }
+  }
+  
+  public void setPlayable(boolean ownTurn) {
+    if (!ownTurn) {
+      submitButton.setVisible(false);
+      recallButton.setVisible(false);
+      swapButton.setVisible(false);
+      currentlyPlaying.setVisible(true);
+    } else {
+      submitButton.setVisible(true);
+      recallButton.setVisible(true);
+      swapButton.setVisible(true);
+      currentlyPlaying.setVisible(false);
     }
   }
 

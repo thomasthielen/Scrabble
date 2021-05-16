@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import gameentities.*;
 import network.Client;
+import screens.GameScreenController;
 
 /**
  * Class used to manage all game entities and necessary methods.
@@ -22,6 +23,8 @@ public class GameSession {
   private Player ownPlayer; // The Player of this GameSession object
 
   private ArrayList<Square> placedSquares = new ArrayList<Square>(); // List of temporary tiles
+  
+  private GameScreenController gameScreenController;
 
   private int turnValue = 0; // Value of the current turn (including bonuses of premium squares)
 
@@ -34,12 +37,11 @@ public class GameSession {
    *
    * @author tthielen
    */
-  public GameSession() {
+  public GameSession(Player p) {
     players = new ArrayList<Player>();
     bag = new Bag();
     board = new Board();
-    ownPlayer =
-        new Player("tthielen", null); // TODO: REMOVE, only for testing purposes in ConsoleGame
+    ownPlayer = p;
     ownPlayer.createRack(this);
     initialise();
   }
@@ -67,6 +69,10 @@ public class GameSession {
         this.board = overrideGameState.getBoard();
       }
     }
+  }
+  
+  public void setGameScreenController (GameScreenController gsc) {
+    this.gameScreenController = gsc;
   }
 
   // PLAYER TURN OPTIONS:
@@ -531,8 +537,6 @@ public class GameSession {
    * @author tthielen
    */
   public void nextPlayer() {
-    // TODO: Missing: Current player order is only connected to order of insertion
-    // don't know if we ever want to change that
 
     turnValue = 0;
     for (Player p : players) {
@@ -545,6 +549,7 @@ public class GameSession {
         } else {
           players.get(index + 1).setCurrentlyPlaying(true);
         }
+        break;
       }
     }
   }

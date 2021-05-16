@@ -76,7 +76,7 @@ public class Client {
       // connects the client to the server using TCP
       cf = bootstrap.connect(ip, port).sync();
       isRunning = true;
-      gameSession = new GameSession();
+      gameSession = new GameSession(p);
       cf.channel().writeAndFlush(new ConnectMessage(p));
       // BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
