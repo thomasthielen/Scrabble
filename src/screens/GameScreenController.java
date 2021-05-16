@@ -292,14 +292,16 @@ public class GameScreenController {
             Node n = rackPane.getChildren().get(i);
             rackPanes.get(rackPanes.indexOf(n)).setOpacity(1);
 
-            // Call placeTileOnBoard
+            wildcardTile = clickedOnTile;
+            wildcardStackPane = boardStackPane;
+            
+            // If the selected tile on the rack is a wildcard, a selection dialog will open
+            chooseWildcard(clickedOnTile);
+
             placeTileOnBoard(clickedOnTile, boardStackPane);
 
             // Reduce the opacity of the tile on the rack
             rackPanes.get(rackPanes.indexOf(node)).setOpacity(0.5);
-
-            // If the clicked on tile is a wildcard, a selection dialog will open
-            chooseWildcard(clickedOnTile);
 
             // Set the back end values
             clickedOnTile.setSelected(false);
