@@ -1,14 +1,23 @@
 package gameentities;
 
 /**
- * Enum to be able to choose from several preset avatars (currently only placeholders).
+ * Enum to be able to choose from several preset avatars.
  *
  * @author jluellig
  */
 public enum Avatar {
-  BLUE("resources/test.png"),
-  RED("url2"),
-  YELLOW("url3");
+  BLACK("resources/avatars/black.png"),
+  BLUE("resources/avatars/blue.png"),
+  BROWN("resources/avatars/brown.png"),
+  CYAN("resources/avatars/cyan.png"),
+  GREEN("resources/avatars/green.png"),
+  LIME("resources/avatars/lime.png"),
+  ORANGE("resources/avatars/orange.png"),
+  PINK("resources/avatars/pink.png"),
+  PURPLE("resources/avatars/purple.png"),
+  RED("resources/avatars/red.png"),
+  SILVER("resources/avatars/silver.png"),
+  YELLOW("resources/avatars/yellow.png");
 
   private final String url;
 
