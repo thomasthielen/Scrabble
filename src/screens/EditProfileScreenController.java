@@ -1,16 +1,26 @@
 package screens;
 
+import java.util.HashMap;
+import java.util.regex.Pattern;
+
+import data.DataHandler;
+import gameentities.Avatar;
+import gameentities.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 
 public class EditProfileScreenController {
 
   private static int profileID;
-  
+  private static String currentUsername;
+  private static Avatar currentAvatar;
+
   @FXML private TextField nameField;
 
   /**
@@ -22,12 +32,35 @@ public class EditProfileScreenController {
    */
   @FXML
   void submitChanges(ActionEvent event) throws Exception {
-    StartScreen.getStage();
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/ExistingProfileScreen.fxml"));
-    Parent content = loader.load();
-    StartScreen.getStage().setScene(new Scene(content));
-    StartScreen.getStage().show();
+    // TODO choose different Avatar
+    boolean alreadyUsed = false;
+    String input = nameField.getText().trim();
+    if (Pattern.matches("[a-zA-Z0-9]{2,15}", input)
+        && !(alreadyUsed = usernameAlreadyUsed(input))) {
+      Avatar a = Avatar.BLUE;
+      DataHandler.addPlayer(input, a);
+      DataHandler.setOwnPlayer(new Player(input, a));
+      StartScreen.getStage();
+      FXMLLoader loader = new FXMLLoader();
+      loader.setLocation(getClass().getResource("resources/ExistingProfileScreen.fxml"));
+      Parent content = loader.load();
+      StartScreen.getStage().setScene(new Scene(content));
+      StartScreen.getStage().show();
+    } else if (alreadyUsed) {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("Username already exists.");
+      errorAlert.setContentText("Try a different username.");
+      errorAlert.showAndWait();
+      nameField.clear();
+    } else {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("Input not valid.");
+      errorAlert.setContentText(
+          "The username must contain 2-15 letters or numbers. It can't contain any special characters.");
+      errorAlert.showAndWait();
+      nameField.clear();
+    }
+    //
   }
 
   /**
@@ -40,9 +73,12 @@ public class EditProfileScreenController {
    */
   @FXML
   void deleteProfile(ActionEvent event) throws Exception {
+    DataHandler.deletePlayer(profileID);
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("resources/ExistingProfileScreen.fxml"));
+    ExistingProfileScreenController existingProfileScreenController = loader.getController();
+    existingProfileScreenController.addProfiles();
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
@@ -66,11 +102,35 @@ public class EditProfileScreenController {
   }
 
   /**
+   * Sets the ID for th profile in the database that is going to be edited.
+   *
    * @param id the id of the selected profile in the database that is going to be changed.
    * @author jluellig
    */
-  protected static void setProfileId(int id) {
+  protected void loadProfile(int id) {
     profileID = id;
-    System.out.println(profileID);
+    HashMap<Integer, String[]> profiles = DataHandler.getPlayerInfo();
+    currentUsername = (String) profiles.get(id)[0];
+    currentAvatar = Avatar.valueOf(profiles.get(id)[1]);
+    nameField.setText(currentUsername);
+    // TODO avatar
+  }
+
+  /**
+   * Checks if the given username is already used in the database.
+   *
+   * @param username the input username that should be checked
+   * @return true if the given username is already a username in the database, otherwise false
+   * @author jluellig
+   */
+  private boolean usernameAlreadyUsed(String username) {
+    HashMap<Integer, String[]> profiles = DataHandler.getPlayerInfo();
+    for (int key : profiles.keySet()) {
+      String s = (String) profiles.get(key)[0];
+      if (s.equals(nameField.getText().trim())) {
+        return true;
+      }
+    }
+    return false;
   }
 }

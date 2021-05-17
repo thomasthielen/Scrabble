@@ -36,12 +36,12 @@ public class NewProfileScreenController {
   void startGame(ActionEvent event) throws Exception {
     // TODO add avatar listener
     boolean alreadyUsed = false;
-    if (Pattern.matches("[a-zA-Z0-9]{2,15}", inputForm.getText().trim())
-        && !(alreadyUsed = isAlreadyUsed(inputForm.getText().trim()))) {
-      String playerName = inputForm.getText().trim();
+    String input = inputForm.getText().trim();
+    if (Pattern.matches("[a-zA-Z0-9]{2,15}", input)
+        && !(alreadyUsed = usernameAlreadyUsed(input))) {
       Avatar a = Avatar.BLUE;
-      DataHandler.addPlayer(playerName, a);
-      DataHandler.setOwnPlayer(new Player(playerName, a));
+      DataHandler.addPlayer(input, a);
+      DataHandler.setOwnPlayer(new Player(input, a));
       StartScreen.getStage();
       FXMLLoader loader = new FXMLLoader();
       loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
@@ -103,11 +103,12 @@ public class NewProfileScreenController {
    *
    * @author jluellig
    */
-  private boolean isAlreadyUsed(String username) {
+  private boolean usernameAlreadyUsed(String username) {
     HashMap<Integer, String[]> profiles = DataHandler.getPlayerInfo();
+    String input = inputForm.getText().trim();
     for (int key : profiles.keySet()) {
       String s = (String) profiles.get(key)[0];
-      if (s.equals(inputForm.getText().trim())) {
+      if (s.equals(input)) {
         return true;
       }
     }

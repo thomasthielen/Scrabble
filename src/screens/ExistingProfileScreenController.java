@@ -26,11 +26,11 @@ import javafx.scene.layout.Pane;
  */
 public class ExistingProfileScreenController {
 
-  @FXML private static ScrollPane chooseProfilePane;
-  @FXML private static Pane profileList = new Pane();
+  @FXML private ScrollPane chooseProfilePane;
+  @FXML private Pane profileList = new Pane();
   private static ToggleGroup buttonGroup;
   private static HashMap<Integer, String[]> profiles;
-  @FXML private static Pane test = new Pane();
+  @FXML private Pane test = new Pane();
 
   /**
    * This method serves as the Listener for "START GAME"-Button. It redirects the user to the Online
@@ -57,7 +57,7 @@ public class ExistingProfileScreenController {
    * @author jluellig
    * @throws FileNotFoundException
    */
-  protected static void addProfiles() throws FileNotFoundException {
+  protected void addProfiles() throws FileNotFoundException {
     buttonGroup = new ToggleGroup();
     profiles = DataHandler.getPlayerInfo();
     for (Integer id : profiles.keySet()) {
@@ -68,12 +68,6 @@ public class ExistingProfileScreenController {
       tb.setToggleGroup(buttonGroup);
       profileList.getChildren().add(tb);
     }
-    //    StackPane sp = new StackPane();
-    //    Rectangle r = new Rectangle(22,22);
-    //    r.setFill(Color.AZURE);
-    //    sp.getChildren().add(r);
-    //    test.getChildren().add(sp);
-    //    System.out.println("blau");
   }
 
   /**
@@ -86,10 +80,6 @@ public class ExistingProfileScreenController {
   @FXML
   void editProfile(ActionEvent event) throws Exception {
     if (buttonGroup.getSelectedToggle() != null) {
-      StartScreen.getStage();
-      FXMLLoader loader = new FXMLLoader();
-      loader.setLocation(getClass().getResource("resources/EditProfileScreen.fxml"));
-      Parent content = loader.load();
       int id = 0;
       Iterator<Integer> it = profiles.keySet().iterator();
       for (Toggle t : buttonGroup.getToggles()) {
@@ -100,7 +90,12 @@ public class ExistingProfileScreenController {
           it.next();
         }
       }
-      EditProfileScreenController.setProfileId(id);
+      StartScreen.getStage();
+      FXMLLoader loader = new FXMLLoader();
+      loader.setLocation(getClass().getResource("resources/EditProfileScreen.fxml"));
+      EditProfileScreenController editProfileScreenController = loader.getController();
+      editProfileScreenController.loadProfile(id);
+      Parent content = loader.load();
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
     } else {
