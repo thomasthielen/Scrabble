@@ -34,6 +34,8 @@ public class OnlineScreenController {
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("resources/LobbyScreen.fxml"));
     Parent content = loader.load();
+    LobbyScreenController lobbyScreenController = loader.getController();
+    lobbyScreenController.setDictionaryMenu();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
     // TODO @author tikrause 

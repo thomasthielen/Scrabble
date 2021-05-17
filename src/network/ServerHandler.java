@@ -62,11 +62,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
           channel.writeAndFlush(msg);
           channel.writeAndFlush(
               new GameStateMessage(
-                  DataHandler.getOwnPlayer(),
-                  new GameState(
-                      Server.getPlayerList(),
-                      Client.getGameSession().getBag(),
-                      Client.getGameSession().getBoard())));
+                  DataHandler.getOwnPlayer(), new GameState(Server.getPlayerList())));
         }
         break;
       case DISCONNECT:
@@ -83,6 +79,13 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
       case START_GAME:
         for (Channel channel : channels) {
           channel.writeAndFlush(msg);
+          channel.writeAndFlush(
+              new GameStateMessage(
+                  DataHandler.getOwnPlayer(),
+                  new GameState(
+                      Server.getPlayerList(),
+                      Client.getGameSession().getBag(),
+                      Client.getGameSession().getBoard())));
         }
         break;
       default:

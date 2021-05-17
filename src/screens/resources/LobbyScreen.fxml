@@ -40,10 +40,6 @@
       <Text layoutX="40.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name, Record" />
       <Text layoutX="40.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name, Record" />
       <MenuButton fx:id="dictionarySelecter" layoutX="410.0" layoutY="203.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Dictionaries" textFill="WHITE">
-        <items>
-          <MenuItem mnemonicParsing="false" text="Action 1" />
-          <MenuItem mnemonicParsing="false" text="Action 2" />
-        </items>
       </MenuButton>
       <Text fill="#f88c00" layoutX="305.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select a dictionary from the list below">
          <font>

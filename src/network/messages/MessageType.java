@@ -12,6 +12,5 @@ public enum MessageType {
   START_GAME,
   SEND_CHAT,
   GAME_STATE,
-  NEW_DICTIONARY,
   DICTIONARY;
 }

@@ -7,6 +7,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -120,6 +121,11 @@ public class Client {
   public static void reportStartGame(Player p) {
     // TODO
     cf.channel().writeAndFlush(new StartGameMessage(p));
+  }
+
+  public static void sendDictionary(Player p, File f) {
+    // TODO
+    cf.channel().writeAndFlush(new DictionaryMessage(p, f));
   }
 
   public static void updateGameState(Player p, GameState game) {

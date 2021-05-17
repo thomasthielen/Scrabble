@@ -46,7 +46,6 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         // TODO
         break;
       case START_GAME:
-        // TODO
         Client.getGameSession().switchToGameScreen();
         Client.getGameSession().setPlayable();
         break;
@@ -65,13 +64,8 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         }
         break;
       case DICTIONARY:
-        // TODO
-        break;
-      case NEW_DICTIONARY:
-        // TODO
-        NewDictionaryMessage ndm = (NewDictionaryMessage) msg;
-        DataHandler.userDictionaryFile(ndm.getFile());
-        System.out.println(DataHandler.checkWord("mall"));
+        DictionaryMessage dm = (DictionaryMessage) msg;
+        DataHandler.userDictionaryFile(dm.getFile());
         break;
       default:
         break;

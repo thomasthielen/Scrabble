@@ -1,11 +1,12 @@
 package network.messages;
 
 import gameentities.Player;
-import session.Dictionary;
+import java.io.File;
 
 /**
- * Implementation of the DictionaryMessage. A DictionaryMessage is created to send the URL of the
- * chosen dictionary to all clients.
+ * Implementation of the DictionaryMessage. A DictionaryMessage is created to send the
+ * dictionary file to all clients, if a custom dictionary has been chosen which is not in the
+ * resources folder.
  *
  * @author tikrause
  */
@@ -14,28 +15,28 @@ public class DictionaryMessage extends Message {
   // Default serialization UID
   private static final long serialVersionUID = 1L;
 
-  private Dictionary url;
+  private File file;
 
   /**
-   * Constructor: creates a DictionaryMessage with the MessageType.DICTIONARY, the player object of
-   * the creator and the URL which is represented by an enum of all available dictionaries.
+   * Constructor: creating a DictionaryMessage with the MessageType.NEW_DICTIONARY, the player
+   * object of the creator and the file that should be sent to the other clients.
    *
    * @author tikrause
    * @param p player object that has sent the message
-   * @param url chosen dictionary
+   * @param file dictionary file that should be sent
    */
-  public DictionaryMessage(Player p, Dictionary url) {
+  public DictionaryMessage(Player p, File file) {
     super(MessageType.DICTIONARY, p);
-    this.url = url;
+    this.file = file;
   }
 
   /**
-   * getter method for the enum of the chosen dictionary.
+   * getter method for the dictionary file that is sent.
    *
    * @author tikrause
-   * @return url chosen dictionary
+   * @return file dictionary file that should be sent
    */
-  public Dictionary getUrl() {
-    return this.url;
+  public File getFile() {
+    return this.file;
   }
 }
