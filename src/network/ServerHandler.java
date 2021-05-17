@@ -52,42 +52,47 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
    */
   @Override
   protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
-    Channel in = ctx.channel();
     MessageType mt = msg.getMessageType();
-    if (mt == MessageType.CONNECT) {
-      ConnectMessage cm = (ConnectMessage) msg;
-      Server.addPlayer(cm.getPlayer());
-      Client.updateGameSession(new GameState(Server.getPlayerList()));
-      for (Channel channel : channels) {
-        channel.writeAndFlush(msg);
-        channel.writeAndFlush(
-            new GameStateMessage(
-                DataHandler.getOwnPlayer(),
-                new GameState(
-                    Server.getPlayerList(),
-                    Client.getGameSession().getBag(),
-                    Client.getGameSession().getBoard())));
-      }
-    } else if (mt == MessageType.DISCONNECT) {
-      DisconnectMessage dcm = (DisconnectMessage) msg;
-      Server.removePlayer(dcm.getPlayer());
-      Client.updateGameSession(new GameState(Server.getPlayerList()));
-      for (Channel channel : channels) {
-        channel.writeAndFlush(msg);
-        channel.writeAndFlush(
-            new GameStateMessage(
-                DataHandler.getOwnPlayer(), new GameState(Server.getPlayerList())));
-      }
-    } else if (mt == MessageType.START_GAME) {
-      for (Channel channel : channels) {
-        channel.writeAndFlush(msg);
-      }
-    } else {
-      for (Channel channel : channels) {
-        if (channel != in) {
+    switch (mt) {
+      case CONNECT:
+        ConnectMessage cm = (ConnectMessage) msg;
+        Server.addPlayer(cm.getPlayer());
+        Client.updateGameSession(new GameState(Server.getPlayerList()));
+        for (Channel channel : channels) {
+          channel.writeAndFlush(msg);
+          channel.writeAndFlush(
+              new GameStateMessage(
+                  DataHandler.getOwnPlayer(),
+                  new GameState(
+                      Server.getPlayerList(),
+                      Client.getGameSession().getBag(),
+                      Client.getGameSession().getBoard())));
+        }
+        break;
+      case DISCONNECT:
+        DisconnectMessage dcm = (DisconnectMessage) msg;
+        Server.removePlayer(dcm.getPlayer());
+        Client.updateGameSession(new GameState(Server.getPlayerList()));
+        for (Channel channel : channels) {
+          channel.writeAndFlush(msg);
+          channel.writeAndFlush(
+              new GameStateMessage(
+                  DataHandler.getOwnPlayer(), new GameState(Server.getPlayerList())));
+        }
+        break;
+      case START_GAME:
+        for (Channel channel : channels) {
           channel.writeAndFlush(msg);
         }
-      }
+        break;
+      default:
+        Channel in = ctx.channel();
+        for (Channel channel : channels) {
+          if (channel != in) {
+            channel.writeAndFlush(msg);
+          }
+        }
+        break;
     }
   }
 }

@@ -3,13 +3,7 @@ package network;
 import data.DataHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import network.messages.*;
-import screens.LobbyScreenController;
-import screens.StartScreen;
 import session.GameState;
 import gameentities.Player;
 
@@ -43,6 +37,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         DisconnectMessage dcm = (DisconnectMessage) msg;
         if (dcm.isHost()) {
           System.out.println("The host has left!");
+          Client.disconnectClient(DataHandler.getOwnPlayer());
         } else {
           System.out.println(dcm.getPlayer().getUsername() + " has left!");
         }
