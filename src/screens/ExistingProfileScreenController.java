@@ -2,6 +2,8 @@ package screens;
 
 import data.DataHandler;
 import gameentities.Avatar;
+import gameentities.Player;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -38,18 +40,39 @@ public class ExistingProfileScreenController {
    * This method serves as the Listener for "START GAME"-Button. It redirects the user to the Online
    * or Offline Screen.
    *
-   * @author jbleil
+   * @author jluellig
    * @param event
    * @throws Exception
    */
   @FXML
   void startGame(ActionEvent event) throws Exception {
-    StartScreen.getStage();
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
-    Parent content = loader.load();
-    StartScreen.getStage().setScene(new Scene(content));
-    StartScreen.getStage().show();
+    if (buttonGroup.getSelectedToggle() != null) {
+        int id = 0;
+        Iterator<Integer> it = profiles.keySet().iterator();
+        for (Toggle t : buttonGroup.getToggles()) {
+          if (t.isSelected()) {
+            id = it.next();
+            break;
+          } else {
+            it.next();
+          }
+        }
+        String username = (String) profiles.get(id)[0];
+        Avatar avatar = Avatar.valueOf(profiles.get(id)[1]);
+        DataHandler.setOwnPlayer(new Player(username, avatar));
+        StartScreen.getStage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
+        Parent content = loader.load();
+        StartScreen.getStage().setScene(new Scene(content));
+        StartScreen.getStage().show();
+      } else {
+      	Alert errorAlert = new Alert(AlertType.ERROR);
+          errorAlert.setHeaderText("No profile selected.");
+          errorAlert.setContentText(
+              "Please select a profile from the list above or create a new one.");
+          errorAlert.showAndWait();
+      }
   }
 
   /**

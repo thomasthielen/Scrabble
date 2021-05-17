@@ -27,7 +27,7 @@ public class EditProfileScreenController {
    * This method serves as the Listener for "SUBMIT CHANGES"-Button TODO It allows the user to save
    * the changes to the Profile and redirects him back to the Existing Profile Screen
    *
-   * @author jbleil
+   * @author jluellig
    * @param event
    */
   @FXML
