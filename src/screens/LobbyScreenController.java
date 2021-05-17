@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -28,6 +29,8 @@ public class LobbyScreenController {
   @FXML private Button fileForm;
 
   @FXML private static Pane lobbyPane;
+  
+  @FXML private MenuButton dictionarySelecter;
 
   public void initialize() throws Exception {
     Client.getGameSession().setLobbyScreenController(this);
