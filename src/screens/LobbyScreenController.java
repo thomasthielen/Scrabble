@@ -113,12 +113,16 @@ public class LobbyScreenController {
   void addAIPlayer(ActionEvent event) throws Exception {}
 
   public static void addIPAndPort() {
-    Text ip = new Text(100, 100, Client.getIp());
+    lobbyPane = new Pane();
+    Text testText = new Text("Text");
+    testText.relocate(100, 100);
+    lobbyPane.getChildren().add(testText);
+    /*Text ip = new Text(100, 100, Client.getIp());
     Text port = new Text(100, 150, "" + Client.getPort());
     lobbyPane = new Pane();
     lobbyPane.getChildren().add(ip);
     lobbyPane.getChildren().add(port);
-    lobbyPane.setVisible(true);
+    lobbyPane.setVisible(true);*/
   }
   
   public void switchToGameScreen() {
