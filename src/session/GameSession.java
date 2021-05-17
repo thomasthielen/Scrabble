@@ -31,7 +31,7 @@ public class GameSession {
 
   private Timer timer;
 
-  private int seconds = 10;
+  private int seconds = 600;
 
   private boolean isRunning = false;
 
