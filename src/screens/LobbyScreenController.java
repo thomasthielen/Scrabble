@@ -1,6 +1,7 @@
 package screens;
 
 import java.io.File;
+import java.io.IOException;
 
 import data.DataHandler;
 import javafx.event.ActionEvent;
@@ -28,6 +29,10 @@ public class LobbyScreenController {
 
   @FXML private static Pane lobbyPane;
 
+  public void initialize() throws Exception {
+    Client.getGameSession().setLobbyScreenController(this);
+  }
+  
   /**
    * This method serves as the listener for the "Upload dictionary"-Button. It allows the user to
    * upload his own dictionary for the game.
@@ -87,14 +92,9 @@ public class LobbyScreenController {
     Client.getGameSession().setIsRunning(true);
     if (Client.isHost()) {
       Client.getGameSession().getPlayer().setCurrentlyPlaying(true); 
-      StartScreen.getStage();
-      FXMLLoader loader = new FXMLLoader();
-      loader.setLocation(getClass().getResource("resources/GameScreen.fxml"));
-      Parent content = loader.load();
-      StartScreen.getStage().setScene(new Scene(content));
-      StartScreen.getStage().show();
-    } else {
-      // TODO player is not a host and not allowed to start the game
+      Client.reportStartGame(DataHandler.getOwnPlayer());
+      Client.getGameSession().initialiseGameScreen();
+      switchToGameScreen();
     }
   }
 
@@ -116,5 +116,20 @@ public class LobbyScreenController {
     lobbyPane.getChildren().add(ip);
     lobbyPane.getChildren().add(port);
     lobbyPane.setVisible(true);
+  }
+  
+  public void switchToGameScreen() {
+
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(getClass().getResource("resources/GameScreen.fxml"));
+    Parent content;
+    try {
+      content = loader.load();
+      StartScreen.getStage().setScene(new Scene(content));
+      StartScreen.getStage().show();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }   
   }
 }

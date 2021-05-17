@@ -78,6 +78,10 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
             new GameStateMessage(
                 DataHandler.getOwnPlayer(), new GameState(Server.getPlayerList())));
       }
+    } else if (mt == MessageType.START_GAME) {
+      for (Channel channel : channels) {
+        channel.writeAndFlush(msg);
+      }
     } else {
       for (Channel channel : channels) {
         if (channel != in) {

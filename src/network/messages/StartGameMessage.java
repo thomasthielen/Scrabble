@@ -8,7 +8,7 @@ import gameentities.Player;
  *
  * @author lsteltma
  */
-public class SuccessMessage extends Message {
+public class StartGameMessage extends Message {
 
   /**
    * Default serialization UID
@@ -23,7 +23,7 @@ public class SuccessMessage extends Message {
    * @author lsteltma
    * @param name
    */
-  public SuccessMessage(Player p) {
-    super(MessageType.SUCCESS, p);
+  public StartGameMessage(Player p) {
+    super(MessageType.START_GAME, p);
   }
 }

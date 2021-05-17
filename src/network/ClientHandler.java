@@ -3,7 +3,13 @@ package network;
 import data.DataHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import network.messages.*;
+import screens.LobbyScreenController;
+import screens.StartScreen;
 import session.GameState;
 import gameentities.Player;
 
@@ -44,8 +50,10 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
       case ERROR:
         // TODO
         break;
-      case SUCCESS:
+      case START_GAME:
         // TODO
+        Client.getGameSession().switchToGameScreen();
+        Client.getGameSession().setPlayable();
         break;
       case SEND_CHAT:
         // TODO

@@ -9,7 +9,7 @@ public enum MessageType {
   CONNECT,
   DISCONNECT,
   ERROR,
-  SUCCESS,
+  START_GAME,
   SEND_CHAT,
   GAME_STATE,
   NEW_DICTIONARY,

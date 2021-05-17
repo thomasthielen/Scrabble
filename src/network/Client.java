@@ -117,9 +117,9 @@ public class Client {
     cf.channel().writeAndFlush(new ErrorMessage(p, reason));
   }
 
-  public static void reportSuccess(Player p) {
+  public static void reportStartGame(Player p) {
     // TODO
-    cf.channel().writeAndFlush(new SuccessMessage(p));
+    cf.channel().writeAndFlush(new StartGameMessage(p));
   }
 
   public static void updateGameState(Player p, GameState game) {

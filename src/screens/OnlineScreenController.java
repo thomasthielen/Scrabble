@@ -29,14 +29,14 @@ public class OnlineScreenController {
    */
   @FXML
   void hostGame(ActionEvent event) throws Exception {
+    createMultiPlayerLobby();
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("resources/LobbyScreen.fxml"));
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
-    // TODO @author tikrause
-    createMultiPlayerLobby();
+    // TODO @author tikrause 
     LobbyScreenController.addIPAndPort();
   }
 

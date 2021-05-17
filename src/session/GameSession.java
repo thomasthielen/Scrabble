@@ -8,6 +8,7 @@ import gameentities.*;
 import javafx.application.Platform;
 import network.Client;
 import screens.GameScreenController;
+import screens.LobbyScreenController;
 
 /**
  * Class used to manage all game entities and necessary methods.
@@ -28,12 +29,14 @@ public class GameSession {
   private ArrayList<Square> placedSquares = new ArrayList<Square>(); // List of temporary tiles
 
   private GameScreenController gameScreenController;
+  private LobbyScreenController lobbyScreenController;
 
   private Timer timer;
 
   private int seconds = 600;
 
   private boolean isRunning = false;
+  private boolean gscInitialized = false;
 
   private int successiveScorelessTurns = 0;
 
@@ -81,6 +84,16 @@ public class GameSession {
         1000);
   }
 
+  public void initialiseGameScreen() {
+    Platform.runLater(
+        new Runnable() {
+          @Override
+          public void run() {
+            gameScreenController.setPlayable(ownPlayer.isCurrentlyPlaying());
+          }
+        });
+  }
+
   /**
    * Synchronises the GameState objects between players
    *
@@ -88,21 +101,34 @@ public class GameSession {
    */
   public void synchronise(GameState overrideGameState) {
     // If the own turn is over: Create a GameState object and send it
-    if (ownPlayer.isCurrentlyPlaying()) {
-      Client.updateGameState(ownPlayer, overrideGameState);
-    } else {
-      this.players = overrideGameState.getPlayers();
-      if (overrideGameState.getBag() != null) {
-        this.bag = overrideGameState.getBag();
-        this.board = overrideGameState.getBoard();
+    this.players = overrideGameState.getPlayers();
+    for (Player p : this.players) {
+      if (p.equals(ownPlayer)) {
+        ownPlayer = p;
       }
     }
+    if (!overrideGameState.isPlayersOnly() && gscInitialized) {
+      gameScreenController.setPlayable(ownPlayer.isCurrentlyPlaying());
+    }
+    if (overrideGameState.getBag() != null) {
+      this.bag = overrideGameState.getBag();
+      this.board = overrideGameState.getBoard();
+    }
+  }
+
+  public void sendGameStateMessage() {
+    GameState overrideGameState = new GameState(this);
+    Client.updateGameState(ownPlayer, overrideGameState);
+    gameScreenController.setPlayable(ownPlayer.isCurrentlyPlaying());
   }
 
   public void setGameScreenController(GameScreenController gsc) {
     this.gameScreenController = gsc;
   }
 
+  public void setLobbyScreenController(LobbyScreenController lsc) {
+    this.lobbyScreenController = lsc;
+  }
   // PLAYER TURN OPTIONS:
 
   // 1: Skip turn
@@ -586,6 +612,7 @@ public class GameSession {
         break;
       }
     }
+    sendGameStateMessage();
   }
 
   /**
@@ -700,5 +727,26 @@ public class GameSession {
       secondsText = "" + seconds;
     }
     return minutesText + ":" + secondsText;
+  }
+
+  public void switchToGameScreen() {
+    Platform.runLater(
+        new Runnable() {
+          @Override
+          public void run() {
+            lobbyScreenController.switchToGameScreen();
+          }
+        });
+  }
+  
+  public void setPlayable() {
+    Platform.runLater(
+        new Runnable() {
+          @Override
+          public void run() {
+            gameScreenController.setPlayable(ownPlayer.isCurrentlyPlaying());
+          }
+        });
+    gscInitialized = true;
   }
 }
