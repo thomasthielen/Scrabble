@@ -37,13 +37,13 @@ public class EditProfileScreenController {
     String input = nameField.getText().trim();
     if (Pattern.matches("[a-zA-Z0-9]{2,15}", input)
         && !(alreadyUsed = usernameAlreadyUsed(input))) {
-      Avatar a = Avatar.BLUE;
-      DataHandler.addPlayer(input, a);
-      DataHandler.setOwnPlayer(new Player(input, a));
+      DataHandler.alterPlayerUsername(input, profileID);
       StartScreen.getStage();
       FXMLLoader loader = new FXMLLoader();
       loader.setLocation(getClass().getResource("resources/ExistingProfileScreen.fxml"));
       Parent content = loader.load();
+      ExistingProfileScreenController existingProfileScreenController = loader.getController();
+      existingProfileScreenController.addProfiles();
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
     } else if (alreadyUsed) {
@@ -77,9 +77,9 @@ public class EditProfileScreenController {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("resources/ExistingProfileScreen.fxml"));
+    Parent content = loader.load();
     ExistingProfileScreenController existingProfileScreenController = loader.getController();
     existingProfileScreenController.addProfiles();
-    Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
@@ -132,5 +132,18 @@ public class EditProfileScreenController {
       }
     }
     return false;
+  }
+  
+  /**
+   * This method serves as the Listener for the Enter-key in the text field. It serves as an
+   * alternative to the submit changes button.
+   *
+   * @param event ActionEvent when enter is pressed in the text field
+   * @throws Exception
+   * @author jluellig
+   */
+  @FXML
+  void onEnter(ActionEvent event) throws Exception {
+    submitChanges(event);
   }
 }

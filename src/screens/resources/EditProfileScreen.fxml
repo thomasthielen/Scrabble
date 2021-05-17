@@ -20,7 +20,7 @@
             <Font size="24.0" />
          </font>
       </Text>
-      <TextField fx:id="nameField" layoutX="250.0" layoutY="214.0" prefHeight="42.0" prefWidth="322.0" />
+      <TextField fx:id="nameField" layoutX="250.0" layoutY="214.0" onAction="#onEnter" prefHeight="42.0" prefWidth="322.0" />
       <Button layoutX="572.0" layoutY="214.0" mnemonicParsing="false" onAction="#submitChanges" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #f88c00;" text="SUBMIT CHANGES" textFill="WHITE" />
       <Text fill="#f88c00" layoutX="197.0" layoutY="366.0" strokeType="OUTSIDE" strokeWidth="0.0" text="or you can delete your profile by clicking the button blelow">
          <font>

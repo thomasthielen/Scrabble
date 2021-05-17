@@ -11,10 +11,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -93,13 +95,17 @@ public class ExistingProfileScreenController {
       StartScreen.getStage();
       FXMLLoader loader = new FXMLLoader();
       loader.setLocation(getClass().getResource("resources/EditProfileScreen.fxml"));
+      Parent content = loader.load();
       EditProfileScreenController editProfileScreenController = loader.getController();
       editProfileScreenController.loadProfile(id);
-      Parent content = loader.load();
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
     } else {
-      // TODO
+    	Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setHeaderText("No profile selected.");
+        errorAlert.setContentText(
+            "Please select a profile from the list above or create a new one.");
+        errorAlert.showAndWait();
     }
   }
 
