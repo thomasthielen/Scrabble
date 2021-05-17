@@ -5,10 +5,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 
 public class EditProfileScreenController {
 
   private static int profileID;
+  
+  @FXML private TextField nameField;
 
   /**
    * This method serves as the Listener for "SUBMIT CHANGES"-Button TODO It allows the user to save
