@@ -33,7 +33,8 @@ public class GameSession {
 
   private Timer timer;
 
-  private int seconds = 600;
+  private static final int RESET = 600;
+  private int seconds = RESET;
 
   private boolean isRunning = false;
   private boolean gscInitialized = false;
@@ -101,6 +102,7 @@ public class GameSession {
    */
   public void synchronise(GameState overrideGameState) {
     // If the own turn is over: Create a GameState object and send it
+    this.seconds = RESET;
     this.players = overrideGameState.getPlayers();
     for (Player p : this.players) {
       if (p.equals(ownPlayer)) {
@@ -597,7 +599,7 @@ public class GameSession {
    * @author tthielen
    */
   public void nextPlayer() {
-    seconds = 600;
+    seconds = RESET;
     turnValue = 0;
     for (Player p : players) {
       if (p.isCurrentlyPlaying()) {
@@ -738,8 +740,9 @@ public class GameSession {
           }
         });
   }
-  
+
   public void setPlayable() {
+    System.out.println(ownPlayer.getRack().getTiles().size());
     Platform.runLater(
         new Runnable() {
           @Override
