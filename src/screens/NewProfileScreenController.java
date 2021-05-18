@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -20,7 +21,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
@@ -136,13 +136,25 @@ public class NewProfileScreenController {
     GridPane gridPane = new GridPane();
     backgroundPane.getChildren().add(gridPane);
     gridPane.setPrefWidth(800);
-    gridPane.relocate(200, 200);
+    gridPane.setVgap(20);
+    gridPane.setHgap(20);
+    gridPane.relocate(247, 270);
     Avatar[] array = Avatar.values();
-    for(Avatar a : array) {
+    int counter = 0;
+    for(int i = 0; i < 2; i++) {
+      for(int j = 0; j < 6; j++) {
+        Image img = new Image(new FileInputStream(array[counter].getUrl()), 52, 52, false, false);
+        ToggleButton tb = new ToggleButton("", new ImageView(img));
+        tb.setToggleGroup(buttonGroup);
+        gridPane.add(tb, j, i);;
+        counter++;
+      }     
+    }
+    /*for(Avatar a : array) {
       Image img = new Image(new FileInputStream(a.getUrl()), 52, 52, false, false);
       ToggleButton tb = new ToggleButton("", new ImageView(img));
       tb.setToggleGroup(buttonGroup);
       gridPane.getChildren().add(tb);
-    }
+    }*/
   }
 }
