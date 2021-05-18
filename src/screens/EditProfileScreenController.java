@@ -49,14 +49,14 @@ public class EditProfileScreenController {
       errorAlert.setHeaderText("Username already exists.");
       errorAlert.setContentText("Try a different username.");
       errorAlert.showAndWait();
-      nameField.clear();
+      nameField.setText(currentUsername);
     } else {
       Alert errorAlert = new Alert(AlertType.ERROR);
       errorAlert.setHeaderText("Input not valid.");
       errorAlert.setContentText(
           "The username must contain 2-15 letters or numbers. It can't contain any special characters.");
       errorAlert.showAndWait();
-      nameField.clear();
+      nameField.setText(currentUsername);
     }
   }
 

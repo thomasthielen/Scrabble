@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -31,8 +30,10 @@ import javafx.scene.layout.Pane;
  */
 public class NewProfileScreenController {
 
+  private static ToggleGroup buttonGroup;
+
   @FXML private TextField inputForm;
-  
+
   @FXML private Pane backgroundPane;
 
   /**
@@ -45,33 +46,39 @@ public class NewProfileScreenController {
    */
   @FXML
   void startGame(ActionEvent event) throws Exception {
-    // TODO add avatar listener
-    boolean alreadyUsed = false;
-    String input = inputForm.getText().trim();
-    if (Pattern.matches("[a-zA-Z0-9]{2,15}", input)
-        && !(alreadyUsed = usernameAlreadyUsed(input))) {
-      Avatar a = Avatar.BLUE;
-      DataHandler.addPlayer(input, a);
-      DataHandler.setOwnPlayer(new Player(input, a));
-      StartScreen.getStage();
-      FXMLLoader loader = new FXMLLoader();
-      loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
-      Parent content = loader.load();
-      StartScreen.getStage().setScene(new Scene(content));
-      StartScreen.getStage().show();
-    } else if (alreadyUsed) {
-      Alert errorAlert = new Alert(AlertType.ERROR);
-      errorAlert.setHeaderText("Username already exists.");
-      errorAlert.setContentText("Try a different username.");
-      errorAlert.showAndWait();
-      inputForm.clear();
+    if (buttonGroup.getSelectedToggle() != null) {
+      boolean alreadyUsed = false;
+      String input = inputForm.getText().trim();
+      Avatar avatar = (Avatar) buttonGroup.getSelectedToggle().getUserData();
+      if (Pattern.matches("[a-zA-Z0-9]{2,15}", input)
+          && !(alreadyUsed = usernameAlreadyUsed(input))) {
+        DataHandler.addPlayer(input, avatar);
+        DataHandler.setOwnPlayer(new Player(input, avatar));
+        StartScreen.getStage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
+        Parent content = loader.load();
+        StartScreen.getStage().setScene(new Scene(content));
+        StartScreen.getStage().show();
+      } else if (alreadyUsed) {
+        Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setHeaderText("Username already exists.");
+        errorAlert.setContentText("Try a different username.");
+        errorAlert.showAndWait();
+        inputForm.clear();
+      } else {
+        Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setHeaderText("Input not valid.");
+        errorAlert.setContentText(
+            "The username must contain 2-15 letters or numbers. It can't contain any special characters.");
+        errorAlert.showAndWait();
+        inputForm.clear();
+      }
     } else {
       Alert errorAlert = new Alert(AlertType.ERROR);
-      errorAlert.setHeaderText("Input not valid.");
-      errorAlert.setContentText(
-          "The username must contain 2-15 letters or numbers. It can't contain any special characters.");
+      errorAlert.setHeaderText("No avatar selected.");
+      errorAlert.setContentText("Please select an avatar from the list.");
       errorAlert.showAndWait();
-      inputForm.clear();
     }
   }
 
@@ -108,10 +115,9 @@ public class NewProfileScreenController {
 
   /**
    * Checks if the given username is already used in the database.
-   * 
+   *
    * @param username the input username that should be checked
    * @return true if the given username is already a username in the database, otherwise false
-   *
    * @author jluellig
    */
   private boolean usernameAlreadyUsed(String username) {
@@ -125,14 +131,10 @@ public class NewProfileScreenController {
     }
     return false;
   }
-  
-  /**
-   * 
-   * @author jbleil
-   */
-  
+
+  /** @author jbleil */
   protected void addAvatars() throws FileNotFoundException {
-    ToggleGroup buttonGroup = new ToggleGroup();
+    buttonGroup = new ToggleGroup();
     GridPane gridPane = new GridPane();
     backgroundPane.getChildren().add(gridPane);
     gridPane.setPrefWidth(800);
@@ -141,20 +143,15 @@ public class NewProfileScreenController {
     gridPane.relocate(247, 270);
     Avatar[] array = Avatar.values();
     int counter = 0;
-    for(int i = 0; i < 2; i++) {
-      for(int j = 0; j < 6; j++) {
-        Image img = new Image(new FileInputStream(array[counter].getUrl()), 52, 52, false, false);
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 6; j++) {
+        Image img = new Image(new FileInputStream(array[counter].getUrl()), 52, 52, true, true);
         ToggleButton tb = new ToggleButton("", new ImageView(img));
+        tb.setUserData(array[counter]);
         tb.setToggleGroup(buttonGroup);
-        gridPane.add(tb, j, i);;
+        gridPane.add(tb, j, i);
         counter++;
-      }     
+      }
     }
-    /*for(Avatar a : array) {
-      Image img = new Image(new FileInputStream(a.getUrl()), 52, 52, false, false);
-      ToggleButton tb = new ToggleButton("", new ImageView(img));
-      tb.setToggleGroup(buttonGroup);
-      gridPane.getChildren().add(tb);
-    }*/
   }
 }
