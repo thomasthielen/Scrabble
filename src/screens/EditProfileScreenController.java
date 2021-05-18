@@ -97,8 +97,6 @@ public class EditProfileScreenController {
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("resources/ExistingProfileScreen.fxml"));
     Parent content = loader.load();
-    ExistingProfileScreenController existingProfileScreenController = loader.getController();
-    existingProfileScreenController.addProfiles();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }

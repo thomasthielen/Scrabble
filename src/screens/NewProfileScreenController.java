@@ -4,6 +4,8 @@ import data.DataHandler;
 import gameentities.Avatar;
 import gameentities.Player;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
@@ -13,7 +15,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 
 /**
  * this class provides the controller for the new Profile Screen
@@ -23,6 +32,8 @@ import javafx.scene.control.TextField;
 public class NewProfileScreenController {
 
   @FXML private TextField inputForm;
+  
+  @FXML private Pane backgroundPane;
 
   /**
    * This method serves as the Listener for "START GAME"-Button. It redirects the user to the New
@@ -113,5 +124,25 @@ public class NewProfileScreenController {
       }
     }
     return false;
+  }
+  
+  /**
+   * 
+   * @author jbleil
+   */
+  
+  protected void addAvatars() throws FileNotFoundException {
+    ToggleGroup buttonGroup = new ToggleGroup();
+    GridPane gridPane = new GridPane();
+    backgroundPane.getChildren().add(gridPane);
+    gridPane.setPrefWidth(800);
+    gridPane.relocate(200, 200);
+    Avatar[] array = Avatar.values();
+    for(Avatar a : array) {
+      Image img = new Image(new FileInputStream(a.getUrl()), 52, 52, false, false);
+      ToggleButton tb = new ToggleButton("", new ImageView(img));
+      tb.setToggleGroup(buttonGroup);
+      gridPane.getChildren().add(tb);
+    }
   }
 }

@@ -31,11 +31,10 @@ import javafx.scene.layout.Pane;
 public class ExistingProfileScreenController {
 
   @FXML private ScrollPane chooseProfilePane;
-  @FXML private Pane profileList = new Pane();
+  @FXML private FlowPane profileList;
   private static ToggleGroup buttonGroup;
   private static HashMap<Integer, String[]> profiles;
-  @FXML private Pane test = new Pane();
-
+  
   /**
    * This method serves as the Listener for "START GAME"-Button. It redirects the user to the Online
    * or Offline Screen.
@@ -93,6 +92,8 @@ public class ExistingProfileScreenController {
       tb.setToggleGroup(buttonGroup);
       profileList.getChildren().add(tb);
     }
+    profileList.setHgap(20);
+    profileList.setVgap(20);
   }
 
   /**
