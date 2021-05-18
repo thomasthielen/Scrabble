@@ -41,7 +41,7 @@ public class OfflineScreenController {
    * @throws Exception
    */
   @FXML
-  void traningMode(ActionEvent event) throws Exception {
+  void trainingMode(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("resources/LobbyScreen.fxml"));
