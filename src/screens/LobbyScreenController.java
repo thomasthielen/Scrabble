@@ -57,6 +57,14 @@ public class LobbyScreenController {
           .getExtensionFilters()
           .addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
       File file = fileChooser.showOpenDialog(StartScreen.getStage());
+      // check if the file is too larg
+      if (file.length() > 524288000) {
+    	  Alert errorAlert = new Alert(AlertType.ERROR);
+          errorAlert.setHeaderText("File too large.");
+          errorAlert.setContentText("The file that you have chosen exceeds the limit of 500 MB.");
+          errorAlert.showAndWait();
+          return;
+      }
       chosenDictionary = file;
       MenuItem menuItemNew = new MenuItem(file.getName());
 
@@ -70,7 +78,7 @@ public class LobbyScreenController {
       dictionarySelecter.getItems().add(menuItemNew);
       dictionarySelecter.setText(menuItemNew.getText());
     } catch (NullPointerException npe) {
-      Alert errorAlert = new Alert(AlertType.ERROR);
+      Alert errorAlert = new Alert(AlertType.INFORMATION);
       errorAlert.setHeaderText("No choice made.");
       errorAlert.setContentText("You haven't chosen a file to upload your own dictionary.");
       errorAlert.showAndWait();

@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
 
@@ -123,7 +124,7 @@ public class EditProfileScreenController {
   }
 
   /**
-   * Sets the ID for th profile in the database that is going to be edited.
+   * Sets the ID for the profile in the database that is going to be edited.
    *
    * @param id the id of the selected profile in the database that is going to be changed.
    * @author jluellig
@@ -134,8 +135,16 @@ public class EditProfileScreenController {
     currentUsername = (String) profiles.get(id)[0];
     currentAvatar = Avatar.valueOf(profiles.get(id)[1]);
     nameField.setText(currentUsername);
-    // TODO avatar
+
     buttonGroup = new ToggleGroup();
+    // TODO avatar
+//    Avatar[] array = Avatar.values();
+//    for (Avatar a : array) {
+//      if (a.equals(currentAvatar)) {
+//        ToggleButton tb = new ToggleButton();
+//        tb.setSelected(true);
+//      }
+//    }
   }
 
   /**
