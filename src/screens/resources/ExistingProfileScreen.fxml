@@ -28,7 +28,7 @@
       </Button>
       <ScrollPane fx:id="chooseProfilePane" layoutX="300.0" layoutY="98.0" prefHeight="320.0" prefWidth="400.0">
          <content>
-            <FlowPane fx:id="profileList" prefHeight="320.0" prefWidth="400.0" />
+            <FlowPane fx:id="profileList" prefHeight="300.0" prefWidth="380.0" />
          </content>
       </ScrollPane>
    </children>

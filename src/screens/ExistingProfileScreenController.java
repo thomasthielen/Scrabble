@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
@@ -75,7 +76,7 @@ public class ExistingProfileScreenController {
     for (Integer id : profiles.keySet()) {
       String username = (String) profiles.get(id)[0];
       Avatar avatar = Avatar.valueOf(profiles.get(id)[1]);
-      Image img = new Image(new FileInputStream(avatar.getUrl()));
+      Image img = new Image(new FileInputStream(avatar.getUrl()), 52, 52, true, true);
       ToggleButton tb = new ToggleButton(username, new ImageView(img));
       tb.setUserData(id);
       tb.setToggleGroup(buttonGroup);
@@ -83,6 +84,8 @@ public class ExistingProfileScreenController {
     }
     profileList.setHgap(20);
     profileList.setVgap(20);
+    chooseProfilePane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+    chooseProfilePane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
   }
 
   /**
