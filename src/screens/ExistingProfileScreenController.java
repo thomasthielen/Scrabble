@@ -84,7 +84,7 @@ public class ExistingProfileScreenController {
       Image img = new Image(new FileInputStream(avatar.getUrl()), 52, 52, true, true);
       ToggleButton tb = new ToggleButton(username, new ImageView(img));
       tb.setUserData(id);
-      tb.setPrefWidth(250);
+      tb.setPrefWidth(260);
       tb.setAlignment(Pos.CENTER_LEFT);
       tb.setToggleGroup(buttonGroup);
       profileList.add(tb, collumns, rows);
@@ -94,10 +94,10 @@ public class ExistingProfileScreenController {
         collumns = 0;
       }
     }
-    profileList.setHgap(20);
-    profileList.setVgap(20);
+    profileList.setHgap(10);
+    profileList.setVgap(10);
     chooseProfilePane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
-    chooseProfilePane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+    chooseProfilePane.setVbarPolicy(ScrollBarPolicy.ALWAYS);
   }
 
   /**

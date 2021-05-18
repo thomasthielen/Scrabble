@@ -26,9 +26,9 @@
             <Font size="24.0" />
          </font>
       </Button>
-      <ScrollPane fx:id="chooseProfilePane" layoutX="105.0" layoutY="98.0" prefHeight="320.0" prefWidth="792.0">
+      <ScrollPane fx:id="chooseProfilePane" layoutX="105.0" layoutY="98.0" prefHeight="320.0" prefWidth="808.0">
          <content>
-            <GridPane fx:id="profileList" prefHeight="300.0" prefWidth="380.0" />
+            <GridPane fx:id="profileList" prefHeight="300.0" prefWidth="790.0" />
          </content>
       </ScrollPane>
    </children>
