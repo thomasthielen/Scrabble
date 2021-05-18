@@ -6,20 +6,20 @@ import gameentities.Player;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -124,6 +124,22 @@ public class ExistingProfileScreenController {
       errorAlert.setHeaderText("No profile selected.");
       errorAlert.setContentText("Please select a profile from the list above or create a new one.");
       errorAlert.showAndWait();
+    }
+  }
+
+  /**
+   * Pre-selects the edited profile.
+   *
+   * @param id the ID of the profile that should be pre-selected
+   * @author jluellig
+   */
+  protected void setSelectedProfile(int id) {
+    List<Toggle> toggles = buttonGroup.getToggles();
+    for (Toggle t : toggles) {
+      if ((int) t.getUserData() == id) {
+        t.setSelected(true);
+        break;
+      }
     }
   }
 

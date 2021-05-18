@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
 
 public class EditProfileScreenController {
@@ -18,53 +19,72 @@ public class EditProfileScreenController {
   private static int profileID;
   private static String currentUsername;
   private static Avatar currentAvatar;
+  private static ToggleGroup buttonGroup;
 
   @FXML private TextField nameField;
 
   /**
-   * This method serves as the Listener for "SUBMIT CHANGES"-Button. It allows the user to save
-   * the changes to the Profile and redirects him back to the Existing Profile Screen
+   * This method serves as the Listener for "SUBMIT CHANGES"-Button. It allows the user to save the
+   * changes to the Profile and redirects him back to the Existing Profile Screen
    *
    * @author jluellig
    * @param event
    */
   @FXML
   void submitChanges(ActionEvent event) throws Exception {
-    // TODO choose different Avatar
     boolean alreadyUsed = false;
     String input = nameField.getText().trim();
-    if (Pattern.matches("[a-zA-Z0-9]{2,15}", input)
-        && !(alreadyUsed = usernameAlreadyUsed(input))) {
-      DataHandler.alterPlayerUsername(input, profileID);
-      StartScreen.getStage();
-      FXMLLoader loader = new FXMLLoader();
-      loader.setLocation(getClass().getResource("resources/ExistingProfileScreen.fxml"));
-      Parent content = loader.load();
-      ExistingProfileScreenController existingProfileScreenController = loader.getController();
-      existingProfileScreenController.addProfiles();
-      // TODO select newly changed profile
-      // existingProfileScreenController.setSelectedProfile(profileID);
-      StartScreen.getStage().setScene(new Scene(content));
-      StartScreen.getStage().show();
-    } else if (alreadyUsed) {
-      Alert errorAlert = new Alert(AlertType.ERROR);
-      errorAlert.setHeaderText("Username already exists.");
-      errorAlert.setContentText("Try a different username.");
-      errorAlert.showAndWait();
-      nameField.setText(currentUsername);
+    // make changes to username (if it is different)
+    if (!input.equals(currentUsername)) {
+      if (Pattern.matches("[a-zA-Z0-9]{2,15}", input)
+          && !(alreadyUsed = usernameAlreadyUsed(input))) {
+        DataHandler.alterPlayerUsername(input, profileID);
+        currentUsername = input;
+      } else if (alreadyUsed) {
+        Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setHeaderText("Username already exists.");
+        errorAlert.setContentText("Try a different username.");
+        errorAlert.showAndWait();
+        nameField.setText(currentUsername);
+        return;
+      } else {
+        Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setHeaderText("Input not valid.");
+        errorAlert.setContentText(
+            "The username must contain 2-15 letters or numbers. It can't contain any special characters.");
+        errorAlert.showAndWait();
+        nameField.setText(currentUsername);
+        return;
+      }
+    }
+    // make changes to avatar (if it is different)
+    if (buttonGroup.getSelectedToggle() != null) {
+      Avatar newAvatar = (Avatar) buttonGroup.getSelectedToggle().getUserData();
+      if (!newAvatar.equals(currentAvatar)) {
+        DataHandler.alterPlayerAvatar(newAvatar, profileID);
+        currentAvatar = newAvatar;
+      }
     } else {
       Alert errorAlert = new Alert(AlertType.ERROR);
-      errorAlert.setHeaderText("Input not valid.");
-      errorAlert.setContentText(
-          "The username must contain 2-15 letters or numbers. It can't contain any special characters.");
+      errorAlert.setHeaderText("No avatar selected.");
+      errorAlert.setContentText("Please select an avatar from the list.");
       errorAlert.showAndWait();
-      nameField.setText(currentUsername);
+      return;
     }
+    StartScreen.getStage();
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(getClass().getResource("resources/ExistingProfileScreen.fxml"));
+    Parent content = loader.load();
+    ExistingProfileScreenController existingProfileScreenController = loader.getController();
+    existingProfileScreenController.addProfiles();
+    existingProfileScreenController.setSelectedProfile(profileID);
+    StartScreen.getStage().setScene(new Scene(content));
+    StartScreen.getStage().show();
   }
 
   /**
-   * This method serves as the Listener for "DELETE PROFILE"-Button. It allows the user to
-   * delete the selected Profile and redirects him back to the Existing Profile Screen
+   * This method serves as the Listener for "DELETE PROFILE"-Button. It allows the user to delete
+   * the selected Profile and redirects him back to the Existing Profile Screen
    *
    * @author jbleil
    * @param event
@@ -115,6 +135,7 @@ public class EditProfileScreenController {
     currentAvatar = Avatar.valueOf(profiles.get(id)[1]);
     nameField.setText(currentUsername);
     // TODO avatar
+    buttonGroup = new ToggleGroup();
   }
 
   /**
@@ -134,7 +155,7 @@ public class EditProfileScreenController {
     }
     return false;
   }
-  
+
   /**
    * This method serves as the Listener for the Enter-key in the text field. It serves as an
    * alternative to the submit changes button.

@@ -53,6 +53,9 @@ public class LobbyScreenController {
   void uploadDictionary(ActionEvent event) throws Exception {
     try {
       FileChooser fileChooser = new FileChooser();
+      fileChooser
+          .getExtensionFilters()
+          .addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
       File file = fileChooser.showOpenDialog(StartScreen.getStage());
       chosenDictionary = file;
       MenuItem menuItemNew = new MenuItem(file.getName());
