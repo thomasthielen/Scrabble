@@ -9,6 +9,8 @@ import java.util.HashMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -17,9 +19,10 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 
 /**
  * this class provides the controller for the Existing Profile Screen
@@ -29,10 +32,10 @@ import javafx.scene.layout.FlowPane;
 public class ExistingProfileScreenController {
 
   @FXML private ScrollPane chooseProfilePane;
-  @FXML private FlowPane profileList;
+  @FXML private GridPane profileList;
   private static ToggleGroup buttonGroup;
   private static HashMap<Integer, String[]> profiles;
-  
+
   /**
    * This method serves as the Listener for "START GAME"-Button. It redirects the user to the Online
    * or Offline Screen.
@@ -44,23 +47,22 @@ public class ExistingProfileScreenController {
   @FXML
   void startGame(ActionEvent event) throws Exception {
     if (buttonGroup.getSelectedToggle() != null) {
-        int id = (int) buttonGroup.getSelectedToggle().getUserData();
-        String username = (String) profiles.get(id)[0];
-        Avatar avatar = Avatar.valueOf(profiles.get(id)[1]);
-        DataHandler.setOwnPlayer(new Player(username, avatar));
-        StartScreen.getStage();
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
-        Parent content = loader.load();
-        StartScreen.getStage().setScene(new Scene(content));
-        StartScreen.getStage().show();
-      } else {
-      	Alert errorAlert = new Alert(AlertType.ERROR);
-          errorAlert.setHeaderText("No profile selected.");
-          errorAlert.setContentText(
-              "Please select a profile from the list above or create a new one.");
-          errorAlert.showAndWait();
-      }
+      int id = (int) buttonGroup.getSelectedToggle().getUserData();
+      String username = (String) profiles.get(id)[0];
+      Avatar avatar = Avatar.valueOf(profiles.get(id)[1]);
+      DataHandler.setOwnPlayer(new Player(username, avatar));
+      StartScreen.getStage();
+      FXMLLoader loader = new FXMLLoader();
+      loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
+      Parent content = loader.load();
+      StartScreen.getStage().setScene(new Scene(content));
+      StartScreen.getStage().show();
+    } else {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("No profile selected.");
+      errorAlert.setContentText("Please select a profile from the list above or create a new one.");
+      errorAlert.showAndWait();
+    }
   }
 
   /**
@@ -73,14 +75,24 @@ public class ExistingProfileScreenController {
   protected void addProfiles() throws FileNotFoundException {
     buttonGroup = new ToggleGroup();
     profiles = DataHandler.getPlayerInfo();
+    profileList.setPrefWidth(790);
+    int rows = 0;
+    int collumns = 0;
     for (Integer id : profiles.keySet()) {
       String username = (String) profiles.get(id)[0];
       Avatar avatar = Avatar.valueOf(profiles.get(id)[1]);
       Image img = new Image(new FileInputStream(avatar.getUrl()), 52, 52, true, true);
       ToggleButton tb = new ToggleButton(username, new ImageView(img));
       tb.setUserData(id);
+      tb.setPrefWidth(250);
+      tb.setAlignment(Pos.CENTER_LEFT);
       tb.setToggleGroup(buttonGroup);
-      profileList.getChildren().add(tb);
+      profileList.add(tb, collumns, rows);
+      collumns++;
+      if (collumns == 3) {
+        rows++;
+        collumns = 0;
+      }
     }
     profileList.setHgap(20);
     profileList.setVgap(20);
@@ -108,11 +120,10 @@ public class ExistingProfileScreenController {
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
     } else {
-    	Alert errorAlert = new Alert(AlertType.ERROR);
-        errorAlert.setHeaderText("No profile selected.");
-        errorAlert.setContentText(
-            "Please select a profile from the list above or create a new one.");
-        errorAlert.showAndWait();
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("No profile selected.");
+      errorAlert.setContentText("Please select a profile from the list above or create a new one.");
+      errorAlert.showAndWait();
     }
   }
 
