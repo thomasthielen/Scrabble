@@ -3,11 +3,9 @@ package screens;
 import data.DataHandler;
 import gameentities.Avatar;
 import gameentities.Player;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
-import java.util.Iterator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,13 +13,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.FlowPane;
 
 /**
  * this class provides the controller for the Existing Profile Screen
@@ -46,16 +43,7 @@ public class ExistingProfileScreenController {
   @FXML
   void startGame(ActionEvent event) throws Exception {
     if (buttonGroup.getSelectedToggle() != null) {
-        int id = 0;
-        Iterator<Integer> it = profiles.keySet().iterator();
-        for (Toggle t : buttonGroup.getToggles()) {
-          if (t.isSelected()) {
-            id = it.next();
-            break;
-          } else {
-            it.next();
-          }
-        }
+        int id = (int) buttonGroup.getSelectedToggle().getUserData();
         String username = (String) profiles.get(id)[0];
         Avatar avatar = Avatar.valueOf(profiles.get(id)[1]);
         DataHandler.setOwnPlayer(new Player(username, avatar));
@@ -89,6 +77,7 @@ public class ExistingProfileScreenController {
       Avatar avatar = Avatar.valueOf(profiles.get(id)[1]);
       Image img = new Image(new FileInputStream(avatar.getUrl()));
       ToggleButton tb = new ToggleButton(username, new ImageView(img));
+      tb.setUserData(id);
       tb.setToggleGroup(buttonGroup);
       profileList.getChildren().add(tb);
     }
@@ -106,16 +95,7 @@ public class ExistingProfileScreenController {
   @FXML
   void editProfile(ActionEvent event) throws Exception {
     if (buttonGroup.getSelectedToggle() != null) {
-      int id = 0;
-      Iterator<Integer> it = profiles.keySet().iterator();
-      for (Toggle t : buttonGroup.getToggles()) {
-        if (t.isSelected()) {
-          id = it.next();
-          break;
-        } else {
-          it.next();
-        }
-      }
+      int id = (int) buttonGroup.getSelectedToggle().getUserData();
       StartScreen.getStage();
       FXMLLoader loader = new FXMLLoader();
       loader.setLocation(getClass().getResource("resources/EditProfileScreen.fxml"));

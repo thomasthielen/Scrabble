@@ -2,10 +2,8 @@ package screens;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
-
 import data.DataHandler;
 import gameentities.Avatar;
-import gameentities.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,7 +22,7 @@ public class EditProfileScreenController {
   @FXML private TextField nameField;
 
   /**
-   * This method serves as the Listener for "SUBMIT CHANGES"-Button TODO It allows the user to save
+   * This method serves as the Listener for "SUBMIT CHANGES"-Button. It allows the user to save
    * the changes to the Profile and redirects him back to the Existing Profile Screen
    *
    * @author jluellig
@@ -60,11 +58,10 @@ public class EditProfileScreenController {
       errorAlert.showAndWait();
       nameField.clear();
     }
-    //
   }
 
   /**
-   * This method serves as the Listener for "DELETE PROFILE"-Button TODO It allows the user to
+   * This method serves as the Listener for "DELETE PROFILE"-Button. It allows the user to
    * delete the selected Profile and redirects him back to the Existing Profile Screen
    *
    * @author jbleil
@@ -97,6 +94,8 @@ public class EditProfileScreenController {
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("resources/ExistingProfileScreen.fxml"));
     Parent content = loader.load();
+    ExistingProfileScreenController existingProfileScreenController = loader.getController();
+    existingProfileScreenController.addProfiles();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
