@@ -42,6 +42,8 @@ public class EditProfileScreenController {
       Parent content = loader.load();
       ExistingProfileScreenController existingProfileScreenController = loader.getController();
       existingProfileScreenController.addProfiles();
+      // TODO select newly changed profile
+      // existingProfileScreenController.setSelectedProfile(profileID);
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
     } else if (alreadyUsed) {
