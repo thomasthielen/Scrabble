@@ -1,6 +1,8 @@
 package session;
 
 import java.util.ArrayList;
+
+import data.DataHandler;
 import gameentities.*;
 
 /**
@@ -10,35 +12,22 @@ import gameentities.*;
  * @author tthielen
  */
 public class SinglePlayerLobby {
-  private GameState gameState;
-  private ArrayList<Player> players;
+  private GameSession gameSession;
 
   /**
    * Constructor: Creates a first GameState object
    *
    * @author tthielen
    */
-  public SinglePlayerLobby(Player p) {
-    players = new ArrayList<Player>();
-    //joinPlayer(p);
-    Bag bag = new Bag();
-    Board board = new Board();
-    this.gameState = new GameState(players, bag, board);
+  public SinglePlayerLobby() {
+    this.gameSession = new GameSession(DataHandler.getOwnPlayer());
   }
 
   /**
-   * Adds a player to the first GameState object.
-   *
-   * @author tthielen
-   * @param player
+   * @author tikrause
+   * @return gameSession
    */
-  public void joinPlayer(Player player) {
-    gameState.addPlayer(player);
-  }
-
-  
-  // @author tikrause
-  public GameState getGameState() {
-    return this.gameState;
+  public GameSession getGameSession() {
+    return this.gameSession;
   }
 }

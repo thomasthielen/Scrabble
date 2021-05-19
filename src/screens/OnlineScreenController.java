@@ -39,7 +39,7 @@ public class OnlineScreenController {
     lobbyScreenController.setDictionaryMenu();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
-    // LobbyScreenController.addIPAndPort();
+    lobbyScreenController.addIPAndPort();
   }
 
   /**

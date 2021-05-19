@@ -1,10 +1,12 @@
 package screens;
 
+import data.DataHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import network.Server;
 
 /**
  * this class provides the controller for the Offline Screen
@@ -23,13 +25,15 @@ public class OfflineScreenController {
    */
   @FXML
   void playGame(ActionEvent event) throws Exception {
-    StartScreen.getStage();
+    Server.initializeLobby();
+    Server.addPlayer(DataHandler.getOwnPlayer());
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/LobbyScreen.fxml"));
+    loader.setLocation(getClass().getResource("resources/SinglePlayerLobbyScreen.fxml"));
     Parent content = loader.load();
+    SinglePlayerLobbyScreenController splsc = loader.getController();
+    splsc.setDictionaryMenu();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
-    // LobbyScreenController.addIPAndPort();
   }
 
   /**

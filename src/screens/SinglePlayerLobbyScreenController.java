@@ -1,15 +1,11 @@
 package screens;
 
 import java.io.File;
-import java.io.IOException;
-
 import AI.AI;
 import data.DataHandler;
-import gameentities.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -18,7 +14,6 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import network.Client;
 import network.Server;
@@ -27,11 +22,11 @@ import session.Dictionary;
 import javafx.event.EventHandler;
 
 /**
- * This class provides the Controller for the Lobby Screen
+ * This class provides the Controller for the Single Player Lobby Screen
  *
- * @author jbleil
+ * @author tikrause
  */
-public class LobbyScreenController {
+public class SinglePlayerLobbyScreenController {
 
   @FXML private Button fileForm;
 
@@ -40,25 +35,6 @@ public class LobbyScreenController {
   @FXML private MenuButton dictionarySelecter;
 
   private File chosenDictionary;
-
-  public void initialize() throws Exception {
-    Client.getGameSession().setLobbyScreenController(this);
-    for (Node node : lobbyPane.getChildren()) {
-      if (node instanceof Button) {
-        Button b = (Button) node;
-        if (b.getText().equals("START GAME")
-            || b.getText().equals("Upload dictionary")
-            || b.getText().equals("Add AI Player")) {
-          b.setDisable(!Client.isHost());
-        }
-      } else if (node instanceof MenuButton) {
-        MenuButton mb = (MenuButton) node;
-        if (mb.getText().equals("Dictionaries")) {
-          mb.setDisable(!Client.isHost());
-        }
-      }
-    }
-  }
 
   /**
    * This method serves as the listener for the "Upload dictionary"-Button. It allows the user to
@@ -120,11 +96,7 @@ public class LobbyScreenController {
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
-    // TODO
-    Client.disconnectClient(DataHandler.getOwnPlayer());
-    if (Client.isHost()) {
-      Server.serverShutdown();
-    }
+    Server.resetLobby();
   }
 
   /**
@@ -137,14 +109,20 @@ public class LobbyScreenController {
    */
   @FXML
   void startGame(ActionEvent event) throws Exception {
-    if (Client.isHost()) {
-      Client.getGameSession().setIsRunning(true);
+    if (Server.getAIPlayerList().size() > 0) {
+      Server.getLobby().getGameSession().setIsRunning(true);
       DataHandler.userDictionaryFile(chosenDictionary);
-      Client.sendDictionary(DataHandler.getOwnPlayer(), chosenDictionary);
-      Client.getGameSession().getPlayer().setCurrentlyPlaying(true);
-      Client.reportStartGame(DataHandler.getOwnPlayer());
-      Client.getGameSession().initialiseGameScreen();
+      Server.getLobby().getGameSession().getPlayer().setCurrentlyPlaying(true);
+      Server.getLobby().getGameSession().initialiseGameScreen();
       switchToGameScreen();
+    } else {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("Too few players.");
+      errorAlert.setContentText(
+          "You can't start the game before adding an AI player.\n"
+              + "If you want to play alone and learn how to play Scrabble, try the Training Mode.");
+      errorAlert.showAndWait();
+      return;
     }
   }
 
@@ -158,44 +136,25 @@ public class LobbyScreenController {
    */
   @FXML
   void addAIPlayer(ActionEvent event) throws Exception {
-    if (Client.isHost()) {
-      try {
-        AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1), null);
-        Server.addAIPlayer(ai);
-      } catch (TooManyPlayerException e) {
-        Alert errorAlert = new Alert(AlertType.ERROR);
-        errorAlert.setHeaderText("Too many players.");
-        errorAlert.setContentText(
-            "You can't add another AI player because there are already the maximum of 4 players in the game.");
-        errorAlert.showAndWait();
-      }
+    try {
+      AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1), null);
+      Server.addAIPlayer(ai);
+    } catch (TooManyPlayerException e) {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("Too many players.");
+      errorAlert.setContentText(
+          "You can't add another AI player because there are already the maximum of 3 AI players in the game.");
+      errorAlert.showAndWait();
     }
   }
 
-  public void addIPAndPort() {
-    lobbyPane = new Pane();
-    Text testText = new Text("Text");
-    testText.relocate(100, 100);
-    lobbyPane.getChildren().add(testText);
-    Text ip = new Text(100, 100, Client.getIp());
-    Text port = new Text(100, 150, "" + Client.getPort());
-    lobbyPane = new Pane();
-    lobbyPane.getChildren().add(ip);
-    lobbyPane.getChildren().add(port);
-  }
-
-  public void switchToGameScreen() {
+  public void switchToGameScreen() throws Exception {
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("resources/GameScreen.fxml"));
     Parent content;
-    try {
-      content = loader.load();
-      StartScreen.getStage().setScene(new Scene(content));
-      StartScreen.getStage().show();
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    content = loader.load();
+    StartScreen.getStage().setScene(new Scene(content));
+    StartScreen.getStage().show();
   }
 
   public void setDictionaryMenu() {

@@ -49,8 +49,6 @@ public class OnlineOrOfflineScreenController {
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
-    // TODO @author tikrause
-    createSinglePlayerLobby();
   }
 
   /**
@@ -68,14 +66,5 @@ public class OnlineOrOfflineScreenController {
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
-  }
-
-  /**
-   * creates a new lobby for a Singleplayer game
-   *
-   * @author tikrause
-   */
-  void createSinglePlayerLobby() {
-    SinglePlayerLobby spl = new SinglePlayerLobby(DataHandler.getOwnPlayer());
   }
 }
