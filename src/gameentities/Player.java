@@ -103,8 +103,8 @@ public class Player implements Serializable {
    * @param swapTiles tiles that are meant to be swapped
    * @param postions the postions of the tiles
    */
-  public void exchangeTiles(ArrayList<Tile> swapTiles, ArrayList<Integer> positions) {
-    rack.exchangeTiles(swapTiles, positions);
+  public void exchangeTiles(ArrayList<Integer> positions) {
+    rack.exchangeTiles(positions);
   }
 
   /**

@@ -32,7 +32,7 @@ public class Rack implements Serializable {
   public Rack(GameSession gameReference) {
     this.bag = gameReference.getBag();
   }
-  
+
   public void synchroniseBag(GameSession gameReference) {
     this.bag = gameReference.getBag();
   }
@@ -85,24 +85,23 @@ public class Rack implements Serializable {
    * @author tthielen
    * @param Tiles that are meant to be swapped
    */
-  public void exchangeTiles(ArrayList<Tile> swapTiles, ArrayList<Integer> positions) {
+  public void exchangeTiles(ArrayList<Integer> positions) {
     ArrayList<Tile> returnTiles = new ArrayList<Tile>();
 
-    for (Tile t : swapTiles) {
-      if (this.tiles.contains(t)) {
-        returnTiles.add(t);
+    // Go through the given positions, add the tiles at those to returnTiles and remove them from
+    // the Array
+    for (int i : positions) {
+      returnTiles.add(tileArray[i]);
+      tileArray[i] = null;
+    }
 
-        this.tiles.remove(t);
+    // Clear the ArrayList tiles
+    tiles.clear();
 
-        for (int i = 0; i < tileArray.length; i++) {
-          if (tileArray[i] == t) {
-            tileArray[i] = null;
-            break;
-          }
-        }
-
-      } else {
-        System.out.println("Error: Chosen tile does not exist on rack!");
+    // And refill it with the remaining tiles of the Array
+    for (int i = 0; i < tileArray.length; i++) {
+      if (tileArray[i] != null) {
+        tiles.add(tileArray[i]);
       }
     }
 
