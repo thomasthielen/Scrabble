@@ -877,6 +877,18 @@ public class GameScreenController {
     placeTileOnBoard(wildcardTile, wildcardStackPane);
     refreshSubmit();
   }
+  
+  /**
+   * this method serves as a Listener for the close Button in the wildcardPane. It closes the
+   * wildCardPane.
+   *
+   * @author jbleil
+   * @param event
+   */
+  @FXML
+  void closeWildcardPane(ActionEvent event) {
+    wildcardPane.setVisible(false);
+  }
 
   /**
    * This method serves as a Listener for the skipTurn Button. It enables the user to skip a turn.
