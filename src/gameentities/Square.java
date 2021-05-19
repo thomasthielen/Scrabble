@@ -22,6 +22,8 @@ public class Square implements Serializable {
   private boolean taken = false; // Indicates whether the Square is taken
   private boolean previousPlay = false; // Whether this Square holds a Tile from a previous move
   private boolean currentPlay = false; // Whether this square holds a tile from the current move
+  private boolean isWithinColumnWord = false;
+  private boolean isWithinRowWord = false;
 
   /**
    * Constructor: Creates a Square object, saves the coordinates and checks whether those require a
@@ -212,5 +214,21 @@ public class Square implements Serializable {
    */
   public int getY() {
     return this.posY;
+  }
+  
+  public boolean isWithinRowWord(){
+	  return this.isWithinRowWord;
+  }
+  
+  public boolean isWithinColumnWord() {
+	 return this.isWithinColumnWord;
+  }
+  
+  public void setWithinColumnWord() {
+	  this.isWithinColumnWord = true;
+  }
+  
+  public void setWithinRowWord() {
+	  this.isWithinRowWord = true;
   }
 }
