@@ -417,17 +417,22 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Text>
-            <Button layoutX="203.0" layoutY="450.0" mnemonicParsing="false" onAction="#submitWord" prefWidth="75.0" style="-fx-background-color: #F88C00;" text="Submit" textFill="WHITE">
+            <Button layoutX="160.0" layoutY="450.0" mnemonicParsing="false" onAction="#submitWord" prefWidth="75.0" style="-fx-background-color: #F88C00;" text="Submit" textFill="WHITE">
                <font>
                   <Font size="10.0" />
                </font>
             </Button>
-            <Button layoutX="90.0" layoutY="450.0" mnemonicParsing="false" onAction="#openSwapPane" prefWidth="75.0" style="-fx-background-color: f88c00;" text="Swap" textFill="WHITE">
+            <Button layoutX="75.0" layoutY="450.0" mnemonicParsing="false" onAction="#openSwapPane" prefWidth="75.0" style="-fx-background-color: f88c00;" text="Swap" textFill="WHITE">
                <font>
                   <Font size="10.0" />
                </font>
             </Button>
-            <Button layoutX="315.0" layoutY="450.0" mnemonicParsing="false" onAction="#recallLetters" prefWidth="75.0" style="-fx-background-color: f88c00;" text="Recall" textFill="WHITE">
+            <Button layoutX="245.0" layoutY="450.0" mnemonicParsing="false" onAction="#recallLetters" prefWidth="75.0" style="-fx-background-color: f88c00;" text="Recall" textFill="WHITE">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Button layoutX="330.0" layoutY="450.0" mnemonicParsing="false" onAction="#skipTurn" prefWidth="75.0" style="-fx-background-color: #f88c00;" text="Skip" textFill="WHITE">
                <font>
                   <Font size="10.0" />
                </font>
@@ -461,7 +466,7 @@
                      <font>
                         <Font size="16.0" />
                      </font></Text>
-                  <Button layoutX="301.0" layoutY="8.0" mnemonicParsing="false" onAction="#closeSwapPane" text="X">
+                  <Button layoutX="301.0" layoutY="8.0" mnemonicParsing="false" onAction="#closeWildcardPane" text="X">
                      <font>
                         <Font size="14.0" />
                      </font>
