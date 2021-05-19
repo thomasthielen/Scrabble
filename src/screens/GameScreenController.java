@@ -112,6 +112,7 @@ public class GameScreenController {
 
   private Text currentlyPlaying = new Text();
   private boolean playable = false;
+  private boolean swapPaneOpen = false;
 
   private int boardSelectedX = 0;
   private int boardSelectedY = 0;
@@ -393,7 +394,7 @@ public class GameScreenController {
    */
   @FXML
   void tileClicked(MouseEvent event) throws Exception {
-    if (playable) {
+    if (playable && !swapPaneOpen) {
       // TODO: This method should be renamed, as it is called as soon as any square on the board is
       // clicked
       boolean rackSelected = false;
@@ -521,6 +522,7 @@ public class GameScreenController {
 
                     // deselect all tiles in the back end
                     deselectAll();
+                    paintAllAsDeselected();
 
                     // OPTION 2.3: Select the clicked on tile:
                   } else {
@@ -558,6 +560,7 @@ public class GameScreenController {
                 }
               }
             }
+            break;
           }
         }
       }
@@ -766,6 +769,8 @@ public class GameScreenController {
    */
   @FXML
   void openSwapPane(ActionEvent event) throws Exception {
+    swapPaneOpen = true;
+
     recallLetters(event);
     deselectAll();
     paintAllAsDeselected();
@@ -776,7 +781,7 @@ public class GameScreenController {
     rack.clear();
     letters.clear();
     numbers.clear();
-    
+
     for (Node node : swapPane.getChildren()) {
       if (node instanceof Button && ((Button) node).getText().equals("Swap")) {
         submitSwapButton = (Button) node;
@@ -822,14 +827,16 @@ public class GameScreenController {
 
   @FXML
   void closeSwapPane(ActionEvent event) throws Exception {
+    swapPaneOpen = false;
     swapPane.setVisible(false);
     swapRack.getChildren().clear();
   }
 
   @FXML
   void swapTiles(ActionEvent event) throws Exception {
+    swapPaneOpen = false;
     gameSession.exchangeTiles(positions);
-    //swapTiles.clear();
+    swapTiles.clear();
     positions.clear();
     closeSwapPane(event);
     setRack(false);
@@ -848,18 +855,18 @@ public class GameScreenController {
           if (clickedOnTile.isSelected()) {
             clickedOnTile.setSelected(false);
             positions.remove(swapTiles.indexOf(clickedOnTile));
-            //swapTiles.remove(clickedOnTile);
+            swapTiles.remove(clickedOnTile);
             paintTileAsSelected((StackPane) node, false);
           } else {
             clickedOnTile.setSelected(true);
-            //swapTiles.add(clickedOnTile);
+            swapTiles.add(clickedOnTile);
             positions.add(rackTiles.indexOf(clickedOnTile));
             paintTileAsSelected((StackPane) node, true);
           }
         }
       }
     }
-    
+
     submitSwapButton.setDisable(positions.size() == 0);
   }
 
