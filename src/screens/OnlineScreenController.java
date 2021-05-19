@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import network.Client;
 import network.Server;
+import network.messages.TooManyPlayerException;
 
 /**
  * this class provides the controller for the Online Screen
@@ -38,8 +39,7 @@ public class OnlineScreenController {
     lobbyScreenController.setDictionaryMenu();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
-    // TODO @author tikrause 
-    LobbyScreenController.addIPAndPort();
+    // LobbyScreenController.addIPAndPort();
   }
 
   /**
@@ -83,7 +83,7 @@ public class OnlineScreenController {
    *
    * @author tikrause
    */
-  void createMultiPlayerLobby() {
+  void createMultiPlayerLobby() throws TooManyPlayerException {
     int port = 8000;
     while (port < 65535) {
       try {

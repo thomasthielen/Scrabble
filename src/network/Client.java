@@ -32,7 +32,7 @@ public class Client {
 
   private static GameSession gameSession;
 
-  public static void main(String[] args) throws InterruptedException, IOException {
+  public static void main(String[] args) throws InterruptedException, IOException, TooManyPlayerException {
     // TODO: nicht mit localhost, sondern mit Server-IP verbinden
     Client.initialiseClient("localhost", 8000, false);
     Client.connectToServer(new Player("tikrause", null));
@@ -63,7 +63,7 @@ public class Client {
    * @author tikrause
    * @param p player instance that should be connected to the game
    */
-  public static void connectToServer(Player p) {
+  public static void connectToServer(Player p) throws TooManyPlayerException {
     group = new NioEventLoopGroup();
 
     try {

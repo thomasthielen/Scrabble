@@ -13,6 +13,7 @@ import java.net.BindException;
 import java.net.ConnectException;
 import java.util.regex.Pattern;
 import network.Client;
+import network.messages.TooManyPlayerException;
 
 /**
  * this class provides the controller for the Choose Server Screen
@@ -39,21 +40,28 @@ public class ChooseServerScreenController {
       if (Pattern.matches(
           "[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}", ipField.getText().trim())) {
         if (Pattern.matches("[0-9]{4,5}", portField.getText().trim())) {
-          Client.initialiseClient(
-              ipField.getText().trim(), Integer.valueOf(portField.getText().trim()), false);
-          Client.connectToServer(DataHandler.getOwnPlayer());
-          StartScreen.getStage();
-          FXMLLoader loader = new FXMLLoader();
-          loader.setLocation(getClass().getResource("resources/LobbyScreen.fxml"));
-          Parent content = loader.load();
-          StartScreen.getStage().setScene(new Scene(content));
-          StartScreen.getStage().show();
-          LobbyScreenController.addIPAndPort();
+          try {
+            Client.initialiseClient(
+                ipField.getText().trim(), Integer.valueOf(portField.getText().trim()), false);
+            Client.connectToServer(DataHandler.getOwnPlayer());
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("resources/LobbyScreen.fxml"));
+            Parent content = loader.load();
+            StartScreen.getStage().setScene(new Scene(content));
+            StartScreen.getStage().show();
+            // LobbyScreenController.addIPAndPort();
+          } catch (TooManyPlayerException te) {
+            Alert errorAlert = new Alert(AlertType.ERROR);
+            errorAlert.setHeaderText("Too much players.");
+            errorAlert.setContentText("There are already the maximum of 4 players in the game.");
+            errorAlert.showAndWait();
+          }
         } else {
           Alert errorAlert = new Alert(AlertType.ERROR);
           errorAlert.setHeaderText("Input not valid.");
           errorAlert.setContentText("The port number is not correct.");
           errorAlert.showAndWait();
+          ipField.clear();
           portField.clear();
         }
       } else {
@@ -63,6 +71,7 @@ public class ChooseServerScreenController {
             "The IP address is not in the correct format and therefore no valid address.");
         errorAlert.showAndWait();
         ipField.clear();
+        portField.clear();
       }
     } catch (BindException | ConnectException e) {
       // TODO dauert ewig und stürzt fast ab, bevor das AlertFenster erscheint

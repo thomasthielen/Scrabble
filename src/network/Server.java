@@ -5,11 +5,15 @@ import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import network.messages.TooManyPlayerException;
+import session.GameState;
+
 import java.net.BindException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import AI.AI;
 import gameentities.Player;
 
 /**
@@ -30,6 +34,7 @@ public class Server {
   private static Channel channel;
 
   private static ArrayList<Player> players = new ArrayList<Player>();
+  private static ArrayList<AI> aiPlayers = new ArrayList<AI>();
 
   public static void main(String[] args) throws InterruptedException, UnknownHostException {
     // TODO: Ausgabe der IP-Adr des Servers
@@ -125,19 +130,42 @@ public class Server {
     return isRunning;
   }
 
-  public static void addPlayer(Player p) {
-    players.add(p);
+  public static void addPlayer(Player p) throws TooManyPlayerException {
+    if (players.size() >= 4) {
+      throw new TooManyPlayerException();
+    } else {
+      players.add(p);
+    }
   }
 
   public static void removePlayer(Player p) {
     players.remove(p);
   }
 
+  public static void addAIPlayer(AI ai) {
+    aiPlayers.add(ai);
+  }
+
+  public static void removeAIPlayer(AI ai) {
+    aiPlayers.remove(ai);
+  }
+
   public static void resetPlayerList() {
     players.clear();
+    aiPlayers.clear();
   }
 
   public static ArrayList<Player> getPlayerList() {
     return players;
+  }
+
+  public static ArrayList<AI> getAIPlayerList() {
+    return aiPlayers;
+  }
+
+  public static void updateAI(GameState gs) {
+    for (AI ai : aiPlayers) {
+      ai.updateGameSession(gs);
+    }
   }
 }

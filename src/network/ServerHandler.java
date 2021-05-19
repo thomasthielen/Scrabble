@@ -88,6 +88,9 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
                       Client.getGameSession().getBoard())));
         }
         break;
+      case GAME_STATE:
+    	  GameStateMessage gsm = (GameStateMessage) msg;
+    	  Server.updateAI(gsm.getGameState());
       default:
         Channel in = ctx.channel();
         for (Channel channel : channels) {

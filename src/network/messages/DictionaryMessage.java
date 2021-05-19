@@ -4,9 +4,8 @@ import gameentities.Player;
 import java.io.File;
 
 /**
- * Implementation of the DictionaryMessage. A DictionaryMessage is created to send the
- * dictionary file to all clients, if a custom dictionary has been chosen which is not in the
- * resources folder.
+ * Implementation of the DictionaryMessage. A DictionaryMessage is created to send the chosen
+ * dictionary file to all clients.
  *
  * @author tikrause
  */
@@ -18,7 +17,7 @@ public class DictionaryMessage extends Message {
   private File file;
 
   /**
-   * Constructor: creating a DictionaryMessage with the MessageType.NEW_DICTIONARY, the player
+   * Constructor: creating a DictionaryMessage with the MessageType.DICTIONARY, the player
    * object of the creator and the file that should be sent to the other clients.
    *
    * @author tikrause
