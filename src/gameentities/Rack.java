@@ -39,7 +39,7 @@ public class Rack implements Serializable {
    * @author tthielen
    */
   public void initialDraw() {
-    for (int i = 0; i < 7; i++) {
+    while (tiles.size() < 7) {
       tiles.add(bag.drawTile());
     }
     for (int i = 0; i < 7; i++) {

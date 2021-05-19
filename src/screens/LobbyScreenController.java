@@ -125,7 +125,7 @@ public class LobbyScreenController {
       Client.getGameSession().getPlayer().setCurrentlyPlaying(true);
       Client.reportStartGame(DataHandler.getOwnPlayer());
       Client.getGameSession().initialiseGameScreen();
-      // switchToGameScreen(); TODO: Leads to exception, but doesn't break game. No idea why.
+      switchToGameScreen();
     }
   }
 

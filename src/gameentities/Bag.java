@@ -160,4 +160,8 @@ public class Bag implements Serializable {
   public boolean isEmpty() {
     return this.isEmpty;
   }
+  
+  public void setEmpty(boolean empty) {
+    this.isEmpty = empty;
+  }
 }

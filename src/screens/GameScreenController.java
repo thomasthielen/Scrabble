@@ -157,6 +157,7 @@ public class GameScreenController {
 
     // Fill the gameBoard with SquarePanes which are also held in squarePanes (!)
     System.out.println(gameBoard.getColumnConstraints());
+    squarePanes.clear();
     for (int j = 0; j <= 14; j++) {
       for (int i = 0; i <= 14; i++) {
         SquarePane sp = new SquarePane(gameSession.getBoard().getSquare(i + 1, 15 - j));
@@ -165,6 +166,7 @@ public class GameScreenController {
       }
     }
     // Fill the StackPanes of squarePanes into boardPanes
+    boardPanes.clear();
     for (SquarePane sp : squarePanes) {
       boardPanes.add(sp.getStackPane());
     }
@@ -195,7 +197,7 @@ public class GameScreenController {
     }
 
     if (gameSession.getSuccessiveScorelessTurns() >= 6) {
-      System.out.println("Button visible");
+      System.out.println("end game button visible");
       //      endGameButton.setVisible(true);
     } else {
       //      endGameButton.setVisible(false);
@@ -390,7 +392,7 @@ public class GameScreenController {
    */
   @FXML
   void tileClicked(MouseEvent event) throws Exception {
-    if (playable) { 
+    if (playable) {
       // TODO: This method should be renamed, as it is called as soon as any square on the board is
       // clicked
       boolean rackSelected = false;
@@ -856,6 +858,7 @@ public class GameScreenController {
     wildcardPane.setVisible(false);
     wildcardTile.setLetter(wildcardChar);
     placeTileOnBoard(wildcardTile, wildcardStackPane);
+    refreshSubmit();
   }
 
   // All following methods are functions used multiple times in the methods above
@@ -870,12 +873,14 @@ public class GameScreenController {
   }
 
   private void refreshSubmit() {
-    if (gameSession.checkMove()) {
-      submitButton.setDisable(false);
-      submitButton.setText("Submit +" + gameSession.getTurnValue());
-    } else {
-      submitButton.setDisable(true);
-      submitButton.setText("Submit");
+    if (!wildcardPane.isVisible()) {
+      if (gameSession.checkMove()) {
+        submitButton.setDisable(false);
+        submitButton.setText("Submit +" + gameSession.getTurnValue());
+      } else {
+        submitButton.setDisable(true);
+        submitButton.setText("Submit");
+      }
     }
   }
 
@@ -989,6 +994,56 @@ public class GameScreenController {
                   }
                 }
               });
+    }
+  }
+
+  public void loadPlacedTiles() {
+
+    squarePanes.clear();
+
+    ArrayList<Object> toRemove = new ArrayList<Object>();
+    for (Node node : gameBoard.getChildren()) {
+      if (node instanceof StackPane) {
+        toRemove.add(node);
+      }
+    }
+    gameBoard.getChildren().removeAll(toRemove);
+
+    for (int j = 0; j <= 14; j++) {
+      for (int i = 0; i <= 14; i++) {
+        SquarePane sp = new SquarePane(gameSession.getBoard().getSquare(i + 1, 15 - j));
+        squarePanes.add(sp);
+        gameBoard.add(sp.getStackPane(), i, j);
+      }
+    }
+    // Fill the StackPanes of squarePanes into boardPanes
+    boardPanes.clear();
+    for (SquarePane sp : squarePanes) {
+      boardPanes.add(sp.getStackPane());
+    }
+
+    StackPane stackPane = null;
+
+    for (Square square : gameSession.getBoard().getSquareList()) {
+      if (square.getTile() != null) {
+        for (SquarePane sp : squarePanes) {
+          if (sp.getSquare().getX() == square.getX() && sp.getSquare().getY() == square.getY()) {
+            stackPane = sp.getStackPane();
+            break;
+          }
+        }
+        placeTileOnBoard(square.getTile(), stackPane);
+      }
+    }
+
+    for (StackPane sp : boardPanes) {
+      for (Node node : sp.getChildren()) {
+        if (node instanceof Rectangle) {
+          ((Rectangle) node).setFill(Paint.valueOf("#cccccc"));
+        } else if (node instanceof Text) {
+          ((Text) node).setFill(Color.BLACK);
+        }
+      }
     }
   }
 
