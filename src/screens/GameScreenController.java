@@ -67,6 +67,8 @@ public class GameScreenController {
 
   @FXML private Pane wildcardPane;
 
+  @FXML private Button endGameButton;
+
   private Button submitWildcardButton;
 
   private static ArrayList<Rectangle> rack = new ArrayList<Rectangle>();
@@ -108,7 +110,6 @@ public class GameScreenController {
   private Button recallButton;
   private Button swapButton;
   private Button submitSwapButton;
-  private Button endGameButton;
 
   private Text currentlyPlaying = new Text();
   private boolean playable = false;
@@ -877,7 +878,7 @@ public class GameScreenController {
     placeTileOnBoard(wildcardTile, wildcardStackPane);
     refreshSubmit();
   }
-  
+
   /**
    * this method serves as a Listener for the close Button in the wildcardPane. It closes the
    * wildCardPane.
@@ -900,6 +901,9 @@ public class GameScreenController {
   void skipTurn(ActionEvent event) {
     gameSession.skipTurn();
   }
+
+  @FXML
+  void endGame(ActionEvent event) {}
 
   // All following methods are functions used multiple times in the methods above
 

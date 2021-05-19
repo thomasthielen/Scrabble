@@ -525,5 +525,10 @@
             </Pane>
          </content>
       </ScrollPane>
+      <Button fx:id="endGame" layoutX="906.0" layoutY="509.0" mnemonicParsing="false" onAction="#endGame" style="-fx-background-color: #f88c00;" text="End Game" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
    </children>
 </Pane>
