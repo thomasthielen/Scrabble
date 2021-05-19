@@ -58,9 +58,7 @@ public class GameSession {
     board = new Board();
     ownPlayer = p;
     ownPlayer.createRack(this);
-    if (Client.isHost()) {
-      ownPlayer.setCurrentlyPlaying(true);
-    }
+    ownPlayer.setCurrentlyPlaying(Client.isHost());
     initialise();
   }
 
