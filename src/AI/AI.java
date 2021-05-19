@@ -1,5 +1,6 @@
 package AI;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,27 +15,18 @@ import gameentities.Tile;
 import session.GameSession;
 import session.GameState;
 
-public class AI extends Player {
-
+public class AI {
   private ArrayList<PossibleMove> moves;
   private ArrayList<Word> words;
-  private String username;
-  private Avatar avatar;
   private GameSession gameReference;
   private int turnValue;
   StringBuffer buffer;
   ArrayList<Tile> tiles;
+  private Player player;
 
-  public AI(String username, Avatar avatar, GameSession gameReference) {
-    super(username, avatar);
-    this.username = username;
-    this.avatar = avatar;
-    this.gameReference = gameReference;
+  public AI(String username, Avatar avatar) {
+    this.gameReference = new GameSession(new Player(username, avatar));
     this.tiles = this.gameReference.getPlayer().getRack().getTiles();
-  }
-
-  public void initializeGamesession(GameSession session) {
-    this.gameReference = session;
   }
 
   public ArrayList<Square> getthebestmove() {
@@ -562,7 +554,7 @@ public class AI extends Player {
     }
   }
 
-  public void updateGamesession(GameState state) {
+  public void updateGameSession(GameState state) {
     this.gameReference.synchronise(state);
   }
 
@@ -577,5 +569,9 @@ public class AI extends Player {
 
   public ArrayList<Word> getwords() {
     return this.words;
+  }
+
+  public Player getPlayer() {
+    return gameReference.getPlayer();
   }
 }

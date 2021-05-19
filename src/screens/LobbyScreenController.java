@@ -3,7 +3,9 @@ package screens;
 import java.io.File;
 import java.io.IOException;
 
+import AI.AI;
 import data.DataHandler;
+import gameentities.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +21,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import network.Client;
 import network.Server;
+import network.messages.TooManyPlayerException;
 import session.Dictionary;
 import javafx.event.EventHandler;
 
@@ -31,7 +34,7 @@ public class LobbyScreenController {
 
   @FXML private Button fileForm;
 
-  @FXML private static Pane lobbyPane;
+  @FXML private Pane lobbyPane;
 
   @FXML private MenuButton dictionarySelecter;
 
@@ -59,11 +62,11 @@ public class LobbyScreenController {
       File file = fileChooser.showOpenDialog(StartScreen.getStage());
       // check if the file is too larg
       if (file.length() > 524288000) {
-    	  Alert errorAlert = new Alert(AlertType.ERROR);
-          errorAlert.setHeaderText("File too large.");
-          errorAlert.setContentText("The file that you have chosen exceeds the limit of 500 MB.");
-          errorAlert.showAndWait();
-          return;
+        Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setHeaderText("File too large.");
+        errorAlert.setContentText("The file that you have chosen exceeds the limit of 500 MB.");
+        errorAlert.showAndWait();
+        return;
       }
       chosenDictionary = file;
       MenuItem menuItemNew = new MenuItem(file.getName());
@@ -118,8 +121,8 @@ public class LobbyScreenController {
    */
   @FXML
   void startGame(ActionEvent event) throws Exception {
-    Client.getGameSession().setIsRunning(true);
     if (Client.isHost()) {
+      Client.getGameSession().setIsRunning(true);
       DataHandler.userDictionaryFile(chosenDictionary);
       Client.sendDictionary(DataHandler.getOwnPlayer(), chosenDictionary);
       Client.getGameSession().getPlayer().setCurrentlyPlaying(true);
@@ -134,24 +137,38 @@ public class LobbyScreenController {
    * Players to the Lobby/Game The Button is only enabled if there are less then 4 Players in the
    * Lobby
    *
-   * @author jbleil
+   * @author tikrause
    * @param event
    */
   @FXML
-  void addAIPlayer(ActionEvent event) throws Exception {}
-
-  public static void addIPAndPort() {
-    lobbyPane = new Pane();
-    Text testText = new Text("Text");
-    testText.relocate(100, 100);
-    lobbyPane.getChildren().add(testText);
-    /*Text ip = new Text(100, 100, Client.getIp());
-    Text port = new Text(100, 150, "" + Client.getPort());
-    lobbyPane = new Pane();
-    lobbyPane.getChildren().add(ip);
-    lobbyPane.getChildren().add(port);
-    lobbyPane.setVisible(true);*/
+  void addAIPlayer(ActionEvent event) throws Exception {
+    if (Client.isHost()) {
+      try {
+        AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1), null);
+        Server.addPlayer(ai.getPlayer());
+        Server.addAIPlayer(ai);
+      } catch (TooManyPlayerException e) {
+        Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setHeaderText("Too many players.");
+        errorAlert.setContentText(
+            "You can't add another AI player because there are already the maximum of 4 players in the game.");
+        errorAlert.showAndWait();
+      }
+    }
   }
+
+//  public static void addIPAndPort() {
+//    lobbyPane = new Pane();
+//    Text testText = new Text("Text");
+//    testText.relocate(100, 100);
+//    lobbyPane.getChildren().add(testText);
+//    Text ip = new Text(100, 100, Client.getIp());
+//    Text port = new Text(100, 150, "" + Client.getPort());
+//    lobbyPane = new Pane();
+//    lobbyPane.getChildren().add(ip);
+//    lobbyPane.getChildren().add(port);
+//    lobbyPane.setVisible(true);
+//  }
 
   public void switchToGameScreen() {
 
