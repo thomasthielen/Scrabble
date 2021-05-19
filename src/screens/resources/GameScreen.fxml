@@ -457,7 +457,15 @@
                <children>
                   <TextField fx:id="wildcardTextField" layoutX="14.0" layoutY="43.0" prefHeight="39.0" prefWidth="240.0" />
                   <Button layoutX="254.0" layoutY="43.0" mnemonicParsing="false" onAction="#submitWildcard" style="-fx-background-color: #f88c00;" text="ENTER" textFill="WHITE" />
-                  <Text layoutX="14.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a Letter in the field below" />
+                  <Text layoutX="14.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a Letter in the field below">
+                     <font>
+                        <Font size="16.0" />
+                     </font></Text>
+                  <Button layoutX="301.0" layoutY="8.0" mnemonicParsing="false" onAction="#closeSwapPane" text="X">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
                </children>
             </Pane>
          </children>
@@ -498,26 +506,6 @@
             <Pane prefHeight="240.0" prefWidth="240.0" style="-fx-background-color: #FFFFFF;">
                <children>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e9e9e9" height="30.0" layoutX="10.0" layoutY="10.0" stroke="#707070" strokeType="INSIDE" width="180.0" />
-                  <Text fill="#707070" layoutX="10.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1: Name, Records">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#707070" layoutX="10.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2: Name, Records">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#707070" layoutX="10.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3: Name, Records">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#707070" layoutX="10.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 4: Name, Records">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Text>
                   <Text fill="#707070" layoutX="32.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player Statistics">
                      <font>
                         <Font size="20.0" />

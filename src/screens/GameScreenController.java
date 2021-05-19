@@ -878,6 +878,17 @@ public class GameScreenController {
     refreshSubmit();
   }
 
+  /**
+   * This method serves as a Listener for the skipTurn Button. It enables the user to skip a turn.
+   *
+   * @author jbleil
+   * @param event
+   */
+  @FXML
+  void skipTurn(ActionEvent event) {
+    gameSession.skipTurn();
+  }
+
   // All following methods are functions used multiple times in the methods above
 
   private void deselectAll() {
