@@ -58,11 +58,14 @@ public class GameSession {
     board = new Board();
     ownPlayer = p;
     ownPlayer.createRack(this);
+    if (Client.isHost()) {
+      ownPlayer.setCurrentlyPlaying(true);
+    }
     initialise();
   }
 
   /**
-   * Initialises the GameSession TODO: Add features
+   * Initialises the GameSession-Timers
    *
    * @author tthielen
    */
@@ -77,7 +80,7 @@ public class GameSession {
               if (seconds <= 0) {
                 kickPlayer();
               }
-              System.out.println(printTime());
+              // System.out.println(printTime());
             }
           }
         },
@@ -90,7 +93,7 @@ public class GameSession {
         new Runnable() {
           @Override
           public void run() {
-            gameScreenController.setPlayable(ownPlayer.isCurrentlyPlaying());
+            gameScreenController.setPlayable(Client.isHost());
           }
         });
   }
@@ -110,11 +113,19 @@ public class GameSession {
       }
     }
     if (!overrideGameState.isPlayersOnly() && gscInitialized) {
-      gameScreenController.setPlayable(ownPlayer.isCurrentlyPlaying());
+      setPlayable();
     }
-    if (overrideGameState.getBag() != null) {
+    if (!overrideGameState.isPlayersOnly() && overrideGameState.getBag() != null) {
       this.bag = overrideGameState.getBag();
+      this.ownPlayer.getRack().synchroniseBag(this);
       this.board = overrideGameState.getBoard();
+      Platform.runLater(
+          new Runnable() {
+            @Override
+            public void run() {
+              gameScreenController.loadPlacedTiles();
+            }
+          });
     }
   }
 
@@ -126,6 +137,8 @@ public class GameSession {
 
   public void setGameScreenController(GameScreenController gsc) {
     this.gameScreenController = gsc;
+    gscInitialized = true;
+    setPlayable();
   }
 
   public void setLobbyScreenController(LobbyScreenController lsc) {
@@ -176,13 +189,6 @@ public class GameSession {
     board.placeTile(posX, posY, tile);
     ownPlayer.playTile(tile);
     placedSquares.add(board.getSquare(posX, posY));
-
-    // TODO: Send placedSquares to other players to show where the tiles are placed,
-    // but not which tiles!
-
-    // if (checkMove()) {
-    // // TODO: enable "SUBMIT"-Button
-    // }
   }
 
   /**
@@ -203,13 +209,6 @@ public class GameSession {
     ownPlayer.returnTile(rTile);
     // Remove the respective square from the list of placedSquares
     placedSquares.remove(board.getSquare(posX, posY));
-
-    // TODO: Send placedSquares to other players to show where the tiles are placed,
-    // but not which tiles!
-
-    if (checkMove()) {
-      // TODO: enable "SUBMIT"-Button
-    }
   }
 
   /**
@@ -241,7 +240,10 @@ public class GameSession {
    */
   public boolean checkMove() {
 
+    // Important: In default, even a single placed tile means the main word is in a row
+    // Thus, the (possibly) resulting row word is checked as well as the resulting column word
     boolean column = false;
+
     turnValue = 0;
 
     // Checks whether a tile has already been placed
@@ -377,6 +379,7 @@ public class GameSession {
       }
 
       String newWord = sb.toString();
+      System.out.println("Main word: " + newWord + " " + data.DataHandler.checkWord(newWord));
       if (sb.length() > 1) {
         if (!data.DataHandler.checkWord(newWord)) {
           return false;
@@ -407,6 +410,9 @@ public class GameSession {
         iterator = board.getLeftNeighbour(iterator);
       }
 
+      // (!) Used to test if the main word needs to be checked when only one tile was placed
+      Square leftOld = iterator;
+
       StringBuffer sb = new StringBuffer();
       int wordValue = 0;
       dwsCount = 0;
@@ -433,18 +439,26 @@ public class GameSession {
         wordValue = 3 * wordValue;
       }
 
-      turnValue += wordValue;
+      // (!) Used to test if the main word needs to be checked when only one tile was placed
+      Square rightOld = board.getLeftNeighbour(iterator);
 
-      // If the lowest tile before the first gap is not on the same height or lower
-      // than the lowest, newly placed tile, return false
-      if (iterator.getX() < rightmostSquare.getX()) {
-        return false;
-      }
+      // (!) Test occurs here:
+      if (leftOld != rightOld) {
 
-      String newWord = sb.toString();
-      if (sb.length() > 1) {
-        if (!data.DataHandler.checkWord(newWord)) {
+        turnValue += wordValue;
+
+        // If the lowest tile before the first gap is not on the same height or lower
+        // than the lowest, newly placed tile, return false
+        if (iterator.getX() < rightmostSquare.getX()) {
           return false;
+        }
+
+        String newWord = sb.toString();
+        System.out.println("Main word: " + newWord + " " + data.DataHandler.checkWord(newWord));
+        if (sb.length() > 1) {
+          if (!data.DataHandler.checkWord(newWord)) {
+            return false;
+          }
         }
       }
     }
@@ -520,7 +534,9 @@ public class GameSession {
         turnValue += wordValue;
 
         String newWord = sb.toString();
-        if (data.DataHandler.checkWord(newWord)) {
+        System.out.println(
+            "Secondary word: " + newWord + " " + data.DataHandler.checkWord(newWord));
+        if (!data.DataHandler.checkWord(newWord)) {
           return false;
         }
       }
@@ -585,7 +601,6 @@ public class GameSession {
     }
     placedSquares.removeAll(placedSquares);
 
-    // TODO synchronise();
     successiveScorelessTurns = 0;
     nextPlayer();
   }
@@ -742,7 +757,6 @@ public class GameSession {
   }
 
   public void setPlayable() {
-    System.out.println(ownPlayer.getRack().getTiles().size());
     Platform.runLater(
         new Runnable() {
           @Override
@@ -750,6 +764,5 @@ public class GameSession {
             gameScreenController.setPlayable(ownPlayer.isCurrentlyPlaying());
           }
         });
-    gscInitialized = true;
   }
 }

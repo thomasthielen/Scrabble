@@ -32,6 +32,10 @@ public class Rack implements Serializable {
   public Rack(GameSession gameReference) {
     this.bag = gameReference.getBag();
   }
+  
+  public void synchroniseBag(GameSession gameReference) {
+    this.bag = gameReference.getBag();
+  }
 
   /**
    * Draws the initial seven Tiles from the Bag

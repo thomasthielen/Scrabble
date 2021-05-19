@@ -9,6 +9,7 @@ import gameentities.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -42,6 +43,21 @@ public class LobbyScreenController {
 
   public void initialize() throws Exception {
     Client.getGameSession().setLobbyScreenController(this);
+    for (Node node : lobbyPane.getChildren()) {
+      if (node instanceof Button) {
+        Button b = (Button) node;
+        if (b.getText().equals("START GAME")
+            || b.getText().equals("Upload dictionary")
+            || b.getText().equals("Add AI Player")) {
+          b.setDisable(!Client.isHost());
+        }
+      } else if (node instanceof MenuButton) {
+        MenuButton mb = (MenuButton) node;
+        if (mb.getText().equals("Dictionaries")) {
+          mb.setDisable(!Client.isHost());
+        }
+      }
+    }
   }
 
   /**
