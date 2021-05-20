@@ -68,21 +68,23 @@ public class GameScreenController {
   /** swapPane has */
   @FXML private Pane swapPane;
 
-  @FXML private TextField wildcardTextField;
-
   @FXML private Pane wildcardPane;
-
-  @FXML private Button endGame;
-
-  @FXML private Button skipTurn;
+  
+  @FXML private TextField wildcardTextField;
 
   @FXML private Button wildcardClose;
 
   @FXML private Button wildcardSubmit;
 
   @FXML private TextArea chatField;
-
   @FXML private TextField textField;
+
+  @FXML private Button openSwapButton;
+  @FXML private Button submitButton;
+  @FXML private Button recallButton;
+  @FXML private Button skipTurnButton;
+  
+  @FXML private Button endGame;
 
   private static ArrayList<Rectangle> rack = new ArrayList<Rectangle>();
 
@@ -119,10 +121,7 @@ public class GameScreenController {
   private double eventX = 0;
 
   private double eventY = 0;
-
-  private Button submitButton;
-  private Button recallButton;
-  private Button swapButton;
+  
   private Button submitSwapButton;
 
   private Text currentlyPlaying = new Text();
@@ -151,23 +150,12 @@ public class GameScreenController {
     }
     gameSession.setGameScreenController(this);
 
-    // Initialise the submit button and disable it
-    for (Node node : gameBoardPane.getChildren()) {
-      if (node instanceof Button) {
-        Button button = (Button) node;
-        if (button.getText().contains("Submit")) {
-          submitButton = button;
-          submitButton.setDisable(true);
-        } else if (button.getText().equals("Recall")) {
-          recallButton = button;
-          recallButton.setDisable(true);
-        } else if (button.getText().equals("Swap")) {
-          swapButton = button;
-          swapButton.setDisable(false);
-        }
-      }
-    }
-    
+    // Disable all buttons which require a move to be made
+    recallButton.setDisable(true);
+    submitButton.setDisable(true);
+    // Enable the swap button
+    openSwapButton.setDisable(false);
+    // Set the endGame button to invisible
     endGame.setVisible(false);
 
     // Fill the gameBoard with SquarePanes which are also held in squarePanes (!)
@@ -1049,8 +1037,8 @@ public class GameScreenController {
       playable = false;
       submitButton.setVisible(false);
       recallButton.setVisible(false);
-      swapButton.setVisible(false);
-      skipTurn.setVisible(false);
+      openSwapButton.setVisible(false);
+      skipTurnButton.setVisible(false);
       currentlyPlaying.setVisible(true);
 
       endGame.setVisible(false);
@@ -1058,8 +1046,8 @@ public class GameScreenController {
       playable = true;
       submitButton.setVisible(true);
       recallButton.setVisible(true);
-      swapButton.setVisible(true);
-      skipTurn.setVisible(true);
+      openSwapButton.setVisible(true);
+      skipTurnButton.setVisible(true);
       currentlyPlaying.setVisible(false);
 
       System.out.println(gameSession.getSuccessiveScorelessTurns());
@@ -1160,14 +1148,5 @@ public class GameScreenController {
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
-  // Test method for GridPane exchange
-  public GridPane modifyPane(GridPane pane) {
-    for (Node node : pane.getChildren()) {
-      if (node instanceof StackPane) {
-        ((StackPane) node).getChildren().clear();
-      }
-    }
-    return pane;
   }
 }
