@@ -133,6 +133,8 @@ public class GameScreenController {
   private int boardSelectedX = 0;
   private int boardSelectedY = 0;
 
+  private StringBuffer chatHistory = new StringBuffer();
+
   /**
    * TODO - set Chat and Player Statistic visibility = false - set 7 Tiles in the Rack - fill the
    * board with Rectangles -> opacity = 100 (see through) - fill gridPane with Rectangles
@@ -141,9 +143,6 @@ public class GameScreenController {
    * @throws Exception
    */
   public void initialize() throws Exception {
-
-    // Load the dictionary TODO: Outsource this! Especially to be able to choose the dictionary
-    DataHandler.userDictionaryFile(new File("resources/Collins Scrabble Words (2019).txt"));
 
     if (Server.getLobby() != null) {
       gameSession = Server.getLobby().getGameSession();
@@ -183,6 +182,9 @@ public class GameScreenController {
     wildcardPane.setVisible(false);
 
     setRack(true);
+    chatField.setEditable(false);
+    chatField.setMouseTransparent(true);
+    chatField.setFocusTraversable(false);
   }
 
   public void setRack(boolean isFirstTime) {
@@ -206,7 +208,9 @@ public class GameScreenController {
     if (isFirstTime) {
       // Call the initial draw of tiles in the back end
       r.initialDraw();
-      gameSession.sendGameStateMessage();
+      if (gameSession.getMultiPlayer()) {
+        gameSession.sendGameStateMessage();
+      }
     }
 
     // Save those tiles in the ArrayList rackTiles
@@ -685,12 +689,9 @@ public class GameScreenController {
   void sendMessage(ActionEvent event) throws Exception {
     if (Pattern.matches(".{1,140}", textField.getText().trim())) {
       Client.sendChat(DataHandler.getOwnPlayer(), textField.getText().trim());
-      chatField.setText(
-          chatField.getText()
-              + "\n"
-              + DataHandler.getOwnPlayer().getUsername()
-              + ": "
-              + textField.getText());
+      chatHistory.append(
+          DataHandler.getOwnPlayer().getUsername() + ": " + textField.getText().trim() + "\n");
+      chatField.setText(chatHistory.toString());
       textField.clear();
     } else {
       Alert errorAlert = new Alert(AlertType.ERROR);
@@ -701,7 +702,8 @@ public class GameScreenController {
   }
 
   public void receivedMessage(Player p, String chat) {
-    chatField.setText(chatField.getText() + "\n" + p.getUsername() + ": " + chat);
+    chatHistory.append(p.getUsername() + ": " + chat + "\n");
+    chatField.setText(chatHistory.toString());
   }
 
   /**
@@ -731,7 +733,7 @@ public class GameScreenController {
    * @throws Exception
    */
   @FXML
-  void recallLetters(ActionEvent event) throws Exception{
+  void recallLetters(ActionEvent event) throws Exception {
     // Reset the opacity of all tiles on the rack
     for (Node node : rackPane.getChildren()) {
       if (node instanceof StackPane) {
@@ -940,7 +942,7 @@ public class GameScreenController {
    *
    * @author jbleil
    * @param event
-   * @throws Exception 
+   * @throws Exception
    */
   @FXML
   void skipTurn(ActionEvent event) throws Exception {

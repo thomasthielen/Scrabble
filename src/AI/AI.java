@@ -25,7 +25,7 @@ public class AI {
   private Player player;
 
   public AI(String username, Avatar avatar) {
-    this.gameReference = new GameSession(new Player(username, avatar));
+    this.gameReference = new GameSession(new Player(username, avatar), false);
     this.tiles = this.gameReference.getPlayer().getRack().getTiles();
   }
 

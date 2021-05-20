@@ -16,7 +16,7 @@ import gameentities.*;
  * @author tthielen
  */
 public class ConsoleGame {
-  private static GameSession gs = new GameSession(new Player("tthielen", null));
+  private static GameSession gs = new GameSession(new Player("tthielen", null), true);
   private static Board board;
   private static Player p1;
 

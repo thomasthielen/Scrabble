@@ -1,9 +1,6 @@
 package session;
 
-import java.util.ArrayList;
-
 import data.DataHandler;
-import gameentities.*;
 
 /**
  * SinglePlayerLobby is started by the host of the game itself. It is used to collect the Player
@@ -20,7 +17,7 @@ public class SinglePlayerLobby {
    * @author tthielen
    */
   public SinglePlayerLobby() {
-    this.gameSession = new GameSession(DataHandler.getOwnPlayer());
+    this.gameSession = new GameSession(DataHandler.getOwnPlayer(), false);
   }
 
   /**

@@ -40,6 +40,7 @@ public class GameSession {
 
   private boolean isRunning = false;
   private boolean gscInitialized = false;
+  private boolean multiPlayer;
 
   private int successiveScorelessTurns = 0;
 
@@ -54,16 +55,19 @@ public class GameSession {
    *
    * @author tthielen
    */
-  public GameSession(Player p) {
+  public GameSession(Player p, boolean multiPlayer) {
     players = new ArrayList<Player>();
     bag = new Bag();
     board = new Board();
     ownPlayer = p;
     ownPlayer.createRack(this);
     ownPlayer.setCurrentlyPlaying(Client.isHost());
+    this.multiPlayer = multiPlayer;
 
-    GameState overrideGameState = new GameState(this);
-    Client.updateGameState(ownPlayer, overrideGameState);
+    if (multiPlayer) {
+      GameState overrideGameState = new GameState(this);
+      Client.updateGameState(ownPlayer, overrideGameState);
+    }
 
     initialise();
   }
@@ -120,7 +124,7 @@ public class GameSession {
       setPlayable();
     }
     if (!overrideGameState.isPlayersOnly() && overrideGameState.getBag() != null) {
-      this.bag = overrideGameState.getBag(); 
+      this.bag = overrideGameState.getBag();
       this.ownPlayer.getRack().synchroniseBag(this);
       this.board = overrideGameState.getBoard();
       this.successiveScorelessTurns = overrideGameState.getSuccessiveScorelessTurns();
@@ -197,7 +201,7 @@ public class GameSession {
     ownPlayer.playTile(tilePosition);
     placedSquares.add(board.getSquare(posX, posY));
   }
-  
+
   public void placeTile(int posX, int posY, Tile tile) {
     board.placeTile(posX, posY, tile);
     ownPlayer.playTileAI(tile);
@@ -642,7 +646,9 @@ public class GameSession {
         break;
       }
     }
-    sendGameStateMessage();
+    if (multiPlayer) {
+      sendGameStateMessage();
+    }
   }
 
   /**
@@ -683,6 +689,14 @@ public class GameSession {
    */
   public ArrayList<Player> getPlayerList() {
     return players;
+  }
+
+  /**
+   * @author tikrause
+   * @return
+   */
+  public boolean getMultiPlayer() {
+    return multiPlayer;
   }
 
   /**
@@ -788,5 +802,9 @@ public class GameSession {
             gameScreenController.setPlayable(ownPlayer.isCurrentlyPlaying());
           }
         });
+  }
+  
+  public GameScreenController getController() {
+	  return this.gameScreenController;
   }
 }

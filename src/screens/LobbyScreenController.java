@@ -40,13 +40,13 @@ public class LobbyScreenController {
   @FXML private Pane lobbyPane;
 
   @FXML private MenuButton dictionarySelecter;
-  
+
   @FXML private Rectangle aiPlayerRectangle;
-  
+
   @FXML private Rectangle dictionaryRectangle;
-  
+
   @FXML private Rectangle startGameRectangle;
-  
+
   @FXML private Rectangle uploadDictionaryRectangle;
 
   private File chosenDictionary;
@@ -70,10 +70,10 @@ public class LobbyScreenController {
         }
       }
     } else {
-    	aiPlayerRectangle.setVisible(false);
-    	dictionaryRectangle.setVisible(false);
-    	startGameRectangle.setVisible(false);
-    	uploadDictionaryRectangle.setVisible(false);
+      aiPlayerRectangle.setVisible(false);
+      dictionaryRectangle.setVisible(false);
+      startGameRectangle.setVisible(false);
+      uploadDictionaryRectangle.setVisible(false);
     }
   }
 
@@ -155,13 +155,23 @@ public class LobbyScreenController {
   @FXML
   void startGame(ActionEvent event) throws Exception {
     if (Client.isHost()) {
-      Client.getGameSession().setIsRunning(true);
-      DataHandler.userDictionaryFile(chosenDictionary);
-      Client.sendDictionary(DataHandler.getOwnPlayer(), chosenDictionary);
-      Client.getGameSession().getPlayer().setCurrentlyPlaying(true);
-      Client.reportStartGame(DataHandler.getOwnPlayer());
-      Client.getGameSession().initialiseGameScreen();
-      switchToGameScreen();
+      if (Server.getPlayerList().size() > 1) {
+        Client.getGameSession().setIsRunning(true);
+        DataHandler.userDictionaryFile(chosenDictionary);
+        Client.sendDictionary(DataHandler.getOwnPlayer(), chosenDictionary);
+        Client.getGameSession().getPlayer().setCurrentlyPlaying(true);
+        Client.reportStartGame(DataHandler.getOwnPlayer());
+        Client.getGameSession().initialiseGameScreen();
+        switchToGameScreen();
+      } else {
+        Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setHeaderText("Too few players.");
+        errorAlert.setContentText(
+            "You can't start a MultiPlayer game alone. Please wait for other players to join your lobby or add an AI player.\n\n"
+                + "If you want to play alone and learn how to play Scrabble, try the Training Mode.");
+        errorAlert.showAndWait();
+        return;
+      }
     }
   }
 

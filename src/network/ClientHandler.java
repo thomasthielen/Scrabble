@@ -58,13 +58,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
       case SEND_CHAT:
         // TODO
         SendChatMessage scm = (SendChatMessage) msg;
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("resources/GameScreen.fxml"));
-        Parent content = loader.load();
-        GameScreenController gsc = loader.getController();
-        gsc.receivedMessage(scm.getPlayer(), scm.getMessage());
-        StartScreen.getStage().setScene(new Scene(content));
-        StartScreen.getStage().show();
+        Client.getGameSession().getController().receivedMessage(scm.getPlayer(), scm.getMessage());
         break;
       case GAME_STATE:
         // TODO
@@ -74,7 +68,6 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         for (Player p : Client.getGameSession().getPlayerList()) {
           System.out.println(p.getUsername());
         }
-        System.out.println(Client.isHost()); 
         break;
       case DICTIONARY:
         DictionaryMessage dm = (DictionaryMessage) msg;
