@@ -102,6 +102,7 @@ public class EditProfileScreenController {
     existingProfileScreenController.addProfiles();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
+    existingProfileScreenController.checkProfilesEmpty();
   }
 
   /**
