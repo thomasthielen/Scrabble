@@ -15,6 +15,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
@@ -48,6 +50,10 @@ public class LobbyScreenController {
   @FXML private Rectangle startGameRectangle;
 
   @FXML private Rectangle uploadDictionaryRectangle;
+
+  @FXML private TextField textField;
+
+  @FXML private TextArea chatField;
 
   private File chosenDictionary;
 
@@ -198,6 +204,9 @@ public class LobbyScreenController {
       }
     }
   }
+
+  @FXML
+  void sendMessage(ActionEvent event) {}
 
   /**
    * the method addIPAndPort displays the IP-Adress and the Port of the current Lobby at the top of
