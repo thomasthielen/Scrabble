@@ -69,6 +69,11 @@ public class LobbyScreenController {
           }
         }
       }
+    } else {
+    	aiPlayerRectangle.setVisible(false);
+    	dictionaryRectangle.setVisible(false);
+    	startGameRectangle.setVisible(false);
+    	uploadDictionaryRectangle.setVisible(false);
     }
   }
 
