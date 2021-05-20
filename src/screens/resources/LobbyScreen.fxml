@@ -59,5 +59,9 @@
       </Button>
       <Button layoutX="837.0" layoutY="22.0" mnemonicParsing="false" onAction="#leaveLobby" style="-fx-background-color: #f88c00;" text="Leave Lobby" textFill="WHITE" />
       <Button layoutX="40.0" layoutY="363.0" mnemonicParsing="false" onAction="#addAIPlayer" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #F88C00;" text="Add AI Player" textFill="WHITE" />
+      <Rectangle fx:id="dictionaryRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="40.0" layoutX="410.0" layoutY="203.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-opacity: 0;" width="180.0" />
+      <Rectangle fx:id="uploadDictionaryRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="40.0" layoutX="410.0" layoutY="363.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-opacity: 0;" width="180.0" />
+      <Rectangle fx:id="startGameRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="75.0" layoutX="300.0" layoutY="473.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-opacity: 0;" width="400.0" />
+      <Rectangle fx:id="aiPlayerRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="40.0" layoutX="40.0" layoutY="363.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-opacity: 0;" width="180.0" />
    </children>
 </Pane>

@@ -18,6 +18,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
@@ -39,6 +40,14 @@ public class LobbyScreenController {
   @FXML private Pane lobbyPane;
 
   @FXML private MenuButton dictionarySelecter;
+  
+  @FXML private Rectangle aiPlayerRectangle;
+  
+  @FXML private Rectangle dictionaryRectangle;
+  
+  @FXML private Rectangle startGameRectangle;
+  
+  @FXML private Rectangle uploadDictionaryRectangle;
 
   private File chosenDictionary;
 
