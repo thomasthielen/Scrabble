@@ -69,7 +69,7 @@ public class GameScreenController {
   @FXML private Pane swapPane;
 
   @FXML private Pane wildcardPane;
-  
+
   @FXML private TextField wildcardTextField;
 
   @FXML private Button wildcardClose;
@@ -83,8 +83,10 @@ public class GameScreenController {
   @FXML private Button submitButton;
   @FXML private Button recallButton;
   @FXML private Button skipTurnButton;
-  
+
   @FXML private Button endGame;
+
+  @FXML private Button bagButton;
 
   private static ArrayList<Rectangle> rack = new ArrayList<Rectangle>();
 
@@ -121,7 +123,7 @@ public class GameScreenController {
   private double eventX = 0;
 
   private double eventY = 0;
-  
+
   private Button submitSwapButton;
 
   private Text currentlyPlaying = new Text();
@@ -241,6 +243,8 @@ public class GameScreenController {
       StackPane.setAlignment(number, Pos.BOTTOM_RIGHT);
       rackPane.getChildren().add(stackPane);
     }
+
+    bagButton.setText("BAG\n " + this.gameSession.getBag().getRemainingCount());
   }
 
   /**
@@ -322,10 +326,10 @@ public class GameScreenController {
 
               // OPTION 2: The clicked on tile is the selected tile on the board
             } else if (boardSelected && clickedOnTile == returnTile) {
-              deselectAll();  
-              
+              deselectAll();
+
               gameBoardTiles.remove(clickedOnTile);
-              
+
               gameSession.recallTile(boardSelectedX, boardSelectedY);
               clickedOnTile.setPlacedTemporarily(false);
 
@@ -1050,7 +1054,6 @@ public class GameScreenController {
       skipTurnButton.setVisible(true);
       currentlyPlaying.setVisible(false);
 
-      System.out.println(gameSession.getSuccessiveScorelessTurns());
       if (gameSession.getSuccessiveScorelessTurns() >= 6) {
         endGame.setVisible(true);
       } else {

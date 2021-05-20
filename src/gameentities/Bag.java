@@ -138,11 +138,7 @@ public class Bag implements Serializable {
    * @return count of tiles
    */
   public int getRemainingCount() {
-    int count = 0;
-    for (TileContainer tc : tileCounter) {
-      count += tc.getCount();
-    }
-    return count;
+    return remainingTiles.size();
   }
 
   /**
