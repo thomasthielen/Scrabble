@@ -5,11 +5,9 @@ import java.io.IOException;
 
 import AI.AI;
 import data.DataHandler;
-import gameentities.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -19,7 +17,6 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -47,18 +44,20 @@ public class LobbyScreenController {
 
   public void initialize() throws Exception {
     Client.getGameSession().setLobbyScreenController(this);
-    for (Node node : lobbyPane.getChildren()) {
-      if (node instanceof Button) {
-        Button b = (Button) node;
-        if (b.getText().equals("START GAME")
-            || b.getText().equals("Upload dictionary")
-            || b.getText().equals("Add AI Player")) {
-          b.setDisable(!Client.isHost());
-        }
-      } else if (node instanceof MenuButton) {
-        MenuButton mb = (MenuButton) node;
-        if (mb.getText().equals("Dictionaries")) {
-          mb.setDisable(!Client.isHost());
+    if (!Client.isHost()) {
+      for (Node node : lobbyPane.getChildren()) {
+        if (node instanceof Button) {
+          Button b = (Button) node;
+          if (b.getText().equals("START GAME")
+              || b.getText().equals("Upload dictionary")
+              || b.getText().equals("Add AI Player")) {
+            b.setDisable(true);
+          }
+        } else if (node instanceof MenuButton) {
+          MenuButton mb = (MenuButton) node;
+          if (mb.getText().equals("Dictionaries")) {
+            mb.setDisable(true);
+          }
         }
       }
     }

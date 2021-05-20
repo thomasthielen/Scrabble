@@ -4,9 +4,10 @@ import data.DataHandler;
 import gameentities.Avatar;
 import gameentities.Player;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +21,7 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -70,9 +72,9 @@ public class ExistingProfileScreenController {
    * play or to edit.
    *
    * @author jluellig
-   * @throws FileNotFoundException
+   * @throws Exception
    */
-  protected void addProfiles() throws FileNotFoundException {
+  protected void addProfiles() throws Exception {
     buttonGroup = new ToggleGroup();
     profiles = DataHandler.getPlayerInfo();
     profileList.setPrefWidth(790);
@@ -159,5 +161,29 @@ public class ExistingProfileScreenController {
     Parent content = loader.load();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
+  }
+
+  /**
+   * Checks if there are profiles to show.
+   *
+   * @author jluellig
+   * @throws Exception
+   */
+  protected void checkPofilesEmpty() throws Exception {
+    if (profiles.isEmpty()) {
+      Alert errorAlert = new Alert(AlertType.INFORMATION);
+      errorAlert.setHeaderText("There are no existing profiles.");
+      errorAlert.setContentText("Please create a new profile.");
+      Optional<ButtonType> result = errorAlert.showAndWait();
+      if (result.get() == ButtonType.OK) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("resources/NewProfileScreen.fxml"));
+        Parent content = loader.load();
+        NewProfileScreenController newProfileScreenController = loader.getController();
+        newProfileScreenController.addAvatars();
+        StartScreen.getStage().setScene(new Scene(content));
+        StartScreen.getStage().show();
+      }
+    }
   }
 }
