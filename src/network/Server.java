@@ -41,19 +41,6 @@ public class Server {
 
   private static SinglePlayerLobby spl;
 
-  public static void main(String[] args) throws InterruptedException, UnknownHostException {
-    // TODO: Ausgabe der IP-Adr des Servers
-    int p = 8000;
-    while (p < 65535) {
-      try {
-        Server.createServer(p);
-        break;
-      } catch (BindException be) {
-        p++;
-      }
-    }
-  }
-
   /**
    * initialises the server, lets the server wait for connections at the given port and opens a UDP
    * connection that can be used to send or receive messages and to update the game status.

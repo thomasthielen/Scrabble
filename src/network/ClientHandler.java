@@ -3,7 +3,13 @@ package network;
 import data.DataHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import network.messages.*;
+import screens.GameScreenController;
+import screens.SinglePlayerLobbyScreenController;
+import screens.StartScreen;
 import session.GameState;
 import gameentities.Player;
 
@@ -52,7 +58,13 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
       case SEND_CHAT:
         // TODO
         SendChatMessage scm = (SendChatMessage) msg;
-        System.out.println("[" + scm.getPlayer().getUsername() + "]: " + scm.getMessage());
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("resources/GameScreen.fxml"));
+        Parent content = loader.load();
+        GameScreenController gsc = loader.getController();
+        gsc.receivedMessage(scm.getPlayer(), scm.getMessage());
+        StartScreen.getStage().setScene(new Scene(content));
+        StartScreen.getStage().show();
         break;
       case GAME_STATE:
         // TODO
@@ -62,6 +74,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         for (Player p : Client.getGameSession().getPlayerList()) {
           System.out.println(p.getUsername());
         }
+        System.out.println(Client.isHost()); 
         break;
       case DICTIONARY:
         DictionaryMessage dm = (DictionaryMessage) msg;

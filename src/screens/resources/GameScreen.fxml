@@ -477,7 +477,7 @@
       </Pane>
       <Pane fx:id="chatPane" layoutX="750.0" layoutY="14.0" prefHeight="480.0" prefWidth="240.0" style="-fx-background-color: #FFFFFF;">
          <children>
-            <TextArea layoutX="8.0" layoutY="51.0" prefHeight="380.0" prefWidth="225.0" />
+            <TextArea fx:id="chatField" layoutX="8.0" layoutY="51.0" prefHeight="380.0" prefWidth="225.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e9e9e9" height="30.0" layoutX="8.0" layoutY="10.0" stroke="#707070" strokeType="INSIDE" width="190.0" />
             <Text boundsType="VISUAL" fill="#707070" layoutX="77.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHAT" textAlignment="CENTER">
                <font>
@@ -488,7 +488,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <TextField layoutX="8.0" layoutY="437.0" prefHeight="40.0" prefWidth="150.0" />
+            <TextField fx:id="textField" layoutX="8.0" layoutY="437.0" prefHeight="40.0" prefWidth="150.0" />
             <Button layoutX="165.0" layoutY="437.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="40.0" prefWidth="67.0" style="-fx-background-color: #F88C00;" text="Send" textFill="#fffefe" />
          </children></Pane>
       <Button layoutX="463.0" layoutY="509.0" mnemonicParsing="false" onAction="#chat" prefWidth="75.0" style="-fx-background-color: #f88c00;" text="Chat" textFill="WHITE">

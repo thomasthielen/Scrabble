@@ -6,12 +6,7 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import data.DataHandler;
 import network.messages.*;
 import session.GameSession;
 import session.GameState;
@@ -31,12 +26,6 @@ public class Client {
   private static EventLoopGroup group;
 
   private static GameSession gameSession;
-
-  public static void main(String[] args) throws InterruptedException, IOException, TooManyPlayerException {
-    // TODO: nicht mit localhost, sondern mit Server-IP verbinden
-    Client.initialiseClient("localhost", 8000, false);
-    Client.connectToServer(new Player("tikrause", null));
-  }
 
   /**
    * Initialises the client with the server data to enable the communication to the server.
@@ -79,18 +68,8 @@ public class Client {
       isRunning = true;
       gameSession = new GameSession(p);
       cf.channel().writeAndFlush(new ConnectMessage(p));
-      // BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-
-      while (!isRunning) {
-        // TODO: INCOMPLETE
-        // channel.writeAndFlush(new SendChatMessage(ip, in.readLine()));
-      }
     } catch (InterruptedException e) {
       // TODO
-    } // catch (IOException e) {
-    // TODO
-    finally {
-      // group.shutdownGracefully();
     }
   }
 
@@ -109,8 +88,8 @@ public class Client {
     cf = null;
   }
 
-  public static void sendChat(Player p, String msg) {
-    cf.channel().writeAndFlush(new SendChatMessage(p, msg));
+  public static void sendChat(Player p, String chat) {
+    cf.channel().writeAndFlush(new SendChatMessage(p, chat));
   }
 
   public static void reportError(Player p, String reason) {
@@ -119,12 +98,10 @@ public class Client {
   }
 
   public static void reportStartGame(Player p) {
-    // TODO
     cf.channel().writeAndFlush(new StartGameMessage(p));
   }
 
   public static void sendDictionary(Player p, File f) {
-    // TODO
     cf.channel().writeAndFlush(new DictionaryMessage(p, f));
   }
 
@@ -152,18 +129,20 @@ public class Client {
     return isHost;
   }
 
-  public static String getIp() {
-    return ip;
-  }
-
-  public static int getPort() {
-    return port;
-  }
-
+  /**
+   * 
+   * @author tikrause
+   * @param gameState
+   */
   public static void updateGameSession(GameState gameState) {
     gameSession.synchronise(gameState);
   }
 
+  /**
+   * 
+   * @author tikrause
+   * @return gameSession
+   */
   public static GameSession getGameSession() {
     return gameSession;
   }

@@ -49,7 +49,6 @@ public class ChooseServerScreenController {
             Parent content = loader.load();
             StartScreen.getStage().setScene(new Scene(content));
             StartScreen.getStage().show();
-            // LobbyScreenController.addIPAndPort();
           } catch (TooManyPlayerException te) {
             Alert errorAlert = new Alert(AlertType.ERROR);
             errorAlert.setHeaderText("Too much players.");

@@ -3,6 +3,7 @@ package screens;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import data.DataHandler;
 import gameentities.*;
@@ -15,9 +16,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -29,6 +33,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import network.Client;
+import network.Server;
 import session.*;
 
 /**
@@ -74,6 +79,10 @@ public class GameScreenController {
   @FXML private Button wildcardClose;
 
   @FXML private Button wildcardSubmit;
+
+  @FXML private TextArea chatField;
+
+  @FXML private TextField textField;
 
   private static ArrayList<Rectangle> rack = new ArrayList<Rectangle>();
 
@@ -135,7 +144,11 @@ public class GameScreenController {
     // Load the dictionary TODO: Outsource this! Especially to be able to choose the dictionary
     DataHandler.userDictionaryFile(new File("resources/Collins Scrabble Words (2019).txt"));
 
-    gameSession = Client.getGameSession();
+    if (Server.getLobby() != null) {
+      gameSession = Server.getLobby().getGameSession();
+    } else {
+      gameSession = Client.getGameSession();
+    }
     gameSession.setGameScreenController(this);
 
     // Initialise the submit button and disable it
@@ -662,7 +675,27 @@ public class GameScreenController {
    * @throws Exception
    */
   @FXML
-  void sendMessage(ActionEvent event) throws Exception {}
+  void sendMessage(ActionEvent event) throws Exception {
+    if (Pattern.matches(".{1,140}", textField.getText().trim())) {
+      Client.sendChat(DataHandler.getOwnPlayer(), textField.getText().trim());
+      chatField.setText(
+          chatField.getText()
+              + "\n"
+              + DataHandler.getOwnPlayer().getUsername()
+              + ": "
+              + textField.getText());
+      textField.clear();
+    } else {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("Message too long.");
+      errorAlert.setContentText("The maximum length of a chat message is 140 characters.");
+      errorAlert.showAndWait();
+    }
+  }
+
+  public void receivedMessage(Player p, String chat) {
+    chatField.setText(chatField.getText() + "\n" + p.getUsername() + ": " + chat);
+  }
 
   /**
    * TODO This method serves as the Listener for "BAG"-Button from the gameBoardPane It opens a
@@ -883,15 +916,15 @@ public class GameScreenController {
     wildcardPane.setVisible(false);
     gameSession.recallTile(wildcardSquare.getX(), wildcardSquare.getY());
     wildcardStackPane.getChildren().clear();
-    
+
     deselectAll();
     gameBoardTiles.remove(wildcardTile);
-    
+
     wildcardTile.setPlacedTemporarily(false);
     int i = rackTiles.indexOf(wildcardTile);
     Node n = rackPane.getChildren().get(i);
     rackPanes.get(rackPanes.indexOf(n)).setOpacity(1);
-    
+
     refreshSubmit();
   }
 

@@ -197,10 +197,10 @@ public class LobbyScreenController {
    */
   public void addIPAndPort() {
     Pane textPane = new Pane();
-    Text ip = new Text(0, 0, "IP-Adress: " + Client.getIp());
+    Text ip = new Text(0, 0, "IP-Address: " + Server.getIp());
     ip.setFill(Paint.valueOf("#f88c00"));
     ip.setTextAlignment(TextAlignment.CENTER);
-    Text port = new Text(0, 20, "Port: " + Client.getPort());
+    Text port = new Text(0, 20, "Port: " + Server.getPort());
     port.setFill(Paint.valueOf("#f88c00"));
     port.setTextAlignment(TextAlignment.CENTER);
     textPane.getChildren().add(ip);
