@@ -186,6 +186,7 @@ public class GameScreenController {
   }
 
   public void setRack(boolean isFirstTime) {
+    System.out.println("setRack called" ); 
     rack.clear();
     letters.clear();
     numbers.clear();
@@ -205,6 +206,7 @@ public class GameScreenController {
     if (isFirstTime) {
       // Call the initial draw of tiles in the back end
       r.initialDraw();
+      gameSession.sendGameStateMessage();
     }
 
     // Save those tiles in the ArrayList rackTiles
@@ -243,8 +245,8 @@ public class GameScreenController {
       StackPane.setAlignment(number, Pos.BOTTOM_RIGHT);
       rackPane.getChildren().add(stackPane);
     }
-
-    bagButton.setText("BAG\n " + this.gameSession.getBag().getRemainingCount());
+    
+    refreshBagCount();
   }
 
   /**
@@ -319,7 +321,7 @@ public class GameScreenController {
               // Set the back end values
               clickedOnTile.setSelected(false);
               clickedOnTile.setPlacedTemporarily(true);
-              gameSession.placeTile(boardSelectedX, boardSelectedY, clickedOnTile);
+              gameSession.placeTile(boardSelectedX, boardSelectedY, clickedOnTile, rackPanes.indexOf(node));
 
               gameBoardTiles.add(clickedOnTile);
               gameBoardTiles.remove(returnTile);
@@ -504,8 +506,8 @@ public class GameScreenController {
                     gameSession.recallTile(clickedOnX, clickedOnY); // the clicked on tile
                     gameSession.recallTile(boardSelectedX, boardSelectedY); // the selected tile
                     // place both tiles at their new positions in the back end
-                    gameSession.placeTile(boardSelectedX, boardSelectedY, clickedOnTile);
-                    gameSession.placeTile(clickedOnX, clickedOnY, selectedTile);
+                    gameSession.placeTile(boardSelectedX, boardSelectedY, clickedOnTile, rackTiles.indexOf(clickedOnTile));
+                    gameSession.placeTile(clickedOnX, clickedOnY, selectedTile, rackTiles.indexOf(selectedTile));
 
                     // update the GUI:
 
@@ -544,7 +546,7 @@ public class GameScreenController {
                   // OPTION 2.4: Move the selected tile to an empty location
                 } else if (clickedOnTile == null && boardSelected) {
                   gameSession.recallTile(boardSelectedX, boardSelectedY);
-                  gameSession.placeTile(clickedOnX, clickedOnY, selectedTile);
+                  gameSession.placeTile(clickedOnX, clickedOnY, selectedTile, rackTiles.indexOf(selectedTile));
 
                   // Find the corresponding SquarePane and thus the StackPane
                   Square selectedSquare =
@@ -584,7 +586,7 @@ public class GameScreenController {
           }
         }
         // and call the back end method
-        gameSession.placeTile(tileToPlaceX, tileToPlaceY, tileToPlace);
+        gameSession.placeTile(tileToPlaceX, tileToPlaceY, tileToPlace, rackTiles.indexOf(tileToPlace));
       }
       refreshRecall();
       refreshSubmit();
@@ -1036,6 +1038,10 @@ public class GameScreenController {
     }
   }
 
+  private void refreshBagCount() {
+    bagButton.setText("BAG\n " + this.gameSession.getBag().getRemainingCount());
+  }
+  
   public void setPlayable(boolean ownTurn) {
     if (!ownTurn) {
       playable = false;
@@ -1137,6 +1143,8 @@ public class GameScreenController {
         }
       }
     }
+   
+    refreshBagCount();
   }
 
   public void leave() {

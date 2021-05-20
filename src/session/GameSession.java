@@ -61,6 +61,10 @@ public class GameSession {
     ownPlayer = p;
     ownPlayer.createRack(this);
     ownPlayer.setCurrentlyPlaying(Client.isHost());
+
+    GameState overrideGameState = new GameState(this);
+    Client.updateGameState(ownPlayer, overrideGameState);
+
     initialise();
   }
 
@@ -104,6 +108,7 @@ public class GameSession {
    * @author tikrause
    */
   public void synchronise(GameState overrideGameState) {
+    System.out.println("synchronise called on " + ownPlayer.getUsername() ); 
     // If the own turn is over: Create a GameState object and send it
     this.seconds = RESET;
     this.players = overrideGameState.getPlayers();
@@ -117,16 +122,19 @@ public class GameSession {
     }
     if (!overrideGameState.isPlayersOnly() && overrideGameState.getBag() != null) {
       this.bag = overrideGameState.getBag();
+      System.out.println("synchroniseBag called with " + overrideGameState.getBag().getRemainingCount() + "tiles remaining"); 
       this.ownPlayer.getRack().synchroniseBag(this);
       this.board = overrideGameState.getBoard();
       this.successiveScorelessTurns = overrideGameState.getSuccessiveScorelessTurns();
-      Platform.runLater(
-          new Runnable() {
-            @Override
-            public void run() {
-              gameScreenController.loadPlacedTiles();
-            }
-          });
+      if (gameScreenController != null) {
+        Platform.runLater(
+            new Runnable() {
+              @Override
+              public void run() {
+                gameScreenController.loadPlacedTiles();
+              }
+            });
+      }
     }
   }
 
@@ -186,9 +194,15 @@ public class GameSession {
    * @param posY
    * @param tile
    */
+  public void placeTile(int posX, int posY, Tile tile, int tilePosition) {
+    board.placeTile(posX, posY, tile);
+    ownPlayer.playTile(tilePosition);
+    placedSquares.add(board.getSquare(posX, posY));
+  }
+  
   public void placeTile(int posX, int posY, Tile tile) {
     board.placeTile(posX, posY, tile);
-    ownPlayer.playTile(tile);
+    ownPlayer.playTileAI(tile);
     placedSquares.add(board.getSquare(posX, posY));
   }
 
@@ -720,9 +734,9 @@ public class GameSession {
    * @author jluellig
    */
   public void endGame() {
-    System.out.println("endGame called" ); 
+    System.out.println("endGame called");
     Collections.sort(players);
-    boolean hasWon = (players.get(players.size()-1).equals(ownPlayer));
+    boolean hasWon = (players.get(players.size() - 1).equals(ownPlayer));
     DataHandler.addStatistics(DataHandler.getOwnPlayerId(), hasWon, ownPlayer.getScore());
     // TODO end game screen (statistiken des aktuellen spiels, ranking, end game, new game)
   }

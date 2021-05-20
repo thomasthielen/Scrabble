@@ -57,11 +57,14 @@ public class Rack implements Serializable {
    * @author tthielen
    */
   public void refillDraw() {
+    System.out.println("refillDraw called: Before: " + this.bag.getRemainingCount() ); 
+    System.out.println("this.tiles.size = " + this.tiles.size() ); 
     while (this.tiles.size() < 7) {
       if (bag.isEmpty()) {
         return;
       }
       Tile newTile = bag.drawTile();
+      System.out.println("bag.drawTile() called" ); 
       tiles.add(newTile);
       for (int i = 0; i < tileArray.length; i++) {
         if (tileArray[i] == null) {
@@ -76,6 +79,7 @@ public class Rack implements Serializable {
         tiles.add(tileArray[i]);
       }
     }
+    System.out.println("After: " + this.bag.getRemainingCount() ); 
   }
 
   /**
@@ -116,15 +120,10 @@ public class Rack implements Serializable {
    * Plays a tile to the board.
    *
    * @author tthielen
-   * @param tile
+   * @param position
    */
-  public void playTile(Tile tile) {
-    for (int i = 0; i < tileArray.length; i++) {
-      if (tileArray[i] == tile) {
-        tileArray[i] = null;
-        break;
-      }
-    }
+  public void playTile(int position) {
+    tileArray[position] = null;
     this.tiles.clear();
     for (int i = 0; i < tileArray.length; i++) {
       if (tileArray[i] != null) {
@@ -132,6 +131,17 @@ public class Rack implements Serializable {
       }
     }
   }
+  
+  // Doesn't consider exact position of tiles
+  public void playTileAI(Tile tile) {
+    for (Tile t : tiles) {
+      if (t.getLetter() == tile.getLetter()) {
+        tiles.remove(t);
+      }
+    }
+  }
+  
+  
 
   /**
    * Adds a tile back to the rack.
@@ -153,6 +163,7 @@ public class Rack implements Serializable {
       }
     }
   }
+  
 
   /**
    * Returns the rack's tiles

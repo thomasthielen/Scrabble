@@ -79,8 +79,13 @@ public class Player implements Serializable, Comparable<Player> {
    * @author tthielen
    * @param tile the tile that should be played
    */
-  public void playTile(Tile tile) {
-    this.rack.playTile(tile);
+  public void playTile(int position) {
+    this.rack.playTile(position);
+    ;
+  }
+  
+  public void playTileAI(Tile tile) {
+    this.rack.playTileAI(tile);
     ;
   }
 
