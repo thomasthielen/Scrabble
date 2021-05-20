@@ -332,7 +332,10 @@ public class GameScreenController {
 
               // OPTION 2: The clicked on tile is the selected tile on the board
             } else if (boardSelected && clickedOnTile == returnTile) {
-              deselectAll();
+              deselectAll();  
+              
+              gameBoardTiles.remove(clickedOnTile);
+              
               gameSession.recallTile(boardSelectedX, boardSelectedY);
               clickedOnTile.setPlacedTemporarily(false);
 
