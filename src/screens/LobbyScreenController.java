@@ -9,6 +9,7 @@ import gameentities.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,7 +19,10 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import network.Client;
 import network.Server;
@@ -172,16 +176,24 @@ public class LobbyScreenController {
     }
   }
 
+  /**
+   * the method addIPAndPort displays the IP-Adress and the Port of the current Lobby at the top of
+   * the Lobby
+   *
+   * @author jbleil
+   */
   public void addIPAndPort() {
-    lobbyPane = new Pane();
-    Text testText = new Text("Text");
-    testText.relocate(100, 100);
-    lobbyPane.getChildren().add(testText);
-    Text ip = new Text(100, 100, Client.getIp());
-    Text port = new Text(100, 150, "" + Client.getPort());
-    lobbyPane = new Pane();
-    lobbyPane.getChildren().add(ip);
-    lobbyPane.getChildren().add(port);
+    Pane textPane = new Pane();
+    Text ip = new Text(0, 0, "IP-Adress: " + Client.getIp());
+    ip.setFill(Paint.valueOf("#f88c00"));
+    ip.setTextAlignment(TextAlignment.CENTER);
+    Text port = new Text(0, 20, "Port: " + Client.getPort());
+    port.setFill(Paint.valueOf("#f88c00"));
+    port.setTextAlignment(TextAlignment.CENTER);
+    textPane.getChildren().add(ip);
+    textPane.getChildren().add(port);
+    textPane.relocate(350, 100);
+    lobbyPane.getChildren().add(textPane);
   }
 
   public void switchToGameScreen() {
