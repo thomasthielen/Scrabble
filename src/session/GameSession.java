@@ -9,6 +9,7 @@ import data.DataHandler;
 import gameentities.*;
 import javafx.application.Platform;
 import network.Client;
+import network.Server;
 import screens.GameScreenController;
 import screens.LobbyScreenController;
 
@@ -61,12 +62,14 @@ public class GameSession {
     board = new Board();
     ownPlayer = p;
     ownPlayer.createRack(this);
-    ownPlayer.setCurrentlyPlaying(Client.isHost());
     this.multiPlayer = multiPlayer;
 
     if (multiPlayer) {
+      ownPlayer.setCurrentlyPlaying(Client.isHost());
       GameState overrideGameState = new GameState(this);
       Client.updateGameState(ownPlayer, overrideGameState);
+    } else {
+      ownPlayer.setCurrentlyPlaying(true);
     }
 
     initialise();
@@ -101,7 +104,11 @@ public class GameSession {
         new Runnable() {
           @Override
           public void run() {
-            gameScreenController.setPlayable(Client.isHost());
+            if (multiPlayer) {
+              gameScreenController.setPlayable(Client.isHost());
+            } else {
+              gameScreenController.setPlayable(true);
+            }
           }
         });
   }
@@ -649,6 +656,15 @@ public class GameSession {
     if (multiPlayer) {
       sendGameStateMessage();
     }
+    Server.updateAI(new GameState(this));
+    for (Player p : players) {
+      if (p.isCurrentlyPlaying()) {
+        Player playing = p;
+        if (playing.isAI()) {
+          // TODO AI makes move
+        }
+      }
+    }
   }
 
   /**
@@ -803,8 +819,12 @@ public class GameSession {
           }
         });
   }
-  
-  public GameScreenController getController() {
-	  return this.gameScreenController;
+
+  public GameScreenController getGameScreenController() {
+    return this.gameScreenController;
+  }
+
+  public LobbyScreenController getLobbyScreenController() {
+    return this.lobbyScreenController;
   }
 }

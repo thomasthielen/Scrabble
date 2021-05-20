@@ -35,17 +35,33 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
       case CONNECT:
         // TODO
         ConnectMessage cm = (ConnectMessage) msg;
-        System.out.println(cm.getPlayer().getUsername() + " has joined!");
+        if (Client.getGameSession().getLobbyScreenController() != null) {
+          Client.getGameSession()
+              .getLobbyScreenController()
+              .receivedMessage(cm.getPlayer(), " has joined!");
+        }
         System.out.println(cm.getPlayer().getPlayerStatistics());
         break;
       case DISCONNECT:
         // TODO
         DisconnectMessage dcm = (DisconnectMessage) msg;
         if (dcm.isHost()) {
-          System.out.println("The host has left!");
+          if (Client.getGameSession().getLobbyScreenController() != null) {
+            Client.getGameSession()
+                .getLobbyScreenController()
+                .receivedMessage(dcm.getPlayer(), " has left!");
+          } else {
+            // TODO Host leaves when game is still running
+          }
           Client.disconnectClient(DataHandler.getOwnPlayer());
         } else {
-          System.out.println(dcm.getPlayer().getUsername() + " has left!");
+          if (Client.getGameSession().getLobbyScreenController() != null) {
+            Client.getGameSession()
+                .getLobbyScreenController()
+                .receivedMessage(dcm.getPlayer(), " has left!");
+          } else {
+            // TODO when player leaves and the game is still running
+          }
         }
         break;
       case ERROR:
@@ -58,7 +74,15 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
       case SEND_CHAT:
         // TODO
         SendChatMessage scm = (SendChatMessage) msg;
-        Client.getGameSession().getController().receivedMessage(scm.getPlayer(), scm.getMessage());
+        if (Client.getGameSession().getGameScreenController() != null) {
+          Client.getGameSession()
+              .getGameScreenController()
+              .receivedMessage(scm.getPlayer(), scm.getMessage());
+        } else {
+          Client.getGameSession()
+              .getLobbyScreenController()
+              .receivedMessage(scm.getPlayer(), scm.getMessage());
+        }
         break;
       case GAME_STATE:
         // TODO

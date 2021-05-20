@@ -78,6 +78,7 @@ public class GameScreenController {
 
   @FXML private TextArea chatField;
   @FXML private TextField textField;
+  @FXML private Button chatButton;
 
   @FXML private Button openSwapButton;
   @FXML private Button submitButton;
@@ -185,6 +186,8 @@ public class GameScreenController {
     chatField.setEditable(false);
     chatField.setMouseTransparent(true);
     chatField.setFocusTraversable(false);
+
+    chatButton.setVisible(gameSession.getMultiPlayer());
   }
 
   public void setRack(boolean isFirstTime) {
@@ -678,10 +681,10 @@ public class GameScreenController {
   }
 
   /**
-   * TODO This method serves as the Listener for "Send"-Button from the chatPane It allows the user
-   * to send a message to the chat
+   * This method serves as the Listener for "Send"-Button from the chatPane. It allows the user to
+   * send a message to the chat to all the other users in the game.
    *
-   * @author jbleil
+   * @author tikrause
    * @param event
    * @throws Exception
    */
@@ -701,6 +704,11 @@ public class GameScreenController {
     }
   }
 
+  /**
+   * @author tikrause
+   * @param p
+   * @param chat
+   */
   public void receivedMessage(Player p, String chat) {
     chatHistory.append(p.getUsername() + ": " + chat + "\n");
     chatField.setText(chatHistory.toString());

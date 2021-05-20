@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Random;
 
 import session.GameSession;
 
@@ -24,6 +25,7 @@ public class Player implements Serializable, Comparable<Player> {
   private int score = 0;
   private Rack rack;
   private HashMap<StatisticKeys, Integer> playerStatistics;
+  private boolean isAI = false;
 
   private boolean currentlyPlaying = false;
 
@@ -40,6 +42,12 @@ public class Player implements Serializable, Comparable<Player> {
     this.playerStatistics = DataHandler.getStatistics(DataHandler.getOwnPlayerId());
   }
 
+  public Player(String username) {
+	  this.username = username;
+	  this.avatar = Avatar.values()[new Random().nextInt(Avatar.values().length)];
+	  this.isAI = true;
+  }
+  
   /**
    * Overloaded constructor for foreign players with different statistics.
    *
@@ -181,6 +189,15 @@ public class Player implements Serializable, Comparable<Player> {
    */
   public Rack getRack() {
     return rack;
+  }
+  
+  /**
+   * 
+   * @author tikrause
+   * @return
+   */
+  public boolean isAI() {
+	  return isAI;
   }
 
   /**

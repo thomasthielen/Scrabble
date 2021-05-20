@@ -24,8 +24,8 @@ public class AI {
   ArrayList<Tile> tiles;
   private Player player;
 
-  public AI(String username, Avatar avatar) {
-    this.gameReference = new GameSession(new Player(username, avatar), false);
+  public AI(String username) {
+    this.gameReference = new GameSession(new Player(username), false);
     this.tiles = this.gameReference.getPlayer().getRack().getTiles();
   }
 

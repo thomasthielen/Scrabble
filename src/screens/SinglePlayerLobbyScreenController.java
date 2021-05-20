@@ -137,7 +137,7 @@ public class SinglePlayerLobbyScreenController {
   @FXML
   void addAIPlayer(ActionEvent event) throws Exception {
     try {
-      AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1), null);
+      AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1));
       Server.addAIPlayer(ai);
     } catch (TooManyPlayerException e) {
       Alert errorAlert = new Alert(AlertType.ERROR);
@@ -157,6 +157,10 @@ public class SinglePlayerLobbyScreenController {
     StartScreen.getStage().show();
   }
 
+  /**
+   * 
+   * @author tikrause
+   */
   public void setDictionaryMenu() {
     MenuItem menuItem1 = new MenuItem("Collins Scrabble Words");
     MenuItem menuItem2 = new MenuItem("Enable (Words With Friends)");

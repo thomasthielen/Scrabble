@@ -2,9 +2,11 @@ package screens;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import AI.AI;
 import data.DataHandler;
+import gameentities.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -56,6 +58,7 @@ public class LobbyScreenController {
   @FXML private TextArea chatField;
 
   private File chosenDictionary;
+  private StringBuffer chatHistory = new StringBuffer();
 
   public void initialize() throws Exception {
     Client.getGameSession().setLobbyScreenController(this);
@@ -80,6 +83,9 @@ public class LobbyScreenController {
       dictionaryRectangle.setVisible(false);
       startGameRectangle.setVisible(false);
       uploadDictionaryRectangle.setVisible(false);
+      chatField.setEditable(false);
+      chatField.setMouseTransparent(true);
+      chatField.setFocusTraversable(false);
     }
   }
 
@@ -193,7 +199,7 @@ public class LobbyScreenController {
   void addAIPlayer(ActionEvent event) throws Exception {
     if (Client.isHost()) {
       try {
-        AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1), null);
+        AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1));
         Server.addAIPlayer(ai);
       } catch (TooManyPlayerException e) {
         Alert errorAlert = new Alert(AlertType.ERROR);
@@ -206,10 +212,34 @@ public class LobbyScreenController {
   }
 
   @FXML
-  void sendMessage(ActionEvent event) {}
+  void sendMessage(ActionEvent event) {
+    if (Pattern.matches(".{1,140}", textField.getText().trim())) {
+      Client.sendChat(DataHandler.getOwnPlayer(), ": " + textField.getText().trim());
+      chatHistory.append(
+          DataHandler.getOwnPlayer().getUsername() + ": " + textField.getText().trim() + "\n");
+      chatField.setText(chatHistory.toString());
+      textField.clear();
+    } else {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("Message too long.");
+      errorAlert.setContentText("The maximum length of a chat message is 140 characters.");
+      errorAlert.showAndWait();
+    }
+  }
 
   /**
-   * the method addIPAndPort displays the IP-Adress and the Port of the current Lobby at the top of
+   * 
+   * @author tikrause
+   * @param p
+   * @param chat
+   */
+  public void receivedMessage(Player p, String chat) {
+    chatHistory.append(p.getUsername() + chat + "\n");
+    chatField.setText(chatHistory.toString());
+  }
+  
+  /**
+   * the method addIPAndPort displays the IP-Address and the Port of the current Lobby at the top of
    * the Lobby
    *
    * @author jbleil

@@ -491,7 +491,7 @@
             <TextField fx:id="textField" layoutX="8.0" layoutY="437.0" prefHeight="40.0" prefWidth="150.0" />
             <Button layoutX="165.0" layoutY="437.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="40.0" prefWidth="67.0" style="-fx-background-color: #F88C00;" text="Send" textFill="#fffefe" />
          </children></Pane>
-      <Button layoutX="463.0" layoutY="509.0" mnemonicParsing="false" onAction="#chat" prefWidth="75.0" style="-fx-background-color: #f88c00;" text="Chat" textFill="WHITE">
+      <Button fx:id="chatButton" layoutX="463.0" layoutY="509.0" mnemonicParsing="false" onAction="#chat" prefWidth="75.0" style="-fx-background-color: #f88c00;" text="Chat" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
