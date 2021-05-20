@@ -49,6 +49,6 @@ public class StartScreenController {
     existingProfileScreenController.addProfiles();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
-    existingProfileScreenController.checkPofilesEmpty();
+    existingProfileScreenController.checkProfilesEmpty();
   }
 }

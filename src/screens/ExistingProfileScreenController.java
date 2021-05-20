@@ -169,7 +169,7 @@ public class ExistingProfileScreenController {
    * @author jluellig
    * @throws Exception
    */
-  protected void checkPofilesEmpty() throws Exception {
+  protected void checkProfilesEmpty() throws Exception {
     if (profiles.isEmpty()) {
       Alert errorAlert = new Alert(AlertType.INFORMATION);
       errorAlert.setHeaderText("There are no existing profiles.");

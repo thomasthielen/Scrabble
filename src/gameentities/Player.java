@@ -16,7 +16,7 @@ import session.GameSession;
  *
  * @author tthielen
  */
-public class Player implements Serializable {
+public class Player implements Serializable, Comparable<Player> {
   private static final long serialVersionUID = 1L;
 
   private String username;
@@ -200,7 +200,7 @@ public class Player implements Serializable {
 
   /**
    * Returns if two player objects are the same.
-   * 
+   *
    * @author tikrause
    * @return if two player objects are the same
    */
@@ -219,5 +219,17 @@ public class Player implements Serializable {
     return Objects.equals(this.username, p.getUsername())
         && Objects.equals(this.avatar, p.getAvatar())
         && Objects.equals(this.playerStatistics, p.getPlayerStatistics());
+  }
+
+  /**
+   * Method to compare two player objects by their score.
+   *
+   * @author jluellig
+   * @param p the player object that should be compared
+   * @return int
+   */
+  @Override
+  public int compareTo(Player p) {
+    return Integer.compare(this.score, p.getScore());
   }
 }

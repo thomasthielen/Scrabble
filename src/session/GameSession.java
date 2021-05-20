@@ -1,9 +1,11 @@
 package session;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import data.DataHandler;
 import gameentities.*;
 import javafx.application.Platform;
 import network.Client;
@@ -711,7 +713,17 @@ public class GameSession {
     return ownPlayer.getRack().getTiles().isEmpty() && bag.isEmpty();
   }
 
-  public void endGame() {}
+  /**
+   * Method for what happens when the game successfully ends.
+   *
+   * @author jluellig
+   */
+  public void endGame() {
+    Collections.sort(players);
+    boolean hasWon = (players.get(players.size()-1).equals(ownPlayer));
+    DataHandler.addStatistics(DataHandler.getOwnPlayerId(), hasWon, ownPlayer.getScore());
+    // TODO end game screen (statistiken des aktuellen spiels, ranking, end game, new game)
+  }
 
   private void kickPlayer() {
     if (ownPlayer.isCurrentlyPlaying()) {
