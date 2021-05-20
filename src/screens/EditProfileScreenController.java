@@ -1,5 +1,7 @@
 package screens;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 import data.DataHandler;
@@ -14,6 +16,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 
 public class EditProfileScreenController {
 
@@ -23,6 +29,8 @@ public class EditProfileScreenController {
   private static ToggleGroup buttonGroup;
 
   @FXML private TextField nameField;
+
+  @FXML private Pane backgroundPane;
 
   /**
    * This method serves as the Listener for "SUBMIT CHANGES"-Button. It allows the user to save the
@@ -139,13 +147,13 @@ public class EditProfileScreenController {
 
     buttonGroup = new ToggleGroup();
     // TODO avatar
-//    Avatar[] array = Avatar.values();
-//    for (Avatar a : array) {
-//      if (a.equals(currentAvatar)) {
-//        ToggleButton tb = new ToggleButton();
-//        tb.setSelected(true);
-//      }
-//    }
+    //    Avatar[] array = Avatar.values();
+    //    for (Avatar a : array) {
+    //      if (a.equals(currentAvatar)) {
+    //        ToggleButton tb = new ToggleButton();
+    //        tb.setSelected(true);
+    //      }
+    //    }
   }
 
   /**
@@ -177,5 +185,33 @@ public class EditProfileScreenController {
   @FXML
   void onEnter(ActionEvent event) throws Exception {
     submitChanges(event);
+  }
+
+  /**
+   * this method displays all the choosable avatars on the Screen.
+   *
+   * @author jbleil
+   * @throws FileNotFoundException
+   */
+  protected void addAvatars() throws FileNotFoundException {
+    buttonGroup = new ToggleGroup();
+    GridPane gridPane = new GridPane();
+    backgroundPane.getChildren().add(gridPane);
+    gridPane.setPrefWidth(800);
+    gridPane.setVgap(20);
+    gridPane.setHgap(20);
+    gridPane.relocate(247, 260);
+    Avatar[] array = Avatar.values();
+    int counter = 0;
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 6; j++) {
+        Image img = new Image(new FileInputStream(array[counter].getUrl()), 52, 52, true, true);
+        ToggleButton tb = new ToggleButton("", new ImageView(img));
+        tb.setUserData(array[counter]);
+        tb.setToggleGroup(buttonGroup);
+        gridPane.add(tb, j, i);
+        counter++;
+      }
+    }
   }
 }

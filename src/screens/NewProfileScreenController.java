@@ -132,7 +132,12 @@ public class NewProfileScreenController {
     return false;
   }
 
-  /** @author jbleil */
+  /**
+   * this method displays all the choosable avatars on the Screen.
+   *
+   * @author jbleil
+   * @throws FileNotFoundException
+   */
   protected void addAvatars() throws FileNotFoundException {
     buttonGroup = new ToggleGroup();
     GridPane gridPane = new GridPane();

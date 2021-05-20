@@ -119,6 +119,7 @@ public class ExistingProfileScreenController {
       Parent content = loader.load();
       EditProfileScreenController editProfileScreenController = loader.getController();
       editProfileScreenController.loadProfile(id);
+      editProfileScreenController.addAvatars();
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
     } else {
