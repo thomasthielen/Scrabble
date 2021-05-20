@@ -432,7 +432,7 @@
                   <Font size="10.0" />
                </font>
             </Button>
-            <Button layoutX="330.0" layoutY="450.0" mnemonicParsing="false" onAction="#skipTurn" prefWidth="75.0" style="-fx-background-color: #f88c00;" text="Skip" textFill="WHITE">
+            <Button layoutX="330.0" layoutY="450.0" mnemonicParsing="false" fx:id="skipTurn" onAction="#skipTurn" prefWidth="75.0" style="-fx-background-color: #f88c00;" text="Skip" textFill="WHITE">
                <font>
                   <Font size="10.0" />
                </font>
@@ -461,12 +461,12 @@
             <Pane fx:id="wildcardPane" layoutX="68.0" layoutY="380.0" prefHeight="96.0" prefWidth="345.0" style="-fx-background-color: #EEEEEE;">
                <children>
                   <TextField fx:id="wildcardTextField" layoutX="14.0" layoutY="43.0" prefHeight="39.0" prefWidth="240.0" />
-                  <Button layoutX="254.0" layoutY="43.0" mnemonicParsing="false" onAction="#submitWildcard" style="-fx-background-color: #f88c00;" text="ENTER" textFill="WHITE" />
+                  <Button fx:id="wildcardSubmit" layoutX="254.0" layoutY="43.0" mnemonicParsing="false" onAction="#submitWildcard" style="-fx-background-color: #f88c00;" text="ENTER" textFill="WHITE" />
                   <Text layoutX="14.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a Letter in the field below">
                      <font>
                         <Font size="16.0" />
                      </font></Text>
-                  <Button layoutX="301.0" layoutY="8.0" mnemonicParsing="false" onAction="#closeWildcardPane" text="X">
+                  <Button fx:id="wildcardClose" layoutX="301.0" layoutY="8.0" mnemonicParsing="false" onAction="#closeWildcardPane" text="X">
                      <font>
                         <Font size="14.0" />
                      </font>

@@ -96,4 +96,8 @@ public class GameState implements Serializable {
   public boolean isPlayersOnly() {
     return this.playersOnly;
   }
+  
+  public int getSuccessiveScorelessTurns() {
+    return this.successiveScorelessTurns;
+  }
 }

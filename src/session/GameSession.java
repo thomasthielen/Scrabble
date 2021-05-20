@@ -119,6 +119,7 @@ public class GameSession {
       this.bag = overrideGameState.getBag();
       this.ownPlayer.getRack().synchroniseBag(this);
       this.board = overrideGameState.getBoard();
+      this.successiveScorelessTurns = overrideGameState.getSuccessiveScorelessTurns();
       Platform.runLater(
           new Runnable() {
             @Override

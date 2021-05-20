@@ -67,9 +67,13 @@ public class GameScreenController {
 
   @FXML private Pane wildcardPane;
 
-  @FXML private Button endGameButton;
+  @FXML private Button endGame;
 
-  private Button submitWildcardButton;
+  @FXML private Button skipTurn;
+
+  @FXML private Button wildcardClose;
+
+  @FXML private Button wildcardSubmit;
 
   private static ArrayList<Rectangle> rack = new ArrayList<Rectangle>();
 
@@ -98,6 +102,7 @@ public class GameScreenController {
 
   private Tile wildcardTile;
   private StackPane wildcardStackPane;
+  private Square wildcardSquare;
   private char wildcardChar;
 
   private ArrayList<SquarePane> squarePanes = new ArrayList<SquarePane>();
@@ -150,14 +155,6 @@ public class GameScreenController {
       }
     }
 
-    // Initialise the submitWildcardButton
-    for (Node node : wildcardPane.getChildren()) {
-      if (node instanceof Button) {
-        submitWildcardButton = (Button) node;
-        submitWildcardButton.setDisable(true);
-      }
-    }
-
     // Fill the gameBoard with SquarePanes which are also held in squarePanes (!)
     System.out.println(gameBoard.getColumnConstraints());
     squarePanes.clear();
@@ -197,13 +194,6 @@ public class GameScreenController {
         currentlyPlaying.setFill(Color.BLACK);
         break;
       }
-    }
-
-    if (gameSession.getSuccessiveScorelessTurns() >= 6) {
-      System.out.println("end game button visible");
-      //      endGameButton.setVisible(true);
-    } else {
-      //      endGameButton.setVisible(false);
     }
 
     Rack r = gameSession.getPlayer().getRack();
@@ -308,6 +298,7 @@ public class GameScreenController {
               rackPanes.get(rackPanes.indexOf(n)).setOpacity(1);
 
               wildcardTile = clickedOnTile;
+              wildcardSquare = boardSquare;
               wildcardStackPane = boardStackPane;
 
               // If the selected tile on the rack is a wildcard, a selection dialog will open
@@ -451,6 +442,7 @@ public class GameScreenController {
                   // OPTION 1.2: Simply place the tile on the square
 
                   wildcardTile = tile;
+                  wildcardSquare = square;
                   wildcardStackPane = (StackPane) node;
 
                   // If the selected tile on the rack is a wildcard, a selection dialog will open
@@ -889,6 +881,18 @@ public class GameScreenController {
   @FXML
   void closeWildcardPane(ActionEvent event) {
     wildcardPane.setVisible(false);
+    gameSession.recallTile(wildcardSquare.getX(), wildcardSquare.getY());
+    wildcardStackPane.getChildren().clear();
+    
+    deselectAll();
+    gameBoardTiles.remove(wildcardTile);
+    
+    wildcardTile.setPlacedTemporarily(false);
+    int i = rackTiles.indexOf(wildcardTile);
+    Node n = rackPane.getChildren().get(i);
+    rackPanes.get(rackPanes.indexOf(n)).setOpacity(1);
+    
+    refreshSubmit();
   }
 
   /**
@@ -900,10 +904,13 @@ public class GameScreenController {
   @FXML
   void skipTurn(ActionEvent event) {
     gameSession.skipTurn();
+    setRack(false);
   }
 
   @FXML
-  void endGame(ActionEvent event) {}
+  void endGame(ActionEvent event) {
+    gameSession.endGame();
+  }
 
   // All following methods are functions used multiple times in the methods above
 
@@ -1005,13 +1012,24 @@ public class GameScreenController {
       submitButton.setVisible(false);
       recallButton.setVisible(false);
       swapButton.setVisible(false);
+      skipTurn.setVisible(false);
       currentlyPlaying.setVisible(true);
+
+      endGame.setVisible(false);
     } else {
       playable = true;
       submitButton.setVisible(true);
       recallButton.setVisible(true);
       swapButton.setVisible(true);
+      skipTurn.setVisible(true);
       currentlyPlaying.setVisible(false);
+
+      System.out.println(gameSession.getSuccessiveScorelessTurns());
+      if (gameSession.getSuccessiveScorelessTurns() >= 6) {
+        endGame.setVisible(true);
+      } else {
+        endGame.setVisible(false);
+      }
     }
   }
 
@@ -1019,6 +1037,7 @@ public class GameScreenController {
     if (clickedTile.isWildCard()) {
       wildcardTextField.setText("");
       wildcardPane.setVisible(true);
+      wildcardSubmit.setDisable(true);
 
       wildcardTextField
           .textProperty()
@@ -1030,11 +1049,11 @@ public class GameScreenController {
                     String oldValue,
                     String newValue) {
                   if (newValue.matches("[a-zA-Z]")) {
-                    submitWildcardButton.setDisable(false);
+                    wildcardSubmit.setDisable(false);
                     newValue = newValue.toUpperCase();
                     wildcardChar = newValue.charAt(0);
                   } else {
-                    submitWildcardButton.setDisable(true);
+                    wildcardSubmit.setDisable(true);
                   }
                 }
               });
