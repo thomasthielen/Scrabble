@@ -57,14 +57,11 @@ public class Rack implements Serializable {
    * @author tthielen
    */
   public void refillDraw() {
-    System.out.println("refillDraw called: Before: " + this.bag.getRemainingCount() ); 
-    System.out.println("this.tiles.size = " + this.tiles.size() ); 
     while (this.tiles.size() < 7) {
       if (bag.isEmpty()) {
         return;
       }
       Tile newTile = bag.drawTile();
-      System.out.println("bag.drawTile() called" ); 
       tiles.add(newTile);
       for (int i = 0; i < tileArray.length; i++) {
         if (tileArray[i] == null) {
@@ -79,7 +76,6 @@ public class Rack implements Serializable {
         tiles.add(tileArray[i]);
       }
     }
-    System.out.println("After: " + this.bag.getRemainingCount() ); 
   }
 
   /**

@@ -108,7 +108,6 @@ public class GameSession {
    * @author tikrause
    */
   public void synchronise(GameState overrideGameState) {
-    System.out.println("synchronise called on " + ownPlayer.getUsername() ); 
     // If the own turn is over: Create a GameState object and send it
     this.seconds = RESET;
     this.players = overrideGameState.getPlayers();
@@ -121,8 +120,7 @@ public class GameSession {
       setPlayable();
     }
     if (!overrideGameState.isPlayersOnly() && overrideGameState.getBag() != null) {
-      this.bag = overrideGameState.getBag();
-      System.out.println("synchroniseBag called with " + overrideGameState.getBag().getRemainingCount() + "tiles remaining"); 
+      this.bag = overrideGameState.getBag(); 
       this.ownPlayer.getRack().synchroniseBag(this);
       this.board = overrideGameState.getBoard();
       this.successiveScorelessTurns = overrideGameState.getSuccessiveScorelessTurns();
