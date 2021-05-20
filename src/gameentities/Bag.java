@@ -15,7 +15,8 @@ public class Bag implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  private boolean isEmpty = true; // Indicates whether the bag is empty
+  // Indicates whether the bag is empty
+  private boolean isEmpty = true;
   // List of TileContainers, used to count the tile-types (e.g. 7x "E" remaining)
   private ArrayList<TileContainer> tileCounter = new ArrayList<TileContainer>();
   // List of actual Tiles
@@ -65,7 +66,10 @@ public class Bag implements Serializable {
     tileCounter.add(new TileContainer(new Tile('Q', 10), 1));
     tileCounter.add(new TileContainer(new Tile('Z', 10), 1));
     tileCounter.add(new TileContainer(new Tile('*', 0), 2)); // Wildcard / Blank Tile
+
     // TODO: Implement self-selection of value & count
+    // STEP 1: Display the default values (see above) in the text fields
+    // STEP 2: Change the values according to the text fields and use those to fille the bag
 
     // Iterate through tileCounter and use the count to fill remainingTiles with the
     // correct amounts of tiles
@@ -159,9 +163,5 @@ public class Bag implements Serializable {
    */
   public boolean isEmpty() {
     return this.isEmpty;
-  }
-  
-  public void setEmpty(boolean empty) {
-    this.isEmpty = empty;
   }
 }

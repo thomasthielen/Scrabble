@@ -167,6 +167,8 @@ public class GameScreenController {
         }
       }
     }
+    
+    endGame.setVisible(false);
 
     // Fill the gameBoard with SquarePanes which are also held in squarePanes (!)
     System.out.println(gameBoard.getColumnConstraints());

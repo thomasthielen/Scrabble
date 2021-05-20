@@ -21,11 +21,11 @@ public class Tile implements Serializable {
   private boolean selected;
 
   /**
-   * Constructor: Creates a tile object with the given letter + value.
+   * Constructor to create a tile object with the given letter and value.
    *
    * @author tthielen
-   * @param letter
-   * @param value
+   * @param letter the letter of the tile
+   * @param value the value of the tile
    */
   public Tile(char letter, int value) {
     this.letter = letter;
@@ -33,40 +33,17 @@ public class Tile implements Serializable {
     wildcard = (letter == '*');
   }
 
+  /**
+   * Constructor to create a tile object by copying the properties of a given tile
+   *
+   * @author tthielen
+   * @param tile the tile from which the properties are meant to be copied
+   */
   public Tile(Tile tile) {
     this.letter = tile.getLetter();
     this.value = tile.getValue();
     this.wildcard = tile.isWildCard();
   }
-
-  /**
-   * Returns whether the given tile equals the tile it is called upon.
-   *
-   * @author Thomas
-   * @param Tile
-   * @return equals
-   */
-  // TODO: This method was commented out because it messed with the indexOf()-method.
-  // If, contrary to expectation, it is required, then I will have to get creative.
-  //
-  //  @Override
-  //  public boolean equals(Object obj) {
-  //    if (obj == null) {
-  //      return false;
-  //    }
-  //
-  //    if (obj.getClass() != this.getClass()) {
-  //      return false;
-  //    }
-  //
-  //    final Tile OTHER = (Tile) obj;
-  //
-  //    if (this.letter != OTHER.getLetter()) {
-  //      return false;
-  //    }
-  //
-  //    return true;
-  //  }
 
   /**
    * Resets the letter to '*' if the tile is a wildcard.
@@ -143,5 +120,9 @@ public class Tile implements Serializable {
 
   public void setSelected(boolean b) {
     selected = b;
+  }
+
+  public void setValue(int value) {
+    this.value = value;
   }
 }
