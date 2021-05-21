@@ -759,7 +759,7 @@ public class GameSession {
   /**
    * Method for what happens when the game successfully ends.
    *
-   * @author jluellig
+   * @author 
    */
   public void endGame() {
     System.out.println("endGame called");
@@ -767,6 +767,7 @@ public class GameSession {
     boolean hasWon = (players.get(players.size() - 1).equals(ownPlayer));
     DataHandler.addStatistics(DataHandler.getOwnPlayerId(), hasWon, ownPlayer.getScore());
     // TODO end game screen (statistiken des aktuellen spiels, ranking, end game, new game)
+    // TODO send end game message to all
   }
 
   private void kickPlayer() {
