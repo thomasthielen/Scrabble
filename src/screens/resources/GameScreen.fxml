@@ -530,5 +530,6 @@
             <Font size="14.0" />
          </font>
       </Button>
+      <TextArea fx:id="timerField" layoutX="10.0" layoutY="509.0" prefHeight="30.0" prefWidth="100.0" />
    </children>
 </Pane>
