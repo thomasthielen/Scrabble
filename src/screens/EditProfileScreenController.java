@@ -144,16 +144,6 @@ public class EditProfileScreenController {
     currentUsername = (String) profiles.get(id)[0];
     currentAvatar = Avatar.valueOf(profiles.get(id)[1]);
     nameField.setText(currentUsername);
-
-    buttonGroup = new ToggleGroup();
-    // TODO avatar
-    //    Avatar[] array = Avatar.values();
-    //    for (Avatar a : array) {
-    //      if (a.equals(currentAvatar)) {
-    //        ToggleButton tb = new ToggleButton();
-    //        tb.setSelected(true);
-    //      }
-    //    }
   }
 
   /**
@@ -209,6 +199,9 @@ public class EditProfileScreenController {
         ToggleButton tb = new ToggleButton("", new ImageView(img));
         tb.setUserData(array[counter]);
         tb.setToggleGroup(buttonGroup);
+        if (array[counter].equals(currentAvatar)) {
+          tb.setSelected(true);
+        }
         gridPane.add(tb, j, i);
         counter++;
       }
