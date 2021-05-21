@@ -1,6 +1,8 @@
 package network;
 
+import AI.AI;
 import data.DataHandler;
+import gameentities.Player;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -88,9 +90,27 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
                       Client.getGameSession().getBoard())));
         }
         break;
+      case DICTIONARY:
+        DictionaryMessage dm = (DictionaryMessage) msg;
+        Channel c = ctx.channel();
+        for (Channel channel : channels) {
+          if (channel != c) {
+            channel.writeAndFlush(dm);
+          }
+        }
+        DataHandler.botDictionaryFile(dm.getFile());
+        break;
+      case NOTIFY_AI:
+        NotifyAIMessage nam = (NotifyAIMessage) msg;
+        for (AI ai : Server.getAIPlayerList()) {
+          if (ai.getPlayer().equals(nam.getAIPlayer())) {
+            ai.makeMove();
+          }
+        }
+        break;
       case GAME_STATE:
-    	  GameStateMessage gsm = (GameStateMessage) msg;
-    	  Server.updateAI(gsm.getGameState());
+        GameStateMessage gsm = (GameStateMessage) msg;
+        Server.updateAI(gsm.getGameState());
       default:
         Channel in = ctx.channel();
         for (Channel channel : channels) {

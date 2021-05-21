@@ -8,9 +8,10 @@ package network.messages;
 public enum MessageType {
   CONNECT,
   DISCONNECT,
-  ERROR,
   START_GAME,
+  END_GAME,
   SEND_CHAT,
   GAME_STATE,
-  DICTIONARY;
+  DICTIONARY,
+  NOTIFY_AI;
 }

@@ -22,7 +22,6 @@ public class AI {
   private int turnValue;
   StringBuffer buffer;
   ArrayList<Tile> tiles;
-  private Player player;
 
   public AI(String username) {
     this.gameReference = new GameSession(new Player(username), false);

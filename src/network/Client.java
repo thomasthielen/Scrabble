@@ -92,9 +92,8 @@ public class Client {
     cf.channel().writeAndFlush(new SendChatMessage(p, chat));
   }
 
-  public static void reportError(Player p, String reason) {
-    // TODO
-    cf.channel().writeAndFlush(new ErrorMessage(p, reason));
+  public static void reportEndGame(Player p) {
+    cf.channel().writeAndFlush(new EndGameMessage(p));
   }
 
   public static void reportStartGame(Player p) {
@@ -107,6 +106,10 @@ public class Client {
 
   public static void updateGameState(Player p, GameState game) {
     cf.channel().writeAndFlush(new GameStateMessage(p, game));
+  }
+
+  public static void notifyAI(Player p, Player aiPlayer) {
+    cf.channel().writeAndFlush(new NotifyAIMessage(p, aiPlayer));
   }
 
   /**
@@ -130,7 +133,6 @@ public class Client {
   }
 
   /**
-   * 
    * @author tikrause
    * @param gameState
    */
@@ -139,7 +141,6 @@ public class Client {
   }
 
   /**
-   * 
    * @author tikrause
    * @return gameSession
    */

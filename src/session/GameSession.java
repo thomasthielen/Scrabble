@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import AI.AI;
 import data.DataHandler;
 import gameentities.*;
 import javafx.application.Platform;
@@ -655,13 +656,30 @@ public class GameSession {
     }
     if (multiPlayer) {
       sendGameStateMessage();
-    }
-    Server.updateAI(new GameState(this));
-    for (Player p : players) {
-      if (p.isCurrentlyPlaying()) {
-        Player playing = p;
-        if (playing.isAI()) {
-          // TODO AI makes move
+      for (Player p : players) {
+          if (p.isCurrentlyPlaying()) {
+            Player playing = p;
+            if (playing.isAI()) {
+              for (AI ai : Server.getAIPlayerList()) {
+                if (ai.getPlayer().equals(playing)) {
+                  Client.notifyAI(DataHandler.getOwnPlayer(), ai.getPlayer());
+                }
+              }
+            }
+          }
+        }
+    } else {
+      Server.updateAI(new GameState(this));
+      for (Player p : players) {
+        if (p.isCurrentlyPlaying()) {
+          Player playing = p;
+          if (playing.isAI()) {
+            for (AI ai : Server.getAIPlayerList()) {
+              if (ai.getPlayer().equals(playing)) {
+                ai.makeMove();
+              }
+            }
+          }
         }
       }
     }
@@ -759,7 +777,7 @@ public class GameSession {
   /**
    * Method for what happens when the game successfully ends.
    *
-   * @author 
+   * @author
    */
   public void endGame() {
     System.out.println("endGame called");
