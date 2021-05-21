@@ -22,7 +22,7 @@
       </Text>
       <TextField fx:id="nameField" layoutX="249.0" layoutY="147.0" onAction="#onEnter" prefHeight="42.0" prefWidth="322.0" />
       <Button layoutX="571.0" layoutY="148.0" mnemonicParsing="false" onAction="#submitChanges" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #f88c00;" text="SUBMIT CHANGES" textFill="WHITE" />
-      <Text fill="#f88c00" layoutX="197.0" layoutY="445.0" strokeType="OUTSIDE" strokeWidth="0.0" text="or you can delete your profile by clicking the button blelow">
+      <Text fill="#f88c00" layoutX="197.0" layoutY="445.0" strokeType="OUTSIDE" strokeWidth="0.0" text="or you can delete your profile by clicking the button below">
          <font>
             <Font size="24.0" />
          </font>
@@ -32,7 +32,7 @@
             <Font size="24.0" />
          </font>
       </Button>
-      <Text fill="#f88c00" layoutX="266.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="and select a Avatar from the selection below">
+      <Text fill="#f88c00" layoutX="266.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="and select an Avatar from the selection below">
          <font>
             <Font size="24.0" />
          </font>
