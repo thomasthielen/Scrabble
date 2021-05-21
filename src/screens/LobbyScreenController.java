@@ -78,15 +78,7 @@ public class LobbyScreenController {
           }
         }
       }
-    } else {
-      aiPlayerRectangle.setVisible(false);
-      dictionaryRectangle.setVisible(false);
-      startGameRectangle.setVisible(false);
-      uploadDictionaryRectangle.setVisible(false);
-      chatField.setEditable(false);
-      chatField.setMouseTransparent(true);
-      chatField.setFocusTraversable(false);
-    }
+    } 
   }
 
   /**
@@ -228,7 +220,23 @@ public class LobbyScreenController {
   }
 
   /**
-   * 
+   * this method opens the ChangeTilesScreen.
+   *
+   * @author jbleil
+   * @param event
+   */
+  @FXML
+  void editTiles(ActionEvent event) throws Exception {
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(getClass().getResource("resources/ChangeTilesScreen.fxml"));
+    Parent content = loader.load();
+    ChangeTilesScreenController changeTilesScreenController = loader.getController();
+    changeTilesScreenController.initialize();
+    StartScreen.getStage().setScene(new Scene(content));
+    StartScreen.getStage().show();
+  }
+
+  /**
    * @author tikrause
    * @param p
    * @param chat
@@ -237,7 +245,7 @@ public class LobbyScreenController {
     chatHistory.append(p.getUsername() + chat + "\n");
     chatField.setText(chatHistory.toString());
   }
-  
+
   /**
    * the method addIPAndPort displays the IP-Address and the Port of the current Lobby at the top of
    * the Lobby

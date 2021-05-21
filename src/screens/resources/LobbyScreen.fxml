@@ -15,66 +15,47 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Text>
-      <Text fill="#f88c00" layoutX="40.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1:">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Text>
-      <Text layoutX="43.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name, Record" />
-      <Text fill="#f88c00" layoutX="40.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2:">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Text>
-      <Text fill="#f88c00" layoutX="40.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3:">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Text>
-      <Text fill="#f88c00" layoutX="43.0" layoutY="310.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 4:">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Text>
-      <Text layoutX="40.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name, Record" />
-      <Text layoutX="40.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name, Record" />
-      <Text layoutX="40.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name, Record" />
-      <MenuButton fx:id="dictionarySelecter" layoutX="410.0" layoutY="203.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Dictionaries" textFill="WHITE">
+      <MenuButton fx:id="dictionarySelecter" layoutX="409.0" layoutY="142.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Dictionaries" textFill="WHITE">
       </MenuButton>
-      <Text fill="#f88c00" layoutX="305.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select a dictionary from the list below">
+      <Text fill="#f88c00" layoutX="305.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select a dictionary from the list below">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
-      <Text fill="#f88c00" layoutX="332.0" layoutY="310.0" strokeType="OUTSIDE" strokeWidth="0.0" text="or upload your own custom dictionary">
+      <Text fill="#f88c00" layoutX="331.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="or upload your own custom dictionary">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
-      <Button fx:id="fileForm" layoutX="410.0" layoutY="363.0" mnemonicParsing="false" onAction="#uploadDictionary" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Upload dictionary" textFill="WHITE" />
+      <Button fx:id="fileForm" layoutX="409.0" layoutY="257.0" mnemonicParsing="false" onAction="#uploadDictionary" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Upload dictionary" textFill="WHITE" />
       <Button layoutX="300.0" layoutY="473.0" mnemonicParsing="false" onAction="#startGame" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="START GAME" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
       <Button layoutX="863.0" layoutY="22.0" mnemonicParsing="false" onAction="#leaveLobby" style="-fx-background-color: #f88c00;" text="Leave Lobby" textFill="WHITE" />
-      <Button layoutX="40.0" layoutY="363.0" mnemonicParsing="false" onAction="#addAIPlayer" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #F88C00;" text="Add AI Player" textFill="WHITE" />
-      <Rectangle fx:id="dictionaryRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="40.0" layoutX="410.0" layoutY="203.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-opacity: 0;" width="180.0" />
-      <Rectangle fx:id="uploadDictionaryRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="40.0" layoutX="410.0" layoutY="363.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-opacity: 0;" width="180.0" />
-      <Rectangle fx:id="startGameRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="75.0" layoutX="300.0" layoutY="473.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-opacity: 0;" width="400.0" />
-      <Rectangle fx:id="aiPlayerRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="40.0" layoutX="40.0" layoutY="363.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-opacity: 0;" width="180.0" />
-      <Pane fx:id="chatPane" layoutX="746.0" layoutY="72.0" prefHeight="475.0" prefWidth="240.0" style="-fx-background-color: #FFFFFF;">
+      <Button layoutX="14.0" layoutY="507.0" mnemonicParsing="false" onAction="#addAIPlayer" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #F88C00;" text="Add AI Player" textFill="WHITE" />
+      <Pane layoutX="765.0" layoutY="72.0" prefHeight="475.0" prefWidth="221.0" style="-fx-background-color: #FFFFFF;">
          <children>
-            <TextArea fx:id="chatField" layoutX="8.0" layoutY="51.0" prefHeight="372.0" prefWidth="225.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e9e9e9" height="30.0" layoutX="8.0" layoutY="10.0" stroke="#707070" strokeType="INSIDE" width="225.0" />
-            <Text boundsType="VISUAL" fill="#707070" layoutX="95.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHAT" textAlignment="CENTER">
+            <TextArea fx:id="chatField" layoutX="8.0" layoutY="51.0" prefHeight="372.0" prefWidth="204.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e9e9e9" height="30.0" layoutX="8.0" layoutY="10.0" stroke="#707070" strokeType="INSIDE" width="204.0" />
+            <Text boundsType="VISUAL" fill="#707070" layoutX="85.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHAT" textAlignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>
             </Text>
-            <TextField fx:id="textField" layoutX="8.0" layoutY="430.0" prefHeight="40.0" prefWidth="150.0" />
-            <Button layoutX="166.0" layoutY="430.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="40.0" prefWidth="67.0" style="-fx-background-color: #F88C00;" text="Send" textFill="WHITE" />
+            <TextField fx:id="textField" layoutX="8.0" layoutY="430.0" prefHeight="40.0" prefWidth="140.0" />
+            <Button layoutX="154.0" layoutY="430.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="40.0" prefWidth="58.0" style="-fx-background-color: #F88C00;" text="Send" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
          </children>
       </Pane>
+      <Text fill="#f88c00" layoutX="239.0" layoutY="348.0" strokeType="OUTSIDE" strokeWidth="0.0" text="you can also edit the and the value of every Tile in the bag ">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Button layoutX="409.0" layoutY="376.0" mnemonicParsing="false" onAction="#editTiles" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Edit Tiles" textFill="WHITE" />
    </children>
 </Pane>
