@@ -506,9 +506,9 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <ScrollPane fx:id="playerStatisticsPane" layoutX="10.0" layoutY="255.0" prefHeight="240.0" prefWidth="240.0">
+      <ScrollPane fx:id="playerStatisticsScrollPane" layoutX="10.0" layoutY="255.0" prefHeight="240.0" prefWidth="240.0">
          <content>
-            <Pane prefHeight="240.0" prefWidth="240.0" style="-fx-background-color: #FFFFFF;">
+            <Pane fx:id="playerStatisticsPane" prefHeight="240.0" prefWidth="240.0" style="-fx-background-color: #FFFFFF;">
                <children>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e9e9e9" height="30.0" layoutX="10.0" layoutY="10.0" stroke="#707070" strokeType="INSIDE" width="180.0" />
                   <Text fill="#707070" layoutX="32.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player Statistics">

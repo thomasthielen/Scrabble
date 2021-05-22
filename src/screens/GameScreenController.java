@@ -1,11 +1,12 @@
 package screens;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import data.DataHandler;
+import data.StatisticKeys;
 import gameentities.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -57,7 +58,9 @@ public class GameScreenController {
   @FXML private Pane chatPane;
 
   /** playerStatisticsPane represents the Container for the Player Statistics */
-  @FXML private ScrollPane playerStatisticsPane;
+  @FXML private ScrollPane playerStatisticsScrollPane;
+  
+  @FXML private Pane playerStatisticsPane;
 
   /** rackPane represents the Container for the Tiles in the Rack */
   @FXML private FlowPane rackPane;
@@ -180,7 +183,7 @@ public class GameScreenController {
 
     // Set the openable windows to invisible
     chatPane.setVisible(false);
-    playerStatisticsPane.setVisible(false);
+    playerStatisticsScrollPane.setVisible(false);
     swapPane.setVisible(false);
     wildcardPane.setVisible(false);
 
@@ -190,6 +193,8 @@ public class GameScreenController {
     chatField.setFocusTraversable(false);
 
     chatButton.setVisible(gameSession.getMultiPlayer());
+    
+    setPlayerStatistics();
   }
 
   public void setRack(boolean isFirstTime) {
@@ -619,10 +624,10 @@ public class GameScreenController {
    */
   @FXML
   void playerStatistics(ActionEvent event) throws Exception {
-    if (playerStatisticsPane.isVisible()) {
-      playerStatisticsPane.setVisible(false);
+    if (playerStatisticsScrollPane.isVisible()) {
+      playerStatisticsScrollPane.setVisible(false);
     } else {
-      playerStatisticsPane.setVisible(true);
+      playerStatisticsScrollPane.setVisible(true);
     }
   }
 
@@ -636,7 +641,7 @@ public class GameScreenController {
    */
   @FXML
   void closePlayerStatistics(ActionEvent event) throws Exception {
-    playerStatisticsPane.setVisible(false);
+    playerStatisticsScrollPane.setVisible(false);
   }
 
   /**
@@ -1208,6 +1213,27 @@ public class GameScreenController {
       StartScreen.getStage().show();
     } catch (IOException e) {
       e.printStackTrace();
+    }
+  }
+  
+  public void setPlayerStatistics() {
+    ArrayList<Player> players = Client.getGameSession().getPlayerList();
+
+    for (int i = 0; i < players.size(); i++) {
+      Text name = new Text(players.get(i).getUsername() + " :\n");
+      name.setFont(new Font(20));
+      name.setFill(Paint.valueOf("#f88c00"));
+      HashMap<StatisticKeys, Integer> map = players.get(i).getPlayerStatistics();
+      Text statistics = new Text(
+              "Games won: "
+                  + map.get(StatisticKeys.WON)
+                  + "\nGames played: "
+                  + map.get(StatisticKeys.MATCHES)
+                  + "\nAverage Points: "
+                  + map.get(StatisticKeys.POINTSAVG) + "\n");
+      statistics.setFont(new Font(10));
+      playerStatisticsPane.getChildren().add(name);
+      playerStatisticsPane.getChildren().add(statistics);
     }
   }
 }
