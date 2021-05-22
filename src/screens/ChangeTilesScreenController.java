@@ -114,6 +114,7 @@ public class ChangeTilesScreenController {
       t.setCount(Integer.parseInt(countFields[counter].getText()));
       counter++;
     }
+    bag.refreshBag();
     Client.getGameSession().setBag(bag);
     Client.getGameSession().sendGameStateMessage();
     back(event);

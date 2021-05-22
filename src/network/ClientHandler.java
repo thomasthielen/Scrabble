@@ -68,12 +68,14 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         }
         break;
       case START_GAME:
-        Client.getGameSession().switchToGameScreen();
-        Client.getGameSession().setPlayable();
+        if (!Client.isHost()) {
+          Client.getGameSession().switchToGameScreen();
+          Client.getGameSession().setPlayable();
+        }
         break;
       case END_GAME:
-          // TODO
-          break;
+        // TODO
+        break;
       case SEND_CHAT:
         // TODO
         SendChatMessage scm = (SendChatMessage) msg;

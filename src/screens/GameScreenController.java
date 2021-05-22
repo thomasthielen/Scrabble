@@ -193,7 +193,6 @@ public class GameScreenController {
   }
 
   public void setRack(boolean isFirstTime) {
-    System.out.println("setRack called");
     rack.clear();
     letters.clear();
     numbers.clear();

@@ -185,6 +185,7 @@ public class LobbyScreenController {
   void startGame(ActionEvent event) throws Exception {
     if (Client.isHost()) {
       if (Server.getPlayerList().size() > 1) {
+        Client.getGameSession().setBag(Client.getGameSession().getBag());
         Client.getGameSession().setIsRunning(true);
         DataHandler.userDictionaryFile(chosenDictionary);
         Client.sendDictionary(DataHandler.getOwnPlayer(), chosenDictionary);
