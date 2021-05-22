@@ -16,8 +16,8 @@ public class ChangeTilesScreenController {
 
   @FXML private Pane backgroundPane;
 
-  TextField[] countFields = new TextField[26];
-  TextField[] valueFields = new TextField[26];
+  TextField[] countFields = new TextField[27];
+  TextField[] valueFields = new TextField[27];
 
   /**
    * this method gets the Letter of a Tile with the corresponding count and value from the Bag.
@@ -44,7 +44,7 @@ public class ChangeTilesScreenController {
     Text count3 = new Text("Count");
     count3.relocate(825, 90);
     backgroundPane.getChildren().add(count3);
-    Bag bag = new Bag();
+    Bag bag = Client.getGameSession().getBag();
     GridPane grid1 = new GridPane();
     grid1.setHgap(15);
     grid1.setVgap(10);
@@ -88,7 +88,7 @@ public class ChangeTilesScreenController {
         countFields[rowCounter] = countField;
         grid2.add(countField, 2, rowCounter - 9);
         rowCounter++;
-      } else if (rowCounter < 26) {
+      } else {
         grid3.add(new Text(t.getTile().getLetter() + " :"), 0, rowCounter - 18);
         TextField valueField = new TextField();
         valueField.setPrefWidth(80);
@@ -101,8 +101,6 @@ public class ChangeTilesScreenController {
         countFields[rowCounter] = countField;
         grid3.add(countField, 2, rowCounter - 18);
         rowCounter++;
-      } else {
-        break;
       }
     }
   }
@@ -114,9 +112,11 @@ public class ChangeTilesScreenController {
     for (TileContainer t : bag.getTileCounter()) {
       t.getTile().setValue(Integer.parseInt(valueFields[counter].getText()));
       t.setCount(Integer.parseInt(countFields[counter].getText()));
+      counter++;
     }
     Client.getGameSession().setBag(bag);
     Client.getGameSession().sendGameStateMessage();
+    back(event);
   }
 
   @FXML
@@ -124,8 +124,6 @@ public class ChangeTilesScreenController {
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("resources/LobbyScreen.fxml"));
     Parent content = loader.load();
-    LobbyScreenController lobbyScreenController = loader.getController();
-    // TODO
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }

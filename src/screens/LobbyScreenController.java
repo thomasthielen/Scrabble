@@ -97,6 +97,9 @@ public class LobbyScreenController {
       editTiles.setDisable(true);
       dictionarySelecter.setDisable(true);
     }
+    
+    refreshPlayerList();
+    setDictionaryMenu();
   }
 
   /**
@@ -270,8 +273,8 @@ public class LobbyScreenController {
    * @author jbleil
    */
   public void refreshPlayerList() {
-    ArrayList<Player> players = Client.getGameSession().getPlayerList();
-
+    ArrayList<Player> players = Client.getGameSession().getPlayerList(); 
+    
     for (int i = 0; i < players.size(); i++) {
       playerInfos.get(i).setText(players.get(i).getUsername());
       playerInfos.get(i).setVisible(true);
