@@ -52,8 +52,8 @@ public class ExistingProfileScreenController {
       int id = (int) buttonGroup.getSelectedToggle().getUserData();
       String username = (String) profiles.get(id)[0];
       Avatar avatar = Avatar.valueOf(profiles.get(id)[1]);
-      DataHandler.setOwnPlayer(new Player(username, avatar));
       DataHandler.setOwnPlayerId(id);
+      DataHandler.setOwnPlayer(new Player(username, avatar));
       StartScreen.getStage();
       FXMLLoader loader = new FXMLLoader();
       loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));

@@ -47,20 +47,6 @@ public class Player implements Serializable, Comparable<Player> {
 	  this.avatar = Avatar.values()[new Random().nextInt(Avatar.values().length)];
 	  this.isAI = true;
   }
-  
-  /**
-   * Overloaded constructor for foreign players with different statistics.
-   *
-   * @author jluellig
-   * @param username the username of the player
-   * @param avatar one of the avatar enums for the player
-   * @param playerStatistics the statistics of the player
-   */
-  public Player(String username, Avatar avatar, HashMap<StatisticKeys, Integer> playerStatistics) {
-    this.username = username;
-    this.avatar = avatar;
-    this.playerStatistics = playerStatistics;
-  }
 
   /**
    * Creates a rack for the player according to the given GameSession.
