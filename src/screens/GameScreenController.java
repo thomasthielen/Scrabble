@@ -88,7 +88,7 @@ public class GameScreenController {
   @FXML private Button endGame;
 
   @FXML private Button bagButton;
-  
+
   @FXML private TextArea timerField = new TextArea();
 
   private static ArrayList<Rectangle> rack = new ArrayList<Rectangle>();
@@ -692,12 +692,17 @@ public class GameScreenController {
    */
   @FXML
   void sendMessage(ActionEvent event) throws Exception {
-    if (Pattern.matches(".{1,140}", textField.getText().trim())) {
-      Client.sendChat(DataHandler.getOwnPlayer(), textField.getText().trim());
-      chatHistory.append(
-          DataHandler.getOwnPlayer().getUsername() + ": " + textField.getText().trim() + "\n");
+    String input = textField.getText().trim();
+    if (Pattern.matches(".{1,140}", input)) {
+      Client.sendChat(DataHandler.getOwnPlayer(), ": " + input);
+      chatHistory.append(DataHandler.getOwnPlayer().getUsername() + ": " + input + "\n");
       chatField.setText(chatHistory.toString());
       textField.clear();
+    } else if (input.isBlank()) {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("Message is empty.");
+      errorAlert.setContentText("The chat message has to contain at least one character.");
+      errorAlert.showAndWait();
     } else {
       Alert errorAlert = new Alert(AlertType.ERROR);
       errorAlert.setHeaderText("Message too long.");
@@ -707,12 +712,25 @@ public class GameScreenController {
   }
 
   /**
+   * This method serves as the Listener for the Enter-key in the chat text field. It serves as an
+   * alternative to the send message button.
+   *
+   * @param event ActionEvent when enter is pressed in the text field
+   * @throws Exception
+   * @author jluellig
+   */
+  @FXML
+  void onEnter(ActionEvent event) throws Exception {
+    sendMessage(event);
+  }
+  
+  /**
    * @author tikrause
    * @param p
    * @param chat
    */
   public void receivedMessage(Player p, String chat) {
-    chatHistory.append(p.getUsername() + ": " + chat + "\n");
+    chatHistory.append(p.getUsername() + chat + "\n");
     chatField.setText(chatHistory.toString());
   }
 

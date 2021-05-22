@@ -44,7 +44,7 @@
                   <Font size="20.0" />
                </font>
             </Text>
-            <TextField fx:id="textField" layoutX="8.0" layoutY="430.0" prefHeight="40.0" prefWidth="140.0" />
+            <TextField fx:id="textField" layoutX="8.0" layoutY="430.0" onAction="#onEnter" prefHeight="40.0" prefWidth="140.0" />
             <Button layoutX="154.0" layoutY="430.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="40.0" prefWidth="58.0" style="-fx-background-color: #F88C00;" text="Send" textFill="WHITE">
                <font>
                   <Font size="14.0" />

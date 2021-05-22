@@ -97,7 +97,7 @@ public class LobbyScreenController {
       editTiles.setDisable(true);
       dictionarySelecter.setDisable(true);
     }
-    
+
     refreshPlayerList();
     setDictionaryMenu();
   }
@@ -226,18 +226,35 @@ public class LobbyScreenController {
 
   @FXML
   void sendMessage(ActionEvent event) {
-    if (Pattern.matches(".{1,140}", textField.getText().trim())) {
-      Client.sendChat(DataHandler.getOwnPlayer(), ": " + textField.getText().trim());
-      chatHistory.append(
-          DataHandler.getOwnPlayer().getUsername() + ": " + textField.getText().trim() + "\n");
+    String input = textField.getText().trim();
+    if (Pattern.matches(".{1,140}", input)) {
+      Client.sendChat(DataHandler.getOwnPlayer(), ": " + input);
+      chatHistory.append(DataHandler.getOwnPlayer().getUsername() + ": " + input + "\n");
       chatField.setText(chatHistory.toString());
       textField.clear();
+    } else if (input.isBlank()) {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("Message is empty.");
+      errorAlert.setContentText("The chat message has to contain at least one character.");
+      errorAlert.showAndWait();
     } else {
       Alert errorAlert = new Alert(AlertType.ERROR);
       errorAlert.setHeaderText("Message too long.");
       errorAlert.setContentText("The maximum length of a chat message is 140 characters.");
       errorAlert.showAndWait();
     }
+  }
+
+  /**
+   * This method serves as the Listener for the Enter-key in the chat text field. It serves as an
+   * alternative to the send message button.
+   *
+   * @param event ActionEvent when enter is pressed in the text field
+   * @author jluellig
+   */
+  @FXML
+  void onEnter(ActionEvent event) {
+    sendMessage(event);
   }
 
   /**
@@ -273,8 +290,8 @@ public class LobbyScreenController {
    * @author jbleil
    */
   public void refreshPlayerList() {
-    ArrayList<Player> players = Client.getGameSession().getPlayerList(); 
-    
+    ArrayList<Player> players = Client.getGameSession().getPlayerList();
+
     for (int i = 0; i < players.size(); i++) {
       playerInfos.get(i).setText(players.get(i).getUsername());
       playerInfos.get(i).setVisible(true);

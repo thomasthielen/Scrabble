@@ -56,6 +56,8 @@ public class OnlineScreenController {
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("resources/ChooseServerScreen.fxml"));
     Parent content = loader.load();
+    ChooseServerScreenController chooseServerScreenController = loader.getController();
+    chooseServerScreenController.initializeTab();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }

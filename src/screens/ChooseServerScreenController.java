@@ -2,12 +2,15 @@ package screens;
 
 import data.DataHandler;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Alert.AlertType;
 import java.net.BindException;
 import java.net.ConnectException;
@@ -73,7 +76,7 @@ public class ChooseServerScreenController {
         portField.clear();
       }
     } catch (BindException | ConnectException e) {
-      // TODO dauert ewig und stürzt fast ab, bevor das AlertFenster erscheint
+      // TODO dauert ewig und stï¿½rzt fast ab, bevor das AlertFenster erscheint
       Alert errorAlert = new Alert(AlertType.ERROR);
       errorAlert.setHeaderText("Input not valid.");
       errorAlert.setContentText("There is no server running on the given IP address and port.");
@@ -107,6 +110,23 @@ public class ChooseServerScreenController {
   @FXML
   void onEnter2(ActionEvent event) throws Exception {
     joinGame(event);
+  }
+
+  /**
+   * Initializes the function for the first text field to switch to the second by pressing TAB.
+   *
+   * @author jluellig
+   */
+  protected void initializeTab() {
+    ipField.setOnKeyPressed(
+        new EventHandler<KeyEvent>() {
+          @Override
+          public void handle(KeyEvent ke) {
+            if (ke.getCode().equals(KeyCode.TAB)) {
+              portField.requestFocus();
+            }
+          }
+        });
   }
 
   /**
