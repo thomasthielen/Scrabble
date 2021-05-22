@@ -146,6 +146,7 @@ public class GameSession {
             });
       }
     }
+    lobbyScreenController.refreshPlayerList();
   }
 
   public void sendGameStateMessage() {

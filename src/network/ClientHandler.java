@@ -39,6 +39,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
           Client.getGameSession()
               .getLobbyScreenController()
               .receivedMessage(cm.getPlayer(), " has joined!");
+          Client.getGameSession().getLobbyScreenController().refreshPlayerList();
         }
         System.out.println(cm.getPlayer().getPlayerStatistics());
         break;
@@ -50,6 +51,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
             Client.getGameSession()
                 .getLobbyScreenController()
                 .receivedMessage(dcm.getPlayer(), " has left!");
+            Client.getGameSession().getLobbyScreenController().refreshPlayerList();
           } else {
             // TODO Host leaves when game is still running
           }
@@ -59,6 +61,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
             Client.getGameSession()
                 .getLobbyScreenController()
                 .receivedMessage(dcm.getPlayer(), " has left!");
+            Client.getGameSession().getLobbyScreenController().refreshPlayerList();
           } else {
             // TODO when player leaves and the game is still running
           }
