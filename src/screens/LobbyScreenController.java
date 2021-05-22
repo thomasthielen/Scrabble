@@ -186,7 +186,6 @@ public class LobbyScreenController {
     if (Client.isHost()) {
       if (Server.getPlayerList().size() > 1) {
         Client.getGameSession().setBag(Client.getGameSession().getBag());
-        Client.getGameSession().setIsRunning(true);
         DataHandler.userDictionaryFile(chosenDictionary);
         Client.sendDictionary(DataHandler.getOwnPlayer(), chosenDictionary);
         Client.getGameSession().getPlayer().setCurrentlyPlaying(true);
@@ -340,6 +339,8 @@ public class LobbyScreenController {
   }
 
   public void switchToGameScreen() {
+    Client.getGameSession().startTimer();
+    Client.getGameSession().setIsRunning(true);
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("resources/GameScreen.fxml"));
     Parent content;

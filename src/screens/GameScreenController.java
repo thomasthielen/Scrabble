@@ -1082,6 +1082,15 @@ public class GameScreenController {
   private void refreshBagCount() {
     bagButton.setText("BAG\n " + this.gameSession.getBag().getRemainingCount());
   }
+  
+  public void refreshTimerText(String text, int seconds) {
+    timerText.setText(text);
+    if (seconds <= 30) {
+      timerText.setFill(Color.RED);
+    } else {
+      timerText.setFill(Color.BLACK);
+    }
+  }
 
   public void setPlayable(boolean ownTurn) {
     if (!ownTurn) {

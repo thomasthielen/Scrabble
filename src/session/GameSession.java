@@ -71,16 +71,14 @@ public class GameSession {
     } else {
       ownPlayer.setCurrentlyPlaying(true);
     }
-
-    initialise();
   }
 
   /**
-   * Initialises the GameSession-Timers
+   * Initialises the GameSession-Timer.
    *
    * @author tthielen
    */
-  public void initialise() {
+  public void startTimer() {
     timer = new Timer();
     timer.scheduleAtFixedRate(
         new TimerTask() {
@@ -91,12 +89,35 @@ public class GameSession {
               if (seconds <= 0) {
                 kickPlayer();
               }
-              // System.out.println(printTime());
+              if (gameScreenController != null) { 
+                gameScreenController.refreshTimerText(printTime(), seconds);
+              }
             }
           }
         },
         1000,
         1000);
+  }
+  
+  private void resetTimer() {
+    this.seconds = 600;
+  }
+  
+  private String printTime() {
+    int minutes = this.seconds / 60;
+    int seconds = this.seconds % 60;
+    String minutesText, secondsText;
+    if (minutes == 10) {
+      minutesText = "" + minutes;
+    } else {
+      minutesText = "0" + minutes;
+    }
+    if (seconds < 10) {
+      secondsText = "0" + seconds;
+    } else {
+      secondsText = "" + seconds;
+    }
+    return minutesText + ":" + secondsText;
   }
 
   public void initialiseGameScreen() {
@@ -146,6 +167,7 @@ public class GameSession {
       }
     }
     lobbyScreenController.refreshPlayerList();
+    resetTimer();
   }
 
   public void setBag(Bag bag) {
@@ -159,6 +181,7 @@ public class GameSession {
     if (gameScreenController != null) {
       gameScreenController.setPlayable(ownPlayer.isCurrentlyPlaying());
     }
+    resetTimer();
   }
 
   public void setGameScreenController(GameScreenController gsc) {
@@ -807,23 +830,6 @@ public class GameSession {
           });
       timer.cancel();
     }
-  }
-
-  public String printTime() {
-    int minutes = this.seconds / 60;
-    int seconds = this.seconds % 60;
-    String minutesText, secondsText;
-    if (minutes == 10) {
-      minutesText = "" + minutes;
-    } else {
-      minutesText = "0" + minutes;
-    }
-    if (seconds < 10) {
-      secondsText = "0" + seconds;
-    } else {
-      secondsText = "" + seconds;
-    }
-    return minutesText + ":" + secondsText;
   }
 
   public void switchToGameScreen() {
