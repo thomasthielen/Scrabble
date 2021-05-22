@@ -100,6 +100,10 @@ public class LobbyScreenController {
 
     refreshPlayerList();
     setDictionaryMenu();
+
+    chatField.setEditable(false);
+    chatField.setMouseTransparent(true);
+    chatField.setFocusTraversable(false);
   }
 
   /**
