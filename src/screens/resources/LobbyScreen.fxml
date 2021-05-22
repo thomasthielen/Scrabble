@@ -57,5 +57,25 @@
          </font>
       </Text>
       <Button layoutX="409.0" layoutY="376.0" mnemonicParsing="false" onAction="#editTiles" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Edit Tiles" textFill="WHITE" />
+      <Text fx:id="playerInfo1" fill="#f88c00" layoutX="14.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text fx:id="playerInfo2" fill="#f88c00" layoutX="14.0" layoutY="310.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text fx:id="playerInfo3" fill="#f88c00" layoutX="14.0" layoutY="370.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text fx:id="playerInfo4" fill="#f88c00" layoutX="14.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 4">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
    </children>
 </Pane>
