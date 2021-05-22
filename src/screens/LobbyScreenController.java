@@ -3,10 +3,12 @@ package screens;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import AI.AI;
 import data.DataHandler;
+import data.StatisticKeys;
 import gameentities.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,11 +42,7 @@ import javafx.event.EventHandler;
  */
 public class LobbyScreenController {
 
-  @FXML private Button fileForm;
-
   @FXML private Pane lobbyPane;
-
-  @FXML private MenuButton dictionarySelecter;
 
   @FXML private Rectangle aiPlayerRectangle;
 
@@ -57,18 +55,25 @@ public class LobbyScreenController {
   @FXML private TextField textField;
 
   @FXML private TextArea chatField;
-  
+
   @FXML private Text playerInfo1;
   @FXML private Text playerInfo2;
   @FXML private Text playerInfo3;
   @FXML private Text playerInfo4;
-  
+
   @FXML private Text playerStatistic1;
   @FXML private Text playerStatistic2;
   @FXML private Text playerStatistic3;
   @FXML private Text playerStatistic4;
-  
+
+  @FXML private Button fileForm;
+  @FXML private Button addAIPlayer;
+  @FXML private Button startGame;
+  @FXML private Button editTiles;
+  @FXML private MenuButton dictionarySelecter;
+
   private ArrayList<Text> playerInfos = new ArrayList<Text>();
+  private ArrayList<Text> playerStatistics = new ArrayList<Text>();
 
   private File chosenDictionary;
   private StringBuffer chatHistory = new StringBuffer();
@@ -78,25 +83,20 @@ public class LobbyScreenController {
     playerInfos.add(playerInfo2);
     playerInfos.add(playerInfo3);
     playerInfos.add(playerInfo4);
-    
+
+    playerStatistics.add(playerStatistic1);
+    playerStatistics.add(playerStatistic2);
+    playerStatistics.add(playerStatistic3);
+    playerStatistics.add(playerStatistic4);
+
     Client.getGameSession().setLobbyScreenController(this);
     if (!Client.isHost()) {
-      for (Node node : lobbyPane.getChildren()) {
-        if (node instanceof Button) {
-          Button b = (Button) node;
-          if (b.getText().equals("START GAME")
-              || b.getText().equals("Upload dictionary")
-              || b.getText().equals("Add AI Player")) {
-            b.setDisable(true);
-          }
-        } else if (node instanceof MenuButton) {
-          MenuButton mb = (MenuButton) node;
-          if (mb.getText().equals("Dictionaries")) {
-            mb.setDisable(true);
-          }
-        }
-      }
-    } 
+      fileForm.setDisable(true);
+      addAIPlayer.setDisable(true);
+      startGame.setDisable(true);
+      editTiles.setDisable(true);
+      dictionarySelecter.setDisable(true);
+    }
   }
 
   /**
@@ -263,17 +263,34 @@ public class LobbyScreenController {
     chatHistory.append(p.getUsername() + chat + "\n");
     chatField.setText(chatHistory.toString());
   }
-  
+
+  /**
+   * this method is responsible for displaying the player names and statistics in the game lobby.
+   *
+   * @author jbleil
+   */
   public void refreshPlayerList() {
     ArrayList<Player> players = Client.getGameSession().getPlayerList();
-    
-    for(int i = 0; i < players.size(); i++) {
+
+    for (int i = 0; i < players.size(); i++) {
       playerInfos.get(i).setText(players.get(i).getUsername());
       playerInfos.get(i).setVisible(true);
+      HashMap<StatisticKeys, Integer> map = players.get(i).getPlayerStatistics();
+      playerStatistics
+          .get(i)
+          .setText(
+              "Games won: "
+                  + map.get(StatisticKeys.WON)
+                  + "\nGames played: "
+                  + map.get(StatisticKeys.MATCHES)
+                  + "\nAverage Points: "
+                  + map.get(StatisticKeys.POINTSAVG));
+      playerStatistics.get(i).setVisible(true);
     }
-    
-    for(int i = playerInfos.size() - 1; i > players.size() - 1; i--) {
+
+    for (int i = players.size(); i < playerInfos.size() && i < playerStatistics.size(); i++) {
       playerInfos.get(i).setVisible(false);
+      playerStatistics.get(i).setVisible(false);
     }
   }
 

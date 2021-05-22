@@ -28,13 +28,13 @@
          </font>
       </Text>
       <Button fx:id="fileForm" layoutX="409.0" layoutY="257.0" mnemonicParsing="false" onAction="#uploadDictionary" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Upload dictionary" textFill="WHITE" />
-      <Button layoutX="300.0" layoutY="473.0" mnemonicParsing="false" onAction="#startGame" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="START GAME" textFill="WHITE">
+      <Button fx:id="startGame" layoutX="300.0" layoutY="473.0" mnemonicParsing="false" onAction="#startGame" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="START GAME" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
-      <Button layoutX="863.0" layoutY="22.0" mnemonicParsing="false" onAction="#leaveLobby" style="-fx-background-color: #f88c00;" text="Leave Lobby" textFill="WHITE" />
-      <Button layoutX="14.0" layoutY="473.0" mnemonicParsing="false" onAction="#addAIPlayer" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #F88C00;" text="Add AI Player" textFill="WHITE" />
+      <Button layoutX="863.0" layoutY="22.0" mnemonicParsing="false" onAction="#leaveLobby" prefHeight="40.0" prefWidth="123.0" style="-fx-background-color: #f88c00;" text="Leave Lobby" textFill="WHITE" />
+      <Button fx:id="addAIPlayer" layoutX="14.0" layoutY="473.0" mnemonicParsing="false" onAction="#addAIPlayer" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #F88C00;" text="Add AI Player" textFill="WHITE" />
       <Pane layoutX="765.0" layoutY="72.0" prefHeight="475.0" prefWidth="221.0" style="-fx-background-color: #FFFFFF;">
          <children>
             <TextArea fx:id="chatField" layoutX="8.0" layoutY="51.0" prefHeight="372.0" prefWidth="204.0" />
@@ -56,7 +56,7 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <Button layoutX="409.0" layoutY="376.0" mnemonicParsing="false" onAction="#editTiles" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Edit Tiles" textFill="WHITE" />
+      <Button fx:id="editTiles" layoutX="409.0" layoutY="376.0" mnemonicParsing="false" onAction="#editTiles" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Edit Tiles" textFill="WHITE" />
       <Text fx:id="playerInfo1" fill="#f88c00" layoutX="14.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
          <font>
             <Font size="20.0" />
@@ -77,10 +77,10 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <Text fx:id="playerStatistic1" layoutX="14.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics 1" />
-      <Text fx:id="playerStatistic2" layoutX="14.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics 2" />
-      <Text fx:id="playerStatistic3" layoutX="14.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics 3" />
-      <Text fx:id="playerStatistic4" layoutX="14.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics 4" />
+      <Text fx:id="playerStatistic1" layoutX="14.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics 1" />
+      <Text fx:id="playerStatistic2" layoutX="14.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics 2" />
+      <Text fx:id="playerStatistic3" layoutX="14.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics 3" />
+      <Text fx:id="playerStatistic4" layoutX="14.0" layoutY="415.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics 4" />
       <Text fill="#f88c00" layoutX="14.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Players in Lobby:">
          <font>
             <Font size="22.0" />
