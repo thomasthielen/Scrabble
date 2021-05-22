@@ -2,6 +2,7 @@ package screens;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import AI.AI;
@@ -56,11 +57,28 @@ public class LobbyScreenController {
   @FXML private TextField textField;
 
   @FXML private TextArea chatField;
+  
+  @FXML private Text playerInfo1;
+  @FXML private Text playerInfo2;
+  @FXML private Text playerInfo3;
+  @FXML private Text playerInfo4;
+  
+  @FXML private Text playerStatistic1;
+  @FXML private Text playerStatistic2;
+  @FXML private Text playerStatistic3;
+  @FXML private Text playerStatistic4;
+  
+  private ArrayList<Text> playerInfos = new ArrayList<Text>();
 
   private File chosenDictionary;
   private StringBuffer chatHistory = new StringBuffer();
 
   public void initialize() throws Exception {
+    playerInfos.add(playerInfo1);
+    playerInfos.add(playerInfo2);
+    playerInfos.add(playerInfo3);
+    playerInfos.add(playerInfo4);
+    
     Client.getGameSession().setLobbyScreenController(this);
     if (!Client.isHost()) {
       for (Node node : lobbyPane.getChildren()) {
@@ -244,6 +262,19 @@ public class LobbyScreenController {
   public void receivedMessage(Player p, String chat) {
     chatHistory.append(p.getUsername() + chat + "\n");
     chatField.setText(chatHistory.toString());
+  }
+  
+  public void refreshPlayerList() {
+    ArrayList<Player> players = Client.getGameSession().getPlayerList();
+    
+    for(int i = 0; i < players.size(); i++) {
+      playerInfos.get(i).setText(players.get(i).getUsername());
+      playerInfos.get(i).setVisible(true);
+    }
+    
+    for(int i = playerInfos.size() - 1; i > players.size() - 1; i--) {
+      playerInfos.get(i).setVisible(false);
+    }
   }
 
   /**
