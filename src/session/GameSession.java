@@ -67,8 +67,7 @@ public class GameSession {
 
     if (multiPlayer) {
       ownPlayer.setCurrentlyPlaying(Client.isHost());
-      GameState overrideGameState = new GameState(this);
-      Client.updateGameState(ownPlayer, overrideGameState);
+      sendGameStateMessage();
     } else {
       ownPlayer.setCurrentlyPlaying(true);
     }
@@ -149,10 +148,17 @@ public class GameSession {
     lobbyScreenController.refreshPlayerList();
   }
 
+  public void setBag(Bag bag) {
+    this.bag = bag;
+    this.ownPlayer.getRack().synchroniseBag(this);
+  }
+
   public void sendGameStateMessage() {
     GameState overrideGameState = new GameState(this);
     Client.updateGameState(ownPlayer, overrideGameState);
-    gameScreenController.setPlayable(ownPlayer.isCurrentlyPlaying());
+    if (gameScreenController != null) {
+      gameScreenController.setPlayable(ownPlayer.isCurrentlyPlaying());
+    }
   }
 
   public void setGameScreenController(GameScreenController gsc) {
@@ -658,17 +664,17 @@ public class GameSession {
     if (multiPlayer) {
       sendGameStateMessage();
       for (Player p : players) {
-          if (p.isCurrentlyPlaying()) {
-            Player playing = p;
-            if (playing.isAI()) {
-              for (AI ai : Server.getAIPlayerList()) {
-                if (ai.getPlayer().equals(playing)) {
-                  Client.notifyAI(DataHandler.getOwnPlayer(), ai.getPlayer());
-                }
+        if (p.isCurrentlyPlaying()) {
+          Player playing = p;
+          if (playing.isAI()) {
+            for (AI ai : Server.getAIPlayerList()) {
+              if (ai.getPlayer().equals(playing)) {
+                Client.notifyAI(DataHandler.getOwnPlayer(), ai.getPlayer());
               }
             }
           }
         }
+      }
     } else {
       Server.updateAI(new GameState(this));
       for (Player p : players) {

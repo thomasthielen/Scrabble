@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import network.Client;
 
 public class ChangeTilesScreenController {
 
@@ -111,9 +112,11 @@ public class ChangeTilesScreenController {
     Bag bag = new Bag();
     int counter = 0;
     for (TileContainer t : bag.getTileCounter()) {
-      //t.getTile().setValue((char) countFields[counter].getText());
+      t.getTile().setValue(Integer.parseInt(valueFields[counter].getText()));
       t.setCount(Integer.parseInt(countFields[counter].getText()));
     }
+    Client.getGameSession().setBag(bag);
+    Client.getGameSession().sendGameStateMessage();
   }
 
   @FXML
