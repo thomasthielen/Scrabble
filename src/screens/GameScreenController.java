@@ -88,8 +88,8 @@ public class GameScreenController {
   @FXML private Button endGame;
 
   @FXML private Button bagButton;
-
-  @FXML private TextArea timerField = new TextArea();
+  
+  @FXML private Text timerText;
 
   private static ArrayList<Rectangle> rack = new ArrayList<Rectangle>();
 
