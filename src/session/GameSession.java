@@ -166,8 +166,10 @@ public class GameSession {
             });
       }
     }
-    lobbyScreenController.refreshPlayerList();
-    resetTimer();
+    if (!ownPlayer.isAI()) {
+      lobbyScreenController.refreshPlayerList();
+      resetTimer();
+    }
   }
 
   public void setBag(Bag bag) {

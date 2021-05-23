@@ -218,6 +218,7 @@ public class LobbyScreenController {
       try {
         AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1));
         Server.addAIPlayer(ai);
+        refreshPlayerList();
       } catch (TooManyPlayerException e) {
         Alert errorAlert = new Alert(AlertType.ERROR);
         errorAlert.setHeaderText("Too many players.");
@@ -299,17 +300,19 @@ public class LobbyScreenController {
     for (int i = 0; i < players.size(); i++) {
       playerInfos.get(i).setText(players.get(i).getUsername());
       playerInfos.get(i).setVisible(true);
-      HashMap<StatisticKeys, Integer> map = players.get(i).getPlayerStatistics();
-      playerStatistics
-          .get(i)
-          .setText(
-              "Games won: "
-                  + map.get(StatisticKeys.WON)
-                  + "\nGames played: "
-                  + map.get(StatisticKeys.MATCHES)
-                  + "\nAverage Points: "
-                  + map.get(StatisticKeys.POINTSAVG));
-      playerStatistics.get(i).setVisible(true);
+      if (!players.get(i).isAI()) {
+        HashMap<StatisticKeys, Integer> map = players.get(i).getPlayerStatistics();
+        playerStatistics
+            .get(i)
+            .setText(
+                "Games won: "
+                    + map.get(StatisticKeys.WON)
+                    + "\nGames played: "
+                    + map.get(StatisticKeys.MATCHES)
+                    + "\nAverage Points: "
+                    + map.get(StatisticKeys.POINTSAVG));
+        playerStatistics.get(i).setVisible(true);
+      }
     }
 
     for (int i = players.size(); i < playerInfos.size() && i < playerStatistics.size(); i++) {
