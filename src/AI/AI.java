@@ -1,5 +1,6 @@
 package AI;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -23,6 +24,9 @@ public class AI  {
   StringBuffer buffer;
   ArrayList<Tile> tiles;
   
+  private boolean dictionaryInitialized = false;   
+  private File dictionary;
+  
   /**
    * 
    * @param username
@@ -33,6 +37,10 @@ public class AI  {
   public AI(String username) {
 	    this.gameReference = new GameSession(new Player(username), false);
 	    this.tiles = this.gameReference.getPlayer().getRack().getTiles();
+	  }
+  
+  public void setDictionary(File f) {
+	    dictionary = f;
 	  }
 
   
@@ -227,10 +235,7 @@ public class AI  {
                     laengesuf.length,
                     this.gameReference.getBoard());
             this.gameReference.recallAll();
-            for (Square x : placedsquare) {
-              this.gameReference.placeTile(x.getX(), x.getY(), x.getTile());
-            }
-            if (placedsquare != null) {
+            if (placedsquare !=null) {
               if (gameReference.checkMove()) {
                 PossibleMove pm = new PossibleMove(placedsquare, gameReference.getTurnValue());
                 this.moves.add(pm);
@@ -614,11 +619,15 @@ public class AI  {
     }
   }
 
-  public void updateGamesession(GameState state) {
+  public void updateGameSession(GameState state) {
     this.gameReference.synchronise(state);
   }
 
   public void makeMove() {
+	  if (!dictionaryInitialized) {
+	      DataHandler.botDictionaryFile(dictionary);
+	      dictionaryInitialized = true;
+	    }
     ArrayList<Square> squares = this.getthebestmove();
     this.gameReference.recallAll();
     for (Square s : squares) {
