@@ -5,7 +5,9 @@ import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import network.messages.GameRunningException;
 import network.messages.GameStateMessage;
+import network.messages.TooFewPlayerMessage;
 import network.messages.TooManyPlayerException;
 import session.GameState;
 import session.SinglePlayerLobby;
@@ -54,7 +56,6 @@ public class Server {
   public static void createServer(int bindPort)
       throws UnknownHostException, BindException, InterruptedException {
     port = bindPort;
-    isRunning = true;
     ip = InetAddress.getLocalHost().getHostAddress();
     System.out.println(ip);
 
@@ -108,8 +109,8 @@ public class Server {
    * @author tikrause
    * @param b
    */
-  public static void setActive(boolean b) {
-    isRunning = b;
+  public static void setActive() {
+    isRunning = true;
   }
 
   /**
@@ -118,7 +119,10 @@ public class Server {
    * @author tikrause
    * @return isRunning
    */
-  public static boolean isActive() {
+  public static boolean isActive() throws GameRunningException {
+    if (isRunning) {
+      throw new GameRunningException();
+    }
     return isRunning;
   }
 
@@ -132,6 +136,9 @@ public class Server {
 
   public static void removePlayer(Player p) {
     players.remove(p);
+    if (players.size() < 2) {
+      channel.writeAndFlush(new TooFewPlayerMessage(DataHandler.getOwnPlayer()));
+    }
   }
 
   public static void addAIPlayer(AI ai) throws TooManyPlayerException {

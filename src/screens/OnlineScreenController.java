@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import network.Client;
 import network.Server;
+import network.messages.GameRunningException;
 import network.messages.TooManyPlayerException;
 
 /**
@@ -85,7 +86,7 @@ public class OnlineScreenController {
    *
    * @author tikrause
    */
-  void createMultiPlayerLobby() throws TooManyPlayerException {
+  void createMultiPlayerLobby() throws TooManyPlayerException, GameRunningException {
     int port = 8000;
     while (port < 65535) {
       try {

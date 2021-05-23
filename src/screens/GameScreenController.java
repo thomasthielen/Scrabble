@@ -59,7 +59,7 @@ public class GameScreenController {
 
   /** playerStatisticsPane represents the Container for the Player Statistics */
   @FXML private ScrollPane playerStatisticsScrollPane;
-  
+
   @FXML private Pane playerStatisticsPane;
 
   /** rackPane represents the Container for the Tiles in the Rack */
@@ -91,7 +91,7 @@ public class GameScreenController {
   @FXML private Button endGame;
 
   @FXML private Button bagButton;
-  
+
   @FXML private Text timerText;
 
   private static ArrayList<Rectangle> rack = new ArrayList<Rectangle>();
@@ -193,7 +193,7 @@ public class GameScreenController {
     chatField.setFocusTraversable(false);
 
     chatButton.setVisible(gameSession.getMultiPlayer());
-    
+
     setPlayerStatistics();
   }
 
@@ -727,7 +727,7 @@ public class GameScreenController {
   void onEnter(ActionEvent event) throws Exception {
     sendMessage(event);
   }
-  
+
   /**
    * @author tikrause
    * @param p
@@ -1087,7 +1087,7 @@ public class GameScreenController {
   private void refreshBagCount() {
     bagButton.setText("BAG\n " + this.gameSession.getBag().getRemainingCount());
   }
-  
+
   public void refreshTimerText(String text, int seconds) {
     timerText.setText(text);
     if (seconds <= 30) {
@@ -1203,6 +1203,11 @@ public class GameScreenController {
   }
 
   public void leave() {
+    try {
+      Client.disconnectClient(DataHandler.getOwnPlayer());
+    } catch (InterruptedException e1) {
+      e1.printStackTrace();
+    } 
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("resources/StartScreen.fxml"));
@@ -1215,7 +1220,7 @@ public class GameScreenController {
       e.printStackTrace();
     }
   }
-  
+
   public void setPlayerStatistics() {
     ArrayList<Player> players = Client.getGameSession().getPlayerList();
 
@@ -1223,17 +1228,29 @@ public class GameScreenController {
       Text name = new Text(players.get(i).getUsername() + " :\n");
       name.setFont(new Font(20));
       name.setFill(Paint.valueOf("#f88c00"));
-      HashMap<StatisticKeys, Integer> map = players.get(i).getPlayerStatistics();
-      Text statistics = new Text(
-              "Games won: "
-                  + map.get(StatisticKeys.WON)
-                  + "\nGames played: "
-                  + map.get(StatisticKeys.MATCHES)
-                  + "\nAverage Points: "
-                  + map.get(StatisticKeys.POINTSAVG) + "\n");
-      statistics.setFont(new Font(10));
       playerStatisticsPane.getChildren().add(name);
-      playerStatisticsPane.getChildren().add(statistics);
+      if (!players.get(i).isAI()) {
+        HashMap<StatisticKeys, Integer> map = players.get(i).getPlayerStatistics();
+        Text statistics =
+            new Text(
+                "Games won: "
+                    + map.get(StatisticKeys.WON)
+                    + "\nGames played: "
+                    + map.get(StatisticKeys.MATCHES)
+                    + "\nAverage Points: "
+                    + map.get(StatisticKeys.POINTSAVG)
+                    + "\n");
+        statistics.setFont(new Font(10));
+        playerStatisticsPane.getChildren().add(statistics);
+      }
     }
+  }
+  
+  public void tooFewPlayerAlert() {
+	  Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("Game has already started.");
+      errorAlert.setContentText(
+          "You can't join the server because the game has already started.");
+      errorAlert.showAndWait();
   }
 }

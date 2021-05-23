@@ -6,6 +6,8 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import network.messages.*;
 import screens.GameScreenController;
 import screens.SinglePlayerLobbyScreenController;
@@ -57,13 +59,17 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
           }
           Client.disconnectClient(DataHandler.getOwnPlayer());
         } else {
-          if (Client.getGameSession().getLobbyScreenController() != null) {
+          if (Client.getGameSession().getGameScreenController() != null) {
+            Client.getGameSession()
+                .getGameScreenController()
+                .receivedMessage(dcm.getPlayer(), " has left!");
+            // TODO player list in GScreen:
+            // Client.getGameSession().getGameScreenController().refreshPlayerList();
+          } else if (Client.getGameSession().getLobbyScreenController() != null) {
             Client.getGameSession()
                 .getLobbyScreenController()
                 .receivedMessage(dcm.getPlayer(), " has left!");
             Client.getGameSession().getLobbyScreenController().refreshPlayerList();
-          } else {
-            // TODO when player leaves and the game is still running
           }
         }
         break;
@@ -102,6 +108,9 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         DictionaryMessage dm = (DictionaryMessage) msg;
         DataHandler.userDictionaryFile(dm.getFile());
         break;
+      case TOO_FEW:
+    	  Client.getGameSession().getGameScreenController().tooFewPlayerAlert();
+    	  break;
       default:
         break;
     }

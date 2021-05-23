@@ -16,6 +16,7 @@ import java.net.BindException;
 import java.net.ConnectException;
 import java.util.regex.Pattern;
 import network.Client;
+import network.messages.GameRunningException;
 import network.messages.TooManyPlayerException;
 
 /**
@@ -52,9 +53,17 @@ public class ChooseServerScreenController {
             Parent content = loader.load();
             StartScreen.getStage().setScene(new Scene(content));
             StartScreen.getStage().show();
+//          } catch (GameRunningException gre) {
+//            Alert errorAlert = new Alert(AlertType.ERROR);
+//            errorAlert.setHeaderText("Game has already started.");
+//            errorAlert.setContentText(
+//                "You can't join the server because the game has already started.");
+//            errorAlert.showAndWait();
+//            ipField.clear();
+//            portField.clear();
           } catch (TooManyPlayerException te) {
             Alert errorAlert = new Alert(AlertType.ERROR);
-            errorAlert.setHeaderText("Too much players.");
+            errorAlert.setHeaderText("Too many players.");
             errorAlert.setContentText("There are already the maximum of 4 players in the game.");
             errorAlert.showAndWait();
           }

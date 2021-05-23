@@ -13,5 +13,6 @@ public enum MessageType {
   SEND_CHAT,
   GAME_STATE,
   DICTIONARY,
-  NOTIFY_AI;
+  NOTIFY_AI,
+  TOO_FEW;
 }

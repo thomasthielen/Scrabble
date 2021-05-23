@@ -23,7 +23,7 @@ public class NotifyAIMessage extends Message {
    * @param p player object that has sent the message
    */
   public NotifyAIMessage(Player p, Player aiPlayer) {
-    super(MessageType.CONNECT, p);
+    super(MessageType.NOTIFY_AI, p);
     this.aiPlayer = aiPlayer;
   }
   

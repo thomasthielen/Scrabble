@@ -58,13 +58,15 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
     switch (mt) {
       case CONNECT:
         ConnectMessage cm = (ConnectMessage) msg;
-        Server.addPlayer(cm.getPlayer());
-        Client.updateGameSession(new GameState(Server.getPlayerList()));
-        for (Channel channel : channels) {
-          channel.writeAndFlush(msg);
-          channel.writeAndFlush(
-              new GameStateMessage(
-                  DataHandler.getOwnPlayer(), new GameState(Server.getPlayerList())));
+        if (!Server.isActive()) {
+          Server.addPlayer(cm.getPlayer());
+          Client.updateGameSession(new GameState(Server.getPlayerList()));
+          for (Channel channel : channels) {
+            channel.writeAndFlush(msg);
+            channel.writeAndFlush(
+                new GameStateMessage(
+                    DataHandler.getOwnPlayer(), new GameState(Server.getPlayerList())));
+          }
         }
         break;
       case DISCONNECT:
@@ -98,7 +100,9 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
             channel.writeAndFlush(dm);
           }
         }
-        DataHandler.botDictionaryFile(dm.getFile());
+        for (AI ai : Server.getAIPlayerList()) {
+          ai.setDictionary(dm.getFile());
+        }
         break;
       case NOTIFY_AI:
         NotifyAIMessage nam = (NotifyAIMessage) msg;

@@ -166,7 +166,7 @@ public class GameSession {
             });
       }
     }
-    if (!ownPlayer.isAI()) {
+    if (!ownPlayer.isAI() && lobbyScreenController != null) {
       lobbyScreenController.refreshPlayerList();
       resetTimer();
     }

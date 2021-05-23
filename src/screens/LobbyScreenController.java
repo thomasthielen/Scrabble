@@ -190,6 +190,7 @@ public class LobbyScreenController {
         Client.sendDictionary(DataHandler.getOwnPlayer(), chosenDictionary);
         Client.getGameSession().getPlayer().setCurrentlyPlaying(true);
         Client.reportStartGame(DataHandler.getOwnPlayer());
+        Server.setActive();
         Client.getGameSession().initialiseGameScreen();
         switchToGameScreen();
       } else {
