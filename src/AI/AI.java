@@ -1,6 +1,5 @@
 package AI;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,17 +14,53 @@ import gameentities.Tile;
 import session.GameSession;
 import session.GameState;
 
-public class AI {
+public class AI extends Player {
+
   private ArrayList<PossibleMove> moves;
   private ArrayList<Word> words;
+  private String username;
+  private Avatar avatar;
   private GameSession gameReference;
   private int turnValue;
   StringBuffer buffer;
   ArrayList<Tile> tiles;
+  
+  /**
+   * 
+   * @param username
+   * @param avatar
+   * @param gameReference
+   */
 
-  public AI(String username) {
-    this.gameReference = new GameSession(new Player(username), false);
+  public AI(String username, Avatar avatar, GameSession gameReference) {
+    super(username, avatar);
+    this.username = username;
+    this.avatar = avatar;
+    this.gameReference = gameReference;
     this.tiles = this.gameReference.getPlayer().getRack().getTiles();
+  }
+
+  public void initializeGamesession(GameSession session) {
+    this.gameReference = session;
+  }
+  
+  public ArrayList<Square> getthefirstmove(){
+	  ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
+	  for (int i=0; i<this.tiles.size();i++) {
+		  for (int j=0;j<this.tiles.size();j++) {
+			  if(i!=j) {
+				  list.add(new ArrayList<String>());
+				  list.get(i).add(String.valueOf(this.tiles.get(i)));
+				  list.get(i).add(String.valueOf(this.tiles.get(j)));
+			  }
+		  }
+		  
+	  }
+	  for (int i=0;i<list.size();i++) {
+		  
+	  }
+	  return null;
+	  
   }
 
   public ArrayList<Square> getthebestmove() {
@@ -106,6 +141,15 @@ public class AI {
             + gameReference.getBag().getRemainingCount()
             + " tiles remaining in the bag.");
   }
+  /**
+   * Initializes a complete list of all possible moves 
+   * that can be placed on the board with the given 
+   * tiles in the bag to the words that are already lying on 
+   * the board
+   *
+   * @author sisselha
+   * @param swapTiles
+   */
 
   public void setbestmoves() {
     this.moves = new ArrayList<PossibleMove>();
@@ -204,6 +248,12 @@ public class AI {
       }
     }
   }
+  /**
+   * copies an arraylist and returns it
+   *
+   * @author sisselha
+   * @param swapTiles
+   */
 
   public ArrayList<Tile> copytiles(ArrayList<Tile> list) {
     ArrayList<Tile> tile = new ArrayList<Tile>();
@@ -212,6 +262,12 @@ public class AI {
     }
     return tile;
   }
+  /**
+   * Checks if the prefix or suffix of the word to be created fits the field 
+   *
+   * @author sisselha
+   * @param swapTiles
+   */
 
   public boolean checkabove(int pre, Word wort, Board board) {
     if ((wort.getBeginningY() + pre) > 15) {
@@ -244,6 +300,12 @@ public class AI {
       return true;
     }
   }
+  /**
+   * Converts a string into a String ArrayList
+   *
+   * @author sisselha
+   * @param swapTiles
+   */
 
   public ArrayList<String> dividestring(String s) {
     char[] feld1 = s.toCharArray();
@@ -253,6 +315,12 @@ public class AI {
     }
     return buchstaben;
   }
+  /**
+   * Converts a string into a String ArrayList
+   *
+   * @author sisselha
+   * @param swapTiles
+   */
 
   public ArrayList<String> prefixplussuffix(String pre, String suf) {
     char[] feld1 = pre.toCharArray();
@@ -553,7 +621,7 @@ public class AI {
     }
   }
 
-  public void updateGameSession(GameState state) {
+  public void updateGamesession(GameState state) {
     this.gameReference.synchronise(state);
   }
 
@@ -569,8 +637,5 @@ public class AI {
   public ArrayList<Word> getwords() {
     return this.words;
   }
-
-  public Player getPlayer() {
-    return gameReference.getPlayer();
-  }
 }
+
