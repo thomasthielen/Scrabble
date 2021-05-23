@@ -3,6 +3,7 @@ package network;
 import data.DataHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -43,21 +44,31 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
               .receivedMessage(cm.getPlayer(), " has joined!");
           Client.getGameSession().getLobbyScreenController().refreshPlayerList();
         }
-        System.out.println(cm.getPlayer().getPlayerStatistics());
         break;
       case DISCONNECT:
         // TODO
         DisconnectMessage dcm = (DisconnectMessage) msg;
         if (dcm.isHost()) {
-          if (Client.getGameSession().getLobbyScreenController() != null) {
+          if (Client.getGameSession().getGameScreenController() != null) {
+            if (Client.isHost()) {
+              System.out.println("springt hier rein");
+              Server.serverShutdown();
+            }
+            Platform.runLater(
+                new Runnable() {
+                  @Override
+                  public void run() {
+                    System.out.println("passiert");
+                    Client.getGameSession().getGameScreenController().hostHasLeft();
+                  }
+                });
+          } else if (Client.getGameSession().getLobbyScreenController() != null) {
             Client.getGameSession()
                 .getLobbyScreenController()
                 .receivedMessage(dcm.getPlayer(), " has left!");
             Client.getGameSession().getLobbyScreenController().refreshPlayerList();
-          } else {
-            // TODO Host leaves when game is still running
           }
-          Client.disconnectClient(DataHandler.getOwnPlayer());
+          // Client.disconnectClient(DataHandler.getOwnPlayer());
         } else {
           if (Client.getGameSession().getGameScreenController() != null) {
             Client.getGameSession()
@@ -109,8 +120,22 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         DataHandler.userDictionaryFile(dm.getFile());
         break;
       case TOO_FEW:
-    	  Client.getGameSession().getGameScreenController().tooFewPlayerAlert();
-    	  break;
+        if (Client.isHost()) {
+          if (Client.getGameSession().getGameScreenController() != null) {
+            Client.disconnectClient(DataHandler.getOwnPlayer());
+            if (Server.isActive()) {
+              Server.serverShutdown();
+            }
+            Platform.runLater(
+                new Runnable() {
+                  @Override
+                  public void run() {
+                    Client.getGameSession().getGameScreenController().tooFewPlayerAlert();
+                  }
+                });
+          }
+        }
+        break;
       default:
         break;
     }

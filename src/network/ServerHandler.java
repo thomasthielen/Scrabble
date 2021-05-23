@@ -69,6 +69,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
           }
         }
         break;
+
       case DISCONNECT:
         DisconnectMessage dcm = (DisconnectMessage) msg;
         Server.removePlayer(dcm.getPlayer());
@@ -79,7 +80,11 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
               new GameStateMessage(
                   DataHandler.getOwnPlayer(), new GameState(Server.getPlayerList())));
         }
+        if (dcm.isHost()) {
+          // Server.serverShutdown();
+        }
         break;
+
       case START_GAME:
         for (Channel channel : channels) {
           channel.writeAndFlush(msg);
@@ -92,6 +97,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
                       Client.getGameSession().getBoard())));
         }
         break;
+
       case DICTIONARY:
         DictionaryMessage dm = (DictionaryMessage) msg;
         Channel c = ctx.channel();
@@ -104,6 +110,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
           ai.setDictionary(dm.getFile());
         }
         break;
+
       case NOTIFY_AI:
         NotifyAIMessage nam = (NotifyAIMessage) msg;
         for (AI ai : Server.getAIPlayerList()) {
@@ -112,9 +119,11 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
           }
         }
         break;
+
       case GAME_STATE:
         GameStateMessage gsm = (GameStateMessage) msg;
         Server.updateAI(gsm.getGameState());
+
       default:
         Channel in = ctx.channel();
         for (Channel channel : channels) {
@@ -123,6 +132,12 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
           }
         }
         break;
+    }
+  }
+
+  protected static void informTooFew() {
+    for (Channel c : channels) {
+      c.writeAndFlush(new TooFewPlayerMessage(DataHandler.getOwnPlayer()));
     }
   }
 }

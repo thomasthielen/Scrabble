@@ -683,6 +683,11 @@ public class GameScreenController {
    */
   @FXML
   void leaveGame(ActionEvent event) throws Exception {
+    try {
+      Client.disconnectClient(DataHandler.getOwnPlayer());
+    } catch (InterruptedException e1) {
+      e1.printStackTrace();
+    }
     leave();
   }
 
@@ -1203,11 +1208,6 @@ public class GameScreenController {
   }
 
   public void leave() {
-    try {
-      Client.disconnectClient(DataHandler.getOwnPlayer());
-    } catch (InterruptedException e1) {
-      e1.printStackTrace();
-    } 
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("resources/StartScreen.fxml"));
@@ -1245,12 +1245,22 @@ public class GameScreenController {
       }
     }
   }
-  
+
   public void tooFewPlayerAlert() {
-	  Alert errorAlert = new Alert(AlertType.ERROR);
-      errorAlert.setHeaderText("Game has already started.");
-      errorAlert.setContentText(
-          "You can't join the server because the game has already started.");
-      errorAlert.showAndWait();
+    Alert errorAlert = new Alert(AlertType.ERROR);
+    errorAlert.setHeaderText("Too few players.");
+    errorAlert.setContentText(
+        "You can't play any longer because you are the only player left in the game session.");
+    errorAlert.showAndWait();
+    leave();
+  }
+
+  public void hostHasLeft() {
+    Alert errorAlert = new Alert(AlertType.ERROR);
+    errorAlert.setHeaderText("The host has left.");
+    errorAlert.setContentText(
+        "The host has left the game and therefore you have been disconnected from the server.");
+    errorAlert.showAndWait();
+    leave();
   }
 }

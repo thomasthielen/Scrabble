@@ -74,6 +74,7 @@ public class Server {
   }
 
   public static void serverShutdown() throws InterruptedException {
+    isRunning = false;
     resetPlayerList();
     channel.close().sync();
     bossGroup.shutdownGracefully();
@@ -137,7 +138,7 @@ public class Server {
   public static void removePlayer(Player p) {
     players.remove(p);
     if (players.size() < 2) {
-      channel.writeAndFlush(new TooFewPlayerMessage(DataHandler.getOwnPlayer()));
+      ServerHandler.informTooFew();
     }
   }
 
