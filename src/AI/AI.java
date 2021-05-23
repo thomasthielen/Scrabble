@@ -14,12 +14,10 @@ import gameentities.Tile;
 import session.GameSession;
 import session.GameState;
 
-public class AI extends Player {
+public class AI  {
 
   private ArrayList<PossibleMove> moves;
   private ArrayList<Word> words;
-  private String username;
-  private Avatar avatar;
   private GameSession gameReference;
   private int turnValue;
   StringBuffer buffer;
@@ -32,17 +30,12 @@ public class AI extends Player {
    * @param gameReference
    */
 
-  public AI(String username, Avatar avatar, GameSession gameReference) {
-    super(username, avatar);
-    this.username = username;
-    this.avatar = avatar;
-    this.gameReference = gameReference;
-    this.tiles = this.gameReference.getPlayer().getRack().getTiles();
-  }
+  public AI(String username) {
+	    this.gameReference = new GameSession(new Player(username), false);
+	    this.tiles = this.gameReference.getPlayer().getRack().getTiles();
+	  }
 
-  public void initializeGamesession(GameSession session) {
-    this.gameReference = session;
-  }
+  
   
   public ArrayList<Square> getthefirstmove(){
 	  ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
@@ -637,5 +630,8 @@ public class AI extends Player {
   public ArrayList<Word> getwords() {
     return this.words;
   }
+  public Player getPlayer() {
+	    return gameReference.getPlayer();
+	  }
 }
 
