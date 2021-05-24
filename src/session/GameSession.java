@@ -67,7 +67,7 @@ public class GameSession {
 
     if (multiPlayer) {
       ownPlayer.setCurrentlyPlaying(Client.isHost());
-      sendGameStateMessage();
+      sendGameStateMessage(true);
     } else {
       ownPlayer.setCurrentlyPlaying(true);
     }
@@ -121,7 +121,6 @@ public class GameSession {
   }
 
   /**
-   * 
    * @author tikrause
    * @param chat
    */
@@ -136,10 +135,7 @@ public class GameSession {
         });
   }
 
-  /**
-   * 
-   * @author tikrause
-   */
+  /** @author tikrause */
   public void initialiseSinglePlayerGameScreen() {
     Platform.runLater(
         new Runnable() {
@@ -156,35 +152,36 @@ public class GameSession {
    * @author tikrause
    */
   public void synchronise(GameState overrideGameState) {
-    // If the own turn is over: Create a GameState object and send it
-    this.seconds = RESET;
-    this.players = overrideGameState.getPlayers();
-    for (Player p : this.players) {
-      if (p.equals(ownPlayer)) {
-        ownPlayer = p;
+    if (!overrideGameState.isConnectGameState() || !isRunning) {
+      this.seconds = RESET;
+      this.players = overrideGameState.getPlayers();
+      for (Player p : this.players) {
+        if (p.equals(ownPlayer)) {
+          ownPlayer = p;
+        }
       }
-    }
-    if (!overrideGameState.isPlayersOnly() && gscInitialized) {
-      setPlayable();
-    }
-    if (!overrideGameState.isPlayersOnly() && overrideGameState.getBag() != null) {
-      this.bag = overrideGameState.getBag();
-      this.ownPlayer.getRack().synchroniseBag(this);
-      this.board = overrideGameState.getBoard();
-      this.successiveScorelessTurns = overrideGameState.getSuccessiveScorelessTurns();
-      if (gameScreenController != null) {
-        Platform.runLater(
-            new Runnable() {
-              @Override
-              public void run() {
-                gameScreenController.loadPlacedTiles();
-              }
-            });
+      if (!overrideGameState.isPlayersOnly() && gscInitialized) {
+        setPlayable();
       }
-    }
-    if (!ownPlayer.isAI() && lobbyScreenController != null) {
-      lobbyScreenController.refreshPlayerList();
-      resetTimer();
+      if (!overrideGameState.isPlayersOnly() && overrideGameState.getBag() != null) {
+        this.bag = overrideGameState.getBag();
+        this.ownPlayer.getRack().synchroniseBag(this);
+        this.board = overrideGameState.getBoard();
+        this.successiveScorelessTurns = overrideGameState.getSuccessiveScorelessTurns();
+        if (gameScreenController != null) {
+          Platform.runLater(
+              new Runnable() {
+                @Override
+                public void run() {
+                  gameScreenController.loadPlacedTiles();
+                }
+              });
+        }
+      }
+      if (!ownPlayer.isAI() && lobbyScreenController != null) {
+        lobbyScreenController.refreshPlayerList();
+        resetTimer();
+      }
     }
   }
 
@@ -195,6 +192,15 @@ public class GameSession {
 
   public void sendGameStateMessage() {
     GameState overrideGameState = new GameState(this);
+    Client.updateGameState(ownPlayer, overrideGameState);
+    if (gameScreenController != null) {
+      gameScreenController.setPlayable(ownPlayer.isCurrentlyPlaying());
+    }
+    resetTimer();
+  }
+
+  public void sendGameStateMessage(boolean connectMessage) {
+    GameState overrideGameState = new GameState(this, connectMessage);
     Client.updateGameState(ownPlayer, overrideGameState);
     if (gameScreenController != null) {
       gameScreenController.setPlayable(ownPlayer.isCurrentlyPlaying());

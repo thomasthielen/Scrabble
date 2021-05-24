@@ -22,6 +22,7 @@ public class GameState implements Serializable {
   private Board board;
   private int successiveScorelessTurns;
   private boolean playersOnly;
+  private boolean connectGameState = false;
 
   /**
    * Constructor: Creates a GameState object by saving all relevant attributes within.
@@ -59,6 +60,15 @@ public class GameState implements Serializable {
     this.playersOnly = false;
   }
   
+  public GameState(GameSession gameSession, boolean connectGameState) {
+    this.players = gameSession.getPlayerList();
+    this.bag = gameSession.getBag();
+    this.board = gameSession.getBoard();
+    this.successiveScorelessTurns = gameSession.getSuccessiveScorelessTurns();
+    this.playersOnly = false;
+    this.connectGameState = connectGameState;
+  }
+  
   public void addPlayer(Player player) {
     this.players.add(player);
   }
@@ -91,6 +101,10 @@ public class GameState implements Serializable {
    */
   public Board getBoard() {
     return this.board;
+  }
+  
+  public boolean isConnectGameState() {
+    return this.connectGameState;
   }
   
   public boolean isPlayersOnly() {
