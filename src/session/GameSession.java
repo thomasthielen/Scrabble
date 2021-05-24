@@ -86,7 +86,7 @@ public class GameSession {
           public void run() {
             if (isRunning) {
               seconds--;
-              if (seconds <= 0) {
+              if (seconds == 0) {
                 kickPlayer();
               }
               if (gameScreenController != null) {
@@ -99,8 +99,14 @@ public class GameSession {
         1000);
   }
 
+  public void cancelTimer() {
+	  if (timer != null) {
+		  timer.cancel();
+	  }
+  }
+  
   private void resetTimer() {
-    this.seconds = 600;
+    this.seconds = RESET;
   }
 
   private String printTime() {
@@ -849,7 +855,7 @@ public class GameSession {
           new Runnable() {
             @Override
             public void run() {
-              gameScreenController.leave();
+              gameScreenController.leaveGameCall();
             }
           });
       timer.cancel();

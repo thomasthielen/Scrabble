@@ -141,6 +141,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
       case TOO_FEW:
         if (Client.isHost()) {
           if (Client.getGameSession().getGameScreenController() != null) {
+        	  Client.getGameSession().cancelTimer();
             Client.disconnectClient(DataHandler.getOwnPlayer());
             if (Server.isActive()) {
               Server.serverShutdown();

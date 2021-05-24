@@ -690,12 +690,20 @@ public class GameScreenController {
     try {
       Client.disconnectClient(DataHandler.getOwnPlayer());
       if (Client.isHost()) {
-    	  Server.serverShutdown();
+        Server.serverShutdown();
       }
     } catch (InterruptedException e1) {
       e1.printStackTrace();
     }
     leave();
+  }
+
+  public void leaveGameCall() {
+    try {
+      leaveGame(new ActionEvent());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -1228,7 +1236,11 @@ public class GameScreenController {
     FXMLLoader loader = new FXMLLoader();
     Parent content;
     try {
-      content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/StartScreen.fxml"));
+      content =
+          loader.load(
+              getClass()
+                  .getClassLoader()
+                  .getResourceAsStream("screens/resources/StartScreen.fxml"));
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
     } catch (IOException e) {
