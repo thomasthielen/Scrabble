@@ -130,11 +130,15 @@ public class Rack implements Serializable {
   
   // Doesn't consider exact position of tiles
   public void playTileAI(Tile tile) {
+	  Tile removeTile = null;
     for (Tile t : tiles) {
       if (t.getLetter() == tile.getLetter()) {
-        tiles.remove(t);
+        removeTile = t;
+        break;
+        
       }
     }
+    tiles.remove(removeTile);
   }
   
   
