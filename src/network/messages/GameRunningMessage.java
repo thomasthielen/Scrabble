@@ -3,25 +3,22 @@ package network.messages;
 import gameentities.Player;
 
 /**
- * Implementation of the success message. A SuccessMessage is created to send a message that
- * something succeeded as it should
+ * Implementation of the GameRunningMessage. A GameRunningMessage is created to inform a player that
+ * wants to join the server that the game has already started and the player gets rejected.
  *
- * @author lsteltma
+ * @author tikrause
  */
 public class GameRunningMessage extends Message {
 
-  /**
-   * Default serialization UID
-   *
-   * @author lsteltma
-   */
+  // Default serialization UID
   private static final long serialVersionUID = 1L;
 
   /**
-   * Constructor: creating a SuccessMessage with the MessageType.SUCCESS and the name of the creator
+   * Constructor: creating a GameRunningMessage with the MessageType.GAME_RUNNING and the player
+   * object that tries to join the server.
    *
-   * @author lsteltma
-   * @param name
+   * @author tikrause
+   * @param p player object of the creator
    */
   public GameRunningMessage(Player p) {
     super(MessageType.GAME_RUNNING, p);

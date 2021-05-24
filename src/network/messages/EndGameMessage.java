@@ -18,7 +18,7 @@ public class EndGameMessage extends Message {
    * EndGameMessage is created with the name of the creator.
    *
    * @author tikrause
-   * @param player
+   * @param player that has ended the game and therefore has sent the EndGameMessage
    */
   public EndGameMessage(Player p) {
     super(MessageType.END_GAME, p);

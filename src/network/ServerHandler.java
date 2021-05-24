@@ -2,14 +2,21 @@ package network;
 
 import AI.AI;
 import data.DataHandler;
-import gameentities.Player;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
-import network.messages.*;
+import network.messages.ConnectMessage;
+import network.messages.DictionaryMessage;
+import network.messages.DisconnectMessage;
+import network.messages.GameRunningMessage;
+import network.messages.GameStateMessage;
+import network.messages.Message;
+import network.messages.MessageType;
+import network.messages.NotifyAIMessage;
+import network.messages.TooFewPlayerMessage;
 import session.GameState;
 
 /**
@@ -49,8 +56,8 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
    * specifies and handles all received messages.
    *
    * @author tikrause
-   * @param ctx
-   * @param msg
+   * @param ctx channel from which the message has been received
+   * @param msg message that has been received
    */
   @Override
   protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
@@ -141,6 +148,12 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
     }
   }
 
+  /**
+   * Informs the remaining client that the other players have left and that the game can't continue
+   * because there are not enough players remaining.
+   *
+   * @author tikrause
+   */
   protected static void informTooFew() {
     for (Channel c : channels) {
       c.writeAndFlush(new TooFewPlayerMessage(DataHandler.getOwnPlayer()));

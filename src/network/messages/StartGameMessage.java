@@ -3,33 +3,35 @@ package network.messages;
 import gameentities.Player;
 
 /**
- * Implementation of the success message. A SuccessMessage is created to send a message that
- * something succeeded as it should
+ * Implementation of the StartGameMessage. A StartGameMessage is created when the host starts the game and the other players should be informed.
  *
- * @author lsteltma
+ * @author tikrause
  */
 public class StartGameMessage extends Message {
 
-  /**
-   * Default serialization UID
-   *
-   * @author lsteltma
-   */
+  // Default serialization UID
   private static final long serialVersionUID = 1L;
 
   private String chat;
 
   /**
-   * Constructor: creating a SuccessMessage with the MessageType.SUCCESS and the name of the creator
+   * Constructor: creating a StartGameMessage with the MessageType.START_GAME, the name of the creator and the lobby chat that should be taken over into the game screen.
    *
-   * @author lsteltma
-   * @param name
+   * @author tikrause
+   * @param p player object of the creator
+   * @param chat chat history from the lobby screen
    */
   public StartGameMessage(Player p, String chat) {
     super(MessageType.START_GAME, p);
     this.chat = chat;
   }
 
+  /**
+   * getter method for the chat history that should be taken over from the lobby screen into the game screen.
+   * 
+   * @author tikrause
+   * @return chat history
+   */
   public String getChat() {
     return chat;
   }

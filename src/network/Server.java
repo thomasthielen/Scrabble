@@ -86,7 +86,7 @@ public class Server {
    * getter method for the port number on which the server is running.
    *
    * @author tikrause
-   * @return port port number on which the server waits for connections
+   * @return port number on which the server waits for connections
    */
   public static int getPort() {
     return port;
@@ -103,25 +103,32 @@ public class Server {
   }
 
   /**
-   * setter method for the flag that shows whether the server is running
+   * setter method for the flag that shows that the game has already started.
    *
    * @author tikrause
-   * @param b
    */
   public static void setActive() {
     isRunning = true;
   }
 
   /**
-   * getter method for the current status of the run flag
+   * getter method if the game on the server is already running.
    *
    * @author tikrause
-   * @return isRunning
+   * @return isRunning flag that the game has started
    */
   public static boolean isActive() {
     return isRunning;
   }
 
+  /**
+   * Checks if the maximum of 4 players are already in the game session. If not, it adds the player
+   * to the player list. If yes, it throws a TooManyPlayerException.
+   *
+   * @author tikrause
+   * @param p player instance that should be added to the player list
+   * @throws TooManyPlayerException
+   */
   public static void addPlayer(Player p) throws TooManyPlayerException {
     if (players.size() >= 4) {
       throw new TooManyPlayerException();
@@ -130,6 +137,13 @@ public class Server {
     }
   }
 
+  /**
+   * Removes a player from the player list. If afterwards only one player is remaining in the game,
+   * it informs the remaining player about it.
+   *
+   * @author tikrause
+   * @param p player instance that should be removed from the server list
+   */
   public static void removePlayer(Player p) {
     players.remove(p);
     if (players.size() < 2) {
@@ -137,6 +151,15 @@ public class Server {
     }
   }
 
+  /**
+   * Checks if the maximum of 4 players are already in the game session. If not, it adds the AI
+   * player to the player list and to the AI player list. If yes, it throws a
+   * TooManyPlayerException.
+   *
+   * @author tikrause
+   * @param ai AI instance that should be added to the game
+   * @throws TooManyPlayerException
+   */
   public static void addAIPlayer(AI ai) throws TooManyPlayerException {
     if (players.size() >= 4) {
       throw new TooManyPlayerException();
@@ -150,38 +173,83 @@ public class Server {
     }
   }
 
+  /**
+   * Removes an AI instance from the AI player list and the player list.
+   *
+   * @author tikrause
+   * @param ai AI instance that should be removed from the game
+   */
   public static void removeAIPlayer(AI ai) {
     aiPlayers.remove(ai);
     players.remove(ai.getPlayer());
   }
 
+  /**
+   * Resets both player list and AI player list.
+   *
+   * @author tikrause
+   */
   public static void resetPlayerList() {
     players.clear();
     aiPlayers.clear();
   }
 
+  /**
+   * getter method for the player list.
+   *
+   * @author tikrause
+   * @return players player list of all players in the game session
+   */
   public static ArrayList<Player> getPlayerList() {
     return players;
   }
 
+  /**
+   * getter method for the AI player list.
+   *
+   * @author tikrause
+   * @return aiPlayers AI player list of all AI players in the game session
+   */
   public static ArrayList<AI> getAIPlayerList() {
     return aiPlayers;
   }
 
+  /**
+   * Updates all AI instances with the game state object that has been received.
+   *
+   * @author tikrause
+   * @param gs changes that should be updated in the game session of the AI players
+   */
   public static void updateAI(GameState gs) {
     for (AI ai : aiPlayers) {
       ai.updateGameSession(gs);
     }
   }
 
+  /**
+   * getter method for the single player lobby that is saved on the server.
+   *
+   * @author tikrause
+   * @return spl single player lobby if created
+   */
   public static SinglePlayerLobby getLobby() {
     return spl;
   }
 
+  /**
+   * initializes the lobby if a single player game is started.
+   *
+   * @author tikrause
+   */
   public static void initializeLobby() {
     spl = new SinglePlayerLobby();
   }
 
+  /**
+   * resets the lobby if a single player game is left or has ended.
+   *
+   * @author tikrause
+   */
   public static void resetLobby() {
     spl = null;
   }

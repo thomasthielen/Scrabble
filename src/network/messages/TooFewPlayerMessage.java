@@ -3,25 +3,22 @@ package network.messages;
 import gameentities.Player;
 
 /**
- * Implementation of the success message. A SuccessMessage is created to send a message that
- * something succeeded as it should
+ * Implementation of the TooFewPlayerMessage. It is created to inform the client that he is now the
+ * only player left in the game session after the other players have left. He can't continue playing
+ * and must be informed.
  *
- * @author lsteltma
+ * @author tikrause
  */
 public class TooFewPlayerMessage extends Message {
 
-  /**
-   * Default serialization UID
-   *
-   * @author lsteltma
-   */
+  // Default serialization UID
   private static final long serialVersionUID = 1L;
 
   /**
-   * Constructor: creating a SuccessMessage with the MessageType.SUCCESS and the name of the creator
+   * Constructor: creating a TooFewPlayerMessage with the MessageType.TOO_FEW and the player object of the creator.
    *
-   * @author lsteltma
-   * @param name
+   * @author tikrause
+   * @param p player object of the creator
    */
   public TooFewPlayerMessage(Player p) {
     super(MessageType.TOO_FEW, p);

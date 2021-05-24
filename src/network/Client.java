@@ -88,36 +88,74 @@ public class Client {
     cf = null;
   }
 
+  /**
+   * Sends a chat message to all clients that are connected to the server.
+   *
+   * @author tikrause
+   * @param p player instance that has sent a chat message
+   * @param chat message that should be sent
+   */
   public static void sendChat(Player p, String chat) {
     cf.channel().writeAndFlush(new SendChatMessage(p, chat));
   }
 
+  /**
+   * Informs all other clients that someone has ended the game via the "END GAME"-button and that
+   * the game has ended.
+   *
+   * @author tikrause
+   * @param p player instance that has ended the game
+   */
   public static void reportEndGame(Player p) {
     cf.channel().writeAndFlush(new EndGameMessage(p));
   }
 
+  /**
+   * Informs all clients but the host that the host has started the game. In addition, it sends the
+   * chat history from the lobby screen to all clients.
+   *
+   * @author tikrause
+   * @param p player instance of the host
+   * @param chat chat history from the lobby screen that should be taken over to the game screen
+   */
   public static void reportStartGame(Player p, String chat) {
     cf.channel().writeAndFlush(new StartGameMessage(p, chat));
   }
 
+  /**
+   * Sends the dictionary file that has been chosen to all clients.
+   *
+   * @author tikrause
+   * @param p player instance of the host
+   * @param f dictionary file that should be sent
+   */
   public static void sendDictionary(Player p, File f) {
     cf.channel().writeAndFlush(new DictionaryMessage(p, f));
   }
 
+  /**
+   * Sends a GameStateMessage to update the game session of all clients that are connected to the
+   * server.
+   *
+   * @author tikrause
+   * @param p player instance of the player that has performed an action
+   * @param game state object that contains all changes that have to be updated
+   */
   public static void updateGameState(Player p, GameState game) {
     cf.channel().writeAndFlush(new GameStateMessage(p, game));
   }
 
+  /**
+   * Informs the server that the next player is an AI player that should make a move.
+   *
+   * @author tikrause
+   * @param p player instance of the player that has finished his move
+   * @param aiPlayer that should make a move now
+   */
   public static void notifyAI(Player p, Player aiPlayer) {
     cf.channel().writeAndFlush(new NotifyAIMessage(p, aiPlayer));
   }
 
-  /**
-   * getter method for the current status of the run flag
-   *
-   * @author tikrause
-   * @return isRunning
-   */
   public static boolean isActive() {
     return isRunning;
   }
@@ -133,16 +171,20 @@ public class Client {
   }
 
   /**
+   * Updates the own game session if a GameStateMessage is received.
+   *
    * @author tikrause
-   * @param gameState
+   * @param gameState changes that should be updated in the game session
    */
   public static void updateGameSession(GameState gameState) {
     gameSession.synchronise(gameState);
   }
 
   /**
+   * getter method for the game session object of the client.
+   *
    * @author tikrause
-   * @return gameSession
+   * @return gameSession of the client
    */
   public static GameSession getGameSession() {
     return gameSession;
