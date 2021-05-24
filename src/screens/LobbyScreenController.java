@@ -13,7 +13,6 @@ import gameentities.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -22,10 +21,12 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
@@ -43,6 +44,10 @@ import javafx.event.EventHandler;
 public class LobbyScreenController {
 
   @FXML private Pane lobbyPane;
+
+  @FXML private Pane chooseAIPane;
+
+  @FXML private Pane tooltipPane;
 
   @FXML private Rectangle aiPlayerRectangle;
 
@@ -104,6 +109,8 @@ public class LobbyScreenController {
     chatField.setEditable(false);
     chatField.setMouseTransparent(true);
     chatField.setFocusTraversable(false);
+    chooseAIPane.setVisible(false);
+    tooltipPane.setVisible(false);
   }
 
   /**
@@ -148,6 +155,23 @@ public class LobbyScreenController {
       errorAlert.setContentText("You haven't chosen a file to upload your own dictionary.");
       errorAlert.showAndWait();
     }
+  }
+
+  @FXML
+  void openTooltip(MouseEvent event) {
+    Text text =
+        new Text(
+            "You can upload your own dictionary for the\ngame! You can only use text files in which\nevery line starts with the word you want to\nadd to the dictionary. Every other information\n(that will not be used by this game) has to be\nseparated from the word in this line\nby a whitespace.");
+    text.relocate(10, 10);
+    text.setFill(Paint.valueOf("#f88c00"));
+    text.setFont(new Font(14));
+    tooltipPane.getChildren().add(text);
+    tooltipPane.setVisible(true);
+  }
+
+  @FXML
+  void closeTooltip(MouseEvent event) {
+    tooltipPane.setVisible(false);
   }
 
   /**
@@ -210,6 +234,7 @@ public class LobbyScreenController {
    */
   @FXML
   void addAIPlayer(ActionEvent event) throws Exception {
+    chooseAIPane.setVisible(true);
     if (Client.isHost()) {
       try {
         AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1));
@@ -267,11 +292,26 @@ public class LobbyScreenController {
   @FXML
   void editTiles(ActionEvent event) throws Exception {
     FXMLLoader loader = new FXMLLoader();
-    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/ChangeTilesScreen.fxml"));
+    Parent content =
+        loader.load(
+            getClass()
+                .getClassLoader()
+                .getResourceAsStream("screens/resources/ChangeTilesScreen.fxml"));
     ChangeTilesScreenController changeTilesScreenController = loader.getController();
     changeTilesScreenController.initialize();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
+  }
+
+  @FXML
+  void easyAIPlayer(ActionEvent event) {}
+
+  @FXML
+  void hardAIPlayer(ActionEvent event) {}
+
+  @FXML
+  void closeChooseAIPane(ActionEvent event) {
+    chooseAIPane.setVisible(false);
   }
 
   /**
@@ -332,7 +372,7 @@ public class LobbyScreenController {
     port.setTextAlignment(TextAlignment.CENTER);
     textPane.getChildren().add(ip);
     textPane.getChildren().add(port);
-    textPane.relocate(350, 100);
+    textPane.relocate(14, 30);
     lobbyPane.getChildren().add(textPane);
   }
 
@@ -342,7 +382,9 @@ public class LobbyScreenController {
     FXMLLoader loader = new FXMLLoader();
     Parent content;
     try {
-      content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/GameScreen.fxml"));
+      content =
+          loader.load(
+              getClass().getClassLoader().getResourceAsStream("screens/resources/GameScreen.fxml"));
       GameScreenController gsc = loader.getController();
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
@@ -405,7 +447,11 @@ public class LobbyScreenController {
     FXMLLoader loader = new FXMLLoader();
     Parent content;
     try {
-      content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
+      content =
+          loader.load(
+              getClass()
+                  .getClassLoader()
+                  .getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
     } catch (IOException e) {

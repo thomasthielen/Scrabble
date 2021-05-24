@@ -27,7 +27,7 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <Button fx:id="fileForm" layoutX="409.0" layoutY="257.0" mnemonicParsing="false" onAction="#uploadDictionary" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Upload dictionary" textFill="WHITE" />
+      <Button fx:id="fileForm" layoutX="409.0" layoutY="257.0" mnemonicParsing="false" onAction="#uploadDictionary" onMouseEntered="#openTooltip" onMouseExited="#closeTooltip" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Upload dictionary" textFill="WHITE" />
       <Button fx:id="startGame" layoutX="300.0" layoutY="473.0" mnemonicParsing="false" onAction="#startGame" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="START GAME" textFill="WHITE">
          <font>
             <Font size="24.0" />
@@ -44,7 +44,7 @@
                   <Font size="20.0" />
                </font>
             </Text>
-            <TextField fx:id="textField" layoutX="8.0" layoutY="430.0" onAction="#onEnter" prefHeight="40.0" prefWidth="140.0" />
+            <TextField fx:id="textField" layoutX="8.0" layoutY="430.0" prefHeight="40.0" prefWidth="140.0" />
             <Button layoutX="154.0" layoutY="430.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="40.0" prefWidth="58.0" style="-fx-background-color: #F88C00;" text="Send" textFill="WHITE">
                <font>
                   <Font size="14.0" />
@@ -86,5 +86,18 @@
             <Font size="22.0" />
          </font>
       </Text>
+      <Pane fx:id="chooseAIPane" layoutX="12.0" layoutY="316.0" prefHeight="200.0" prefWidth="425.0" style="-fx-background-color: #F4D896; -fx-border-color: #f88c00;">
+         <children>
+            <Button layoutX="382.0" layoutY="13.0" mnemonicParsing="false" onAction="#closeChooseAIPane" style="-fx-background-color: #f88c00;" text="X" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Text fill="#f88c00" layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select a diffulty level for the AI player" />
+            <Button layoutX="14.0" layoutY="61.0" mnemonicParsing="false" onAction="#easyAIPlayer" prefHeight="39.0" prefWidth="349.0" style="-fx-background-color: #f88c00;" text="EASY" textFill="WHITE" />
+            <Button layoutX="14.0" layoutY="121.0" mnemonicParsing="false" onAction="#hardAIPlayer" prefHeight="39.0" prefWidth="349.0" style="-fx-background-color: #f88c00;" text="HARD" textFill="WHITE" />
+         </children>
+      </Pane>
+      <Pane fx:id="tooltipPane" layoutX="349.0" layoutY="98.0" prefHeight="155.0" prefWidth="300.0" style="-fx-background-color: #F4D896; -fx-border-color: #f88c00;" />
    </children>
 </Pane>
