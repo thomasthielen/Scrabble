@@ -135,6 +135,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
       case GAME_STATE:
         GameStateMessage gsm = (GameStateMessage) msg;
         Server.updateAI(gsm.getGameState());
+        Client.updateGameSession(gsm.getGameState());
 
       default:
         Channel in = ctx.channel();
