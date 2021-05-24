@@ -1,8 +1,13 @@
 package screens;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import AI.AI;
 import data.DataHandler;
+import data.StatisticKeys;
+import gameentities.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,8 +17,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import network.Client;
 import network.Server;
@@ -30,11 +39,54 @@ public class SinglePlayerLobbyScreenController {
 
   @FXML private Button fileForm;
 
-  @FXML private Pane lobbyPane;
+  @FXML private Button startGame;
+
+  @FXML private Button editTiles;
 
   @FXML private MenuButton dictionarySelecter;
 
+  @FXML private Pane lobbyPane;
+
+  @FXML private Pane chooseAIPane;
+
+  @FXML private Pane tooltipPane;
+
+  @FXML private Text playerInfo1;
+  @FXML private Text playerInfo2;
+  @FXML private Text playerInfo3;
+  @FXML private Text playerInfo4;
+
+  @FXML private Text playerStatistics1;
+  @FXML private Text playerStatistics2;
+  @FXML private Text playerStatistics3;
+  @FXML private Text playerStatistics4;
+
   private File chosenDictionary;
+
+  private ArrayList<Text> playerInfos = new ArrayList<Text>();
+  private ArrayList<Text> playerStatistics = new ArrayList<Text>();
+
+  /**
+   * This method sets the initial state of the Singleplayer Lobby.
+   *
+   * @author jbleil
+   */
+  public void initialize() {
+    chooseAIPane.setVisible(false);
+    tooltipPane.setVisible(false);
+
+    playerInfos.add(playerInfo1);
+    playerInfos.add(playerInfo2);
+    playerInfos.add(playerInfo3);
+    playerInfos.add(playerInfo4);
+
+    playerStatistics.add(playerInfo1);
+    playerStatistics.add(playerInfo2);
+    playerStatistics.add(playerInfo3);
+    playerStatistics.add(playerInfo4);
+
+    refreshPlayerList();
+  }
 
   /**
    * This method serves as the listener for the "Upload dictionary"-Button. It allows the user to
@@ -80,9 +132,26 @@ public class SinglePlayerLobbyScreenController {
     }
   }
 
+  @FXML
+  void openTooltip(MouseEvent event) {
+    Text text =
+        new Text(
+            "You can upload your own dictionary for the\ngame! You can only use text files in which\nevery line starts with the word you want to\nadd to the dictionary. Every other information\n(that will not be used by this game) has to be\nseparated from the word in this line\nby a whitespace.");
+    text.relocate(10, 10);
+    text.setFill(Paint.valueOf("#f88c00"));
+    text.setFont(new Font(14));
+    tooltipPane.getChildren().add(text);
+    tooltipPane.setVisible(true);
+  }
+
+  @FXML
+  void closeTooltip(MouseEvent event) {
+    tooltipPane.setVisible(false);
+  }
+
   /**
    * This method serves as the Listener for "Leave Lobby"-Button It let's the user leave the Lobby
-   * and redirects him to the StartScreen
+   * and redirects him to the StartScreen.
    *
    * @author jbleil
    * @param event
@@ -155,6 +224,12 @@ public class SinglePlayerLobbyScreenController {
     }
   }
 
+  @FXML
+  void easyAIPlayer(ActionEvent event) {}
+
+  @FXML
+  void hardAIPlayer(ActionEvent event) {}
+
   public void switchToGameScreen() throws Exception {
     FXMLLoader loader = new FXMLLoader();
     Parent content;
@@ -212,5 +287,43 @@ public class SinglePlayerLobbyScreenController {
 
     dictionarySelecter.setText(menuItem1.getText());
     chosenDictionary = new File(Dictionary.COLLINS.getUrl());
+  }
+
+  @FXML
+  void editTiles(ActionEvent event) {}
+
+  @FXML
+  void closeChooseAIPane(ActionEvent event) {}
+
+  /**
+   * this method is responsible for displaying the player names and statistics in the game lobby.
+   *
+   * @author jbleil
+   */
+  public void refreshPlayerList() {
+    ArrayList<Player> players = Client.getGameSession().getPlayerList();
+
+    for (int i = 0; i < players.size(); i++) {
+      playerInfos.get(i).setText(players.get(i).getUsername());
+      playerInfos.get(i).setVisible(true);
+      if (!players.get(i).isAI()) {
+        HashMap<StatisticKeys, Integer> map = players.get(i).getPlayerStatistics();
+        playerStatistics
+            .get(i)
+            .setText(
+                "Games won: "
+                    + map.get(StatisticKeys.WON)
+                    + "\nGames played: "
+                    + map.get(StatisticKeys.MATCHES)
+                    + "\nAverage Points: "
+                    + map.get(StatisticKeys.POINTSAVG));
+        playerStatistics.get(i).setVisible(true);
+      }
+    }
+
+    for (int i = players.size(); i < playerInfos.size() && i < playerStatistics.size(); i++) {
+      playerInfos.get(i).setVisible(false);
+      playerStatistics.get(i).setVisible(false);
+    }
   }
 }

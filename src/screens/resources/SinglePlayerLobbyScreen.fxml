@@ -7,6 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
+
 <Pane fx:id="lobbyPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="562.0" prefWidth="1000.0" style="-fx-background-color: #F4D896;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screens.SinglePlayerLobbyScreenController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="50.0" layoutX="350.0" layoutY="22.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="300.0" />
@@ -15,49 +16,77 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Text>
-      <Text fill="#f88c00" layoutX="40.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1:">
+      <Text fill="#f88c00" layoutX="14.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Players in Lobby:">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <Text fill="#f88c00" layoutX="305.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select a dictionary from the list below">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
-      <Text layoutX="43.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name, Record" />
-      <Text fill="#f88c00" layoutX="40.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2:">
+      <Text fill="#f88c00" layoutX="331.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="or upload your own custom dictionary">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
-      <Text fill="#f88c00" layoutX="40.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3:">
+      <Text fill="#f88c00" layoutX="239.0" layoutY="348.0" strokeType="OUTSIDE" strokeWidth="0.0" text="you can also edit the and the value of every Tile in the bag ">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
-      <Text fill="#f88c00" layoutX="43.0" layoutY="310.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 4:">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Text>
-      <Text layoutX="40.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name, Record" />
-      <Text layoutX="40.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name, Record" />
-      <Text layoutX="40.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name, Record" />
-      <MenuButton fx:id="dictionarySelecter" layoutX="410.0" layoutY="203.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Dictionaries" textFill="WHITE">
+      <MenuButton fx:id="dictionarySelecter" layoutX="409.0" layoutY="142.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: f88c00;" text="Dictionaries" textFill="WHITE">
+        <items>
+          <MenuItem mnemonicParsing="false" text="Action 1" />
+          <MenuItem mnemonicParsing="false" text="Action 2" />
+        </items>
       </MenuButton>
-      <Text fill="#f88c00" layoutX="305.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select a dictionary from the list below">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Text>
-      <Text fill="#f88c00" layoutX="332.0" layoutY="310.0" strokeType="OUTSIDE" strokeWidth="0.0" text="or upload your own custom dictionary">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Text>
-      <Button fx:id="fileForm" layoutX="410.0" layoutY="363.0" mnemonicParsing="false" onAction="#uploadDictionary" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Upload dictionary" textFill="WHITE" />
-      <Button layoutX="300.0" layoutY="473.0" mnemonicParsing="false" onAction="#startGame" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="START GAME" textFill="WHITE">
+      <Button fx:id="fileForm" layoutX="409.0" layoutY="257.0" mnemonicParsing="false" onAction="#uploadDictionary" onMouseEntered="#openTooltip" onMouseExited="#closeTooltip" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: f88c00;" text="Upload dictionary" textFill="WHITE" />
+      <Button fx:id="startGame" layoutX="300.0" layoutY="473.0" mnemonicParsing="false" onAction="#startGame" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: f88c00;" text="START GAME" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
-      <Button layoutX="837.0" layoutY="22.0" mnemonicParsing="false" onAction="#leaveLobby" style="-fx-background-color: #f88c00;" text="Leave Lobby" textFill="WHITE" />
-      <Button layoutX="40.0" layoutY="363.0" mnemonicParsing="false" onAction="#addAIPlayer" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #F88C00;" text="Add AI Player" textFill="WHITE" />
+      <Button layoutX="863.0" layoutY="22.0" mnemonicParsing="false" onAction="#leaveLobby" prefHeight="40.0" prefWidth="123.0" style="-fx-background-color: f88c00;" text="Leave Lobby" textFill="WHITE" />
+      <Button layoutX="14.0" layoutY="473.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: f88c00;" text="Add AI Player" textFill="WHITE" />
+      <Button fx:id="editTiles" layoutX="409.0" layoutY="376.0" mnemonicParsing="false" onAction="#editTiles" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: f88c00;" text="Edit Tiles" textFill="WHITE" />
+      <Text fx:id="playerInfo1" fill="#f88c00" layoutX="14.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text fx:id="playerStatistics1" layoutX="14.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics 1" />
+      <Text fx:id="playerInfo2" fill="#f88c00" layoutX="14.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text fx:id="playerStatistics2" layoutX="14.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics 2" />
+      <Text fx:id="playerInfo3" fill="#f88c00" layoutX="14.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text fx:id="playerStatistics3" layoutX="14.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics 3" />
+      <Text fx:id="playerInfo4" fill="#f88c00" layoutX="14.0" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 4">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text fx:id="playerStatistics4" layoutX="14.0" layoutY="415.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics 4" />
+      <Pane fx:id="tooltipPane" layoutX="349.0" layoutY="98.0" prefHeight="155.0" prefWidth="300.0" style="-fx-background-color: #F4D896; -fx-border-color: #f88c00;" />
+      <Pane fx:id="chooseAIPane" layoutX="12.0" layoutY="316.0" prefHeight="200.0" prefWidth="425.0" style="-fx-background-color: #F4D896; -fx-border-color: #f88c00;">
+         <children>
+            <Text fill="#f88c00" layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select a difficulty level for the AI player" />
+            <Button layoutX="382.0" layoutY="13.0" mnemonicParsing="false" onAction="#closeChooseAIPane" style="-fx-background-color: #f88c00;" text="X" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button layoutX="12.0" layoutY="61.0" mnemonicParsing="false" onAction="#easyAIPlayer" prefHeight="39.0" prefWidth="361.0" style="-fx-background-color: #f88c00;" text="EASY" textFill="WHITE" />
+            <Button layoutX="14.0" layoutY="121.0" mnemonicParsing="false" onAction="#hardAIPlayer" prefHeight="39.0" prefWidth="361.0" style="-fx-background-color: #f88c00;" text="HARD" textFill="WHITE" />
+         </children>
+      </Pane>
    </children>
 </Pane>
