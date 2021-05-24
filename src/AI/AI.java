@@ -35,8 +35,8 @@ public class AI  {
    * @param gameReference
    */
 
-  public AI(String username, boolean difficult) {
-	    this.gameReference = new GameSession(new Player(username), false);
+  public AI(String username, boolean difficult, boolean multiplayer) {
+	    this.gameReference = new GameSession(new Player(username), multiplayer);
 	    this.gameReference.getPlayer().getRack().initialDraw();
 	    this.tiles = this.gameReference.getPlayer().getRack().getTiles();
 	    this.difficult = difficult;
@@ -173,7 +173,7 @@ public class AI  {
         
       }
     }
-
+    System.out.println(max.getValue());
     this.turnValue = max.getValue();
     return max.getsquares();
   }
