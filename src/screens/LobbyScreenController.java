@@ -235,19 +235,6 @@ public class LobbyScreenController {
   @FXML
   void addAIPlayer(ActionEvent event) throws Exception {
     chooseAIPane.setVisible(true);
-    if (Client.isHost()) {
-      try {
-        AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1));
-        Server.addAIPlayer(ai);
-        refreshPlayerList();
-      } catch (TooManyPlayerException e) {
-        Alert errorAlert = new Alert(AlertType.ERROR);
-        errorAlert.setHeaderText("Too many players.");
-        errorAlert.setContentText(
-            "You can't add another AI player because there are already the maximum of 4 players in the game.");
-        errorAlert.showAndWait();
-      }
-    }
   }
 
   @FXML
@@ -304,10 +291,34 @@ public class LobbyScreenController {
   }
 
   @FXML
-  void easyAIPlayer(ActionEvent event) {}
+  void easyAIPlayer(ActionEvent event) {
+    try {
+      AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1), false);
+      Server.addAIPlayer(ai);
+      refreshPlayerList();
+    } catch (TooManyPlayerException e) {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("Too many players.");
+      errorAlert.setContentText(
+          "You can't add another AI player because there are already the maximum of 4 players in the game.");
+      errorAlert.showAndWait();
+    }
+  }
 
   @FXML
-  void hardAIPlayer(ActionEvent event) {}
+  void hardAIPlayer(ActionEvent event) {
+    try {
+      AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1), true);
+      Server.addAIPlayer(ai);
+      refreshPlayerList();
+    } catch (TooManyPlayerException e) {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("Too many players.");
+      errorAlert.setContentText(
+          "You can't add another AI player because there are already the maximum of 4 players in the game.");
+      errorAlert.showAndWait();
+    }
+  }
 
   @FXML
   void closeChooseAIPane(ActionEvent event) {
