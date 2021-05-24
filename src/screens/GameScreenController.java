@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import data.DataHandler;
 import data.StatisticKeys;
 import gameentities.*;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -140,6 +141,7 @@ public class GameScreenController {
   private int boardSelectedY = 0;
 
   private StringBuffer chatHistory;
+  private int unreadMessages = 0;
 
   /**
    * TODO - set Chat and Player Statistic visibility = false - set 7 Tiles in the Rack - fill the
@@ -658,6 +660,8 @@ public class GameScreenController {
       chatPane.setVisible(false);
     } else {
       chatPane.setVisible(true);
+      unreadMessages = 0;
+      chatButton.setText("Chat");
     }
   }
 
@@ -739,6 +743,15 @@ public class GameScreenController {
    * @param chat
    */
   public void receivedMessage(Player p, String chat) {
+    if (!chatPane.isVisible()) {
+      Platform.runLater(
+          new Runnable() {
+            @Override
+            public void run() {
+              chatButton.setText("Chat (" + ++unreadMessages + ")");
+            }
+          });
+    }
     chatHistory.append(p.getUsername() + chat + "\n");
     chatField.setText(chatHistory.toString());
   }
@@ -1246,10 +1259,7 @@ public class GameScreenController {
     }
   }
 
-  /**
-   * 
-   * @author tikrause
-   */
+  /** @author tikrause */
   public void tooFewPlayerAlert() {
     Alert errorAlert = new Alert(AlertType.ERROR);
     errorAlert.setHeaderText("Too few players.");
@@ -1259,10 +1269,7 @@ public class GameScreenController {
     leave();
   }
 
-  /**
-   * 
-   * @author tikrause
-   */
+  /** @author tikrause */
   public void hostHasLeft() {
     Alert errorAlert = new Alert(AlertType.ERROR);
     errorAlert.setHeaderText("The host has left.");
@@ -1273,7 +1280,6 @@ public class GameScreenController {
   }
 
   /**
-   * 
    * @author tikrause
    * @param chat
    */

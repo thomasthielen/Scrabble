@@ -6,10 +6,10 @@ package session;
  * @author tikrause
  */
 public enum Dictionary {
-  COLLINS("resources/Collins Scrabble Words (2019).txt"),
-  ENABLE("resources/ENABLE (Words With Friends).txt"),
-  SOWPODS("resources/SOWPODS (Europe Scrabble Word List).txt"),
-  TWL06("resources/TWL06 (North America Scrabble Word List).txt");
+  COLLINS("src/resources/Collins Scrabble Words (2019).txt"),
+  ENABLE("src/resources/ENABLE (Words With Friends).txt"),
+  SOWPODS("src/resources/SOWPODS (Europe Scrabble Word List).txt"),
+  TWL06("src/resources/TWL06 (North America Scrabble Word List).txt");
 
   private final String url;
 

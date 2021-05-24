@@ -68,7 +68,6 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
 
         // if a player tries to join a running game, he should be rejected
         if (!Server.isActive()) {
-          System.out.println("hilfe");
           Server.addPlayer(cm.getPlayer());
           Client.updateGameSession(new GameState(Server.getPlayerList()));
           for (Channel channel : channels) {

@@ -35,7 +35,6 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
     System.out.println(mt);
     switch (mt) {
       case CONNECT:
-        // TODO
         ConnectMessage cm = (ConnectMessage) msg;
         if (Client.getGameSession().getLobbyScreenController() != null) {
           Client.getGameSession()
