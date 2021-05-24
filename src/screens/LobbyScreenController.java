@@ -267,8 +267,7 @@ public class LobbyScreenController {
   @FXML
   void editTiles(ActionEvent event) throws Exception {
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/ChangeTilesScreen.fxml"));
-    Parent content = loader.load();
+    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/ChangeTilesScreen.fxml"));
     ChangeTilesScreenController changeTilesScreenController = loader.getController();
     changeTilesScreenController.initialize();
     StartScreen.getStage().setScene(new Scene(content));
@@ -341,10 +340,9 @@ public class LobbyScreenController {
     Client.getGameSession().startTimer();
     Client.getGameSession().setIsRunning(true);
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/GameScreen.fxml"));
     Parent content;
     try {
-      content = loader.load();
+      content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/GameScreen.fxml"));
       GameScreenController gsc = loader.getController();
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
@@ -405,10 +403,9 @@ public class LobbyScreenController {
 
   void leave() {
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
     Parent content;
     try {
-      content = loader.load();
+      content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
     } catch (IOException e) {

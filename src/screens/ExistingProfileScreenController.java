@@ -180,7 +180,7 @@ public class ExistingProfileScreenController {
       if (result.get() == ButtonType.OK) {
         FXMLLoader loader = new FXMLLoader();
         //loader.setLocation(getClass().getResource("resources/NewProfileScreen.fxml"));
-        Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/NewProfileScreen"));
+        Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/NewProfileScreen.fxml"));
         NewProfileScreenController newProfileScreenController = loader.getController();
         newProfileScreenController.addAvatars();
         StartScreen.getStage().setScene(new Scene(content));

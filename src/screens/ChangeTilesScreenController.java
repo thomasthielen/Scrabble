@@ -123,8 +123,7 @@ public class ChangeTilesScreenController {
   @FXML
   void back(ActionEvent event) throws Exception {
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/LobbyScreen.fxml"));
-    Parent content = loader.load();
+    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/LobbyScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }

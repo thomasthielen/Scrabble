@@ -48,8 +48,7 @@ public class ChooseServerScreenController {
                 ipField.getText().trim(), Integer.valueOf(portField.getText().trim()), false);
             Client.connectToServer(DataHandler.getOwnPlayer());
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("resources/LobbyScreen.fxml"));
-            Parent content = loader.load();
+            Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/LobbyScreen.fxml"));
             StartScreen.getStage().setScene(new Scene(content));
             StartScreen.getStage().show();
           } catch (TooManyPlayerException te) {
@@ -140,8 +139,7 @@ public class ChooseServerScreenController {
   void back(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/OnlineScreen.fxml"));
-    Parent content = loader.load();
+    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OnlineScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }

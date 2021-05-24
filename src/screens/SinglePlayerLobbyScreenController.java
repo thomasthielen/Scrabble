@@ -92,8 +92,7 @@ public class SinglePlayerLobbyScreenController {
   void leaveLobby(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
-    Parent content = loader.load();
+    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
     Server.resetLobby();
@@ -150,9 +149,8 @@ public class SinglePlayerLobbyScreenController {
 
   public void switchToGameScreen() throws Exception {
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/GameScreen.fxml"));
     Parent content;
-    content = loader.load();
+    content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/GameScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }

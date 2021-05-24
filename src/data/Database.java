@@ -1,6 +1,8 @@
 package data;
 
 import gameentities.Avatar;
+
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -18,7 +20,6 @@ class Database {
   private static Connection con = null;
   private static Statement stm = null;
   private static ResultSet rs = null;
-  private static final String url = "jdbc:sqlite:resources/PlayerDB.db";
 
   /**
    * Connects to the PlayerDB database.
@@ -28,7 +29,8 @@ class Database {
   protected static void connect() {
     try {
       Class.forName("org.sqlite.JDBC");
-      con = DriverManager.getConnection(url);
+      String folder = new File(Database.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().getPath();
+      con = DriverManager.getConnection("jdbc:sqlite:" + folder + "/PlayerDB.db");
       createTables();
     } catch (Exception e) {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());

@@ -1223,10 +1223,9 @@ public class GameScreenController {
   public void leave() {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/StartScreen.fxml"));
     Parent content;
     try {
-      content = loader.load();
+      content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/StartScreen.fxml"));
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
     } catch (IOException e) {

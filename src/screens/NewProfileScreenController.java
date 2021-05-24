@@ -56,7 +56,6 @@ public class NewProfileScreenController {
         DataHandler.setOwnPlayer(new Player(input, avatar));
         StartScreen.getStage();
         FXMLLoader loader = new FXMLLoader();
-        //loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
         Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
         StartScreen.getStage().setScene(new Scene(content));
         StartScreen.getStage().show();
@@ -107,7 +106,6 @@ public class NewProfileScreenController {
   void back(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    //loader.setLocation(getClass().getResource("resources/StartScreen.fxml"));
     Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/StartScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();

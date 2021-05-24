@@ -28,8 +28,7 @@ public class OfflineScreenController {
     Server.initializeLobby();
     Server.addPlayer(DataHandler.getOwnPlayer());
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/SinglePlayerLobbyScreen.fxml"));
-    Parent content = loader.load();
+    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/SinglePlayerLobbyScreen.fxml"));
     SinglePlayerLobbyScreenController splsc = loader.getController();
     splsc.setDictionaryMenu();
     StartScreen.getStage().setScene(new Scene(content));
@@ -48,8 +47,7 @@ public class OfflineScreenController {
   void trainingMode(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/LobbyScreen.fxml"));
-    Parent content = loader.load();
+    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/LobbyScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
@@ -66,8 +64,7 @@ public class OfflineScreenController {
   void back(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
-    Parent content = loader.load();
+    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
