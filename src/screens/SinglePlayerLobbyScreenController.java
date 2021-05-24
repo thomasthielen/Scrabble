@@ -113,7 +113,7 @@ public class SinglePlayerLobbyScreenController {
       Server.getLobby().getGameSession().setIsRunning(true);
       DataHandler.userDictionaryFile(chosenDictionary);
       Server.getLobby().getGameSession().getPlayer().setCurrentlyPlaying(true);
-      Server.getLobby().getGameSession().initialiseGameScreen();
+      Server.getLobby().getGameSession().initialiseSinglePlayerGameScreen();
       switchToGameScreen();
     } else {
       Alert errorAlert = new Alert(AlertType.ERROR);

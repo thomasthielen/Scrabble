@@ -184,10 +184,10 @@ public class LobbyScreenController {
         DataHandler.userDictionaryFile(chosenDictionary);
         Client.sendDictionary(DataHandler.getOwnPlayer(), chosenDictionary);
         Client.getGameSession().getPlayer().setCurrentlyPlaying(true);
-        Client.reportStartGame(DataHandler.getOwnPlayer());
+        Client.reportStartGame(DataHandler.getOwnPlayer(), chatHistory.toString());
         Server.setActive();
-        Client.getGameSession().initialiseGameScreen();
-        switchToGameScreen();
+        Client.getGameSession().initialiseGameScreen(chatHistory.toString());
+        switchToGameScreen(chatHistory.toString());
       } else {
         Alert errorAlert = new Alert(AlertType.ERROR);
         errorAlert.setHeaderText("Too few players.");
@@ -337,7 +337,7 @@ public class LobbyScreenController {
     lobbyPane.getChildren().add(textPane);
   }
 
-  public void switchToGameScreen() {
+  public void switchToGameScreen(String chat) {
     Client.getGameSession().startTimer();
     Client.getGameSession().setIsRunning(true);
     FXMLLoader loader = new FXMLLoader();
@@ -345,8 +345,10 @@ public class LobbyScreenController {
     Parent content;
     try {
       content = loader.load();
+      GameScreenController gsc = loader.getController();
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
+      gsc.takeOverChat(chat);
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

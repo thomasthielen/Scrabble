@@ -139,7 +139,7 @@ public class GameScreenController {
   private int boardSelectedX = 0;
   private int boardSelectedY = 0;
 
-  private StringBuffer chatHistory = new StringBuffer();
+  private StringBuffer chatHistory;
 
   /**
    * TODO - set Chat and Player Statistic visibility = false - set 7 Tiles in the Rack - fill the
@@ -1246,6 +1246,10 @@ public class GameScreenController {
     }
   }
 
+  /**
+   * 
+   * @author tikrause
+   */
   public void tooFewPlayerAlert() {
     Alert errorAlert = new Alert(AlertType.ERROR);
     errorAlert.setHeaderText("Too few players.");
@@ -1255,6 +1259,10 @@ public class GameScreenController {
     leave();
   }
 
+  /**
+   * 
+   * @author tikrause
+   */
   public void hostHasLeft() {
     Alert errorAlert = new Alert(AlertType.ERROR);
     errorAlert.setHeaderText("The host has left.");
@@ -1262,5 +1270,15 @@ public class GameScreenController {
         "The host has left the game and therefore you have been disconnected from the server.");
     errorAlert.showAndWait();
     leave();
+  }
+
+  /**
+   * 
+   * @author tikrause
+   * @param chat
+   */
+  public void takeOverChat(String chat) {
+    chatHistory = new StringBuffer(chat);
+    chatField.setText(chatHistory.toString());
   }
 }

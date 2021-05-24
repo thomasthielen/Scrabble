@@ -96,8 +96,8 @@ public class Client {
     cf.channel().writeAndFlush(new EndGameMessage(p));
   }
 
-  public static void reportStartGame(Player p) {
-    cf.channel().writeAndFlush(new StartGameMessage(p));
+  public static void reportStartGame(Player p, String chat) {
+    cf.channel().writeAndFlush(new StartGameMessage(p, chat));
   }
 
   public static void sendDictionary(Player p, File f) {

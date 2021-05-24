@@ -17,13 +17,20 @@ public class StartGameMessage extends Message {
    */
   private static final long serialVersionUID = 1L;
 
+  private String chat;
+
   /**
    * Constructor: creating a SuccessMessage with the MessageType.SUCCESS and the name of the creator
    *
    * @author lsteltma
    * @param name
    */
-  public StartGameMessage(Player p) {
+  public StartGameMessage(Player p, String chat) {
     super(MessageType.START_GAME, p);
+    this.chat = chat;
+  }
+
+  public String getChat() {
+    return chat;
   }
 }

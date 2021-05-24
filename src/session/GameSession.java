@@ -89,7 +89,7 @@ public class GameSession {
               if (seconds <= 0) {
                 kickPlayer();
               }
-              if (gameScreenController != null) { 
+              if (gameScreenController != null) {
                 gameScreenController.refreshTimerText(printTime(), seconds);
               }
             }
@@ -98,11 +98,11 @@ public class GameSession {
         1000,
         1000);
   }
-  
+
   private void resetTimer() {
     this.seconds = 600;
   }
-  
+
   private String printTime() {
     int minutes = this.seconds / 60;
     int seconds = this.seconds % 60;
@@ -120,22 +120,38 @@ public class GameSession {
     return minutesText + ":" + secondsText;
   }
 
-  public void initialiseGameScreen() {
+  /**
+   * 
+   * @author tikrause
+   * @param chat
+   */
+  public void initialiseGameScreen(String chat) {
     Platform.runLater(
         new Runnable() {
           @Override
           public void run() {
-            if (multiPlayer) {
-              gameScreenController.setPlayable(Client.isHost());
-            } else {
-              gameScreenController.setPlayable(true);
-            }
+            gameScreenController.setPlayable(Client.isHost());
+            gameScreenController.takeOverChat(chat);
           }
         });
   }
 
   /**
-   * Synchronises the GameState objects between players
+   * 
+   * @author tikrause
+   */
+  public void initialiseSinglePlayerGameScreen() {
+    Platform.runLater(
+        new Runnable() {
+          @Override
+          public void run() {
+            gameScreenController.setPlayable(true);
+          }
+        });
+  }
+
+  /**
+   * Synchronises the GameState objects between players.
    *
    * @author tikrause
    */
@@ -834,12 +850,12 @@ public class GameSession {
     }
   }
 
-  public void switchToGameScreen() {
+  public void switchToGameScreen(String chat) {
     Platform.runLater(
         new Runnable() {
           @Override
           public void run() {
-            lobbyScreenController.switchToGameScreen();
+            lobbyScreenController.switchToGameScreen(chat);
           }
         });
   }
