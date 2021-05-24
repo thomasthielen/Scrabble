@@ -59,6 +59,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
       case CONNECT:
         ConnectMessage cm = (ConnectMessage) msg;
         if (!Server.isActive()) {
+        	System.out.println("hilfe"); 
           Server.addPlayer(cm.getPlayer());
           Client.updateGameSession(new GameState(Server.getPlayerList()));
           for (Channel channel : channels) {
@@ -67,6 +68,9 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
                 new GameStateMessage(
                     DataHandler.getOwnPlayer(), new GameState(Server.getPlayerList())));
           }
+        } else {
+        	ctx.channel().writeAndFlush(new GameRunningMessage(DataHandler.getOwnPlayer()));
+        	handlerRemoved(ctx);
         }
         break;
 

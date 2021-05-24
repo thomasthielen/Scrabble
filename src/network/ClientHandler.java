@@ -49,20 +49,25 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
       case DISCONNECT:
         // TODO
         DisconnectMessage dcm = (DisconnectMessage) msg;
+
+        // Option 1: The disconnecting player is the host of the game session
+
         if (dcm.isHost()) {
+
+          // Option 1.1: The game is already running
           if (Client.getGameSession().getGameScreenController() != null) {
             if (Client.isHost()) {
-              System.out.println("springt hier rein");
               Server.serverShutdown();
             }
             Platform.runLater(
                 new Runnable() {
                   @Override
                   public void run() {
-                    System.out.println("passiert");
                     Client.getGameSession().getGameScreenController().hostHasLeft();
                   }
                 });
+
+            // Option 1.2: The game is not running yet, but the lobby is already created
           } else if (Client.getGameSession().getLobbyScreenController() != null) {
             Client.getGameSession()
                 .getLobbyScreenController()
@@ -71,19 +76,25 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
                 new Runnable() {
                   @Override
                   public void run() {
-                    System.out.println("passiert");
                     Client.getGameSession().getLobbyScreenController().hostHasLeft();
                   }
                 });
           }
           // Client.disconnectClient(DataHandler.getOwnPlayer());
+
+          // Option 2: The disconnecting player is not the host
+
         } else {
+
+          // Option 2.1: The game is already running
           if (Client.getGameSession().getGameScreenController() != null) {
             Client.getGameSession()
                 .getGameScreenController()
                 .receivedMessage(dcm.getPlayer(), " has left!");
             // TODO player list in GScreen:
             // Client.getGameSession().getGameScreenController().refreshPlayerList();
+
+            // Option 2.2: The game is not running yet, but the lobby is already created
           } else if (Client.getGameSession().getLobbyScreenController() != null) {
             Client.getGameSession()
                 .getLobbyScreenController()
@@ -150,6 +161,17 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
           }
         }
         break;
+
+      case GAME_RUNNING:
+        Platform.runLater(
+            new Runnable() {
+              @Override
+              public void run() {
+                Client.getGameSession().getLobbyScreenController().gameAlreadyRunning();
+              }
+            });
+        break;
+
       default:
         break;
     }

@@ -423,4 +423,12 @@ public class LobbyScreenController {
     errorAlert.showAndWait();
     leave();
   }
+
+  public void gameAlreadyRunning() {
+    Alert errorAlert = new Alert(AlertType.ERROR);
+    errorAlert.setHeaderText("Game has already started.");
+    errorAlert.setContentText("You can't join the server because the game has already started.");
+    errorAlert.showAndWait();
+    leave();
+  }
 }

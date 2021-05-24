@@ -5,9 +5,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import network.messages.GameRunningException;
 import network.messages.GameStateMessage;
-import network.messages.TooFewPlayerMessage;
 import network.messages.TooManyPlayerException;
 import session.GameState;
 import session.SinglePlayerLobby;
@@ -120,10 +118,7 @@ public class Server {
    * @author tikrause
    * @return isRunning
    */
-  public static boolean isActive() throws GameRunningException {
-    if (isRunning) {
-      throw new GameRunningException();
-    }
+  public static boolean isActive() {
     return isRunning;
   }
 

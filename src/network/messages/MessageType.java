@@ -14,5 +14,6 @@ public enum MessageType {
   GAME_STATE,
   DICTIONARY,
   NOTIFY_AI,
-  TOO_FEW;
+  TOO_FEW,
+  GAME_RUNNING;
 }
