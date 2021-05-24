@@ -56,8 +56,8 @@ public class ExistingProfileScreenController {
       DataHandler.setOwnPlayer(new Player(username, avatar));
       StartScreen.getStage();
       FXMLLoader loader = new FXMLLoader();
-      loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
-      Parent content = loader.load();
+      //loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
+      Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
     } else {
@@ -84,7 +84,7 @@ public class ExistingProfileScreenController {
     for (Integer id : profiles.keySet()) {
       String username = (String) profiles.get(id)[0];
       Avatar avatar = Avatar.valueOf(profiles.get(id)[1]);
-      Image img = new Image(new FileInputStream(avatar.getUrl()), 52, 52, true, true);
+      Image img = new Image(getClass().getClassLoader().getResourceAsStream(avatar.getUrl()), 52, 52, true, true);
       ToggleButton tb = new ToggleButton(username, new ImageView(img));
       tb.setUserData(id);
       tb.setPrefWidth(260);
@@ -116,8 +116,8 @@ public class ExistingProfileScreenController {
       int id = (int) buttonGroup.getSelectedToggle().getUserData();
       StartScreen.getStage();
       FXMLLoader loader = new FXMLLoader();
-      loader.setLocation(getClass().getResource("resources/EditProfileScreen.fxml"));
-      Parent content = loader.load();
+      //loader.setLocation(getClass().getResource("resources/EditProfileScreen.fxml"));
+      Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/EditProfileScreen.fxml"));
       EditProfileScreenController editProfileScreenController = loader.getController();
       editProfileScreenController.loadProfile(id);
       editProfileScreenController.addAvatars();
@@ -159,8 +159,8 @@ public class ExistingProfileScreenController {
   void back(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/StartScreen.fxml"));
-    Parent content = loader.load();
+    //loader.setLocation(getClass().getResource("resources/StartScreen.fxml"));
+    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/StartScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
@@ -179,8 +179,8 @@ public class ExistingProfileScreenController {
       Optional<ButtonType> result = errorAlert.showAndWait();
       if (result.get() == ButtonType.OK) {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("resources/NewProfileScreen.fxml"));
-        Parent content = loader.load();
+        //loader.setLocation(getClass().getResource("resources/NewProfileScreen.fxml"));
+        Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/NewProfileScreen"));
         NewProfileScreenController newProfileScreenController = loader.getController();
         newProfileScreenController.addAvatars();
         StartScreen.getStage().setScene(new Scene(content));

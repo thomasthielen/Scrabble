@@ -24,8 +24,8 @@ public class StartScreenController {
   @FXML
   void createNewProfile(ActionEvent event) throws Exception {
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/NewProfileScreen.fxml"));
-    Parent content = loader.load();
+    //loader.setLocation(getClass().getResource("resources/NewProfileScreen.fxml"));
+    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/NewProfileScreen.fxml"));
     NewProfileScreenController newProfileScreenController = loader.getController();
     newProfileScreenController.addAvatars();
     StartScreen.getStage().setScene(new Scene(content));
@@ -43,8 +43,8 @@ public class StartScreenController {
   @FXML
   void existingProfile(ActionEvent event) throws Exception {
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/ExistingProfileScreen.fxml"));
-    Parent content = loader.load();
+    //loader.setLocation(getClass().getResource("resources/ExistingProfileScreen.fxml"));
+    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/ExistingProfileScreen.fxml"));
     ExistingProfileScreenController existingProfileScreenController = loader.getController();
     existingProfileScreenController.addProfiles();
     StartScreen.getStage().setScene(new Scene(content));

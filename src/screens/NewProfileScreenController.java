@@ -56,8 +56,8 @@ public class NewProfileScreenController {
         DataHandler.setOwnPlayer(new Player(input, avatar));
         StartScreen.getStage();
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
-        Parent content = loader.load();
+        //loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
+        Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
         StartScreen.getStage().setScene(new Scene(content));
         StartScreen.getStage().show();
       } else if (alreadyUsed) {
@@ -107,8 +107,8 @@ public class NewProfileScreenController {
   void back(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/StartScreen.fxml"));
-    Parent content = loader.load();
+    //loader.setLocation(getClass().getResource("resources/StartScreen.fxml"));
+    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/StartScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
@@ -150,7 +150,7 @@ public class NewProfileScreenController {
     int counter = 0;
     for (int i = 0; i < 2; i++) {
       for (int j = 0; j < 6; j++) {
-        Image img = new Image(new FileInputStream(array[counter].getUrl()), 52, 52, true, true);
+        Image img = new Image(getClass().getClassLoader().getResourceAsStream(array[counter].getUrl()), 52, 52, true, true);
         ToggleButton tb = new ToggleButton("", new ImageView(img));
         tb.setUserData(array[counter]);
         tb.setToggleGroup(buttonGroup);

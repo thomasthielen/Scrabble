@@ -18,13 +18,7 @@ class Database {
   private static Connection con = null;
   private static Statement stm = null;
   private static ResultSet rs = null;
-  private static final String url =
-      "jdbc:sqlite:"
-          + System.getProperty("user.dir")
-          + System.getProperty("file.separator")
-          + "resources"
-          + System.getProperty("file.separator")
-          + "PlayerDB.db";
+  private static final String url = "jdbc:sqlite:resources/PlayerDB.db";
 
   /**
    * Connects to the PlayerDB database.
