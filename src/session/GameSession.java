@@ -32,7 +32,7 @@ public class GameSession {
 
   private Player ownPlayer; // The Player of this GameSession object
 
-  private ArrayList<Square> placedSquares =
+  private ArrayList<Square> occupiedSquares =
       new ArrayList<Square>(); // List of temporarily placed tiles
 
   // Controllers extracted from the GUI handling
@@ -209,8 +209,7 @@ public class GameSession {
       }
 
       if (!overrideGameState.isPlayersOnly() && overrideGameState.getBag() != null) {
-        this.bag = overrideGameState.getBag();
-        this.ownPlayer.getRack().synchroniseBag(this);
+        setBag(overrideGameState.getBag());
         this.board = overrideGameState.getBoard();
         this.successiveScorelessTurns = overrideGameState.getSuccessiveScorelessTurns();
         if (gameScreenController != null) {
@@ -232,16 +231,12 @@ public class GameSession {
   }
 
   /**
-   * Sets the bag by overwriting the bag object and referencing that in the rack.
-   * 
+   * Sends a GameState message to all other players by creating a GameState object with the local
+   * variables.
+   *
    * @author tthielen
-   * @param bag the bag which is meant to overwrite the previous bag
+   * @param connectMessage indicates whether this is the first message
    */
-  public void setBag(Bag bag) {
-    this.bag = bag;
-    this.ownPlayer.getRack().synchroniseBag(this);
-  }
-
   public void sendGameStateMessage(boolean connectMessage) {
     GameState overrideGameState = new GameState(this, connectMessage);
     Client.updateGameState(ownPlayer, overrideGameState);
@@ -251,21 +246,13 @@ public class GameSession {
     resetTimer();
   }
 
-  public void setGameScreenController(GameScreenController gsc) {
-    this.gameScreenController = gsc;
-    gscInitialized = true;
-    setPlayable();
-  }
-
-  public void setLobbyScreenController(LobbyScreenController lsc) {
-    this.lobbyScreenController = lsc;
-  }
   // PLAYER TURN OPTIONS:
 
-  // 1: Skip turn
+  // 1: Skip the turn
 
   /**
-   * Skips the turn of the player by switching to the next player.
+   * Skips the turn of the player by switching to the next player. Also increases
+   * successiveScorelessTurns as no points were earned.
    *
    * @author tthielen
    */
@@ -278,10 +265,10 @@ public class GameSession {
 
   /**
    * Swaps the selected tiles for new ones by calling the exchangeTiles() function of the
-   * currentPlayer.
+   * currentPlayer. Also increases successiveScorelessTurns as no points were earned.
    *
    * @author tthielen
-   * @param swapTiles
+   * @param positions the positions on the rack of the tiles which are meant to be placed.
    */
   public void exchangeTiles(ArrayList<Integer> positions) {
     ownPlayer.exchangeTiles(positions);
@@ -297,32 +284,42 @@ public class GameSession {
    * is used to test if a legal moved is being played.
    *
    * @author tthielen
-   * @param posX
-   * @param posY
-   * @param tile
+   * @param posX the position on the x-axis
+   * @param posY the position on the y-axis
+   * @param tile the tile which is meant to be placed
+   * @param tilePosition the position of the tile on the rack
    */
   public void placeTile(int posX, int posY, Tile tile, int tilePosition) {
     board.placeTile(posX, posY, tile);
     ownPlayer.playTile(tilePosition);
-    placedSquares.add(board.getSquare(posX, posY));
-  }
-
-  public void placeTile(int posX, int posY, Tile tile) {
-    board.placeTile(posX, posY, tile);
-    ownPlayer.playTileAI(tile);
-    placedSquares.add(board.getSquare(posX, posY));
+    occupiedSquares.add(board.getSquare(posX, posY));
   }
 
   /**
-   * Returns the temporarily placed tile from the board and places it back to the rack of the
+   * Temporarily places the given tile on the square corresponding to the given coordinates. Removes
+   * the tile from the rack of the player. Additionally, it saves the square in placedSquares, which
+   * is used to test if a legal moved is being played.
+   *
+   * @author tthielen
+   * @param posX the position on the x-axis
+   * @param posY the position on the y-axis
+   * @param tile the tile which is meant to be placed
+   */
+  public void placeTile(int posX, int posY, Tile tile) {
+    board.placeTile(posX, posY, tile);
+    ownPlayer.playTileAI(tile);
+    occupiedSquares.add(board.getSquare(posX, posY));
+  }
+
+  /**
+   * Recalls the temporarily placed tile from the board and places it back on the rack of the
    * player.
    *
    * @author tthielen
-   * @param posX
-   * @param posY
+   * @param posX the position on the x-axis
+   * @param posY the position on the y-axis
    */
   public void recallTile(int posX, int posY) {
-
     // Take the tile from the respective square
     Tile rTile = board.recallTile(posX, posY);
     // Reset the letter of the tile, should it have been a wildcard tile
@@ -330,11 +327,11 @@ public class GameSession {
     // Return the tile to the rack of the player
     ownPlayer.returnTile(rTile);
     // Remove the respective square from the list of placedSquares
-    placedSquares.remove(board.getSquare(posX, posY));
+    occupiedSquares.remove(board.getSquare(posX, posY));
   }
 
   /**
-   * Recalls ALL placed tiles to the rack.
+   * Recalls all placed tiles to the rack.
    *
    * @author tthielen
    */
@@ -342,12 +339,12 @@ public class GameSession {
     ArrayList<Integer> posXCollection = new ArrayList<Integer>();
     ArrayList<Integer> posYCollection = new ArrayList<Integer>();
 
-    for (Square s : placedSquares) {
+    for (Square s : occupiedSquares) {
       posXCollection.add(s.getX());
       posYCollection.add(s.getY());
     }
 
-    int iterations = placedSquares.size();
+    int iterations = occupiedSquares.size();
     for (int i = 0; i < iterations; i++) {
       recallTile(posXCollection.get(i), posYCollection.get(i));
     }
@@ -358,7 +355,7 @@ public class GameSession {
    * it returns false, otherwise it returns true and calculates the value of the move.
    *
    * @author tthielen
-   * @return legalMove
+   * @return boolean indicating whether a legal move was placed
    */
   public boolean checkMove() {
 
@@ -369,7 +366,7 @@ public class GameSession {
     turnValue = 0;
 
     // Checks whether a tile has already been placed
-    if (placedSquares.size() == 0) {
+    if (occupiedSquares.size() == 0) {
       return false;
     }
 
@@ -386,7 +383,7 @@ public class GameSession {
 
     if (firstMove) {
       boolean starHit = false;
-      for (Square s : placedSquares) {
+      for (Square s : occupiedSquares) {
         if (s.getPremium() == Premium.STAR) {
           starHit = true;
           break;
@@ -397,7 +394,7 @@ public class GameSession {
       }
     } else {
       boolean adjacent = false;
-      for (Square s : placedSquares) {
+      for (Square s : occupiedSquares) {
         if (board.hasPreviouslyPlayedNeighbour(s)) {
           adjacent = true;
           break;
@@ -408,27 +405,27 @@ public class GameSession {
       }
     }
 
-    if (firstMove && placedSquares.size() < 2) {
+    if (firstMove && occupiedSquares.size() < 2) {
       return false;
     }
 
     // Checks whether the placed tiles all are either in a row or a column.
     // Returns false if neither is the case.
-    if (placedSquares.size() > 1) {
+    if (occupiedSquares.size() > 1) {
 
-      int posX = placedSquares.get(0).getX();
-      int posY = placedSquares.get(0).getY();
+      int posX = occupiedSquares.get(0).getX();
+      int posY = occupiedSquares.get(0).getY();
 
-      if (posX == placedSquares.get(1).getX()) {
+      if (posX == occupiedSquares.get(1).getX()) {
         column = true;
-        for (Square s : placedSquares) {
+        for (Square s : occupiedSquares) {
           if (s.getX() != posX) {
             return false;
           }
         }
-      } else if (posY == placedSquares.get(1).getY()) {
+      } else if (posY == occupiedSquares.get(1).getY()) {
         column = false;
-        for (Square s : placedSquares) {
+        for (Square s : occupiedSquares) {
           if (s.getY() != posY) {
             return false;
           }
@@ -440,23 +437,22 @@ public class GameSession {
 
     // Checks whether the placed tiles are coherent (including already placed tiles)
     // & CHECKS the MAIN word and calculates its VALUE
-    // TODO: Simplify the main word check into one single statement
 
     if (column) { // COLUMN
 
       // Search for lowest square on which a tile was placed
-      Square lowestSquare = placedSquares.get(0);
-      for (int i = 1; i < placedSquares.size(); i++) {
-        if (placedSquares.get(i).getY() < lowestSquare.getY()) {
-          lowestSquare = placedSquares.get(i);
+      Square lowestSquare = occupiedSquares.get(0);
+      for (int i = 1; i < occupiedSquares.size(); i++) {
+        if (occupiedSquares.get(i).getY() < lowestSquare.getY()) {
+          lowestSquare = occupiedSquares.get(i);
         }
       }
 
       // Search for highest square on which a tile was placed
-      Square highestSquare = placedSquares.get(0);
-      for (int i = 1; i < placedSquares.size(); i++) {
-        if (placedSquares.get(i).getY() > highestSquare.getY()) {
-          highestSquare = placedSquares.get(i);
+      Square highestSquare = occupiedSquares.get(0);
+      for (int i = 1; i < occupiedSquares.size(); i++) {
+        if (occupiedSquares.get(i).getY() > highestSquare.getY()) {
+          highestSquare = occupiedSquares.get(i);
         }
       }
 
@@ -511,18 +507,18 @@ public class GameSession {
     } else { // ROW
 
       // Search for rightmost square on which a tile was placed
-      Square rightmostSquare = placedSquares.get(0);
-      for (int i = 1; i < placedSquares.size(); i++) {
-        if (placedSquares.get(i).getX() > rightmostSquare.getX()) {
-          rightmostSquare = placedSquares.get(i);
+      Square rightmostSquare = occupiedSquares.get(0);
+      for (int i = 1; i < occupiedSquares.size(); i++) {
+        if (occupiedSquares.get(i).getX() > rightmostSquare.getX()) {
+          rightmostSquare = occupiedSquares.get(i);
         }
       }
 
       // Search for leftmost square on which a tile was placed
-      Square leftmostSquare = placedSquares.get(0);
-      for (int i = 1; i < placedSquares.size(); i++) {
-        if (placedSquares.get(i).getX() < leftmostSquare.getX()) {
-          leftmostSquare = placedSquares.get(i);
+      Square leftmostSquare = occupiedSquares.get(0);
+      for (int i = 1; i < occupiedSquares.size(); i++) {
+        if (occupiedSquares.get(i).getX() < leftmostSquare.getX()) {
+          leftmostSquare = occupiedSquares.get(i);
         }
       }
 
@@ -587,9 +583,9 @@ public class GameSession {
 
     // CHECKS all SECONDARY words formed for correctness & calculates their VALUE
 
-    for (Square s : placedSquares) {
+    for (Square s : occupiedSquares) {
 
-      // Check if the placedSquare has a neighbour
+      // Check if the placedSquare has a neighbor
       // If(!column): On the y-axis
       // If(column): On the x-axis
 
@@ -664,50 +660,52 @@ public class GameSession {
       }
     }
 
-    // Bingo / Bonus
-    if (placedSquares.size() == 7) {
+    // "Bingo" / Bonus
+    if (occupiedSquares.size() == 7) {
       turnValue += 50;
     }
 
-    return true; // If no condition is violated, return true
+    // Finally: If not a single condition was violated, return true
+    return true;
   }
 
   /**
    * Scores the tile according to the square (i.e. according to premium squares).
    *
    * @author tthielen
-   * @param iterator
-   * @return score
+   * @param square the square on which we want to calculate the value
+   * @return the value of the tile on this specific square
    */
-  private int scoreSquare(Square iterator) {
-    if (!iterator.isPreviouslyPlayed()) {
-      switch (iterator.getPremium()) {
+  private int scoreSquare(Square square) {
+    if (!square.isPreviouslyPlayed()) {
+      switch (square.getPremium()) {
         case DLS:
-          return 2 * iterator.getTile().getValue();
+          return 2 * square.getTile().getValue();
         case TLS:
-          return 3 * iterator.getTile().getValue();
+          return 3 * square.getTile().getValue();
         case DWS:
           dwsCount++;
-          return iterator.getTile().getValue();
+          return square.getTile().getValue();
         case TWS:
           twsCount++;
-          return iterator.getTile().getValue();
-        case STAR: // First play is doubled in value
+          return square.getTile().getValue();
+        case STAR:
+          // First play is doubled in value as per rule book
           dwsCount++;
-          return iterator.getTile().getValue();
+          return square.getTile().getValue();
         case NONE:
-          return iterator.getTile().getValue();
+          return square.getTile().getValue();
         default:
           return 0;
       }
     } else {
-      return iterator.getTile().getValue();
+      return square.getTile().getValue();
     }
   }
 
   /**
    * Can be called if the current move is legal. Saves the value of the move in the score, draws
-   * back to 7 tiles, empties values, synchronises GameState and calls nextPlayer().
+   * back to 7 tiles, empties values and calls nextPlayer().
    *
    * @author tthielen
    */
@@ -718,10 +716,10 @@ public class GameSession {
       endGame();
     }
 
-    for (Square s : placedSquares) {
+    for (Square s : occupiedSquares) {
       s.setPreviouslyPlayed();
     }
-    placedSquares.removeAll(placedSquares);
+    occupiedSquares.removeAll(occupiedSquares);
 
     successiveScorelessTurns = 0;
     nextPlayer();
@@ -731,7 +729,8 @@ public class GameSession {
 
   /**
    * Sets currentlyPlaying of the player of the last turn to false. Afterwards it sets
-   * currentlyPlaying of the next player (according to the order of the ArrayList) to true.
+   * currentlyPlaying of the next player (according to the order of the ArrayList) to true. Also
+   * sends a GameStateMessage to all other players.
    *
    * @author tthielen
    */
@@ -780,6 +779,91 @@ public class GameSession {
         }
       }
     }
+  }
+
+  /**
+   * Called as soon as one of the two end game conditions occurs.
+   *
+   * @author tikrause
+   */
+  public void endGame() {
+    System.out.println("endGame called");
+    Collections.sort(players);
+    boolean hasWon = (players.get(players.size() - 1).equals(ownPlayer));
+    DataHandler.addStatistics(DataHandler.getOwnPlayerId(), hasWon, ownPlayer.getScore());
+    // TODO end game screen (statistics of the current, ranking, end game, new game)
+    // TODO send end game message to all
+  }
+
+  /**
+   * Checks whether the rack as well as the bag are empty.
+   *
+   * @author tthielen
+   * @return whether the (usual) end condition is reached
+   */
+  private boolean checkEndCondition() {
+    return ownPlayer.getRack().getTiles().isEmpty() && bag.isEmpty();
+  }
+
+  /**
+   * Called to kick the player due to using more than 10 minutes overtime.
+   *
+   * @author tthielen
+   */
+  private void kickPlayer() {
+    if (ownPlayer.isCurrentlyPlaying()) {
+      nextPlayer();
+      Platform.runLater(
+          new Runnable() {
+            @Override
+            public void run() {
+              gameScreenController.leaveGameCall();
+              // TODO: Show a dialogue and send a different message to all other players
+            }
+          });
+      timer.cancel();
+    }
+  }
+
+  public void switchToGameScreen(String chat) {
+    Platform.runLater(
+        new Runnable() {
+          @Override
+          public void run() {
+            lobbyScreenController.switchToGameScreen(chat);
+          }
+        });
+  }
+
+  public void setPlayable() {
+    Platform.runLater(
+        new Runnable() {
+          @Override
+          public void run() {
+            gameScreenController.setPlayable(ownPlayer.isCurrentlyPlaying());
+          }
+        });
+  }
+
+  /**
+   * Sets the bag by overwriting the bag object and referencing the new bag in the rack.
+   *
+   * @author tthielen
+   * @param bag the bag which is meant to overwrite the previous bag
+   */
+  public void setBag(Bag bag) {
+    this.bag = bag;
+    this.ownPlayer.getRack().synchroniseBag(this);
+  }
+
+  public void setGameScreenController(GameScreenController gsc) {
+    this.gameScreenController = gsc;
+    gscInitialized = true;
+    setPlayable();
+  }
+
+  public void setLobbyScreenController(LobbyScreenController lsc) {
+    this.lobbyScreenController = lsc;
   }
 
   /**
@@ -846,58 +930,6 @@ public class GameSession {
 
   public void setIsRunning(boolean running) {
     this.isRunning = running;
-  }
-
-  private boolean checkEndCondition() {
-    return ownPlayer.getRack().getTiles().isEmpty() && bag.isEmpty();
-  }
-
-  /**
-   * Method for what happens when the game successfully ends.
-   *
-   * @author
-   */
-  public void endGame() {
-    System.out.println("endGame called");
-    Collections.sort(players);
-    boolean hasWon = (players.get(players.size() - 1).equals(ownPlayer));
-    DataHandler.addStatistics(DataHandler.getOwnPlayerId(), hasWon, ownPlayer.getScore());
-    // TODO end game screen (statistiken des aktuellen spiels, ranking, end game, new game)
-    // TODO send end game message to all
-  }
-
-  private void kickPlayer() {
-    if (ownPlayer.isCurrentlyPlaying()) {
-      nextPlayer();
-      Platform.runLater(
-          new Runnable() {
-            @Override
-            public void run() {
-              gameScreenController.leaveGameCall();
-            }
-          });
-      timer.cancel();
-    }
-  }
-
-  public void switchToGameScreen(String chat) {
-    Platform.runLater(
-        new Runnable() {
-          @Override
-          public void run() {
-            lobbyScreenController.switchToGameScreen(chat);
-          }
-        });
-  }
-
-  public void setPlayable() {
-    Platform.runLater(
-        new Runnable() {
-          @Override
-          public void run() {
-            gameScreenController.setPlayable(ownPlayer.isCurrentlyPlaying());
-          }
-        });
   }
 
   public GameScreenController getGameScreenController() {
