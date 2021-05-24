@@ -689,6 +689,9 @@ public class GameScreenController {
   void leaveGame(ActionEvent event) throws Exception {
     try {
       Client.disconnectClient(DataHandler.getOwnPlayer());
+      if (Client.isHost()) {
+    	  Server.serverShutdown();
+      }
     } catch (InterruptedException e1) {
       e1.printStackTrace();
     }

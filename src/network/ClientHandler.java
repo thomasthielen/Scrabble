@@ -45,7 +45,6 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         break;
 
       case DISCONNECT:
-        // TODO
         DisconnectMessage dcm = (DisconnectMessage) msg;
 
         // Option 1: The disconnecting player is the host of the game session
@@ -54,9 +53,6 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
 
           // Option 1.1: The game is already running
           if (Client.getGameSession().getGameScreenController() != null) {
-            if (Client.isHost()) {
-              Server.serverShutdown();
-            }
             Platform.runLater(
                 new Runnable() {
                   @Override
@@ -78,7 +74,6 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
                   }
                 });
           }
-          // Client.disconnectClient(DataHandler.getOwnPlayer());
 
           // Option 2: The disconnecting player is not the host
 
