@@ -1240,7 +1240,7 @@ public class GameScreenController {
           loader.load(
               getClass()
                   .getClassLoader()
-                  .getResourceAsStream("screens/resources/StartScreen.fxml"));
+                  .getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
     } catch (IOException e) {
