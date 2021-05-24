@@ -46,7 +46,6 @@ public class GameSession {
 
   // booleans to indicate the game status
   private boolean isRunning = false; // game is running (contrary to still in lobby)
-  private boolean gscInitialized = false; // gameScreenController has been initialized yet
   private boolean multiplayer = false; // game is a multiplayer game (not singleplayer)
 
   // Counters for word value (used in checkMove() & scoreSquare() )
@@ -204,7 +203,7 @@ public class GameSession {
         }
       }
 
-      if (!overrideGameState.isPlayersOnly() && gscInitialized) {
+      if (!overrideGameState.isPlayersOnly() && gameScreenController != null) {
         setPlayable();
       }
 
@@ -780,7 +779,7 @@ public class GameSession {
       }
     }
   }
-
+  
   /**
    * Called as soon as one of the two end game conditions occurs.
    *
@@ -794,7 +793,7 @@ public class GameSession {
     // TODO end game screen (statistics of the current, ranking, end game, new game)
     // TODO send end game message to all
   }
-
+  
   /**
    * Checks whether the rack as well as the bag are empty.
    *
@@ -858,7 +857,6 @@ public class GameSession {
 
   public void setGameScreenController(GameScreenController gsc) {
     this.gameScreenController = gsc;
-    gscInitialized = true;
     setPlayable();
   }
 

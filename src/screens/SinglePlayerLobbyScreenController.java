@@ -92,7 +92,11 @@ public class SinglePlayerLobbyScreenController {
   void leaveLobby(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
+    Parent content =
+        loader.load(
+            getClass()
+                .getClassLoader()
+                .getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
     Server.resetLobby();
@@ -136,7 +140,11 @@ public class SinglePlayerLobbyScreenController {
   @FXML
   void addAIPlayer(ActionEvent event) throws Exception {
     try {
-      AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1));
+      AI ai =
+          new AI(
+              "AIPlayer" + (Server.getAIPlayerList().size() + 1),
+              false,
+              false); // TODO: the first false needs to be set by the difficulty chooser
       Server.addAIPlayer(ai);
     } catch (TooManyPlayerException e) {
       Alert errorAlert = new Alert(AlertType.ERROR);
@@ -150,15 +158,14 @@ public class SinglePlayerLobbyScreenController {
   public void switchToGameScreen() throws Exception {
     FXMLLoader loader = new FXMLLoader();
     Parent content;
-    content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/GameScreen.fxml"));
+    content =
+        loader.load(
+            getClass().getClassLoader().getResourceAsStream("screens/resources/GameScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
 
-  /**
-   * 
-   * @author tikrause
-   */
+  /** @author tikrause */
   public void setDictionaryMenu() {
     MenuItem menuItem1 = new MenuItem("Collins Scrabble Words");
     MenuItem menuItem2 = new MenuItem("Enable (Words With Friends)");

@@ -293,7 +293,7 @@ public class LobbyScreenController {
   @FXML
   void easyAIPlayer(ActionEvent event) {
     try {
-      AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1), false);
+      AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1), false, true);
       Server.addAIPlayer(ai);
       refreshPlayerList();
     } catch (TooManyPlayerException e) {
@@ -308,7 +308,7 @@ public class LobbyScreenController {
   @FXML
   void hardAIPlayer(ActionEvent event) {
     try {
-      AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1), true);
+      AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1), true, true);
       Server.addAIPlayer(ai);
       refreshPlayerList();
     } catch (TooManyPlayerException e) {
