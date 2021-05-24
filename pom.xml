@@ -29,6 +29,14 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 <version>3.32.3.2</version>
 </dependency>
 
+<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+<dependency>
+    <groupId>org.junit.jupiter</groupId>
+    <artifactId>junit-jupiter-api</artifactId>
+    <version>5.8.0-M1</version>
+    <scope>test</scope>
+</dependency>
+
 </dependencies>
 
 <build>
