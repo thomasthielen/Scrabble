@@ -116,7 +116,7 @@ public class ChangeTilesScreenController {
     }
     bag.refreshBag();
     Client.getGameSession().setBag(bag);
-    Client.getGameSession().sendGameStateMessage();
+    Client.getGameSession().sendGameStateMessage(false);
     back(event);
   }
 

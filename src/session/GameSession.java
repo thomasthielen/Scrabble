@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import AI.AI;
 import data.DataHandler;
-import gameentities.*;
+import gameentities.Bag;
+import gameentities.Board;
+import gameentities.Player;
+import gameentities.Premium;
+import gameentities.Square;
+import gameentities.Tile;
 import javafx.application.Platform;
 import network.Client;
 import network.Server;
@@ -21,51 +25,54 @@ import screens.LobbyScreenController;
  */
 public class GameSession {
 
-  // Objects which are synchronised between the players
+  // Objects which are synchronized between the players
   private ArrayList<Player> players; // Holds all participating players
   private Bag bag; // The bag of the game
   private Board board; // The board of the game
 
-  private boolean isActive = false; // Indicates whether the game is live
-
   private Player ownPlayer; // The Player of this GameSession object
 
-  private ArrayList<Square> placedSquares = new ArrayList<Square>(); // List of temporary tiles
+  private ArrayList<Square> placedSquares =
+      new ArrayList<Square>(); // List of temporarily placed tiles
 
+  // Controllers extracted from the GUI handling
   private GameScreenController gameScreenController;
   private LobbyScreenController lobbyScreenController;
 
+  // The round timer and its values
   private Timer timer;
-
   private static final int RESET = 600;
   private int seconds = RESET;
 
-  private boolean isRunning = false;
-  private boolean gscInitialized = false;
-  private boolean multiPlayer;
+  // booleans to indicate the game status
+  private boolean isRunning = false; // game is running (contrary to still in lobby)
+  private boolean gscInitialized = false; // gameScreenController has been initialized yet
+  private boolean multiplayer = false; // game is a multiplayer game (not singleplayer)
 
-  private int successiveScorelessTurns = 0;
+  // Counters for word value (used in checkMove() & scoreSquare() )
+  private int dwsCount = 0; // amount of double word squares in the move
+  private int twsCount = 0; // amount of triple word squares in the move
 
   private int turnValue = 0; // Value of the current turn (including bonuses of premium squares)
 
-  // Counters for word value (used in checkMove() & scoreSquare() )
-  private int dwsCount = 0;
-  private int twsCount = 0;
+  private int successiveScorelessTurns = 0; // Amount of scoreless turns, used in end game handling
 
   /**
-   * Constructor: Creates a GameSession object and creates the player-list, the bag and the board.
+   * Creates a GameSession object by creating the player-list, the bag and the board.
    *
    * @author tthielen
+   * @param player the own player object of this GameSession object
+   * @param multiplayer sets whether this is a multiplayer game
    */
-  public GameSession(Player p, boolean multiPlayer) {
+  public GameSession(Player player, boolean multiplayer) {
     players = new ArrayList<Player>();
     bag = new Bag();
     board = new Board();
-    ownPlayer = p;
+    ownPlayer = player;
     ownPlayer.createRack(this);
-    this.multiPlayer = multiPlayer;
+    this.multiplayer = multiplayer;
 
-    if (multiPlayer) {
+    if (this.multiplayer) {
       ownPlayer.setCurrentlyPlaying(Client.isHost());
       sendGameStateMessage(true);
     } else {
@@ -74,7 +81,7 @@ public class GameSession {
   }
 
   /**
-   * Initialises the GameSession-Timer.
+   * Initializes the GameSession-timer.
    *
    * @author tthielen
    */
@@ -84,11 +91,15 @@ public class GameSession {
         new TimerTask() {
           @Override
           public void run() {
+            // As long as the game is active:
             if (isRunning) {
+              // Count down towards 0
               seconds--;
+              // Kick the currently playing player at 0
               if (seconds == 0) {
                 kickPlayer();
               }
+              // Refresh the timer in the GUI
               if (gameScreenController != null) {
                 gameScreenController.refreshTimerText(printTime(), seconds);
               }
@@ -99,16 +110,32 @@ public class GameSession {
         1000);
   }
 
+  /**
+   * Cancels the GameSession-timer.
+   *
+   * @author tthielen
+   */
   public void cancelTimer() {
-	  if (timer != null) {
-		  timer.cancel();
-	  }
+    if (timer != null) {
+      timer.cancel();
+    }
   }
-  
+
+  /**
+   * Resets the GameSession-timer.
+   *
+   * @author tthielen
+   */
   private void resetTimer() {
     this.seconds = RESET;
   }
 
+  /**
+   * Returns the seconds of the timer formatted in a mm:ss format.
+   *
+   * @author tthielen
+   * @return the seconds formatted correctly
+   */
   private String printTime() {
     int minutes = this.seconds / 60;
     int seconds = this.seconds % 60;
@@ -127,6 +154,8 @@ public class GameSession {
   }
 
   /**
+   * TODO: Add comment.
+   *
    * @author tikrause
    * @param chat
    */
@@ -141,7 +170,11 @@ public class GameSession {
         });
   }
 
-  /** @author tikrause */
+  /**
+   * TODO: Add comment.
+   *
+   * @author tikrause
+   */
   public void initialiseSinglePlayerGameScreen() {
     Platform.runLater(
         new Runnable() {
@@ -153,22 +186,28 @@ public class GameSession {
   }
 
   /**
-   * Synchronises the GameState objects between players.
+   * Synchronizes by overwriting values with the data held by the given GameState object.
    *
+   * @author tthielen
    * @author tikrause
+   * @param overrideGameState the GameState which contains the data to synchronize
    */
   public void synchronise(GameState overrideGameState) {
+    // Don't synchronize if the game is running AND the received message is the first
     if (!overrideGameState.isConnectGameState() || !isRunning) {
       this.seconds = RESET;
       this.players = overrideGameState.getPlayers();
+
       for (Player p : this.players) {
         if (p.equals(ownPlayer)) {
           ownPlayer = p;
         }
       }
+
       if (!overrideGameState.isPlayersOnly() && gscInitialized) {
         setPlayable();
       }
+
       if (!overrideGameState.isPlayersOnly() && overrideGameState.getBag() != null) {
         this.bag = overrideGameState.getBag();
         this.ownPlayer.getRack().synchroniseBag(this);
@@ -184,6 +223,7 @@ public class GameSession {
               });
         }
       }
+
       if (!ownPlayer.isAI() && lobbyScreenController != null) {
         lobbyScreenController.refreshPlayerList();
         resetTimer();
@@ -191,18 +231,15 @@ public class GameSession {
     }
   }
 
+  /**
+   * Sets the bag by overwriting the bag object and referencing that in the rack.
+   * 
+   * @author tthielen
+   * @param bag the bag which is meant to overwrite the previous bag
+   */
   public void setBag(Bag bag) {
     this.bag = bag;
     this.ownPlayer.getRack().synchroniseBag(this);
-  }
-
-  public void sendGameStateMessage() {
-    GameState overrideGameState = new GameState(this);
-    Client.updateGameState(ownPlayer, overrideGameState);
-    if (gameScreenController != null) {
-      gameScreenController.setPlayable(ownPlayer.isCurrentlyPlaying());
-    }
-    resetTimer();
   }
 
   public void sendGameStateMessage(boolean connectMessage) {
@@ -714,8 +751,8 @@ public class GameSession {
         break;
       }
     }
-    if (multiPlayer) {
-      sendGameStateMessage();
+    if (multiplayer) {
+      sendGameStateMessage(false);
       for (Player p : players) {
         if (p.isCurrentlyPlaying()) {
           Player playing = p;
@@ -790,7 +827,7 @@ public class GameSession {
    * @return
    */
   public boolean getMultiPlayer() {
-    return multiPlayer;
+    return multiplayer;
   }
 
   /**
@@ -809,25 +846,6 @@ public class GameSession {
 
   public void setIsRunning(boolean running) {
     this.isRunning = running;
-  }
-  /**
-   * Changes the isActive state of the GameSession.
-   *
-   * @author tthielen
-   * @param isActive
-   */
-  public void setActive(boolean isActive) {
-    this.isActive = isActive;
-  }
-
-  /**
-   * Returns whether the GameSession is active.
-   *
-   * @author tthielen
-   * @return isActive
-   */
-  public boolean isActive() {
-    return this.isActive;
   }
 
   private boolean checkEndCondition() {
@@ -888,5 +906,17 @@ public class GameSession {
 
   public LobbyScreenController getLobbyScreenController() {
     return this.lobbyScreenController;
+  }
+
+  // TODO: DELETE EVERYTHING BELOW THIS POINT
+
+  private boolean isActive = false;
+
+  public void setActive(boolean isActive) {
+    this.isActive = isActive;
+  }
+
+  public boolean isActive() {
+    return this.isActive;
   }
 }

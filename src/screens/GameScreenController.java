@@ -220,7 +220,7 @@ public class GameScreenController {
       // Call the initial draw of tiles in the back end
       r.initialDraw();
       if (gameSession.getMultiPlayer()) {
-        gameSession.sendGameStateMessage();
+        gameSession.sendGameStateMessage(false);
       }
     }
 
