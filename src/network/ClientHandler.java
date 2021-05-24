@@ -45,6 +45,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
           Client.getGameSession().getLobbyScreenController().refreshPlayerList();
         }
         break;
+
       case DISCONNECT:
         // TODO
         DisconnectMessage dcm = (DisconnectMessage) msg;
@@ -66,7 +67,14 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
             Client.getGameSession()
                 .getLobbyScreenController()
                 .receivedMessage(dcm.getPlayer(), " has left!");
-            Client.getGameSession().getLobbyScreenController().refreshPlayerList();
+            Platform.runLater(
+                new Runnable() {
+                  @Override
+                  public void run() {
+                    System.out.println("passiert");
+                    Client.getGameSession().getLobbyScreenController().hostHasLeft();
+                  }
+                });
           }
           // Client.disconnectClient(DataHandler.getOwnPlayer());
         } else {
@@ -84,15 +92,18 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
           }
         }
         break;
+
       case START_GAME:
         if (!Client.isHost()) {
           Client.getGameSession().switchToGameScreen();
           Client.getGameSession().setPlayable();
         }
         break;
+
       case END_GAME:
         // TODO
         break;
+
       case SEND_CHAT:
         // TODO
         SendChatMessage scm = (SendChatMessage) msg;
@@ -106,6 +117,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
               .receivedMessage(scm.getPlayer(), scm.getMessage());
         }
         break;
+
       case GAME_STATE:
         // TODO
         GameStateMessage gsm = (GameStateMessage) msg;
@@ -115,10 +127,12 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
           System.out.println(p.getUsername());
         }
         break;
+
       case DICTIONARY:
         DictionaryMessage dm = (DictionaryMessage) msg;
         DataHandler.userDictionaryFile(dm.getFile());
         break;
+
       case TOO_FEW:
         if (Client.isHost()) {
           if (Client.getGameSession().getGameScreenController() != null) {

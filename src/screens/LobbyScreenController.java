@@ -160,17 +160,12 @@ public class LobbyScreenController {
    */
   @FXML
   void leaveLobby(ActionEvent event) throws Exception {
-    StartScreen.getStage();
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
-    Parent content = loader.load();
-    StartScreen.getStage().setScene(new Scene(content));
-    StartScreen.getStage().show();
     // TODO
     Client.disconnectClient(DataHandler.getOwnPlayer());
     if (Client.isHost()) {
       Server.serverShutdown();
     }
+    leave();
   }
 
   /**
@@ -404,5 +399,28 @@ public class LobbyScreenController {
 
     dictionarySelecter.setText(menuItem1.getText());
     chosenDictionary = new File(Dictionary.COLLINS.getUrl());
+  }
+
+  void leave() {
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
+    Parent content;
+    try {
+      content = loader.load();
+      StartScreen.getStage().setScene(new Scene(content));
+      StartScreen.getStage().show();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  public void hostHasLeft() {
+    Alert errorAlert = new Alert(AlertType.ERROR);
+    errorAlert.setHeaderText("The host has left.");
+    errorAlert.setContentText(
+        "The host has left the game and therefore you have been disconnected from the server.");
+    errorAlert.showAndWait();
+    leave();
   }
 }
