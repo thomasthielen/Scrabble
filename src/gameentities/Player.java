@@ -16,6 +16,8 @@ import session.GameSession;
  * <p>For each player, a Player object containing all relevant attributes is created.
  *
  * @author tthielen
+ * @author tikrause
+ * @author jluellig
  */
 public class Player implements Serializable, Comparable<Player> {
   private static final long serialVersionUID = 1L;
@@ -25,7 +27,7 @@ public class Player implements Serializable, Comparable<Player> {
   private int score = 0;
   private Rack rack;
   private HashMap<StatisticKeys, Integer> playerStatistics;
-  private boolean isAI = false;
+  private boolean isBot = false;
 
   private boolean currentlyPlaying = false;
 
@@ -42,10 +44,16 @@ public class Player implements Serializable, Comparable<Player> {
     this.playerStatistics = DataHandler.getStatistics(DataHandler.getOwnPlayerId());
   }
 
+  /**
+   * Creates a new player object with a random avatar, no statistics and which is an AI player.
+   *
+   * @author jluellig
+   * @param username the name of the player
+   */
   public Player(String username) {
-	  this.username = username;
-	  this.avatar = Avatar.values()[new Random().nextInt(Avatar.values().length)];
-	  this.isAI = true;
+    this.username = username;
+    this.avatar = Avatar.values()[new Random().nextInt(Avatar.values().length)];
+    this.isBot = true;
   }
 
   /**
@@ -64,21 +72,27 @@ public class Player implements Serializable, Comparable<Player> {
    * @author tthielen
    */
   public void refillRack() {
-    rack.refillDraw();
+    rack.refillDraw(this.isBot);
   }
 
   /**
    * Plays a tile to the board.
    *
    * @author tthielen
-   * @param tile the tile that should be played
+   * @param position the position the tile should be played on
    */
   public void playTile(int position) {
     this.rack.playTile(position);
     ;
   }
-  
-  public void playTileAI(Tile tile) {
+
+  /**
+   * Plays a tile from the AI.
+   *
+   * @author tthielen
+   * @param tile the tile that should be played
+   */
+  public void playTileBot(Tile tile) {
     this.rack.playTileAI(tile);
     ;
   }
@@ -99,8 +113,7 @@ public class Player implements Serializable, Comparable<Player> {
    * to the Bag, and the new Tiles are drawn from the Bag before that.
    *
    * @author tthielen
-   * @param swapTiles tiles that are meant to be swapped
-   * @param postions the postions of the tiles
+   * @param positions the positions of the tiles
    */
   public void exchangeTiles(ArrayList<Integer> positions) {
     rack.exchangeTiles(positions);
@@ -110,7 +123,7 @@ public class Player implements Serializable, Comparable<Player> {
    * Sets the player's username.
    *
    * @author tthielen
-   * @param username the username of the player
+   * @param name the username of the player
    */
   public void setUsername(String name) {
     this.username = name;
@@ -176,14 +189,15 @@ public class Player implements Serializable, Comparable<Player> {
   public Rack getRack() {
     return rack;
   }
-  
+
   /**
-   * 
+   * Returns whether the player is an AI player or not.
+   *
    * @author tikrause
    * @return
    */
-  public boolean isAI() {
-	  return isAI;
+  public boolean isBot() {
+    return isBot;
   }
 
   /**

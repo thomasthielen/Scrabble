@@ -228,6 +228,7 @@ public class Board implements Serializable {
       return false;
     }
   }
+  
   /**
    * Returns whether the given square has a neighbouring square which holds a tile which was played
    * in a previous turn.

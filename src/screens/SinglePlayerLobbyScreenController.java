@@ -306,7 +306,7 @@ public class SinglePlayerLobbyScreenController {
     for (int i = 0; i < players.size(); i++) {
       playerInfos.get(i).setText(players.get(i).getUsername());
       playerInfos.get(i).setVisible(true);
-      if (!players.get(i).isAI()) {
+      if (!players.get(i).isBot()) {
         HashMap<StatisticKeys, Integer> map = players.get(i).getPlayerStatistics();
         playerStatistics
             .get(i)

@@ -1256,7 +1256,7 @@ public class GameScreenController {
       name.setFont(new Font(20));
       name.setFill(Paint.valueOf("#f88c00"));
       playerStatisticsPane.getChildren().add(name);
-      if (!players.get(i).isAI()) {
+      if (!players.get(i).isBot()) {
         HashMap<StatisticKeys, Integer> map = players.get(i).getPlayerStatistics();
         Text statistics =
             new Text(

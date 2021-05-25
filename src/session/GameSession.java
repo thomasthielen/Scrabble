@@ -222,7 +222,7 @@ public class GameSession {
         }
       }
 
-      if (!ownPlayer.isAI() && lobbyScreenController != null) {
+      if (!ownPlayer.isBot() && lobbyScreenController != null) {
         lobbyScreenController.refreshPlayerList();
         resetTimer();
       }
@@ -306,7 +306,7 @@ public class GameSession {
    */
   public void placeTile(int posX, int posY, Tile tile) {
     board.placeTile(posX, posY, tile);
-    ownPlayer.playTileAI(tile);
+    ownPlayer.playTileBot(tile);
     occupiedSquares.add(board.getSquare(posX, posY));
   }
 
@@ -773,7 +773,7 @@ public class GameSession {
       for (Player p : players) {
         if (p.isCurrentlyPlaying()) {
           Player playing = p;
-          if (playing.isAI()) {
+          if (playing.isBot()) {
             for (AI ai : Server.getAIPlayerList()) {
               if (ai.getPlayer().equals(playing)) {
                 Client.notifyAI(DataHandler.getOwnPlayer(), ai.getPlayer());
@@ -787,7 +787,7 @@ public class GameSession {
       for (Player p : players) {
         if (p.isCurrentlyPlaying()) {
           Player playing = p;
-          if (playing.isAI()) {
+          if (playing.isBot()) {
             for (AI ai : Server.getAIPlayerList()) {
               if (ai.getPlayer().equals(playing)) {
                 ai.makeMove();
