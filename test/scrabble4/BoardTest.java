@@ -1,12 +1,15 @@
 package scrabble4;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import gameentities.Board;
 import gameentities.Premium;
+import gameentities.Tile;
 
 /**
  * JUnit Test Class for the Board class
@@ -311,5 +314,25 @@ class BoardTest {
     assertEquals(Premium.NONE, board.getSquare(15, 11).getPremium());
     assertEquals(Premium.NONE, board.getSquare(15, 13).getPremium());
     assertEquals(Premium.NONE, board.getSquare(15, 14).getPremium());
+  }
+  
+  @Test
+  // test placeTile and recallTile from Board
+  void testPlaceTile() {
+    // create a new Tile
+    Tile tile = new Tile('C', 3);
+    // place the Tile on the board
+    board.placeTile(8, 8, tile);
+    
+    // check if there is a Tile on the selected position
+    assertNotNull(board.getTile(8, 8));
+    // check if the Tile is a C with the Value 3
+    assertEquals('C', board.getTile(8, 8).getLetter());
+    assertEquals(3, board.getTile(8, 8).getValue());
+    
+    // recall the placed Tile
+    board.recallTile(8, 8);
+    //check if the position is now empty again
+    assertNull(board.getTile(8, 8));
   }
 }
