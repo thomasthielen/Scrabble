@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
-import AI.AI;
+import ai.AI;
 import data.DataHandler;
 import data.StatisticKeys;
 import gameentities.Player;

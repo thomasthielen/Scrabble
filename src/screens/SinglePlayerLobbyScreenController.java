@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import AI.AI;
+import ai.AI;
 import data.DataHandler;
 import data.StatisticKeys;
 import gameentities.Player;

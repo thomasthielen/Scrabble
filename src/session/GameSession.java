@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
-import AI.AI;
+
+import ai.AI;
 import data.DataHandler;
 import gameentities.Bag;
 import gameentities.Board;

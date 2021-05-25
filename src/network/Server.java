@@ -15,7 +15,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import AI.AI;
+import ai.AI;
 import data.DataHandler;
 import gameentities.Player;
 

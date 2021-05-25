@@ -1,6 +1,6 @@
 package network;
 
-import AI.AI;
+import ai.AI;
 import data.DataHandler;
 import gameentities.Player;
 import io.netty.channel.Channel;
