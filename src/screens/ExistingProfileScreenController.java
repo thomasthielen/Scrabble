@@ -56,7 +56,6 @@ public class ExistingProfileScreenController {
       DataHandler.setOwnPlayer(new Player(username, avatar));
       StartScreen.getStage();
       FXMLLoader loader = new FXMLLoader();
-      //loader.setLocation(getClass().getResource("resources/OnlineOrOfflineScreen.fxml"));
       Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
@@ -116,7 +115,6 @@ public class ExistingProfileScreenController {
       int id = (int) buttonGroup.getSelectedToggle().getUserData();
       StartScreen.getStage();
       FXMLLoader loader = new FXMLLoader();
-      //loader.setLocation(getClass().getResource("resources/EditProfileScreen.fxml"));
       Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/EditProfileScreen.fxml"));
       EditProfileScreenController editProfileScreenController = loader.getController();
       editProfileScreenController.loadProfile(id);
@@ -159,7 +157,6 @@ public class ExistingProfileScreenController {
   void back(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    //loader.setLocation(getClass().getResource("resources/StartScreen.fxml"));
     Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/StartScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
@@ -179,7 +176,6 @@ public class ExistingProfileScreenController {
       Optional<ButtonType> result = errorAlert.showAndWait();
       if (result.get() == ButtonType.OK) {
         FXMLLoader loader = new FXMLLoader();
-        //loader.setLocation(getClass().getResource("resources/NewProfileScreen.fxml"));
         Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/NewProfileScreen.fxml"));
         NewProfileScreenController newProfileScreenController = loader.getController();
         newProfileScreenController.addAvatars();
