@@ -3,6 +3,7 @@ package screens;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -692,15 +693,29 @@ public class GameScreenController {
    */
   @FXML
   void leaveGame(ActionEvent event) throws Exception {
-    try {
-      Client.disconnectClient(DataHandler.getOwnPlayer());
-      if (Client.isHost()) {
-        Server.serverShutdown();
+    Alert alert = new Alert(AlertType.CONFIRMATION);
+    alert.setTitle("Confirmation dialog");
+    alert.setHeaderText("You are trying to leave the game.");
+    alert.setContentText(
+        "When you leave the game, you get disconnected from the server and can't join this session anymore.");
+    Button cancelButton = (Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL);
+    cancelButton.setText("Cancel");
+    Optional<ButtonType> result = alert.showAndWait();
+    if (result.get() == ButtonType.OK) {
+      if (gameSession.getMultiPlayer()) {
+        try {
+          Client.disconnectClient(DataHandler.getOwnPlayer());
+          if (Client.isHost()) {
+            Server.serverShutdown();
+          }
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
       }
-    } catch (InterruptedException e1) {
-      e1.printStackTrace();
+      leave();
+    } else {
+      event.consume();
     }
-    leave();
   }
 
   public void leaveGameCall() {
@@ -1237,7 +1252,15 @@ public class GameScreenController {
   }
 
   public void leave() {
-    StartScreen.getStage();
+    StartScreen.getStage()
+        .setOnCloseRequest(
+            new EventHandler<WindowEvent>() {
+              @Override
+              public void handle(final WindowEvent event) {
+                Platform.exit();
+                System.exit(0);
+              }
+            });
     FXMLLoader loader = new FXMLLoader();
     Parent content;
     try {
@@ -1328,24 +1351,29 @@ public class GameScreenController {
               @Override
               public void handle(final WindowEvent event) {
                 Alert alert = new Alert(AlertType.CONFIRMATION);
-                alert.setHeaderText("Too few players.");
+                alert.setTitle("Confirmation dialog");
+                alert.setHeaderText("You are trying to leave the game.");
                 alert.setContentText(
-                    "You can't start the game before adding an AI player.\n"
-                        + "If you want to play alone and learn how to play Scrabble, try the Training Mode.");
+                    "When you leave the game, you get disconnected from the server and can't join this session anymore.");
+                Button cancelButton =
+                    (Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL);
+                cancelButton.setText("Cancel");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
-                  try {
-                    Client.disconnectClient(DataHandler.getOwnPlayer());
-                    if (Client.isHost()) {
-                      Server.serverShutdown();
+                  if (gameSession.getMultiPlayer()) {
+                    try {
+                      Client.disconnectClient(DataHandler.getOwnPlayer());
+                      if (Client.isHost()) {
+                        Server.serverShutdown();
+                      }
+                    } catch (InterruptedException e) {
+                      e.printStackTrace();
                     }
-                  } catch (InterruptedException e) {
-                    e.printStackTrace();
                   }
                   Platform.exit();
                   System.exit(0);
                 } else {
-
+                  event.consume();
                 }
               }
             });
