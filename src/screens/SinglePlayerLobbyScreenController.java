@@ -79,10 +79,10 @@ public class SinglePlayerLobbyScreenController {
     playerInfos.add(playerInfo3);
     playerInfos.add(playerInfo4);
 
-    playerStatistics.add(playerInfo1);
-    playerStatistics.add(playerInfo2);
-    playerStatistics.add(playerInfo3);
-    playerStatistics.add(playerInfo4);
+    playerStatistics.add(playerStatistics1);
+    playerStatistics.add(playerStatistics2);
+    playerStatistics.add(playerStatistics3);
+    playerStatistics.add(playerStatistics4);
 
     refreshPlayerList();
     setDictionaryMenu();
