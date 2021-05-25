@@ -457,10 +457,12 @@ public class GameSession {
 
       // Start on the highest square or a square with a previous tile above
       Square iterator = highestSquare;
-      while (board.getUpperNeighbour(iterator).isTaken()) {
-        iterator = board.getUpperNeighbour(iterator);
-        if (board.getUpperNeighbour(iterator) == null) {
-          break;
+      if (board.getUpperNeighbour(iterator) != null) {
+        while (board.getUpperNeighbour(iterator).isTaken()) {
+          iterator = board.getUpperNeighbour(iterator);
+          if (board.getUpperNeighbour(iterator) == null) {
+            break;
+          }
         }
       }
 
@@ -526,10 +528,12 @@ public class GameSession {
 
       // Start on the leftmost square or a square with a previous tile to the left
       Square iterator = leftmostSquare;
-      while (board.getLeftNeighbour(iterator).isTaken()) {
-        iterator = board.getLeftNeighbour(iterator);
-        if (board.getLeftNeighbour(iterator) == null) {
-          break;
+      if (board.getLeftNeighbour(iterator) != null) {
+        while (board.getLeftNeighbour(iterator).isTaken()) {
+          iterator = board.getLeftNeighbour(iterator);
+          if (board.getLeftNeighbour(iterator) == null) {
+            break;
+          }
         }
       }
 
@@ -605,10 +609,12 @@ public class GameSession {
 
         // If(!column): Get the top taken square
         // If(column): Get the leftmost taken square
-        while (board.getPreviousNeighbour(iterator, !column).isTaken()) {
-          iterator = board.getPreviousNeighbour(iterator, !column);
-          if (board.getPreviousNeighbour(iterator, !column) == null) {
-            break;
+        if (board.getPreviousNeighbour(iterator, !column) != null) {
+          while (board.getPreviousNeighbour(iterator, !column).isTaken()) {
+            iterator = board.getPreviousNeighbour(iterator, !column);
+            if (board.getPreviousNeighbour(iterator, !column) == null) {
+              break;
+            }
           }
         }
 
@@ -624,7 +630,7 @@ public class GameSession {
           wordValue += scoreSquare(iterator);
 
           iterator = board.getNextNeighbour(iterator, !column);
-          
+
           if (board.getNextNeighbour(iterator, !column) == null) {
             break;
           }
@@ -792,7 +798,7 @@ public class GameSession {
       }
     }
   }
-  
+
   /**
    * Called as soon as one of the two end game conditions occurs.
    *
@@ -806,7 +812,7 @@ public class GameSession {
     // TODO end game screen (statistics of the current, ranking, end game, new game)
     // TODO send end game message to all
   }
-  
+
   /**
    * Checks whether the rack as well as the bag are empty.
    *
