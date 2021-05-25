@@ -49,7 +49,7 @@
          </font>
       </Button>
       <Button layoutX="863.0" layoutY="22.0" mnemonicParsing="false" onAction="#leaveLobby" prefHeight="40.0" prefWidth="123.0" style="-fx-background-color: f88c00;" text="Leave Lobby" textFill="WHITE" />
-      <Button layoutX="14.0" layoutY="473.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: f88c00;" text="Add AI Player" textFill="WHITE" />
+      <Button fx:id="addAIPlayer" layoutX="14.0" layoutY="473.0" mnemonicParsing="false" onAction="#addAIPlayer" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #F88C00;" text="Add AI Player" textFill="WHITE" />
       <Button fx:id="editTiles" layoutX="409.0" layoutY="376.0" mnemonicParsing="false" onAction="#editTiles" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: f88c00;" text="Edit Tiles" textFill="WHITE" />
       <Text fx:id="playerInfo1" fill="#f88c00" layoutX="14.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
          <font>

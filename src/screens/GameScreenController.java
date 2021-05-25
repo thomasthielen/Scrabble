@@ -1249,7 +1249,12 @@ public class GameScreenController {
   }
 
   public void setPlayerStatistics() {
-    ArrayList<Player> players = Client.getGameSession().getPlayerList();
+    ArrayList<Player> players;
+    if (gameSession.getMultiPlayer()) {
+      players = Client.getGameSession().getPlayerList();
+    } else {
+      players = Server.getLobby().getGameSession().getPlayerList();
+    }
 
     for (int i = 0; i < players.size(); i++) {
       Text name = new Text(players.get(i).getUsername() + " :\n");

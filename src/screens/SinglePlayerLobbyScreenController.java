@@ -24,7 +24,6 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import network.Client;
 import network.Server;
 import network.messages.TooManyPlayerException;
 import session.Dictionary;
@@ -86,6 +85,7 @@ public class SinglePlayerLobbyScreenController {
     playerStatistics.add(playerInfo4);
 
     refreshPlayerList();
+    setDictionaryMenu();
   }
 
   /**
@@ -208,12 +208,13 @@ public class SinglePlayerLobbyScreenController {
    */
   @FXML
   void addAIPlayer(ActionEvent event) throws Exception {
+    chooseAIPane.setVisible(true);
+  }
+
+  @FXML
+  void easyAIPlayer(ActionEvent event) {
     try {
-      AI ai =
-          new AI(
-              "AIPlayer" + (Server.getAIPlayerList().size() + 1),
-              false,
-              false); // TODO: the first false needs to be set by the difficulty chooser
+      AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1), false, false);
       Server.addAIPlayer(ai);
     } catch (TooManyPlayerException e) {
       Alert errorAlert = new Alert(AlertType.ERROR);
@@ -222,13 +223,25 @@ public class SinglePlayerLobbyScreenController {
           "You can't add another AI player because there are already the maximum of 3 AI players in the game.");
       errorAlert.showAndWait();
     }
+    refreshPlayerList();
+    closeChooseAIPane(new ActionEvent());
   }
 
   @FXML
-  void easyAIPlayer(ActionEvent event) {}
-
-  @FXML
-  void hardAIPlayer(ActionEvent event) {}
+  void hardAIPlayer(ActionEvent event) {
+    try {
+      AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1), false, true);
+      Server.addAIPlayer(ai);
+    } catch (TooManyPlayerException e) {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("Too many players.");
+      errorAlert.setContentText(
+          "You can't add another AI player because there are already the maximum of 3 AI players in the game.");
+      errorAlert.showAndWait();
+    }
+    refreshPlayerList();
+    closeChooseAIPane(new ActionEvent());
+  }
 
   public void switchToGameScreen() throws Exception {
     FXMLLoader loader = new FXMLLoader();
@@ -290,10 +303,23 @@ public class SinglePlayerLobbyScreenController {
   }
 
   @FXML
-  void editTiles(ActionEvent event) {}
+  void editTiles(ActionEvent event) throws Exception {
+    FXMLLoader loader = new FXMLLoader();
+    Parent content =
+        loader.load(
+            getClass()
+                .getClassLoader()
+                .getResourceAsStream("screens/resources/ChangeTilesScreen.fxml"));
+    ChangeTilesScreenController changeTilesScreenController = loader.getController();
+    changeTilesScreenController.initialize();
+    StartScreen.getStage().setScene(new Scene(content));
+    StartScreen.getStage().show();
+  }
 
   @FXML
-  void closeChooseAIPane(ActionEvent event) {}
+  void closeChooseAIPane(ActionEvent event) {
+    chooseAIPane.setVisible(false);
+  }
 
   /**
    * this method is responsible for displaying the player names and statistics in the game lobby.
@@ -301,7 +327,7 @@ public class SinglePlayerLobbyScreenController {
    * @author jbleil
    */
   public void refreshPlayerList() {
-    ArrayList<Player> players = Client.getGameSession().getPlayerList();
+    ArrayList<Player> players = Server.getPlayerList();
 
     for (int i = 0; i < players.size(); i++) {
       playerInfos.get(i).setText(players.get(i).getUsername());

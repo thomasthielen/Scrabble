@@ -29,8 +29,6 @@ public class OfflineScreenController {
     Server.addPlayer(DataHandler.getOwnPlayer());
     FXMLLoader loader = new FXMLLoader();
     Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/SinglePlayerLobbyScreen.fxml"));
-    SinglePlayerLobbyScreenController splsc = loader.getController();
-    splsc.setDictionaryMenu();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
