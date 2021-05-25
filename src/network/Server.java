@@ -257,5 +257,6 @@ public class Server {
    */
   public static void resetLobby() {
     spl = null;
+    resetPlayerList();
   }
 }

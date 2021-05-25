@@ -48,6 +48,7 @@ public class AI  {
 	    this.gameReference.getPlayer().getRack().initialDraw();
 	    if (!gameReference.getMultiPlayer()) {
 	    	Server.getLobby().getGameSession().synchronise(new GameState(gameReference));
+	    	Server.updateAI(new GameState(gameReference));
 	    }
 	  }
 

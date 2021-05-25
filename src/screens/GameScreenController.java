@@ -711,6 +711,8 @@ public class GameScreenController {
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
+      } else {
+        Server.resetLobby();
       }
       leave();
     } else {
