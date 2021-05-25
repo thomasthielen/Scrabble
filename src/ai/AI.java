@@ -38,13 +38,13 @@ public class AI  {
 
   public AI(String username, boolean difficult, boolean multiplayer) {
 	    this.gameReference = new GameSession(new Player(username), multiplayer);
-	    this.gameReference.getPlayer().getRack().initialDraw();
 	    this.difficult = difficult;
 	    
 	  }
   
   public void setDictionary(File f) {
 	    dictionary = f;
+	    this.gameReference.getPlayer().getRack().initialDraw();
 	  }
 
   
@@ -857,6 +857,8 @@ public class AI  {
 
   public void makeMove() {
 	  this.tiles = this.gameReference.getPlayer().getRack().getTiles();
+
+	  this.printtiles(this.tiles);
 	  if (!dictionaryInitialized) {
 	      DataHandler.botDictionaryFile(dictionary);
 	      dictionaryInitialized = true;
