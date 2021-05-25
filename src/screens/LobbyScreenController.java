@@ -303,6 +303,7 @@ public class LobbyScreenController {
           "You can't add another AI player because there are already the maximum of 4 players in the game.");
       errorAlert.showAndWait();
     }
+    closeChooseAIPane(new ActionEvent());
   }
 
   @FXML
@@ -318,6 +319,8 @@ public class LobbyScreenController {
           "You can't add another AI player because there are already the maximum of 4 players in the game.");
       errorAlert.showAndWait();
     }
+    refreshPlayerList();
+    closeChooseAIPane(new ActionEvent());
   }
 
   @FXML

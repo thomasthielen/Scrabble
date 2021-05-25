@@ -2,6 +2,7 @@ package network;
 
 import AI.AI;
 import data.DataHandler;
+import gameentities.Player;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -157,6 +158,23 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
   protected static void informTooFew() {
     for (Channel c : channels) {
       c.writeAndFlush(new TooFewPlayerMessage(DataHandler.getOwnPlayer()));
+    }
+  }
+
+  /**
+   * Sends a game state object with the updated player list to all players, when a new AI player has
+   * been added.
+   *
+   * @author tikrause
+   */
+  protected static void updateAIPlayersInLobby() {
+	  System.out.println("Players:");
+	  for (Player p : Server.getPlayerList()) {
+		  System.out.println(p.getUsername()); 
+	  }
+    for (Channel c : channels) {
+      c.writeAndFlush(
+          new GameStateMessage(DataHandler.getOwnPlayer(), new GameState(Server.getPlayerList())));
     }
   }
 }

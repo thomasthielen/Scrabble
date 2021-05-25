@@ -167,8 +167,7 @@ public class Server {
       aiPlayers.add(ai);
       players.add(ai.getPlayer());
       if (spl == null) {
-        channel.writeAndFlush(
-            new GameStateMessage(DataHandler.getOwnPlayer(), new GameState(players)));
+        ServerHandler.updateAIPlayersInLobby();
       }
     }
   }
