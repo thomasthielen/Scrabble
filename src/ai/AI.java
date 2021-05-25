@@ -156,24 +156,24 @@ public class AI  {
 		this.setbestmoves();
 	}
     PossibleMove max = new PossibleMove(null, 0);
-    //System.out.println( moves.size()+"mögliche Züge");
+    System.out.println( moves.size()+"mögliche Züge");
     int o = 0;
     for (PossibleMove pm : moves) {
-    	//System.out.println();
-    	//System.out.println("Nr: "+o);
+    	System.out.println();
+    	System.out.println("Nr: "+o);
     	o++;
     	for(Square square: pm.getsquares()) {
-        	//System.out.print(" "+square.getTile().getLetter());
+        	System.out.print(" "+square.getTile().getLetter());
         	
         }
-    	//System.out.println();
-    	//System.out.println(" Der Value beträgt"+pm.value);
+    	System.out.println();
+    	System.out.println(" Der Value beträgt"+pm.value);
       if (pm.getValue() > max.getValue()) {
         max = pm;
         
       }
     }
-    //System.out.println(max.getValue());
+    System.out.println(max.getValue());
     this.turnValue = max.getValue();
     return max.getsquares();
   }
@@ -258,106 +258,107 @@ public class AI  {
     this.scanBoardforLetters();
     ArrayList<Square> placedsquare = new ArrayList<Square>();
     
-    for (int i = 0; i < words.size(); i++) {
-      Word wort = words.get(i);
-      //this.printtiles(tiles);
-      ArrayList<Square> squares = wort.getsquares();
-      StringBuffer buffer = new StringBuffer();
-
-      for (int j = 0; j < squares.size(); j++) {
-        buffer.append(squares.get(j).getTile().getLetter());
-        //System.out.println(squares.get(j).getTile().getLetter());
-      }
-
-      String s = buffer.toString();
-      HashMap<BitOptionKeys, ArrayList<String>> map = DataHandler.getBitOptions(s);
-      if(map==null) {
-    	  break;
-      }
-      ArrayList<String> prefixe = map.get(BitOptionKeys.PREFIXES);
-      ArrayList<String> suffixe = map.get(BitOptionKeys.SUFFIXES);
-
-      for (int j = 0; j < prefixe.size(); j++) {
-        String pre = prefixe.get(j);
-        String suf = suffixe.get(j);
-        this.gameReference.recallAll();
-        // System.out.println(pre+" "+s+" "+suf);
-        char[] laengepre = pre.toCharArray();
-        char[] laengesuf = suf.toCharArray();
-        ArrayList<String> buchstaben = prefixplussuffix(pre, suf);
-
-        // if()
-//        System.out.println("Wir überprüfufen jetzt " + pre + " " + s + " " + suf);
-//        System.out.println();
-//        System.out.println();
-        if (wort.getColumn()) {
-        	//System.out.println("colum");
-          ArrayList<Tile> tilescopy = this.copytiles(this.tiles);
-         // this.printtiles(tilescopy);
-          if (checkabove(laengepre.length, wort, this.gameReference.getBoard())
-              && checkdown(laengesuf.length, wort, this.gameReference.getBoard())) {
-            placedsquare =
-                checktilesvertical(
-                    buchstaben,
-                    new ArrayList<Square>(),
-                    tilescopy,
-                    wort,
-                    laengepre.length,
-                    laengesuf.length,
-                    this.gameReference.getBoard());
-
-            if (placedsquare != null) {
-            	//System.out.println("squares");
-               // this.printBoard();
-              
-              //							System.out.println("Squares");
-              this.gameReference.recallAll();
-              for (Square x : placedsquare) {
-                this.gameReference.placeTile(x.getX(), x.getY(), x.getTile());
-              }
-              if (gameReference.checkMove()) {
-                PossibleMove pm = new PossibleMove(placedsquare, gameReference.getTurnValue());
-                //System.out.println("Moveffrfrrf hinzugefügt");
-                this.moves.add(pm);
-              } else {
-                //this.printBoard();
-                //System.out.println("Move nicht zulässig");
-              }
-            }
-          }
-
-        } else {
-        	//System.out.println("row");
-          ArrayList<Tile> tilescopy = this.copytiles(this.tiles);
-          //System.out.println(laengepre);
-          if (checkleft(laengepre.length, wort, this.gameReference.getBoard())
-              && checkright(laengesuf.length, wort, this.gameReference.getBoard())) {
-            placedsquare =
-                checktileshorizontal(
-                    buchstaben,
-                    new ArrayList<Square>(),
-                    tilescopy,
-                    wort,
-                    laengepre.length,
-                    laengesuf.length,
-                    this.gameReference.getBoard());
-            if (placedsquare != null) {
-            	//System.out.println("Squares nicht null");
-            	//this.printword(buchstaben);
-              if (gameReference.checkMove()) {
-                PossibleMove pm = new PossibleMove(placedsquare, gameReference.getTurnValue());
-                this.moves.add(pm);
-                //System.out.println("Move!!!");
-              }
-            }
-          }
-        }
-      }
-    }
+//    for (int i = 0; i < words.size(); i++) {
+//      Word wort = words.get(i);
+//      //this.printtiles(tiles);
+//      ArrayList<Square> squares = wort.getsquares();
+//      StringBuffer buffer = new StringBuffer();
+//
+//      for (int j = 0; j < squares.size(); j++) {
+//        buffer.append(squares.get(j).getTile().getLetter());
+//        //System.out.println(squares.get(j).getTile().getLetter());
+//      }
+//
+//      String s = buffer.toString();
+//      HashMap<BitOptionKeys, ArrayList<String>> map = DataHandler.getBitOptions(s);
+//      if(map==null) {
+//    	  break;
+//      }
+//      ArrayList<String> prefixe = map.get(BitOptionKeys.PREFIXES);
+//      ArrayList<String> suffixe = map.get(BitOptionKeys.SUFFIXES);
+//
+//      for (int j = 0; j < prefixe.size(); j++) {
+//        String pre = prefixe.get(j);
+//        String suf = suffixe.get(j);
+//        this.gameReference.recallAll();
+//        // System.out.println(pre+" "+s+" "+suf);
+//        char[] laengepre = pre.toCharArray();
+//        char[] laengesuf = suf.toCharArray();
+//        ArrayList<String> buchstaben = prefixplussuffix(pre, suf);
+//
+//        // if()
+////        System.out.println("Wir überprüfufen jetzt " + pre + " " + s + " " + suf);
+////        System.out.println();
+////        System.out.println();
+//        if (wort.getColumn()) {
+//        	//System.out.println("colum");
+//          ArrayList<Tile> tilescopy = this.copytiles(this.tiles);
+//         // this.printtiles(tilescopy);
+//          if (checkabove(laengepre.length, wort, this.gameReference.getBoard())
+//              && checkdown(laengesuf.length, wort, this.gameReference.getBoard())) {
+//            placedsquare =
+//                checktilesvertical(
+//                    buchstaben,
+//                    new ArrayList<Square>(),
+//                    tilescopy,
+//                    wort,
+//                    laengepre.length,
+//                    laengesuf.length,
+//                    this.gameReference.getBoard());
+//
+//            if (placedsquare != null) {
+//            	//System.out.println("squares");
+//               // this.printBoard();
+//              
+//              //							System.out.println("Squares");
+//              this.gameReference.recallAll();
+//              for (Square x : placedsquare) {
+//                this.gameReference.placeTile(x.getX(), x.getY(), x.getTile());
+//              }
+//              if (gameReference.checkMove()) {
+//                PossibleMove pm = new PossibleMove(placedsquare, gameReference.getTurnValue());
+//                //System.out.println("Moveffrfrrf hinzugefügt");
+//                this.moves.add(pm);
+//              } else {
+//                //this.printBoard();
+//                //System.out.println("Move nicht zulässig");
+//              }
+//            }
+//          }
+//
+//        } else {
+//        	//System.out.println("row");
+//          ArrayList<Tile> tilescopy = this.copytiles(this.tiles);
+//          //System.out.println(laengepre);
+//          if (checkleft(laengepre.length, wort, this.gameReference.getBoard())
+//              && checkright(laengesuf.length, wort, this.gameReference.getBoard())) {
+//            placedsquare =
+//                checktileshorizontal(
+//                    buchstaben,
+//                    new ArrayList<Square>(),
+//                    tilescopy,
+//                    wort,
+//                    laengepre.length,
+//                    laengesuf.length,
+//                    this.gameReference.getBoard());
+//            if (placedsquare != null) {
+//            	//System.out.println("Squares nicht null");
+//            	//this.printword(buchstaben);
+//              if (gameReference.checkMove()) {
+//                PossibleMove pm = new PossibleMove(placedsquare, gameReference.getTurnValue());
+//                this.moves.add(pm);
+//                //System.out.println("Move!!!");
+//              }
+//            }
+//          }
+//        }
+//      }
+//    }
     for (int i=0;i<letters.size();i++) {
     	HashMap<BitOptionKeys, ArrayList<String>> map = DataHandler.getBitOptions(String.valueOf(letters.get(i).getLetter()));
         ArrayList<String> suffixe = map.get(BitOptionKeys.SUFFIXES);
         for (int j=0;j<suffixe.size();j++) {
+        	//System.out.println("PRÄFIX: "+letters.get(i).getLetter()+"SUFFIX: "+suffixe.get(j));
         	this.gameReference.recallAll();
         	ArrayList<String> list = new ArrayList<String>();
         	list.add(String.valueOf(letters.get(i).getLetter()));
@@ -365,6 +366,11 @@ public class AI  {
         	ArrayList<Tile> tiles = this.copytiles(this.tiles);
         	ArrayList<Square> squares = this.anlegen(new ArrayList<Square>(), tiles, buchstaben, letters.get(i).getX(), letters.get(i).getY(), letters.get(i).isColumn());
         	if (squares != null) {
+        		this.printword(buchstaben);
+        		System.out.println("Squares");
+        		for(Square s: squares) {
+        			System.out.println(" Letter: "+ s.getTile().getLetter()+" X: "+ s.getX()+" Y: "+s.getY());
+        		}
         		if (gameReference.checkMove()) {
                     PossibleMove pm = new PossibleMove(placedsquare, gameReference.getTurnValue());
                     this.moves.add(pm);
@@ -378,14 +384,17 @@ public class AI  {
   }
   
   public ArrayList<Square> anlegen(ArrayList<Square> squares, ArrayList<Tile> tiles, ArrayList<String> buchstaben, int x, int y, boolean colum){
+	  
+	  //this.printtiles(tiles);
 	  if (buchstaben.size()==0) {
+		  System.out.println("JAWOLL");
 		  return squares;
 	  }else {
 		  if(colum) {
-			  if(this.gameReference.getBoard().getSquare(x, y - buchstaben.size() -1 ).isTaken()) {
+			  if(this.gameReference.getBoard().getSquare(x, y - buchstaben.size()  ).isTaken()) {
 				  String s = buchstaben.get(buchstaben.size()-1);
 				  char[] c = s.toCharArray();
-				  if(c[0]== this.gameReference.getBoard().getSquare(x, y - buchstaben.size() -1).getTile().getLetter()) {
+				  if(c[0]== this.gameReference.getBoard().getSquare(x, y - buchstaben.size() ).getTile().getLetter()) {
 					  buchstaben.remove(buchstaben.size()-1);
 					  return this.anlegen(squares, tiles, buchstaben, x, y, colum);
 				  }else {
@@ -396,8 +405,9 @@ public class AI  {
 					  String s = buchstaben.get(buchstaben.size()-1);
 					  char[] c = s.toCharArray();
 					  if (c[0] == tiles.get(i).getLetter()) {
-						  this.gameReference.placeTile(x, y - buchstaben.size() -1 , tiles.get(i));
-						  Square square = new Square(x,y - buchstaben.size() -1 );
+						  //System.out.println("Match");
+						  this.gameReference.placeTile(x, y - buchstaben.size()  , tiles.get(i));
+						  Square square = new Square(x,y - buchstaben.size()  );
 						  square.placeTile(tiles.get(i));
 						  squares.add(square);
 						  buchstaben.remove(buchstaben.size()-1);
@@ -897,15 +907,15 @@ public class AI  {
 			  
 			  Square rightneighbour = this.gameReference.getBoard().getRightNeighbour(this.gameReference.getBoard().getSquareList().get(i));
 			  Square lowerneighbour = this.gameReference.getBoard().getLowerNeighbour(this.gameReference.getBoard().getSquareList().get(i));
-			  
-			  if(rightneighbour!=null && lowerneighbour==null) {
+			  System.out.println("Letter: "+ this.gameReference.getBoard().getSquareList().get(i).getTile().getLetter());
+			  if(rightneighbour.isTaken() && (!lowerneighbour.isTaken())) {
 				  System.out.println(rightneighbour.getTile().getLetter());
 				  int x = this.gameReference.getBoard().getSquareList().get(i).getX();
 				  int y = this.gameReference.getBoard().getSquareList().get(i).getY();
 				  char c = this.gameReference.getBoard().getSquareList().get(i).getTile().getLetter();
 				  Letter l = new Letter(x,y,c,true);
 				  this.letters.add(l);
-			  } else if(rightneighbour==null && lowerneighbour!=null) {
+			  } else if((!rightneighbour.isTaken()) && lowerneighbour.isTaken()) {
 				  System.out.println(lowerneighbour.getTile().getLetter());
 				  int x = this.gameReference.getBoard().getSquareList().get(i).getX();
 				  int y = this.gameReference.getBoard().getSquareList().get(i).getY();
