@@ -242,6 +242,11 @@ public class SinglePlayerLobbyScreenController {
     refreshPlayerList();
     closeChooseAIPane(new ActionEvent());
   }
+  
+  @FXML
+  void closeChooseAIPane(ActionEvent event) {
+    chooseAIPane.setVisible(false);
+  }
 
   public void switchToGameScreen() throws Exception {
     FXMLLoader loader = new FXMLLoader();
@@ -314,11 +319,6 @@ public class SinglePlayerLobbyScreenController {
     changeTilesScreenController.initialize();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
-  }
-
-  @FXML
-  void closeChooseAIPane(ActionEvent event) {
-    chooseAIPane.setVisible(false);
   }
 
   /**
