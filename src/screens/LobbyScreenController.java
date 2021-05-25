@@ -72,7 +72,7 @@ public class LobbyScreenController {
   @FXML private Text playerStatistic2;
   @FXML private Text playerStatistic3;
   @FXML private Text playerStatistic4;
-  
+
   @FXML private Text uploadDictionaryText;
   @FXML private Text selectDictionaryText;
   @FXML private Text editTilesText;
@@ -82,7 +82,7 @@ public class LobbyScreenController {
   @FXML private Button startGame;
   @FXML private Button editTiles;
   @FXML private MenuButton dictionarySelecter;
-  
+
   @FXML private Button deleteButton1;
   @FXML private Button deleteButton2;
   @FXML private Button deleteButton3;
@@ -103,7 +103,7 @@ public class LobbyScreenController {
     playerStatistics.add(playerStatistic2);
     playerStatistics.add(playerStatistic3);
     playerStatistics.add(playerStatistic4);
-    
+
     deleteButton1.setVisible(false);
     deleteButton2.setVisible(false);
     deleteButton3.setVisible(false);
@@ -312,7 +312,7 @@ public class LobbyScreenController {
   @FXML
   void easyAIPlayer(ActionEvent event) {
     try {
-      AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1), false, true);
+      AI ai = new AI("EasyAI" + (Server.getEasyAICount() + 1), false, true);
       Server.addAIPlayer(ai);
       refreshPlayerList();
     } catch (TooManyPlayerException e) {
@@ -328,7 +328,7 @@ public class LobbyScreenController {
   @FXML
   void hardAIPlayer(ActionEvent event) {
     try {
-      AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1), true, true);
+      AI ai = new AI("HardAI" + (Server.getHardAICount() + 1), true, true);
       Server.addAIPlayer(ai);
       refreshPlayerList();
     } catch (TooManyPlayerException e) {
@@ -482,6 +482,15 @@ public class LobbyScreenController {
   }
 
   void leave() {
+    StartScreen.getStage()
+        .setOnCloseRequest(
+            new EventHandler<WindowEvent>() {
+              @Override
+              public void handle(final WindowEvent event) {
+                Platform.exit();
+                System.exit(0);
+              }
+            });
     FXMLLoader loader = new FXMLLoader();
     Parent content;
     try {
@@ -539,19 +548,13 @@ public class LobbyScreenController {
               }
             });
   }
-  
-  @FXML
-  void deleteAIPlayer1(ActionEvent event) {
-
-  }
 
   @FXML
-  void deleteAIPlayer2(ActionEvent event) {
-
-  }
+  void deleteAIPlayer1(ActionEvent event) {}
 
   @FXML
-  void deleteAIPlayer3(ActionEvent event) {
+  void deleteAIPlayer2(ActionEvent event) {}
 
-  }
+  @FXML
+  void deleteAIPlayer3(ActionEvent event) {}
 }

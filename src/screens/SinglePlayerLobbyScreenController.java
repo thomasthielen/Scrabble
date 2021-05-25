@@ -228,7 +228,7 @@ public class SinglePlayerLobbyScreenController {
   @FXML
   void easyAIPlayer(ActionEvent event) {
     try {
-      AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1), false, false);
+      AI ai = new AI("EasyAI" + (Server.getEasyAICount() + 1), false, false);
       Server.addAIPlayer(ai);
     } catch (TooManyPlayerException e) {
       Alert errorAlert = new Alert(AlertType.ERROR);
@@ -244,7 +244,7 @@ public class SinglePlayerLobbyScreenController {
   @FXML
   void hardAIPlayer(ActionEvent event) {
     try {
-      AI ai = new AI("AIPlayer" + (Server.getAIPlayerList().size() + 1), false, false);
+      AI ai = new AI("HardAI" + (Server.getHardAICount() + 1), true, false);
       Server.addAIPlayer(ai);
     } catch (TooManyPlayerException e) {
       Alert errorAlert = new Alert(AlertType.ERROR);

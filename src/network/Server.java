@@ -259,4 +259,24 @@ public class Server {
     spl = null;
     resetPlayerList();
   }
+
+  public static int getHardAICount() {
+    int count = 0;
+    for (AI ai : aiPlayers) {
+      if (ai.getDifficulty()) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  public static int getEasyAICount() {
+    int count = 0;
+    for (AI ai : aiPlayers) {
+      if (!ai.getDifficulty()) {
+        count++;
+      }
+    }
+    return count;
+  }
 }

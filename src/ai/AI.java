@@ -1046,5 +1046,9 @@ public class AI  {
   public Player getPlayer() {
 	    return gameReference.getPlayer();
 	  }
+  
+  public boolean getDifficulty() {
+	  return difficult;
+  }
 }
 
