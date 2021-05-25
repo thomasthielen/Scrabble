@@ -12,6 +12,7 @@ import gameentities.Player;
 import gameentities.Rack;
 import gameentities.Square;
 import gameentities.Tile;
+import network.Server;
 import session.GameSession;
 import session.GameState;
 
@@ -45,6 +46,9 @@ public class AI  {
   public void setDictionary(File f) {
 	    dictionary = f;
 	    this.gameReference.getPlayer().getRack().initialDraw();
+	    if (!gameReference.getMultiPlayer()) {
+	    	Server.getLobby().getGameSession().synchronise(new GameState(gameReference));
+	    }
 	  }
 
   
