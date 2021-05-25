@@ -72,6 +72,10 @@ public class LobbyScreenController {
   @FXML private Text playerStatistic2;
   @FXML private Text playerStatistic3;
   @FXML private Text playerStatistic4;
+  
+  @FXML private Text uploadDictionaryText;
+  @FXML private Text selectDictionaryText;
+  @FXML private Text editTilesText;
 
   @FXML private Button fileForm;
   @FXML private Button addAIPlayer;
@@ -103,6 +107,9 @@ public class LobbyScreenController {
       startGame.setDisable(true);
       editTiles.setDisable(true);
       dictionarySelecter.setDisable(true);
+      uploadDictionaryText.setOpacity(0.5);
+      selectDictionaryText.setOpacity(0.5);
+      editTilesText.setOpacity(0.5);
     }
 
     refreshPlayerList();

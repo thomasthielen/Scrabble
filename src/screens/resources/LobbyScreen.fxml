@@ -17,12 +17,12 @@
       </Text>
       <MenuButton fx:id="dictionarySelecter" layoutX="409.0" layoutY="142.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Dictionaries" textFill="WHITE">
       </MenuButton>
-      <Text fill="#f88c00" layoutX="305.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select a dictionary from the list below">
+      <Text fx:id="selectDictionaryText" fill="#f88c00" layoutX="305.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select a dictionary from the list below">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
-      <Text fill="#f88c00" layoutX="331.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="or upload your own custom dictionary">
+      <Text fx:id="uploadDictionaryText" fill="#f88c00" layoutX="331.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="or upload your own custom dictionary">
          <font>
             <Font size="20.0" />
          </font>
@@ -51,7 +51,7 @@
                </font></Button>
          </children>
       </Pane>
-      <Text fill="#f88c00" layoutX="239.0" layoutY="348.0" strokeType="OUTSIDE" strokeWidth="0.0" text="you can also edit the and the value of every Tile in the bag ">
+      <Text fx:id="editTilesText" fill="#f88c00" layoutX="239.0" layoutY="348.0" strokeType="OUTSIDE" strokeWidth="0.0" text="you can also edit the and the value of every Tile in the bag ">
          <font>
             <Font size="20.0" />
          </font>
@@ -93,7 +93,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Text fill="#f88c00" layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select a diffulty level for the AI player" />
+            <Text fill="#f88c00" layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select a difficulty level for the AI player" />
             <Button layoutX="14.0" layoutY="61.0" mnemonicParsing="false" onAction="#easyAIPlayer" prefHeight="39.0" prefWidth="349.0" style="-fx-background-color: #f88c00;" text="EASY" textFill="WHITE" />
             <Button layoutX="14.0" layoutY="121.0" mnemonicParsing="false" onAction="#hardAIPlayer" prefHeight="39.0" prefWidth="349.0" style="-fx-background-color: #f88c00;" text="HARD" textFill="WHITE" />
          </children>
