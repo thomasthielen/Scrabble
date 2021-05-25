@@ -3,7 +3,6 @@ package screens;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -67,6 +66,8 @@ public class GameScreenController {
   @FXML private ScrollPane playerStatisticsScrollPane;
 
   @FXML private Pane playerStatisticsPane;
+  
+  @ FXML private Pane backgroundPane;
 
   /** rackPane represents the Container for the Tiles in the Rack */
   @FXML private FlowPane rackPane;
@@ -203,6 +204,7 @@ public class GameScreenController {
 
     setPlayerStatistics();
     initializeCloseHandler();
+    refreshPlayerNames();
   }
 
   public void setRack(boolean isFirstTime) {
@@ -1289,6 +1291,7 @@ public class GameScreenController {
     for (int i = 0; i < players.size(); i++) {
       Text name = new Text(players.get(i).getUsername() + " :\n");
       name.setFont(new Font(20));
+      name.setFill(Paint.valueOf("#707070"));
       name.relocate(10, 40 + 80 * i);
       playerStatisticsPane.getChildren().add(name);
       if (!players.get(i).isBot()) {
@@ -1306,9 +1309,27 @@ public class GameScreenController {
                     + map.get(StatisticKeys.POINTSAVG)
                     + "\n");
         statistics.setFont(new Font(14));
+        statistics.setFill(Paint.valueOf("#707070"));
         statistics.relocate(10, 60 + 80 * i);
         playerStatisticsPane.getChildren().add(statistics);
       }
+    }
+  }
+  
+  public void refreshPlayerNames() {
+    ArrayList<Player> players;
+    if (gameSession.getMultiPlayer()) {
+      players = Client.getGameSession().getPlayerList();
+    } else {
+      players = Server.getLobby().getGameSession().getPlayerList();
+    }
+    
+    for (int i = 0; i < players.size(); i++) {
+      Text name = new Text(players.get(i).getUsername() + " - ");//TODO: add points
+      name.setFill(Paint.valueOf("#f88c00"));
+      name.setFont(new Font(20));
+      name.relocate(10, 14 + i * 40);
+      backgroundPane.getChildren().add(name);
     }
   }
 
