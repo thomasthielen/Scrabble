@@ -459,6 +459,9 @@ public class GameSession {
       Square iterator = highestSquare;
       while (board.getUpperNeighbour(iterator).isTaken()) {
         iterator = board.getUpperNeighbour(iterator);
+        if (board.getUpperNeighbour(iterator) == null) {
+          break;
+        }
       }
 
       StringBuffer sb = new StringBuffer();
@@ -525,6 +528,9 @@ public class GameSession {
       Square iterator = leftmostSquare;
       while (board.getLeftNeighbour(iterator).isTaken()) {
         iterator = board.getLeftNeighbour(iterator);
+        if (board.getLeftNeighbour(iterator) == null) {
+          break;
+        }
       }
 
       // (!) Used to test if the main word needs to be checked when only one tile was placed
@@ -601,6 +607,9 @@ public class GameSession {
         // If(column): Get the leftmost taken square
         while (board.getPreviousNeighbour(iterator, !column).isTaken()) {
           iterator = board.getPreviousNeighbour(iterator, !column);
+          if (board.getPreviousNeighbour(iterator, !column) == null) {
+            break;
+          }
         }
 
         // If(!column): From top to bottom
@@ -615,6 +624,10 @@ public class GameSession {
           wordValue += scoreSquare(iterator);
 
           iterator = board.getNextNeighbour(iterator, !column);
+          
+          if (board.getNextNeighbour(iterator, !column) == null) {
+            break;
+          }
         }
 
         do {
