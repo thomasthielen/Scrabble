@@ -3,6 +3,7 @@ package screens;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import data.DataHandler;
@@ -12,6 +13,7 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -20,6 +22,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -34,6 +37,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.WindowEvent;
 import network.Client;
 import network.Server;
 import session.*;
@@ -197,6 +201,7 @@ public class GameScreenController {
     chatButton.setVisible(gameSession.getMultiPlayer());
 
     setPlayerStatistics();
+    initializeCloseHandler();
   }
 
   public void setRack(boolean isFirstTime) {
@@ -1262,7 +1267,7 @@ public class GameScreenController {
       name.relocate(10, 40 + 80 * i);
       playerStatisticsPane.getChildren().add(name);
       if (!players.get(i).isBot()) {
-        if(i > 1) {
+        if (i > 1) {
           playerStatisticsPane.setPrefHeight(playerStatisticsPane.getPrefHeight() + (i - 1) * 40);
         }
         HashMap<StatisticKeys, Integer> map = players.get(i).getPlayerStatistics();
@@ -1309,5 +1314,40 @@ public class GameScreenController {
   public void takeOverChat(String chat) {
     chatHistory = new StringBuffer(chat);
     chatField.setText(chatHistory.toString());
+  }
+
+  /**
+   * Handler for when the user closes the window.
+   *
+   * @author jluellig
+   */
+  private void initializeCloseHandler() {
+    StartScreen.getStage()
+        .setOnCloseRequest(
+            new EventHandler<WindowEvent>() {
+              @Override
+              public void handle(final WindowEvent event) {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setHeaderText("Too few players.");
+                alert.setContentText(
+                    "You can't start the game before adding an AI player.\n"
+                        + "If you want to play alone and learn how to play Scrabble, try the Training Mode.");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                  try {
+                    Client.disconnectClient(DataHandler.getOwnPlayer());
+                    if (Client.isHost()) {
+                      Server.serverShutdown();
+                    }
+                  } catch (InterruptedException e) {
+                    e.printStackTrace();
+                  }
+                  Platform.exit();
+                  System.exit(0);
+                } else {
+
+                }
+              }
+            });
   }
 }

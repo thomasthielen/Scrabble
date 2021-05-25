@@ -134,6 +134,9 @@ public class Server {
       throw new TooManyPlayerException();
     } else {
       players.add(p);
+      if (spl != null) {
+        spl.getGameSession().synchronise(new GameState(players));
+      }
     }
   }
 
@@ -168,6 +171,8 @@ public class Server {
       players.add(ai.getPlayer());
       if (spl == null) {
         ServerHandler.updateAIPlayersInLobby();
+      } else {
+        spl.getGameSession().synchronise(new GameState(players));
       }
     }
   }
@@ -223,6 +228,7 @@ public class Server {
     for (AI ai : aiPlayers) {
       ai.updateGameSession(gs);
     }
+    for (Player p : gs.getPlayers()) System.out.println("spieler" + p.getUsername());
   }
 
   /**

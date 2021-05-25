@@ -184,6 +184,9 @@ public class SinglePlayerLobbyScreenController {
     if (Server.getAIPlayerList().size() > 0) {
       Server.getLobby().getGameSession().setIsRunning(true);
       DataHandler.userDictionaryFile(chosenDictionary);
+      for (AI ai : Server.getAIPlayerList()) {
+          ai.setDictionary(chosenDictionary);
+        }
       Server.getLobby().getGameSession().getPlayer().setCurrentlyPlaying(true);
       Server.getLobby().getGameSession().initialiseSinglePlayerGameScreen();
       switchToGameScreen();

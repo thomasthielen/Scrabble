@@ -511,6 +511,14 @@ public class LobbyScreenController {
             new EventHandler<WindowEvent>() {
               @Override
               public void handle(final WindowEvent event) {
+                try {
+                  Client.disconnectClient(DataHandler.getOwnPlayer());
+                  if (Client.isHost()) {
+                    Server.serverShutdown();
+                  }
+                } catch (InterruptedException e) {
+                  e.printStackTrace();
+                }
                 Platform.exit();
                 System.exit(0);
               }
