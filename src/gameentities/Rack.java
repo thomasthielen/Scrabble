@@ -23,22 +23,27 @@ public class Rack implements Serializable {
   private Bag bag;
 
   /**
-   * Constructor: Creates a Rack object and assigns Player and Bag references
+   * Constructor: Creates a Rack object and assigns Player and Bag references.
    *
    * @author tthielen
-   * @param player
-   * @param bag
+   * @param gameReference the GameSession this rack belongs to
    */
   public Rack(GameSession gameReference) {
     this.bag = gameReference.getBag();
   }
 
-  public void synchroniseBag(GameSession gameReference) {
+  /**
+   * Synchronizes the bag of this rack with the on from the GameSession.
+   *
+   * @author tthielen
+   * @param gameReference the GameSession this rack should be synchronized with
+   */
+  public void synchronizeBag(GameSession gameReference) {
     this.bag = gameReference.getBag();
   }
 
   /**
-   * Draws the initial seven Tiles from the Bag
+   * Draws the initial seven Tiles from the Bag.
    *
    * @author tthielen
    */
@@ -87,7 +92,7 @@ public class Rack implements Serializable {
    * to the Bag, and the new Tiles are drawn from the Bag before that.
    *
    * @author tthielen
-   * @param Tiles that are meant to be swapped
+   * @param positions positions of the current tiles that are meant to be swapped
    */
   public void exchangeTiles(ArrayList<Integer> positions) {
     ArrayList<Tile> returnTiles = new ArrayList<Tile>();
@@ -120,7 +125,7 @@ public class Rack implements Serializable {
    * Plays a tile to the board.
    *
    * @author tthielen
-   * @param position
+   * @param position the position of the tile that should be played on the board
    */
   public void playTile(int position) {
     tileArray[position] = null;
@@ -132,7 +137,12 @@ public class Rack implements Serializable {
     }
   }
 
-  // Doesn't consider exact position of tiles
+  /**
+   * Plays a tile of the AI. Doesn't consider exact position of the tile.
+   *
+   * @author tthielen
+   * @param tile
+   */
   public void playTileAI(Tile tile) {
     Tile removeTile = null;
     for (Tile t : tiles) {
@@ -166,7 +176,7 @@ public class Rack implements Serializable {
   }
 
   /**
-   * Returns the rack's tiles
+   * Returns the rack's tiles.
    *
    * @author tthielen
    * @return rack
@@ -176,7 +186,7 @@ public class Rack implements Serializable {
   }
 
   /**
-   * Returns the tile at the given index
+   * Returns the tile at the given index.
    *
    * @author tthielen
    * @return rack

@@ -8,6 +8,7 @@ import java.io.Serializable;
  * <p>The attributes include the letter as well as the value of the tile.
  *
  * @author tthielen
+ * @author lsteltma
  */
 public class Tile implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -34,7 +35,7 @@ public class Tile implements Serializable {
   }
 
   /**
-   * Constructor to create a tile object by copying the properties of a given tile
+   * Constructor to create a tile object by copying the properties of a given tile.
    *
    * @author tthielen
    * @param tile the tile from which the properties are meant to be copied
@@ -60,7 +61,7 @@ public class Tile implements Serializable {
    * Sets the letter of the tile to the paramter char if the tile is a wildcard.
    *
    * @author tthielen
-   * @param letter
+   * @param letter the letter that should be placed as the wildcard
    */
   public void setLetter(char letter) {
     if (this.wildcard) {
@@ -98,30 +99,72 @@ public class Tile implements Serializable {
     return this.wildcard;
   }
 
+  /**
+   * Returns whether the tile is placed temporarily.
+   *
+   * @return placedTemporarily
+   * @author
+   */
   public boolean isPlacedTemporarily() {
     return placedTemporarily;
   }
 
+  /**
+   * Sets whether the tile is placed temporarily.
+   *
+   * @param b whether the tile should be placed temporarily
+   * @author
+   */
   public void setPlacedTemporarily(boolean b) {
     placedTemporarily = b;
   }
 
+  /**
+   * Return whether the tile is placed finally.
+   *
+   * @return placedFinally
+   * @author
+   */
   public boolean getPlacedFinally() {
     return placedFinally;
   }
 
+  /**
+   * Sets whether the tile is placed finally.
+   *
+   * @param b whether the tile should be placed finally
+   * @author
+   */
   public void setPlacedFinally(boolean b) {
     placedFinally = b;
   }
 
+  /**
+   * Returns whether the tile is selected.
+   *
+   * @return selected
+   * @author
+   */
   public boolean isSelected() {
     return selected;
   }
 
+  /**
+   * Sets whether the tile is selected.
+   *
+   * @param b whether the tile should be selected
+   * @author
+   */
   public void setSelected(boolean b) {
     selected = b;
   }
 
+  /**
+   * Sets the value of the tile.
+   *
+   * @param value the value the tile should have
+   * @author
+   */
   public void setValue(int value) {
     this.value = value;
   }

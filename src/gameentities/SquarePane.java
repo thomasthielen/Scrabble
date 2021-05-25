@@ -1,3 +1,9 @@
+package gameentities;
+
+import java.io.Serializable;
+
+import javafx.scene.layout.StackPane;
+
 /**
  * Implementation of the SquarePane objects
  *
@@ -5,12 +11,6 @@
  *
  * @author lsteltma
  */
-package gameentities;
-
-import java.io.Serializable;
-
-import javafx.scene.layout.StackPane;
-
 public class SquarePane implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -18,7 +18,7 @@ public class SquarePane implements Serializable {
   private StackPane stackPane;
 
   /**
-   * Constructor: Creates a SquarePane object by adding a given square to a new StackPane
+   * Constructor: Creates a SquarePane object by adding a given square to a new StackPane.
    *
    * @author lsteltma
    * @param square
@@ -28,10 +28,22 @@ public class SquarePane implements Serializable {
     this.stackPane = new StackPane();
   }
 
+  /**
+   * Returns the square of this SquarePane.
+   *
+   * @return square
+   * @author lsteltma
+   */
   public Square getSquare() {
     return this.square;
   }
 
+  /**
+   * Returns the StackPane of this SquarePane.
+   *
+   * @return stackPane
+   * @author lsteltma
+   */
   public StackPane getStackPane() {
     return this.stackPane;
   }

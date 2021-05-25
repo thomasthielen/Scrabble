@@ -9,6 +9,7 @@ import java.io.Serializable;
  * top of it.
  *
  * @author tthielen
+ * @author sisselha
  */
 public class Square implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -30,8 +31,8 @@ public class Square implements Serializable {
    * premium square.
    *
    * @author tthielen
-   * @param posX
-   * @param posY
+   * @param posX the X position of the square
+   * @param posY the Y position of the square
    */
   public Square(int posX, int posY) {
     this.posX = posX;
@@ -114,7 +115,7 @@ public class Square implements Serializable {
    * Places the given Tile on the Square and marks the Square as taken.
    *
    * @author tthielen
-   * @param tile
+   * @param tile the tile that should be placed
    */
   public void placeTile(Tile tile) {
     this.tile = tile;
@@ -126,10 +127,10 @@ public class Square implements Serializable {
    * Recalls the tile from the square and returns it.
    *
    * @author tthielen
-   * @param tile
+   * @param tile the tile that should be recalled
    */
   public Tile recallTile() {
-    Tile returnTile = this.tile;
+    final Tile returnTile = this.tile;
     this.tile = null;
     this.taken = false;
     this.currentPlay = false;
@@ -137,7 +138,7 @@ public class Square implements Serializable {
   }
 
   /**
-   * Sets that this square holds a tile from a previous move
+   * Sets that this square holds a tile from a previous move.
    *
    * @author tthielen
    */
@@ -157,7 +158,7 @@ public class Square implements Serializable {
   }
 
   /**
-   * Returns the tile of the square (or null, if the square is empty)
+   * Returns the tile of the square (or null, if the square is empty).
    *
    * @author tthielen
    * @return tile
@@ -167,7 +168,7 @@ public class Square implements Serializable {
   }
 
   /**
-   * Returns whether the square is already taken (or not)
+   * Returns whether the square is already taken (or not).
    *
    * @author tthielen
    * @return taken
@@ -177,7 +178,7 @@ public class Square implements Serializable {
   }
 
   /**
-   * Returns whether this square holds a tile from a previous move
+   * Returns whether this square holds a tile from a previous move.
    *
    * @author tthielen
    * @return previousPlay
@@ -187,7 +188,7 @@ public class Square implements Serializable {
   }
 
   /**
-   * Returns whether this square holds a tile from the current move
+   * Returns whether this square holds a tile from the current move.
    *
    * @author tthielen
    * @return currentlyPlay
@@ -197,7 +198,7 @@ public class Square implements Serializable {
   }
 
   /**
-   * Returns the x-coordinate of the square
+   * Returns the x-coordinate of the square.
    *
    * @author tthielen
    * @return posX
@@ -207,7 +208,7 @@ public class Square implements Serializable {
   }
 
   /**
-   * Returns the y-coordinate of the square
+   * Returns the y-coordinate of the square.
    *
    * @author tthielen
    * @return posY
@@ -215,20 +216,42 @@ public class Square implements Serializable {
   public int getY() {
     return this.posY;
   }
-  
-  public boolean isWithinRowWord(){
-	  return this.isWithinRowWord;
+
+  /**
+   * Returns whether this square is within a row word.
+   *
+   * @return isWithinRowWord
+   * @author sisselha
+   */
+  public boolean isWithinRowWord() {
+    return this.isWithinRowWord;
   }
-  
+
+  /**
+   * Returns whether this square is within a column word.
+   *
+   * @return isWithinRowWord
+   * @author sisselha
+   */
   public boolean isWithinColumnWord() {
-	 return this.isWithinColumnWord;
+    return this.isWithinColumnWord;
   }
-  
+
+  /**
+   * Sets whether this square is within a column word.
+   *
+   * @author sisselha
+   */
   public void setWithinColumnWord() {
-	  this.isWithinColumnWord = true;
+    this.isWithinColumnWord = true;
   }
-  
+
+  /**
+   * Sets whether this square is within a row word.
+   *
+   * @author sisselha
+   */
   public void setWithinRowWord() {
-	  this.isWithinRowWord = true;
+    this.isWithinRowWord = true;
   }
 }

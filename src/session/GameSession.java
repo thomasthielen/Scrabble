@@ -872,7 +872,7 @@ public class GameSession {
    */
   public void setBag(Bag bag) {
     this.bag = bag;
-    this.ownPlayer.getRack().synchroniseBag(this);
+    this.ownPlayer.getRack().synchronizeBag(this);
   }
 
   public void setGameScreenController(GameScreenController gsc) {

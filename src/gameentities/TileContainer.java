@@ -17,8 +17,8 @@ public class TileContainer implements Serializable {
    * Creates a TileContainer with the tile as well as its count within the bag.
    *
    * @author tthielen
-   * @param tile
-   * @param count
+   * @param tile the tile that should be added
+   * @param count the amount of this tile
    */
   public TileContainer(Tile tile, int count) {
     this.tile = tile;
@@ -57,7 +57,7 @@ public class TileContainer implements Serializable {
    * Sets the value of the tile.
    * 
    * @author tthielen
-   * @param count the value of the tile
+   * @param value the value of the tile
    */
   public void setValue(int value) {
     this.tile.setValue(value);
