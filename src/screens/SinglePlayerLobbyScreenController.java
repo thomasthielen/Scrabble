@@ -168,7 +168,6 @@ public class SinglePlayerLobbyScreenController {
    */
   @FXML
   void leaveLobby(ActionEvent event) throws Exception {
-    StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     Parent content =
         loader.load(

@@ -85,7 +85,6 @@ public class EditProfileScreenController {
       errorAlert.showAndWait();
       return;
     }
-    StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     Parent content =
         loader.load(
@@ -110,7 +109,6 @@ public class EditProfileScreenController {
   @FXML
   void deleteProfile(ActionEvent event) throws Exception {
     DataHandler.deletePlayer(profileID);
-    StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     Parent content =
         loader.load(
@@ -133,7 +131,6 @@ public class EditProfileScreenController {
    */
   @FXML
   void back(ActionEvent event) throws Exception {
-    StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     Parent content =
         loader.load(

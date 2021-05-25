@@ -3,7 +3,6 @@ package screens;
 import data.DataHandler;
 import gameentities.Avatar;
 import gameentities.Player;
-import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +53,6 @@ public class ExistingProfileScreenController {
       Avatar avatar = Avatar.valueOf(profiles.get(id)[1]);
       DataHandler.setOwnPlayerId(id);
       DataHandler.setOwnPlayer(new Player(username, avatar));
-      StartScreen.getStage();
       FXMLLoader loader = new FXMLLoader();
       Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
       StartScreen.getStage().setScene(new Scene(content));
@@ -113,7 +111,6 @@ public class ExistingProfileScreenController {
   void editProfile(ActionEvent event) throws Exception {
     if (buttonGroup.getSelectedToggle() != null) {
       int id = (int) buttonGroup.getSelectedToggle().getUserData();
-      StartScreen.getStage();
       FXMLLoader loader = new FXMLLoader();
       Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/EditProfileScreen.fxml"));
       EditProfileScreenController editProfileScreenController = loader.getController();
@@ -155,7 +152,6 @@ public class ExistingProfileScreenController {
    */
   @FXML
   void back(ActionEvent event) throws Exception {
-    StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/StartScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));

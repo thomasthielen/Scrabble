@@ -1,12 +1,10 @@
 package screens;
 
-import data.DataHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import session.SinglePlayerLobby;
 
 /**
  * this class provides the controller for the Online or Offline Screen
@@ -25,7 +23,6 @@ public class OnlineOrOfflineScreenController {
    */
   @FXML
   void onlineGame(ActionEvent event) throws Exception {
-    StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OnlineScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
@@ -42,7 +39,6 @@ public class OnlineOrOfflineScreenController {
    */
   @FXML
   void offlineGame(ActionEvent event) throws Exception {
-    StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OfflineScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
@@ -58,7 +54,6 @@ public class OnlineOrOfflineScreenController {
    */
   @FXML
   void back(ActionEvent event) throws Exception {
-    StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/StartScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));

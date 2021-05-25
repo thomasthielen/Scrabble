@@ -43,7 +43,6 @@ public class OfflineScreenController {
    */
   @FXML
   void trainingMode(ActionEvent event) throws Exception {
-    StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/SinglePlayerLobbyScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
@@ -60,7 +59,6 @@ public class OfflineScreenController {
    */
   @FXML
   void back(ActionEvent event) throws Exception {
-    StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));

@@ -4,7 +4,6 @@ import data.DataHandler;
 import gameentities.Avatar;
 import gameentities.Player;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -54,7 +53,6 @@ public class NewProfileScreenController {
           && !(alreadyUsed = usernameAlreadyUsed(input))) {
         DataHandler.addPlayer(input, avatar);
         DataHandler.setOwnPlayer(new Player(input, avatar));
-        StartScreen.getStage();
         FXMLLoader loader = new FXMLLoader();
         Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
         StartScreen.getStage().setScene(new Scene(content));
@@ -104,7 +102,6 @@ public class NewProfileScreenController {
    */
   @FXML
   void back(ActionEvent event) throws Exception {
-    StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/StartScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));

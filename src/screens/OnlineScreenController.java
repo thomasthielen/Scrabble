@@ -31,7 +31,6 @@ public class OnlineScreenController {
   @FXML
   void hostGame(ActionEvent event) throws Exception {
     createMultiPlayerLobby();
-    StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/LobbyScreen.fxml"));
     LobbyScreenController lobbyScreenController = loader.getController();
@@ -50,7 +49,6 @@ public class OnlineScreenController {
    */
   @FXML
   void joinGame(ActionEvent event) throws Exception {
-    StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/ChooseServerScreen.fxml"));
     ChooseServerScreenController chooseServerScreenController = loader.getController();
@@ -69,7 +67,6 @@ public class OnlineScreenController {
    */
   @FXML
   void back(ActionEvent event) throws Exception {
-    StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
     Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
