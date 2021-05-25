@@ -56,24 +56,28 @@ public class Rack implements Serializable {
    *
    * @author tthielen
    */
-  public void refillDraw() {
+  public void refillDraw(boolean isAI) {
     while (this.tiles.size() < 7) {
       if (bag.isEmpty()) {
         return;
       }
       Tile newTile = bag.drawTile();
       tiles.add(newTile);
-      for (int i = 0; i < tileArray.length; i++) {
-        if (tileArray[i] == null) {
-          tileArray[i] = newTile;
-          break;
+      if (!isAI) {
+        for (int i = 0; i < tileArray.length; i++) {
+          if (tileArray[i] == null) {
+            tileArray[i] = newTile;
+            break;
+          }
         }
       }
     }
-    tiles.clear();
-    for (int i = 0; i < tileArray.length; i++) {
-      if (tileArray[i] != null) {
-        tiles.add(tileArray[i]);
+    if (!isAI) {
+      tiles.clear();
+      for (int i = 0; i < tileArray.length; i++) {
+        if (tileArray[i] != null) {
+          tiles.add(tileArray[i]);
+        }
       }
     }
   }
@@ -109,7 +113,7 @@ public class Rack implements Serializable {
       this.bag.addTile(t);
     }
 
-    refillDraw();
+    refillDraw(false);
   }
 
   /**
@@ -127,21 +131,18 @@ public class Rack implements Serializable {
       }
     }
   }
-  
+
   // Doesn't consider exact position of tiles
   public void playTileAI(Tile tile) {
-	  Tile removeTile = null;
+    Tile removeTile = null;
     for (Tile t : tiles) {
       if (t.getLetter() == tile.getLetter()) {
         removeTile = t;
         break;
-        
       }
     }
     tiles.remove(removeTile);
   }
-  
-  
 
   /**
    * Adds a tile back to the rack.
@@ -163,7 +164,6 @@ public class Rack implements Serializable {
       }
     }
   }
-  
 
   /**
    * Returns the rack's tiles

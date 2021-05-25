@@ -93,6 +93,7 @@ public class Bag implements Serializable {
    * @return Tile, randomly drawn from the bag
    */
   public Tile drawTile() {
+    System.out.println("drawTile called with " + this.remainingTiles.size() + " tiles in the bag" ); 
     if (!this.isEmpty) {
       // Draw a random tile out of remainingTiles
       int rand = (int) (remainingTiles.size() * Math.random());
