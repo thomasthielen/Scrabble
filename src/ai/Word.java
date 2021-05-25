@@ -11,9 +11,17 @@ public class Word {
   private int endingX;
   private int beginningY;
   private int endingY;
+  private char letter;
 
   public void setColumn(boolean column) {
     this.column = column;
+  }
+  
+  public char getLetter() {
+	  return this.letter;
+  }
+  public void setLetter(char c) {
+	  this.letter = c;
   }
 
   public int getBeginningX() {
