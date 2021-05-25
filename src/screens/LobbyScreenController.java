@@ -82,6 +82,10 @@ public class LobbyScreenController {
   @FXML private Button startGame;
   @FXML private Button editTiles;
   @FXML private MenuButton dictionarySelecter;
+  
+  @FXML private Button deleteButton1;
+  @FXML private Button deleteButton2;
+  @FXML private Button deleteButton3;
 
   private ArrayList<Text> playerInfos = new ArrayList<Text>();
   private ArrayList<Text> playerStatistics = new ArrayList<Text>();
@@ -99,6 +103,10 @@ public class LobbyScreenController {
     playerStatistics.add(playerStatistic2);
     playerStatistics.add(playerStatistic3);
     playerStatistics.add(playerStatistic4);
+    
+    deleteButton1.setVisible(false);
+    deleteButton2.setVisible(false);
+    deleteButton3.setVisible(false);
 
     Client.getGameSession().setLobbyScreenController(this);
     if (!Client.isHost()) {
@@ -530,5 +538,20 @@ public class LobbyScreenController {
                 System.exit(0);
               }
             });
+  }
+  
+  @FXML
+  void deleteAIPlayer1(ActionEvent event) {
+
+  }
+
+  @FXML
+  void deleteAIPlayer2(ActionEvent event) {
+
+  }
+
+  @FXML
+  void deleteAIPlayer3(ActionEvent event) {
+
   }
 }

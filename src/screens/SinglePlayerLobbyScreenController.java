@@ -59,6 +59,10 @@ public class SinglePlayerLobbyScreenController {
   @FXML private Text playerStatistics2;
   @FXML private Text playerStatistics3;
   @FXML private Text playerStatistics4;
+  
+  @FXML private Button deleteButton1;
+  @FXML private Button deleteButton2;
+  @FXML private Button deleteButton3;
 
   private File chosenDictionary;
 
@@ -83,6 +87,10 @@ public class SinglePlayerLobbyScreenController {
     playerStatistics.add(playerStatistics2);
     playerStatistics.add(playerStatistics3);
     playerStatistics.add(playerStatistics4);
+    
+    deleteButton1.setVisible(false);
+    deleteButton2.setVisible(false);
+    deleteButton3.setVisible(false);
 
     refreshPlayerList();
     setDictionaryMenu();
@@ -354,5 +362,20 @@ public class SinglePlayerLobbyScreenController {
       playerInfos.get(i).setVisible(false);
       playerStatistics.get(i).setVisible(false);
     }
+  }
+  
+  @FXML
+  void deleteAIPlayer1(ActionEvent event) {
+
+  }
+
+  @FXML
+  void deleteAIPlayer2(ActionEvent event) {
+
+  }
+
+  @FXML
+  void deleteAIPlayer3(ActionEvent event) {
+
   }
 }
