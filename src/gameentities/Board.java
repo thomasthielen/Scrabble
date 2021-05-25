@@ -203,19 +203,29 @@ public class Board implements Serializable {
    */
   public boolean hasPreviouslyPlayedNeighbour(Square square, boolean rowMain) {
     if (rowMain) {
-      if (this.getUpperNeighbour(square).isPreviouslyPlayed()
-          || this.getLowerNeighbour(square).isPreviouslyPlayed()) {
-        return true;
-      } else {
-        return false;
+      if (this.getUpperNeighbour(square) != null) {
+        if (this.getUpperNeighbour(square).isPreviouslyPlayed()) {
+          return true;
+        }
       }
+      if (this.getLowerNeighbour(square) != null) {
+        if (this.getLowerNeighbour(square).isPreviouslyPlayed()) {
+          return true;
+        }
+      }
+      return false;
     } else {
-      if (this.getLeftNeighbour(square).isPreviouslyPlayed()
-          || this.getRightNeighbour(square).isPreviouslyPlayed()) {
-        return true;
-      } else {
-        return false;
+      if (this.getLeftNeighbour(square) != null) {
+        if (this.getLeftNeighbour(square).isPreviouslyPlayed()) {
+          return true;
+        }
       }
+      if (this.getRightNeighbour(square) != null) {
+        if (this.getRightNeighbour(square).isPreviouslyPlayed()) {
+          return true;
+        }
+      }
+      return false;
     }
   }
   /**
@@ -227,14 +237,27 @@ public class Board implements Serializable {
    * @return the square relative to the given square and boolean
    */
   public boolean hasPreviouslyPlayedNeighbour(Square square) {
-    if (this.getUpperNeighbour(square).isPreviouslyPlayed()
-        || this.getLeftNeighbour(square).isPreviouslyPlayed()
-        || this.getRightNeighbour(square).isPreviouslyPlayed()
-        || this.getLowerNeighbour(square).isPreviouslyPlayed()) {
-      return true;
-    } else {
-      return false;
+    if (this.getUpperNeighbour(square) != null) {
+      if (this.getUpperNeighbour(square).isPreviouslyPlayed()) {
+        return true;
+      }
     }
+    if (this.getLowerNeighbour(square) != null) {
+      if (this.getLowerNeighbour(square).isPreviouslyPlayed()) {
+        return true;
+      }
+    }
+    if (this.getLeftNeighbour(square) != null) {
+      if (this.getLeftNeighbour(square).isPreviouslyPlayed()) {
+        return true;
+      }
+    }
+    if (this.getRightNeighbour(square) != null) {
+      if (this.getRightNeighbour(square).isPreviouslyPlayed()) {
+        return true;
+      }
+    }
+    return false;
   }
 
   // Testing Purposes TODO: DELETE
