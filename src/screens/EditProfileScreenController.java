@@ -1,11 +1,10 @@
 package screens;
 
-import java.io.FileInputStream;
+import data.DataHandler;
+import gameentities.Avatar;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.regex.Pattern;
-import data.DataHandler;
-import gameentities.Avatar;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +20,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
+/**
+ * This class provides the controller for the EditProfileScreen.
+ *
+ * @author jluellig
+ * @author jbleil
+ */
 public class EditProfileScreenController {
 
   private static int profileID;
@@ -34,10 +39,10 @@ public class EditProfileScreenController {
 
   /**
    * This method serves as the Listener for "SUBMIT CHANGES"-Button. It allows the user to save the
-   * changes to the Profile and redirects him back to the Existing Profile Screen
+   * changes to the Profile and redirects him back to the Existing Profile Screen.
    *
    * @author jluellig
-   * @param event
+   * @param event the ActionEvent when the submit changes-Button is pressed
    */
   @FXML
   void submitChanges(ActionEvent event) throws Exception {
@@ -82,7 +87,11 @@ public class EditProfileScreenController {
     }
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/ExistingProfileScreen.fxml"));
+    Parent content =
+        loader.load(
+            getClass()
+                .getClassLoader()
+                .getResourceAsStream("screens/resources/ExistingProfileScreen.fxml"));
     ExistingProfileScreenController existingProfileScreenController = loader.getController();
     existingProfileScreenController.addProfiles();
     existingProfileScreenController.setSelectedProfile(profileID);
@@ -103,7 +112,11 @@ public class EditProfileScreenController {
     DataHandler.deletePlayer(profileID);
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/ExistingProfileScreen.fxml"));
+    Parent content =
+        loader.load(
+            getClass()
+                .getClassLoader()
+                .getResourceAsStream("screens/resources/ExistingProfileScreen.fxml"));
     ExistingProfileScreenController existingProfileScreenController = loader.getController();
     existingProfileScreenController.addProfiles();
     StartScreen.getStage().setScene(new Scene(content));
@@ -112,17 +125,21 @@ public class EditProfileScreenController {
   }
 
   /**
-   * This method serves as the Listener for "Back"-Button It redirects the user to the Existing
-   * Profile Screen
+   * This method serves as the Listener for "Back"-Button. It redirects the user to the Existing
+   * Profile Screen.
    *
    * @author jbleil
-   * @param event
+   * @param event the ActionEvent when the back-Button is pressed
    */
   @FXML
   void back(ActionEvent event) throws Exception {
     StartScreen.getStage();
     FXMLLoader loader = new FXMLLoader();
-    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/ExistingProfileScreen.fxml"));
+    Parent content =
+        loader.load(
+            getClass()
+                .getClassLoader()
+                .getResourceAsStream("screens/resources/ExistingProfileScreen.fxml"));
     ExistingProfileScreenController existingProfileScreenController = loader.getController();
     existingProfileScreenController.addProfiles();
     StartScreen.getStage().setScene(new Scene(content));
@@ -132,7 +149,7 @@ public class EditProfileScreenController {
   /**
    * Sets the ID for the profile in the database that is going to be edited.
    *
-   * @param id the id of the selected profile in the database that is going to be changed.
+   * @param id the id of the selected profile in the database that is going to be changed
    * @author jluellig
    */
   protected void loadProfile(int id) {
@@ -166,7 +183,7 @@ public class EditProfileScreenController {
    * alternative to the submit changes button.
    *
    * @param event ActionEvent when enter is pressed in the text field
-   * @throws Exception
+   * @throws Exception the Exception when the fxml file is not found
    * @author jluellig
    */
   @FXML
@@ -178,7 +195,7 @@ public class EditProfileScreenController {
    * this method displays all the choosable avatars on the Screen.
    *
    * @author jbleil
-   * @throws FileNotFoundException
+   * @throws FileNotFoundException the Exception when the avatar file is not found
    */
   protected void addAvatars() throws FileNotFoundException {
     buttonGroup = new ToggleGroup();
@@ -192,7 +209,13 @@ public class EditProfileScreenController {
     int counter = 0;
     for (int i = 0; i < 2; i++) {
       for (int j = 0; j < 6; j++) {
-        Image img = new Image(getClass().getClassLoader().getResourceAsStream(array[counter].getUrl()), 52, 52, true, true);
+        Image img =
+            new Image(
+                getClass().getClassLoader().getResourceAsStream(array[counter].getUrl()),
+                52,
+                52,
+                true,
+                true);
         ToggleButton tb = new ToggleButton("", new ImageView(img));
         tb.setUserData(array[counter]);
         tb.setToggleGroup(buttonGroup);

@@ -1,6 +1,7 @@
 package screens;
 
-import gameentities.*;
+import gameentities.Bag;
+import gameentities.TileContainer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import network.Client;
 
+/**
+ * The controller for the ChangeTilesScreen.
+ *
+ * @author jbleil
+ */
 public class ChangeTilesScreenController {
 
   @FXML private Pane backgroundPane;
@@ -20,7 +26,7 @@ public class ChangeTilesScreenController {
   TextField[] valueFields = new TextField[27];
 
   /**
-   * this method gets the Letter of a Tile with the corresponding count and value from the Bag.
+   * This method gets the Letter of a Tile with the corresponding count and value from the Bag.
    * These informations are getting displayed on the screen in 3 different gridPanes.
    *
    * @author jbleil
@@ -44,7 +50,6 @@ public class ChangeTilesScreenController {
     Text count3 = new Text("Count");
     count3.relocate(825, 90);
     backgroundPane.getChildren().add(count3);
-    Bag bag = Client.getGameSession().getBag();
     GridPane grid1 = new GridPane();
     grid1.setHgap(15);
     grid1.setVgap(10);
@@ -61,6 +66,7 @@ public class ChangeTilesScreenController {
     backgroundPane.getChildren().add(grid3);
     int rowCounter = 0;
     backgroundPane.getChildren().add(grid1);
+    Bag bag = Client.getGameSession().getBag();
     for (TileContainer t : bag.getTileCounter()) {
       if (rowCounter < 9) {
         grid1.add(new Text(t.getTile().getLetter() + " :"), 0, rowCounter);
@@ -105,6 +111,13 @@ public class ChangeTilesScreenController {
     }
   }
 
+  /**
+   * Stores the changes that were made.
+   *
+   * @param event the ActionEvent when the submitChanges-Button is pressed
+   * @throws Exception
+   * @author jbleil
+   */
   @FXML
   void submitChanges(ActionEvent event) throws Exception {
     Bag bag = new Bag();
@@ -120,10 +133,19 @@ public class ChangeTilesScreenController {
     back(event);
   }
 
+  /**
+   * Gets the user back to the LobbyScreen.
+   *
+   * @param event the ActionEvent when the back-Button is pressed
+   * @throws Exception
+   * @author jbleil
+   */
   @FXML
   void back(ActionEvent event) throws Exception {
     FXMLLoader loader = new FXMLLoader();
-    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/LobbyScreen.fxml"));
+    Parent content =
+        loader.load(
+            getClass().getClassLoader().getResourceAsStream("screens/resources/LobbyScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }

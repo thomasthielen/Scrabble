@@ -103,7 +103,7 @@ public class Tile implements Serializable {
    * Returns whether the tile is placed temporarily.
    *
    * @return placedTemporarily
-   * @author
+   * @author lsteltma
    */
   public boolean isPlacedTemporarily() {
     return placedTemporarily;
@@ -113,7 +113,7 @@ public class Tile implements Serializable {
    * Sets whether the tile is placed temporarily.
    *
    * @param b whether the tile should be placed temporarily
-   * @author
+   * @author lsteltma
    */
   public void setPlacedTemporarily(boolean b) {
     placedTemporarily = b;
@@ -123,7 +123,7 @@ public class Tile implements Serializable {
    * Return whether the tile is placed finally.
    *
    * @return placedFinally
-   * @author
+   * @author lsteltma
    */
   public boolean getPlacedFinally() {
     return placedFinally;
@@ -133,7 +133,7 @@ public class Tile implements Serializable {
    * Sets whether the tile is placed finally.
    *
    * @param b whether the tile should be placed finally
-   * @author
+   * @author lsteltma
    */
   public void setPlacedFinally(boolean b) {
     placedFinally = b;
@@ -143,7 +143,7 @@ public class Tile implements Serializable {
    * Returns whether the tile is selected.
    *
    * @return selected
-   * @author
+   * @author tthielen
    */
   public boolean isSelected() {
     return selected;
@@ -153,7 +153,7 @@ public class Tile implements Serializable {
    * Sets whether the tile is selected.
    *
    * @param b whether the tile should be selected
-   * @author
+   * @author tthielen
    */
   public void setSelected(boolean b) {
     selected = b;
@@ -163,7 +163,7 @@ public class Tile implements Serializable {
    * Sets the value of the tile.
    *
    * @param value the value the tile should have
-   * @author
+   * @author tthielen
    */
   public void setValue(int value) {
     this.value = value;
