@@ -10,6 +10,7 @@ import ai.AI;
 import data.DataHandler;
 import data.StatisticKeys;
 import gameentities.Player;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +31,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
+import javafx.stage.WindowEvent;
 import network.Client;
 import network.Server;
 import network.messages.TooManyPlayerException;
@@ -111,6 +113,8 @@ public class LobbyScreenController {
     chatField.setFocusTraversable(false);
     chooseAIPane.setVisible(false);
     tooltipPane.setVisible(false);
+
+    initializeCloseHandler();
   }
 
   /**
@@ -489,5 +493,22 @@ public class LobbyScreenController {
     errorAlert.setContentText("You can't join the server because the game has already started.");
     errorAlert.showAndWait();
     leave();
+  }
+
+  /**
+   * Handler for when the user closes the window.
+   *
+   * @author jluellig
+   */
+  private void initializeCloseHandler() {
+    StartScreen.getStage()
+        .setOnCloseRequest(
+            new EventHandler<WindowEvent>() {
+              @Override
+              public void handle(final WindowEvent event) {
+                Platform.exit();
+                System.exit(0);
+              }
+            });
   }
 }
