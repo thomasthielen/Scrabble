@@ -168,10 +168,10 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
    * @author tikrause
    */
   protected static void updateAIPlayersInLobby() {
-	  System.out.println("Players:");
-	  for (Player p : Server.getPlayerList()) {
-		  System.out.println(p.getUsername()); 
-	  }
+//	  System.out.println("Players:");
+//	  for (Player p : Server.getPlayerList()) {
+//		  System.out.println(p.getUsername()); 
+//	  }
     for (Channel c : channels) {
       c.writeAndFlush(
           new GameStateMessage(DataHandler.getOwnPlayer(), new GameState(Server.getPlayerList())));

@@ -350,27 +350,32 @@ public class LobbyScreenController {
   public void refreshPlayerList() {
     ArrayList<Player> players = Client.getGameSession().getPlayerList();
 
-    for (int i = 0; i < players.size(); i++) {
-      playerInfos.get(i).setText(players.get(i).getUsername());
-      playerInfos.get(i).setVisible(true);
-      if (!players.get(i).isBot()) {
-        HashMap<StatisticKeys, Integer> map = players.get(i).getPlayerStatistics();
-        playerStatistics
-            .get(i)
-            .setText(
-                "Games won: "
-                    + map.get(StatisticKeys.WON)
-                    + "\nGames played: "
-                    + map.get(StatisticKeys.MATCHES)
-                    + "\nAverage Points: "
-                    + map.get(StatisticKeys.POINTSAVG));
-        playerStatistics.get(i).setVisible(true);
+    if (players.size() > 0) {
+      for (int i = 0; i < players.size(); i++) {
+        playerInfos.get(i).setText(players.get(i).getUsername());
+        playerInfos.get(i).setVisible(true);
+        if (!players.get(i).isBot()) {
+          HashMap<StatisticKeys, Integer> map = players.get(i).getPlayerStatistics();
+          playerStatistics
+              .get(i)
+              .setText(
+                  "Games won: "
+                      + map.get(StatisticKeys.WON)
+                      + "\nGames played: "
+                      + map.get(StatisticKeys.MATCHES)
+                      + "\nAverage Points: "
+                      + map.get(StatisticKeys.POINTSAVG));
+          playerStatistics.get(i).setVisible(true);
+        } else {
+          playerStatistics.get(i).setText("");
+          playerStatistics.get(i).setVisible(false);
+        }
       }
-    }
 
-    for (int i = players.size(); i < playerInfos.size() && i < playerStatistics.size(); i++) {
-      playerInfos.get(i).setVisible(false);
-      playerStatistics.get(i).setVisible(false);
+      for (int i = players.size(); i < playerInfos.size() && i < playerStatistics.size(); i++) {
+        playerInfos.get(i).setVisible(false);
+        playerStatistics.get(i).setVisible(false);
+      }
     }
   }
 

@@ -128,6 +128,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         GameStateMessage gsm = (GameStateMessage) msg;
         GameState gs = gsm.getGameState();
         Client.updateGameSession(gs);
+        System.out.println("Received a GameState with the following players:" ); 
         for (Player p : Client.getGameSession().getPlayerList()) {
           System.out.println(p.getUsername());
         }
