@@ -27,6 +27,7 @@ import javafx.stage.FileChooser;
 import network.Server;
 import network.messages.TooManyPlayerException;
 import session.Dictionary;
+import session.GameState;
 import javafx.event.EventHandler;
 
 /**
@@ -59,7 +60,7 @@ public class SinglePlayerLobbyScreenController {
   @FXML private Text playerStatistics2;
   @FXML private Text playerStatistics3;
   @FXML private Text playerStatistics4;
-  
+
   @FXML private Button deleteButton1;
   @FXML private Button deleteButton2;
   @FXML private Button deleteButton3;
@@ -87,7 +88,7 @@ public class SinglePlayerLobbyScreenController {
     playerStatistics.add(playerStatistics2);
     playerStatistics.add(playerStatistics3);
     playerStatistics.add(playerStatistics4);
-    
+
     deleteButton1.setVisible(false);
     deleteButton2.setVisible(false);
     deleteButton3.setVisible(false);
@@ -192,9 +193,11 @@ public class SinglePlayerLobbyScreenController {
     if (Server.getAIPlayerList().size() > 0) {
       Server.getLobby().getGameSession().setIsRunning(true);
       DataHandler.userDictionaryFile(chosenDictionary);
+      Server.getLobby().getGameSession().synchronise(new GameState(Server.getPlayerList()));
+      Server.updateAI(new GameState(Server.getPlayerList()));
       for (AI ai : Server.getAIPlayerList()) {
-          ai.setDictionary(chosenDictionary);
-        }
+        ai.setDictionary(chosenDictionary);
+      }
       Server.getLobby().getGameSession().getPlayer().setCurrentlyPlaying(true);
       Server.getLobby().getGameSession().initialiseSinglePlayerGameScreen();
       switchToGameScreen();
@@ -253,7 +256,7 @@ public class SinglePlayerLobbyScreenController {
     refreshPlayerList();
     closeChooseAIPane(new ActionEvent());
   }
-  
+
   @FXML
   void closeChooseAIPane(ActionEvent event) {
     chooseAIPane.setVisible(false);
@@ -363,19 +366,13 @@ public class SinglePlayerLobbyScreenController {
       playerStatistics.get(i).setVisible(false);
     }
   }
-  
-  @FXML
-  void deleteAIPlayer1(ActionEvent event) {
-
-  }
 
   @FXML
-  void deleteAIPlayer2(ActionEvent event) {
-
-  }
+  void deleteAIPlayer1(ActionEvent event) {}
 
   @FXML
-  void deleteAIPlayer3(ActionEvent event) {
+  void deleteAIPlayer2(ActionEvent event) {}
 
-  }
+  @FXML
+  void deleteAIPlayer3(ActionEvent event) {}
 }
