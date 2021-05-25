@@ -26,6 +26,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
@@ -205,6 +207,11 @@ public class GameScreenController {
     setPlayerStatistics();
     initializeCloseHandler();
     refreshPlayerNames();
+    
+    ImageView starView = new ImageView(new Image("screens/resources/stern.jpg"));
+    starView.setFitHeight(22);
+    starView.setFitWidth(22);
+    gameBoard.add(starView, 7, 7);
   }
 
   public void setRack(boolean isFirstTime) {
