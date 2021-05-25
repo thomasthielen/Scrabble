@@ -12,6 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import network.Client;
+import network.Server;
 
 /**
  * The controller for the ChangeTilesScreen.
@@ -66,7 +67,13 @@ public class ChangeTilesScreenController {
     backgroundPane.getChildren().add(grid3);
     int rowCounter = 0;
     backgroundPane.getChildren().add(grid1);
-    Bag bag = Client.getGameSession().getBag();
+    Bag bag = new Bag();
+    if(Server.getLobby().getGameSession().getMultiPlayer()) {
+      bag = Client.getGameSession().getBag();
+    }
+    else {
+      bag = Server.getLobby().getGameSession().getBag();
+    }
     for (TileContainer t : bag.getTileCounter()) {
       if (rowCounter < 9) {
         grid1.add(new Text(t.getTile().getLetter() + " :"), 0, rowCounter);
@@ -128,8 +135,13 @@ public class ChangeTilesScreenController {
       counter++;
     }
     bag.refreshBag();
-    Client.getGameSession().setBag(bag);
-    Client.getGameSession().sendGameStateMessage(false);
+    if(Server.getLobby().getGameSession().getMultiPlayer()) {
+      Client.getGameSession().setBag(bag);
+      Client.getGameSession().sendGameStateMessage(false); 
+    }
+    else {
+      Server.getLobby().getGameSession().setBag(bag);
+    }
     back(event);
   }
 
@@ -142,11 +154,21 @@ public class ChangeTilesScreenController {
    */
   @FXML
   void back(ActionEvent event) throws Exception {
-    FXMLLoader loader = new FXMLLoader();
-    Parent content =
-        loader.load(
-            getClass().getClassLoader().getResourceAsStream("screens/resources/LobbyScreen.fxml"));
-    StartScreen.getStage().setScene(new Scene(content));
-    StartScreen.getStage().show();
+    if(Server.getLobby().getGameSession().getMultiPlayer()) {
+      FXMLLoader loader = new FXMLLoader();
+      Parent content =
+          loader.load(
+              getClass().getClassLoader().getResourceAsStream("screens/resources/LobbyScreen.fxml"));
+      StartScreen.getStage().setScene(new Scene(content));
+      StartScreen.getStage().show();
+    }
+    else {
+      FXMLLoader loader = new FXMLLoader();
+      Parent content =
+          loader.load(
+              getClass().getClassLoader().getResourceAsStream("screens/resources/SinglePlayerLobbyScreen.fxml"));
+      StartScreen.getStage().setScene(new Scene(content));
+      StartScreen.getStage().show();
+    }
   }
 }
