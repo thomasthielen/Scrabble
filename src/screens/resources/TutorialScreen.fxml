@@ -6,7 +6,6 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <Pane fx:id="backgroundPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="562.0" prefWidth="1000.0" style="-fx-background-color: #F4D896;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screens.TutorialScreenController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88c00" height="50.0" layoutX="350.0" layoutY="22.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="300.0" />
@@ -15,12 +14,12 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Text>
-      <Button layoutX="80.0" layoutY="461.0" mnemonicParsing="false" onAction="#previous" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="PREVIOUS" textFill="WHITE">
+      <Button fx:id="previousButton" layoutX="80.0" layoutY="461.0" mnemonicParsing="false" onAction="#previous" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="PREVIOUS" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
-      <Button layoutX="520.0" layoutY="461.0" mnemonicParsing="false" onAction="#next" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="NEXT" textFill="WHITE">
+      <Button fx:id="nextButton" layoutX="520.0" layoutY="461.0" mnemonicParsing="false" onAction="#next" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="NEXT" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
