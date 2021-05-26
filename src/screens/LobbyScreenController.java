@@ -312,6 +312,7 @@ public class LobbyScreenController {
     ChangeTilesScreenController changeTilesScreenController = loader.getController();
     changeTilesScreenController.setMultiplayer(true);
     changeTilesScreenController.setTileScreen();
+    changeTilesScreenController.storeChat(chatHistory);
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
@@ -621,5 +622,10 @@ public class LobbyScreenController {
                 System.exit(0);
               }
             });
+  }
+
+  void refreshChat(StringBuffer sb) {
+    chatHistory = sb;
+    chatField.setText(chatHistory.toString());
   }
 }

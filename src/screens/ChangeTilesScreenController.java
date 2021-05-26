@@ -32,6 +32,8 @@ public class ChangeTilesScreenController {
   GridPane grid2;
   GridPane grid3;
 
+  private StringBuffer storedChat;
+
   /**
    * This method gets the Letter of a Tile with the corresponding count and value from the Bag.
    * These informations are getting displayed on the screen in 3 different gridPanes.
@@ -160,6 +162,8 @@ public class ChangeTilesScreenController {
               getClass()
                   .getClassLoader()
                   .getResourceAsStream("screens/resources/LobbyScreen.fxml"));
+      LobbyScreenController lobbyScreenController = loader.getController();
+      lobbyScreenController.refreshChat(storedChat);
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
     } else {
@@ -174,7 +178,11 @@ public class ChangeTilesScreenController {
     }
   }
 
-  public void setMultiplayer(boolean b) {
+  void setMultiplayer(boolean b) {
     isMultiplayer = b;
+  }
+
+  void storeChat(StringBuffer sb) {
+    storedChat = sb;
   }
 }
