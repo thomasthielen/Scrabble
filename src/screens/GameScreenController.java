@@ -38,6 +38,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.WindowEvent;
 import network.Client;
@@ -1327,10 +1328,20 @@ public class GameScreenController {
     ArrayList<Player> players = Client.getGameSession().getPlayerList();
 
     for (int i = 0; i < players.size(); i++) {
-      Text name = new Text(players.get(i).getUsername() + " - "); // TODO: add points
+      Text name =
+          new Text(
+              players.get(i).getUsername()
+                  + "\t - "
+                  + players.get(i).getScore()); // TODO: add points
       name.setFill(Paint.valueOf("#f88c00"));
       name.setFont(new Font(20));
       name.relocate(10, 14 + i * 40);
+      if (players.get(i).isCurrentlyPlaying()) {
+        //name.setFont(new Font("Segoe UI", FontWeight.BOLD));
+      } else {
+        //name.setFont(new Font("Segoe UI", HIER NICHT BOLD));
+      }
+
       backgroundPane.getChildren().add(name);
     }
   }
