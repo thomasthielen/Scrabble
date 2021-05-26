@@ -170,6 +170,22 @@ public class Server {
           DataHandler.getOwnPlayer(), new GameState(Client.getGameSession().getPlayerList()));
     }
   }
+  
+  /**
+   * Overwrites the player in players corresponding to the given AI after its initialDraw().
+   *
+   * @author tthielen
+   * @param ai the AI whose rack is meant to be updated
+   */
+  public static void updateRackOfAIPlayer(AI ai) {
+    for (int i = 0; i < players.size(); i++) {
+      if (players.get(i).equals(ai.getPlayer())) {
+        players.set(i, ai.getPlayer());
+        Client.updateGameSession(new GameState(players));
+        break;
+      }
+    }
+  }
 
   /**
    * Removes an AI instance from the AI player list and the player list.
@@ -232,7 +248,6 @@ public class Server {
     for (AI ai : aiPlayers) {
       ai.updateGameSession(gs);
     }
-    for (Player p : gs.getPlayers()) System.out.println("spieler" + p.getUsername());
   }
 
   public static int getHardAICount() {

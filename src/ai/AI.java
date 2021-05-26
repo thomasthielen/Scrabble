@@ -37,10 +37,11 @@ public class AI {
     this.difficult = difficult;
   }
 
-  public void setDictionary(File f) {
-    dictionary = f;
+  public void initializeAI(File dictionary) {
+    this.dictionary = dictionary;
     this.gameReference.setBag(Client.getGameSession().getBag());
     this.gameReference.getPlayer().getRack().initialDraw();
+    Server.updateRackOfAIPlayer(this);
   }
   /**
    * If the AI has to make the first move,
@@ -153,7 +154,7 @@ public class AI {
       this.setbestmoves();
     }
     PossibleMove max = new PossibleMove(null, 0);
-    System.out.println(moves.size() + "mögliche Züge");
+    System.out.println(moves.size() + "mï¿½gliche Zï¿½ge");
     if (this.difficult) {
       for (PossibleMove pm : moves) {
         if (pm.getValue() > max.getValue()) {
@@ -297,7 +298,7 @@ public class AI {
         ArrayList<String> buchstaben = prefixplussuffix(pre, suf);
 
         // if()
-        //        System.out.println("Wir überprüfufen jetzt " + pre + " " + s + " " + suf);
+        //        System.out.println("Wir ï¿½berprï¿½fufen jetzt " + pre + " " + s + " " + suf);
         //        System.out.println();
         //        System.out.println();
         if (wort.getColumn()) {
@@ -327,11 +328,11 @@ public class AI {
               }
               if (gameReference.checkMove()) {
                 PossibleMove pm = new PossibleMove(placedsquare, gameReference.getTurnValue());
-                // System.out.println("Moveffrfrrf hinzugefügt");
+                // System.out.println("Moveffrfrrf hinzugefï¿½gt");
                 this.moves.add(pm);
               } else {
                 // this.printBoard();
-                // System.out.println("Move nicht zulässig");
+                // System.out.println("Move nicht zulï¿½ssig");
               }
             }
           }
@@ -391,7 +392,7 @@ public class AI {
             char[] suffix = suffixe.get(z).toCharArray();
             ArrayList<String> buchstaben = this.prefixplussuffix(prefixe.get(z), suffixe.get(z));
             ArrayList<Square> squares = new ArrayList<Square>();
-            // System.out.println("Wir überprüfen jetzt: "+prefixe.get(z)+" "+s+" "+suffixe.get(z));
+            // System.out.println("Wir ï¿½berprï¿½fen jetzt: "+prefixe.get(z)+" "+s+" "+suffixe.get(z));
             this.gameReference.recallAll();
             if (this.checkabove(prefix.length, w, this.gameReference.getBoard())
                 && this.checkdown(suffix.length, w, this.gameReference.getBoard())) {
@@ -657,11 +658,11 @@ public class AI {
 
     // this.printword(buchstaben);
     if (buchstaben.size() == 0) {
-      // System.out.println("Move hinzugefügt");
+      // System.out.println("Move hinzugefï¿½gt");
       return placedsquares;
     } else {
       if (buchstaben.size() <= pre) {
-        // System.out.println("Präfix");
+        // System.out.println("Prï¿½fix");
         if (board
             .getSquare(wort.getBeginningX(), wort.getBeginningY() + (pre - buchstaben.size() + 1))
             .isTaken()) {
@@ -755,18 +756,18 @@ public class AI {
       int pre,
       int suf,
       Board board) {
-    //    System.out.println("Horizontal Buchstabengröße= " + buchstaben.size());
+    //    System.out.println("Horizontal Buchstabengrï¿½ï¿½e= " + buchstaben.size());
     //    System.out.println();
     // this.printword(buchstaben);
     // this.printtiles(remainingtiles);
     int size = buchstaben.size();
     if (size == 0) {
-      // System.out.println("Move hinzugefügt Horizontal");
+      // System.out.println("Move hinzugefï¿½gt Horizontal");
       return placedsquares;
     } else {
 
       if (buchstaben.size() <= pre) {
-        // System.out.println("Präfix");
+        // System.out.println("Prï¿½fix");
         // System.out.println(pre);
         // System.out.println(wort.getBeginningX());
         if (board
@@ -791,9 +792,9 @@ public class AI {
           char[] c = buchstaben.get(buchstaben.size() - 1).toCharArray();
           for (int i = 0; i < remainingtiles.size(); i++) {
             String s = String.valueOf(c);
-            // System.out.println("Präfix passt nicht"+ s + " "+ remainingtiles.get(i).getLetter());
+            // System.out.println("Prï¿½fix passt nicht"+ s + " "+ remainingtiles.get(i).getLetter());
             if (remainingtiles.get(i).getLetter() == c[0]) {
-              // System.out.println("Präfix passt"+ s + " "+ remainingtiles.get(i).getLetter());
+              // System.out.println("Prï¿½fix passt"+ s + " "+ remainingtiles.get(i).getLetter());
               this.gameReference.placeTile(
                   wort.getBeginningX() - pre + buchstaben.size() - 1,
                   wort.getBeginningY(),

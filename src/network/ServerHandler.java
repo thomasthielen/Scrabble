@@ -120,7 +120,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
           }
         }
         for (AI ai : Server.getAIPlayerList()) {
-          ai.setDictionary(dm.getFile());
+          ai.initializeAI(dm.getFile());
         }
         break;
 
