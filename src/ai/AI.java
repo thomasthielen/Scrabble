@@ -1,38 +1,35 @@
 package ai;
 
+import data.BitOptionKeys;
+import data.DataHandler;
+import gameentities.Board;
+import gameentities.Player;
+import gameentities.Square;
+import gameentities.Tile;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import data.BitOptionKeys;
-import data.DataHandler;
-import gameentities.Avatar;
-import gameentities.Board;
-import gameentities.Player;
-import gameentities.Rack;
-import gameentities.Square;
-import gameentities.Tile;
 import network.Server;
 import session.GameSession;
 import session.GameState;
 
+/** @author sisselha */
 public class AI {
 
   private ArrayList<PossibleMove> moves;
   private ArrayList<Word> words;
   private GameSession gameReference;
-  private int turnValue;
-  StringBuffer buffer;
-  ArrayList<Tile> tiles;
-  boolean difficult;
-
+  private StringBuffer buffer;
+  private ArrayList<Tile> tiles;
+  private boolean difficult;
   private boolean dictionaryInitialized = false;
   private File dictionary;
 
   /**
+   * @author sisselha
    * @param username
-   * @param avatar
-   * @param gameReference
+   * @param difficult
+   * @param multiplayer
    */
   public AI(String username, boolean difficult, boolean multiplayer) {
     this.gameReference = new GameSession(new Player(username), multiplayer);
@@ -48,7 +45,7 @@ public class AI {
     }
   }
 
-  public void getthefirstmove() {
+  public void getTheFirstMove() {
     this.moves = new ArrayList<PossibleMove>();
     ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
     for (int i = 0; i < this.tiles.size(); i++) {
@@ -147,7 +144,7 @@ public class AI {
 
   public ArrayList<Square> getthebestmove() {
     if (this.boardIsEmpty()) {
-      this.getthefirstmove();
+      this.getTheFirstMove();
       // System.out.println("erster Move");
     } else {
       this.setbestmoves();

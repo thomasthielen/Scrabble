@@ -1,8 +1,7 @@
 package ai;
 
-import java.util.ArrayList;
-
 import gameentities.Square;
+import java.util.ArrayList;
 
 public class PossibleMove {
   private ArrayList<Square> squares;
@@ -21,5 +20,4 @@ public class PossibleMove {
     return this.value;
   }
 
-  // public void setvalue
 }

@@ -1,8 +1,7 @@
 package ai;
 
-import java.util.ArrayList;
-
 import gameentities.Square;
+import java.util.ArrayList;
 
 public class Word {
   private boolean column;
@@ -16,12 +15,13 @@ public class Word {
   public void setColumn(boolean column) {
     this.column = column;
   }
-  
+
   public char getLetter() {
-	  return this.letter;
+    return this.letter;
   }
+
   public void setLetter(char c) {
-	  this.letter = c;
+    this.letter = c;
   }
 
   public int getBeginningX() {
