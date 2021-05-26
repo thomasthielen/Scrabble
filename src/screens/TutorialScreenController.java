@@ -3,7 +3,6 @@ package screens;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -14,10 +13,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.WindowEvent;
 
 public class TutorialScreenController {
 
@@ -36,22 +36,39 @@ public class TutorialScreenController {
   @FXML private Pane backgroundPane;
 
   public void initialize() {
-    images.add(new Image("screens/resources/Rack1.jpg"));
-    images.add(new Image("screens/resources/Rack2.jpg"));
-    images.add(new Image("screens/resources/Rack3.jpg"));
-    images.add(new Image("screens/resources/GameBoard1.jpg"));
-    images.add(new Image("screens/resources/GameBoard2.jpg"));
-    images.add(new Image("screens/resources/GameBoard3.jpg"));
-    images.add(new Image("screens/resources/GameBoard4.jpg"));
-    images.add(new Image("screens/resources/GameBoard5.jpg"));
-    images.add(new Image("screens/resources/GameBoard6.jpg"));
+    images.add(
+        new Image(getClass().getClassLoader().getResourceAsStream("screens/resources/Rack1.jpg")));
+    images.add(
+        new Image(getClass().getClassLoader().getResourceAsStream("screens/resources/Rack2.jpg")));
+    images.add(
+        new Image(getClass().getClassLoader().getResourceAsStream("screens/resources/Rack3.jpg")));
+    images.add(
+        new Image(
+            getClass().getClassLoader().getResourceAsStream("screens/resources/GameBoard1.jpg")));
+    images.add(
+        new Image(
+            getClass().getClassLoader().getResourceAsStream("screens/resources/GameBoard2.jpg")));
+    images.add(
+        new Image(
+            getClass().getClassLoader().getResourceAsStream("screens/resources/GameBoard3.jpg")));
+    images.add(
+        new Image(
+            getClass().getClassLoader().getResourceAsStream("screens/resources/GameBoard4.jpg")));
+    images.add(
+        new Image(
+            getClass().getClassLoader().getResourceAsStream("screens/resources/GameBoard5.jpg")));
+    images.add(
+        new Image(
+            getClass().getClassLoader().getResourceAsStream("screens/resources/GameBoard6.jpg")));
 
     initializeSlideCounter();
     initializeImage();
 
     updateImage();
+    
+    initializeArrowKeys();
   }
-  
+
   private void initializeSlideCounter() {
     imageCounter = new Text((activeImage + 1) + "/9");
     imageCounter.setFont(new Font(25));
@@ -59,7 +76,7 @@ public class TutorialScreenController {
     imageCounter.setY(40);
     backgroundPane.getChildren().add(imageCounter);
   }
-  
+
   private void initializeImage() {
     iv = new ImageView(images.get(activeImage));
     iv.setX(200);
@@ -120,6 +137,37 @@ public class TutorialScreenController {
       if (node instanceof ImageView) {
         iv.setImage(images.get(activeImage));
       }
+    }
+  }
+
+  /**
+   * Initializes the function for the stage to switch to the next or previous image by pressing the
+   * arrow keys.
+   *
+   * @author jluellig
+   */
+  private void initializeArrowKeys() {
+    for (Node n : backgroundPane.getChildren()) {
+      n.setOnKeyPressed(
+          new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+              if (ke.getCode().equals(KeyCode.LEFT)) {
+                try {
+                  previous(new ActionEvent());
+                } catch (Exception e) {
+                  e.printStackTrace();
+                }
+              }
+              if (ke.getCode().equals(KeyCode.RIGHT)) {
+                try {
+                  next(new ActionEvent());
+                } catch (Exception e) {
+                  e.printStackTrace();
+                }
+              }
+            }
+          });
     }
   }
 }
