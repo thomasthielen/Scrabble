@@ -21,7 +21,7 @@ class GameSessionTest {
   @BeforeEach
   void init() {
     // initializing the GameSession
-    gameSession = new GameSession(new Player("lsteltma"), false);
+    gameSession = new GameSession(new Player("lsteltma"));
   }
 
   @Test
