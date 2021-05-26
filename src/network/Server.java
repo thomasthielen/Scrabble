@@ -143,6 +143,8 @@ public class Server {
    */
   public static void removePlayer(Player p) {
     players.remove(p);
+    Client.updateGameSession(new GameState(players));
+    Client.updateGameState(DataHandler.getOwnPlayer(), new GameState(Client.getGameSession().getPlayerList()));
     if (players.size() < 2) {
       ServerHandler.informTooFew();
     }

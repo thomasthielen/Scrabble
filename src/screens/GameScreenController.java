@@ -727,7 +727,16 @@ public class GameScreenController {
 
   public void leaveGameCall() {
     try {
-      leaveGame(new ActionEvent());
+      Client.disconnectClient(DataHandler.getOwnPlayer());
+      if (Client.isHost()) {
+        Server.serverShutdown();
+      }
+      leave();
+      Alert alert = new Alert(AlertType.INFORMATION);
+      alert.setHeaderText("You have been kicked from the game.");
+      alert.setContentText(
+          "Due to exceeding the ten-minute overtime limit, you have been removed from the game.");
+      alert.showAndWait();
     } catch (Exception e) {
       e.printStackTrace();
     }
