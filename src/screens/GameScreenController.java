@@ -210,7 +210,7 @@ public class GameScreenController {
     initializeCloseHandler();
     refreshPlayerNames();
 
-    ImageView starView = new ImageView(new Image("screens/resources/stern.jpg"));
+    ImageView starView = new ImageView(new Image("screens/resources/stern.png"));
     starView.setFitHeight(22);
     starView.setFitWidth(22);
     gameBoard.add(starView, 7, 7);
