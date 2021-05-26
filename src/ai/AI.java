@@ -39,9 +39,15 @@ public class AI {
 
   public void setDictionary(File f) {
     dictionary = f;
+    this.gameReference.setBag(Client.getGameSession().getBag());
     this.gameReference.getPlayer().getRack().initialDraw();
   }
-
+  /**
+   * If the AI has to make the first move,
+   * the method initializes all possible moves the AI 
+   * can make with the given letters.
+   * @author sisselha
+   */
   public void getTheFirstMove() {
     this.moves = new ArrayList<PossibleMove>();
     ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
@@ -157,14 +163,18 @@ public class AI {
       return max.getsquares();
 
     } else {
-    	if(this.moves!=null) {
+    	if(this.moves.size()!=0) {
     		int counter = 0;
     	      int sumValue = 0;
     	      for (PossibleMove pm : moves) {
     	        sumValue = sumValue + pm.getValue();
     	        counter++;
     	      }
-    	      int avg = (sumValue / counter);
+    	      int avg =0;
+    	      if(counter!=0) {
+    	    	  avg = (sumValue / counter);
+    	      }
+    	      
     	      System.out.println("Average: " + avg);
     	      for (PossibleMove pm : moves) {
     	        if (pm.getValue() == avg) {
