@@ -431,7 +431,7 @@ public class LobbyScreenController {
         } else {
           playerStatistics.get(i).setText("");
           playerStatistics.get(i).setVisible(false);
-          if (i > 0) {
+          if (i > 0 && Client.isHost()) {
             deleteButtons[i - 1].setVisible(true);
           }
         }

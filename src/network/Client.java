@@ -7,7 +7,15 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import java.io.File;
-import network.messages.*;
+import network.messages.ConnectMessage;
+import network.messages.DictionaryMessage;
+import network.messages.DisconnectMessage;
+import network.messages.EndGameMessage;
+import network.messages.GameStateMessage;
+import network.messages.NotifyAIMessage;
+import network.messages.SendChatMessage;
+import network.messages.StartGameMessage;
+import network.messages.TooManyPlayerException;
 import session.GameSession;
 import session.GameState;
 
@@ -20,11 +28,9 @@ public class Client {
 
   private static String ip;
   private static int port;
-  private static boolean isRunning = false;
   private static ChannelFuture cf;
   private static boolean isHost;
   private static EventLoopGroup group;
-
   private static GameSession gameSession;
 
   /**
@@ -65,11 +71,10 @@ public class Client {
 
       // connects the client to the server using TCP
       cf = bootstrap.connect(ip, port).sync();
-      isRunning = true;
       gameSession = new GameSession(p);
       cf.channel().writeAndFlush(new ConnectMessage(p));
     } catch (InterruptedException e) {
-      // TODO
+      e.printStackTrace();
     }
   }
 
@@ -81,7 +86,6 @@ public class Client {
    */
   public static void disconnectClient(Player p) throws InterruptedException {
     cf.channel().writeAndFlush(new DisconnectMessage(p, isHost));
-    isRunning = false;
     cf.channel().close().sync();
     group.shutdownGracefully();
     group = null;
@@ -89,25 +93,25 @@ public class Client {
   }
 
   /**
-   * Sends a chat message to all clients that are connected to the server.
+   * Updates the own game session if a GameStateMessage is received.
    *
    * @author tikrause
-   * @param p player instance that has sent a chat message
-   * @param chat message that should be sent
+   * @param gameState changes that should be updated in the game session
    */
-  public static void sendChat(Player p, String chat) {
-    cf.channel().writeAndFlush(new SendChatMessage(p, chat));
+  static void updateGameSession(GameState gameState) {
+    gameSession.synchronise(gameState);
   }
 
   /**
-   * Informs all other clients that someone has ended the game via the "END GAME"-button and that
-   * the game has ended.
+   * Sends a GameStateMessage to update the game session of all clients that are connected to the
+   * server.
    *
    * @author tikrause
-   * @param p player instance that has ended the game
+   * @param p player instance of the player that has performed an action
+   * @param game state object that contains all changes that have to be updated
    */
-  public static void reportEndGame(Player p) {
-    cf.channel().writeAndFlush(new EndGameMessage(p));
+  public static void sendGameState(Player p, GameState game) {
+    cf.channel().writeAndFlush(new GameStateMessage(p, game));
   }
 
   /**
@@ -123,6 +127,28 @@ public class Client {
   }
 
   /**
+   * Informs all other clients that someone has ended the game via the "END GAME"-button and that
+   * the game has ended.
+   *
+   * @author tikrause
+   * @param p player instance that has ended the game
+   */
+  public static void reportEndGame(Player p) {
+    cf.channel().writeAndFlush(new EndGameMessage(p));
+  }
+
+  /**
+   * Sends a chat message to all clients that are connected to the server.
+   *
+   * @author tikrause
+   * @param p player instance that has sent a chat message
+   * @param chat message that should be sent
+   */
+  public static void sendChat(Player p, String chat) {
+    cf.channel().writeAndFlush(new SendChatMessage(p, chat));
+  }
+
+  /**
    * Sends the dictionary file that has been chosen to all clients.
    *
    * @author tikrause
@@ -131,18 +157,6 @@ public class Client {
    */
   public static void sendDictionary(Player p, File f) {
     cf.channel().writeAndFlush(new DictionaryMessage(p, f));
-  }
-
-  /**
-   * Sends a GameStateMessage to update the game session of all clients that are connected to the
-   * server.
-   *
-   * @author tikrause
-   * @param p player instance of the player that has performed an action
-   * @param game state object that contains all changes that have to be updated
-   */
-  public static void updateGameState(Player p, GameState game) {
-    cf.channel().writeAndFlush(new GameStateMessage(p, game));
   }
 
   /**
@@ -156,10 +170,6 @@ public class Client {
     cf.channel().writeAndFlush(new NotifyAIMessage(p, aiPlayer));
   }
 
-  public static boolean isActive() {
-    return isRunning;
-  }
-
   /**
    * getter method if the client is the host of the game session.
    *
@@ -171,16 +181,6 @@ public class Client {
   }
 
   /**
-   * Updates the own game session if a GameStateMessage is received.
-   *
-   * @author tikrause
-   * @param gameState changes that should be updated in the game session
-   */
-  public static void updateGameSession(GameState gameState) {
-    gameSession.synchronise(gameState);
-  }
-
-  /**
    * getter method for the game session object of the client.
    *
    * @author tikrause
@@ -189,8 +189,15 @@ public class Client {
   public static GameSession getGameSession() {
     return gameSession;
   }
-  
-  public static ChannelFuture getChannel() {
-	  return cf;
+
+  /**
+   * returns if the channel is active to check if a game state message has to be sent when a player
+   * is removed from the session.
+   *
+   * @author tikrause
+   * @return if the client is connected to the server
+   */
+  static boolean channelActive() {
+    return cf != null;
   }
 }

@@ -13,7 +13,6 @@ import network.messages.MessageType;
 import network.messages.SendChatMessage;
 import network.messages.StartGameMessage;
 import session.GameState;
-import gameentities.Player;
 
 /**
  * Handles the received messages of the client.
@@ -110,7 +109,6 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         break;
 
       case SEND_CHAT:
-        // TODO
         SendChatMessage scm = (SendChatMessage) msg;
         if (Client.getGameSession().getGameScreenController() != null) {
           Client.getGameSession()
@@ -124,14 +122,9 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         break;
 
       case GAME_STATE:
-        // TODO
         GameStateMessage gsm = (GameStateMessage) msg;
         GameState gs = gsm.getGameState();
         Client.updateGameSession(gs);
-        System.out.println("Received a GameState with the following players:");
-        for (Player p : Client.getGameSession().getPlayerList()) {
-          System.out.println(p.getUsername());
-        }
         if (Client.getGameSession().getSinglePlayerLobbyScreenController() != null) {
           Platform.runLater(
               new Runnable() {

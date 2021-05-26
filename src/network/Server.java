@@ -1,31 +1,31 @@
 package network;
 
+import ai.AI;
+import data.DataHandler;
+import gameentities.Player;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import network.messages.TooManyPlayerException;
-import session.GameState;
 import java.net.BindException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import ai.AI;
-import data.DataHandler;
-import gameentities.Player;
+import network.messages.TooManyPlayerException;
+import session.GameState;
 
 /**
- * A Server is initialised to host the game and to allow clients to connect and to communicate with
+ * A Server is initialized to host the game and to allow clients to connect and to communicate with
  * each other.
  *
  * @author tikrause
  */
 public class Server {
 
+  private static String ip;
   private static int port;
   private static boolean isRunning = false;
-  private static String ip;
   // responsible for receiving client connections
   private static EventLoopGroup bossGroup;
   // responsible for network reading and writing
@@ -36,7 +36,7 @@ public class Server {
   private static ArrayList<AI> aiPlayers = new ArrayList<AI>();
 
   /**
-   * initialises the server, lets the server wait for connections at the given port and opens a UDP
+   * initializes the server, lets the server wait for connections at the given port and opens a UDP
    * connection that can be used to send or receive messages and to update the game status.
    *
    * @author tikrause
@@ -65,9 +65,15 @@ public class Server {
     channel = bootstrap.bind(port).sync().channel();
   }
 
+  /**
+   * closes all connections, resets the player lists and is no longer waiting at the given port.
+   *
+   * @author tikrause
+   * @throws InterruptedException
+   */
   public static void serverShutdown() throws InterruptedException {
     isRunning = false;
-    resetPlayerList();
+    resetPlayerLists();
     channel.close().sync();
     bossGroup.shutdownGracefully();
     workerGroup.shutdownGracefully();
@@ -77,42 +83,31 @@ public class Server {
   }
 
   /**
-   * getter method for the port number on which the server is running.
+   * Updates all AI instances with the game state object that has been received.
    *
    * @author tikrause
-   * @return port number on which the server waits for connections
+   * @param gs changes that should be updated in the game session of the AI players
    */
-  public static int getPort() {
-    return port;
+  static void updateAI(GameState gs) {
+    for (AI ai : aiPlayers) {
+      ai.updateGameSession(gs);
+    }
   }
 
   /**
-   * getter method for the IP address of the server.
+   * Overwrites the player in players corresponding to the given AI after its initialDraw().
    *
-   * @author tikrause
-   * @return ip IP address of the server
+   * @author tthielen
+   * @param ai the AI whose rack is meant to be updated
    */
-  public static String getIp() {
-    return ip;
-  }
-
-  /**
-   * setter method for the flag that shows that the game has already started.
-   *
-   * @author tikrause
-   */
-  public static void setActive() {
-    isRunning = true;
-  }
-
-  /**
-   * getter method if the game on the server is already running.
-   *
-   * @author tikrause
-   * @return isRunning flag that the game has started
-   */
-  public static boolean isActive() {
-    return isRunning;
+  public static void updateRackOfAIPlayer(AI ai) {
+    for (int i = 0; i < players.size(); i++) {
+      if (players.get(i).equals(ai.getPlayer())) {
+        players.set(i, ai.getPlayer());
+        Client.updateGameSession(new GameState(players));
+        break;
+      }
+    }
   }
 
   /**
@@ -123,7 +118,7 @@ public class Server {
    * @param p player instance that should be added to the player list
    * @throws TooManyPlayerException
    */
-  public static void addPlayer(Player p) throws TooManyPlayerException {
+  static void addPlayer(Player p) throws TooManyPlayerException {
     if (players.size() >= 4) {
       throw new TooManyPlayerException();
     } else {
@@ -138,11 +133,11 @@ public class Server {
    * @author tikrause
    * @param p player instance that should be removed from the server list
    */
-  public static void removePlayer(Player p) {
+  static void removePlayer(Player p) {
     players.remove(p);
-    if (Client.getChannel() != null) {
+    if (Client.channelActive()) {
       Client.updateGameSession(new GameState(players));
-      Client.updateGameState(
+      Client.sendGameState(
           DataHandler.getOwnPlayer(), new GameState(Client.getGameSession().getPlayerList()));
     }
     if (players.size() < 2) {
@@ -166,24 +161,8 @@ public class Server {
       aiPlayers.add(ai);
       players.add(ai.getPlayer());
       Client.updateGameSession(new GameState(players));
-      Client.updateGameState(
+      Client.sendGameState(
           DataHandler.getOwnPlayer(), new GameState(Client.getGameSession().getPlayerList()));
-    }
-  }
-  
-  /**
-   * Overwrites the player in players corresponding to the given AI after its initialDraw().
-   *
-   * @author tthielen
-   * @param ai the AI whose rack is meant to be updated
-   */
-  public static void updateRackOfAIPlayer(AI ai) {
-    for (int i = 0; i < players.size(); i++) {
-      if (players.get(i).equals(ai.getPlayer())) {
-        players.set(i, ai.getPlayer());
-        Client.updateGameSession(new GameState(players));
-        break;
-      }
     }
   }
 
@@ -204,7 +183,7 @@ public class Server {
     aiPlayers.remove(removedPlayer);
     players.remove(aiPlayer);
     Client.updateGameSession(new GameState(players));
-    Client.updateGameState(
+    Client.sendGameState(
         DataHandler.getOwnPlayer(), new GameState(Client.getGameSession().getPlayerList()));
   }
 
@@ -213,7 +192,7 @@ public class Server {
    *
    * @author tikrause
    */
-  public static void resetPlayerList() {
+  private static void resetPlayerLists() {
     players.clear();
     aiPlayers.clear();
   }
@@ -239,31 +218,74 @@ public class Server {
   }
 
   /**
-   * Updates all AI instances with the game state object that has been received.
+   * getter method for the IP address of the server.
    *
    * @author tikrause
-   * @param gs changes that should be updated in the game session of the AI players
+   * @return ip IP address of the server
    */
-  public static void updateAI(GameState gs) {
-    for (AI ai : aiPlayers) {
-      ai.updateGameSession(gs);
-    }
+  public static String getIp() {
+    return ip;
   }
 
-  public static int getHardAICount() {
+  /**
+   * getter method for the port number on which the server is running.
+   *
+   * @author tikrause
+   * @return port number on which the server waits for connections
+   */
+  public static int getPort() {
+    return port;
+  }
+
+  /**
+   * getter method if the game on the server is already running.
+   *
+   * @author tikrause
+   * @return isRunning flag that the game has started
+   */
+  static boolean isActive() {
+    return isRunning;
+  }
+
+  /**
+   * setter method for the flag that shows that the game has already started.
+   *
+   * @author tikrause
+   */
+  public static void setActive() {
+    isRunning = true;
+  }
+
+  /**
+   * getter method for the number of easy AI players in the game session.
+   *
+   * <p>Only used for AI username reasons in the game session
+   *
+   * @author tikrause
+   * @return number of easy AI players
+   */
+  public static int getEasyAICount() {
     int count = 0;
     for (AI ai : aiPlayers) {
-      if (ai.getDifficulty()) {
+      if (!ai.getDifficulty()) {
         count++;
       }
     }
     return count;
   }
 
-  public static int getEasyAICount() {
+  /**
+   * getter method for the number of hard AI players in the game session.
+   *
+   * <p>Only used for AI username reasons in the game session
+   *
+   * @author tikrause
+   * @return number of hard AI players
+   */
+  public static int getHardAICount() {
     int count = 0;
     for (AI ai : aiPlayers) {
-      if (!ai.getDifficulty()) {
+      if (ai.getDifficulty()) {
         count++;
       }
     }

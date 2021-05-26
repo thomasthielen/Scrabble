@@ -27,7 +27,6 @@ public class GameStateMessage extends Message {
   public GameStateMessage(Player p, GameState game) {
     super(MessageType.GAME_STATE, p);
     this.game = game;
-    System.out.println("Sender: " + p.getUsername());
   }
 
   /**

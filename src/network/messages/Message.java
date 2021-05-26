@@ -47,14 +47,4 @@ public abstract class Message implements Serializable {
   public Player getPlayer() {
     return this.from;
   }
-
-  /**
-   * setter method for the message creator.
-   *
-   * @author tikrause
-   * @param p player object that should be the creator of the message
-   */
-  public void setPlayer(Player p) {
-    this.from = p;
-  }
 }
