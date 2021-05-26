@@ -1,28 +1,80 @@
 package gameentities;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import gameentities.Board;
-import gameentities.Premium;
-import gameentities.Tile;
-
-/**
- * JUnit Test Class for the Board class
- *
- * @author lsteltma
- */
-class BoardTest {
+class PlayScrabbleTest {
   private Board board;
+  private Bag bag;
+  private Tile tile;
 
   @BeforeEach
   void init() {
     // initializing the board
     board = new Board();
+    // initializing the bag
+    bag = new Bag();
+    // initializing the Tile as a wildcard
+    tile = new Tile('*', 0);
+  }
+
+  @Test
+  // test drawTile() and addTile() from the Bag class
+  void testBag() {
+    // the bag should already be filled after he got initialized
+    assertEquals(false, bag.isEmpty());
+
+    // a new bag should contain 100 Tiles
+    assertEquals(100, bag.getRemainingCount());
+
+    // draw one Tile from the Bag
+    bag.drawTile();
+    // now the bag should contain one Tile less
+    assertEquals(99, bag.getRemainingCount());
+
+    // add a new Tile to the Bag
+    bag.addTile(new Tile('A', 1));
+    // now the bag should contain one Tile more
+    assertEquals(100, bag.getRemainingCount());
+  }
+  
+  @Test
+  void testWildcard() {
+    // set the Letter of the wildcard
+    tile.setLetter('B');
+    // check if the char of the Tile got updated
+    assertEquals('B', tile.getLetter());
+    // check if the Value is correct
+    assertEquals(0, tile.getValue());
+    
+    // reset the wildcard
+    tile.resetLetter();
+    // check if the char got reseted
+    assertEquals('*', tile.getLetter());
+    // check if the Value is correct
+    assertEquals(0, tile.getValue());
+  }
+
+  @Test
+  // test placeTile and recallTile from Board
+  void testPlaceTile() {
+    // create a new Tile
+    Tile tile = new Tile('C', 3);
+    // place the Tile on the board
+    board.placeTile(8, 8, tile);
+
+    // check if there is a Tile on the selected position
+    assertNotNull(board.getTile(8, 8));
+    // check if the Tile is a C with the Value 3
+    assertEquals('C', board.getTile(8, 8).getLetter());
+    assertEquals(3, board.getTile(8, 8).getValue());
+
+    // recall the placed Tile
+    board.recallTile(8, 8);
+    // check if the position is now empty again
+    assertNull(board.getTile(8, 8));
   }
 
   @Test
@@ -314,25 +366,5 @@ class BoardTest {
     assertEquals(Premium.NONE, board.getSquare(15, 11).getPremium());
     assertEquals(Premium.NONE, board.getSquare(15, 13).getPremium());
     assertEquals(Premium.NONE, board.getSquare(15, 14).getPremium());
-  }
-  
-  @Test
-  // test placeTile and recallTile from Board
-  void testPlaceTile() {
-    // create a new Tile
-    Tile tile = new Tile('C', 3);
-    // place the Tile on the board
-    board.placeTile(8, 8, tile);
-    
-    // check if there is a Tile on the selected position
-    assertNotNull(board.getTile(8, 8));
-    // check if the Tile is a C with the Value 3
-    assertEquals('C', board.getTile(8, 8).getLetter());
-    assertEquals(3, board.getTile(8, 8).getValue());
-    
-    // recall the placed Tile
-    board.recallTile(8, 8);
-    //check if the position is now empty again
-    assertNull(board.getTile(8, 8));
   }
 }
