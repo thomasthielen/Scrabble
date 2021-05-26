@@ -27,9 +27,9 @@ public class AI {
 
   /**
    * @author sisselha
-   * @param username
-   * @param difficult
-   * @param multiplayer
+   * @param username username
+   * @param difficult difficulty of the AI
+   * @param multiplayer signals if multiplayer or not
    */
   public AI(String username, boolean difficult, boolean multiplayer) {
     this.gameReference = new GameSession(new Player(username), multiplayer);
@@ -122,20 +122,20 @@ public class AI {
   }
 
   public ArrayList<Square> checkMatch(
-      ArrayList<String> buchstaben, ArrayList<Square> squares, ArrayList<Tile> tiles) {
-    if (buchstaben.size() == 0) {
+      ArrayList<String> letters, ArrayList<Square> squares, ArrayList<Tile> tiles) {
+    if (letters.size() == 0) {
       return squares;
     } else {
       for (int i = 0; i < tiles.size(); i++) {
-        char[] c = buchstaben.get(buchstaben.size() - 1).toCharArray();
+        char[] c = letters.get(letters.size() - 1).toCharArray();
         if (c[0] == tiles.get(i).getLetter()) {
           this.gameReference.placeTile(8 + squares.size(), 8, tiles.get(i));
           Square square = new Square(8 + squares.size(), 8);
           square.placeTile(tiles.get(i));
           squares.add(square);
           tiles.remove(i);
-          buchstaben.remove(buchstaben.size() - 1);
-          return this.checkMatch(buchstaben, squares, tiles);
+          letters.remove(letters.size() - 1);
+          return this.checkMatch(letters, squares, tiles);
         }
       }
       return null;
