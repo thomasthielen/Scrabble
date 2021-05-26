@@ -460,7 +460,7 @@
             </Pane>
             <Pane fx:id="wildcardPane" layoutX="68.0" layoutY="380.0" prefHeight="96.0" prefWidth="345.0" style="-fx-background-color: #EEEEEE;">
                <children>
-                  <TextField fx:id="wildcardTextField" layoutX="14.0" layoutY="43.0" prefHeight="39.0" prefWidth="240.0" />
+                  <TextField fx:id="wildcardTextField" layoutX="14.0" layoutY="43.0" onAction="#onEnterWildcard" prefHeight="39.0" prefWidth="240.0" />
                   <Button fx:id="wildcardSubmit" layoutX="254.0" layoutY="43.0" mnemonicParsing="false" onAction="#submitWildcard" style="-fx-background-color: #f88c00;" text="ENTER" textFill="WHITE" />
                   <Text layoutX="14.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a Letter in the field below">
                      <font>

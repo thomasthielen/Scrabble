@@ -1010,6 +1010,19 @@ public class GameScreenController {
     placeTileOnBoard(wildcardTile, wildcardStackPane);
     refreshSubmit();
   }
+  
+  /**
+   * This method serves as the Listener for the Enter-key in the wildcard text field. It serves as an
+   * alternative to the submit wildcard button.
+   * 
+   * @param event the ActionEvent when enter is pressed in the wildcard text field
+   *
+   * @author jluellig
+   */
+  @FXML
+  void onEnterWildcard(ActionEvent event) {
+	  submitWildcard(event);
+  }
 
   /**
    * this method serves as a Listener for the close Button in the wildcardPane. It closes the
