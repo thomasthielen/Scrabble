@@ -189,4 +189,8 @@ public class Client {
   public static GameSession getGameSession() {
     return gameSession;
   }
+  
+  public static ChannelFuture getChannel() {
+	  return cf;
+  }
 }

@@ -31,7 +31,6 @@ import network.Client;
 import network.Server;
 import network.messages.TooManyPlayerException;
 import session.Dictionary;
-import session.GameState;
 import javafx.event.EventHandler;
 
 /**
@@ -68,6 +67,7 @@ public class SinglePlayerLobbyScreenController {
   @FXML private Button deleteButton1;
   @FXML private Button deleteButton2;
   @FXML private Button deleteButton3;
+  private Button[] deleteButtons;
 
   private File chosenDictionary;
 
@@ -93,9 +93,13 @@ public class SinglePlayerLobbyScreenController {
     playerStatistics.add(playerStatistics3);
     playerStatistics.add(playerStatistics4);
 
-    deleteButton1.setVisible(false);
-    deleteButton2.setVisible(false);
-    deleteButton3.setVisible(false);
+    deleteButtons = new Button[3];
+    deleteButtons[0] = deleteButton1;
+    deleteButtons[1] = deleteButton2;
+    deleteButtons[2] = deleteButton3;
+    for (Button b : deleteButtons) {
+      b.setVisible(false);
+    }
 
     Client.getGameSession().setSinglePlayerLobbyScreenController(this);
 
@@ -243,7 +247,14 @@ public class SinglePlayerLobbyScreenController {
   @FXML
   void easyAIPlayer(ActionEvent event) {
     try {
-      AI ai = new AI("EasyAI" + (Server.getEasyAICount() + 1), false);
+      int aiCount = Server.getEasyAICount() + 1;
+      String aiName = "EasyAI" + aiCount;
+      for (AI aiPlayer : Server.getAIPlayerList()) {
+        if (aiName.equals(aiPlayer.getPlayer().getUsername())) {
+          aiName = "EasyAI" + ++aiCount;
+        }
+      }
+      AI ai = new AI(aiName, false);
       Server.addAIPlayer(ai);
     } catch (TooManyPlayerException e) {
       Alert errorAlert = new Alert(AlertType.ERROR);
@@ -259,7 +270,14 @@ public class SinglePlayerLobbyScreenController {
   @FXML
   void hardAIPlayer(ActionEvent event) {
     try {
-      AI ai = new AI("HardAI" + (Server.getHardAICount() + 1), true);
+      int aiCount = Server.getHardAICount() + 1;
+      String aiName = "HardAI" + aiCount;
+      for (AI aiPlayer : Server.getAIPlayerList()) {
+        if (aiName.equals(aiPlayer.getPlayer().getUsername())) {
+          aiName = "HardAI" + ++aiCount;
+        }
+      }
+      AI ai = new AI(aiName, true);
       Server.addAIPlayer(ai);
     } catch (TooManyPlayerException e) {
       Alert errorAlert = new Alert(AlertType.ERROR);
@@ -270,6 +288,30 @@ public class SinglePlayerLobbyScreenController {
     }
     refreshPlayerList();
     closeChooseAIPane(new ActionEvent());
+  }
+
+  @FXML
+  void deleteAIPlayer1(ActionEvent event) {
+    Player ai = Server.getPlayerList().get(1);
+    Server.removeAIPlayer(ai);
+    refreshPlayerList();
+    deleteButton1.setVisible(false);
+  }
+
+  @FXML
+  void deleteAIPlayer2(ActionEvent event) {
+    Player ai = Server.getPlayerList().get(2);
+    Server.removeAIPlayer(ai);
+    refreshPlayerList();
+    deleteButton2.setVisible(false);
+  }
+
+  @FXML
+  void deleteAIPlayer3(ActionEvent event) {
+    Player ai = Server.getPlayerList().get(3);
+    Server.removeAIPlayer(ai);
+    refreshPlayerList();
+    deleteButton3.setVisible(false);
   }
 
   @FXML
@@ -362,7 +404,11 @@ public class SinglePlayerLobbyScreenController {
    */
   public void refreshPlayerList() {
     ArrayList<Player> players = Client.getGameSession().getPlayerList();
+
     if (players.size() > 0) {
+      for (Button b : deleteButtons) {
+        b.setVisible(false);
+      }
       for (int i = 0; i < players.size(); i++) {
         playerInfos.get(i).setText(players.get(i).getUsername());
         playerInfos.get(i).setVisible(true);
@@ -378,6 +424,10 @@ public class SinglePlayerLobbyScreenController {
                       + "\nAverage Points: "
                       + map.get(StatisticKeys.POINTSAVG));
           playerStatistics.get(i).setVisible(true);
+        } else {
+          if (i > 0) {
+            deleteButtons[i - 1].setVisible(true);
+          }
         }
       }
 
@@ -387,15 +437,6 @@ public class SinglePlayerLobbyScreenController {
       }
     }
   }
-
-  @FXML
-  void deleteAIPlayer1(ActionEvent event) {}
-
-  @FXML
-  void deleteAIPlayer2(ActionEvent event) {}
-
-  @FXML
-  void deleteAIPlayer3(ActionEvent event) {}
 
   /**
    * Handler for when the user closes the window.

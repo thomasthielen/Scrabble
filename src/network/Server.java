@@ -5,15 +5,12 @@ import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import network.messages.GameStateMessage;
 import network.messages.TooManyPlayerException;
 import session.GameState;
-
 import java.net.BindException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-
 import ai.AI;
 import data.DataHandler;
 import gameentities.Player;
@@ -143,8 +140,11 @@ public class Server {
    */
   public static void removePlayer(Player p) {
     players.remove(p);
-    Client.updateGameSession(new GameState(players));
-    Client.updateGameState(DataHandler.getOwnPlayer(), new GameState(Client.getGameSession().getPlayerList()));
+    if (Client.getChannel() != null) {
+      Client.updateGameSession(new GameState(players));
+      Client.updateGameState(
+          DataHandler.getOwnPlayer(), new GameState(Client.getGameSession().getPlayerList()));
+    }
     if (players.size() < 2) {
       ServerHandler.informTooFew();
     }
@@ -166,7 +166,8 @@ public class Server {
       aiPlayers.add(ai);
       players.add(ai.getPlayer());
       Client.updateGameSession(new GameState(players));
-      Client.updateGameState(DataHandler.getOwnPlayer(), new GameState(Client.getGameSession().getPlayerList()));
+      Client.updateGameState(
+          DataHandler.getOwnPlayer(), new GameState(Client.getGameSession().getPlayerList()));
     }
   }
 
@@ -174,11 +175,21 @@ public class Server {
    * Removes an AI instance from the AI player list and the player list.
    *
    * @author tikrause
-   * @param ai AI instance that should be removed from the game
+   * @param aiPlayer player instance of the AI that should be removed from the game
    */
-  public static void removeAIPlayer(AI ai) {
-    aiPlayers.remove(ai);
-    players.remove(ai.getPlayer());
+  public static void removeAIPlayer(Player aiPlayer) {
+    AI removedPlayer = null;
+    for (AI ai : aiPlayers) {
+      if (ai.getPlayer().equals(aiPlayer)) {
+        removedPlayer = ai;
+        break;
+      }
+    }
+    aiPlayers.remove(removedPlayer);
+    players.remove(aiPlayer);
+    Client.updateGameSession(new GameState(players));
+    Client.updateGameState(
+        DataHandler.getOwnPlayer(), new GameState(Client.getGameSession().getPlayerList()));
   }
 
   /**
