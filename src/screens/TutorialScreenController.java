@@ -46,18 +46,31 @@ public class TutorialScreenController {
     images.add(new Image("screens/resources/GameBoard5.jpg"));
     images.add(new Image("screens/resources/GameBoard6.jpg"));
 
+    initializeSlideCounter();
+    initializeImage();
+
+    updateImage();
+  }
+  
+  private void initializeSlideCounter() {
     imageCounter = new Text((activeImage + 1) + "/9");
     imageCounter.setFont(new Font(25));
     imageCounter.setX(20);
-    imageCounter.setY(20);
+    imageCounter.setY(40);
     backgroundPane.getChildren().add(imageCounter);
-
-    updateImage();
+  }
+  
+  private void initializeImage() {
+    iv = new ImageView(images.get(activeImage));
+    iv.setX(200);
+    iv.setY(100);
+    iv.setPreserveRatio(true);
+    iv.setFitWidth(600);
+    backgroundPane.getChildren().add(iv);
   }
 
   @FXML
   void previous(ActionEvent event) throws Exception {
-    backgroundPane.getChildren().remove(iv);
     activeImage -= activeImage > 0 ? 1 : 0;
     updateImage();
   }
@@ -95,17 +108,6 @@ public class TutorialScreenController {
   }
 
   private void updateImage() {
-    //    if (activeImage <= 0) {
-    //      previousButton.setDisable(true);
-    //    } else {
-    //      previousButton.setDisable(false);
-    //    }
-    //    if (activeImage >= 8) {
-    //      nextButton.setDisable(true);
-    //    } else {
-    //      nextButton.setDisable(false);
-    //    }
-
     for (Node node : backgroundPane.getChildren()) {
       if (node instanceof Text && ((Text) node).getText().contains("/9")) {
         ((Text) node).setText((activeImage + 1) + "/9");
@@ -124,13 +126,9 @@ public class TutorialScreenController {
           ((Button) node).setDisable(false);
         }
       }
+      if (node instanceof ImageView) {
+        iv.setImage(images.get(activeImage));
+      }
     }
-    imageCounter = new Text("" + activeImage);
-    iv = new ImageView(images.get(activeImage));
-    iv.setX(200);
-    iv.setY(100);
-    iv.setPreserveRatio(true);
-    iv.setFitWidth(600);
-    backgroundPane.getChildren().add(iv);
   }
 }
