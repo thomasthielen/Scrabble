@@ -329,7 +329,8 @@ public class SinglePlayerLobbyScreenController {
                 .getClassLoader()
                 .getResourceAsStream("screens/resources/ChangeTilesScreen.fxml"));
     ChangeTilesScreenController changeTilesScreenController = loader.getController();
-    changeTilesScreenController.initialize();
+    changeTilesScreenController.setMultiplayer(false);
+    changeTilesScreenController.setTileScreen();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }

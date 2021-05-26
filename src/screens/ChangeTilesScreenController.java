@@ -22,9 +22,15 @@ import network.Server;
 public class ChangeTilesScreenController {
 
   @FXML private Pane backgroundPane;
+  
+  private boolean isMultiplayer;
 
-  TextField[] countFields = new TextField[27];
-  TextField[] valueFields = new TextField[27];
+  private TextField[] countFields = new TextField[27];
+  private TextField[] valueFields = new TextField[27];
+  
+  GridPane grid1;
+  GridPane grid2;
+  GridPane grid3;
 
   /**
    * This method gets the Letter of a Tile with the corresponding count and value from the Bag.
@@ -51,24 +57,27 @@ public class ChangeTilesScreenController {
     Text count3 = new Text("Count");
     count3.relocate(825, 90);
     backgroundPane.getChildren().add(count3);
-    GridPane grid1 = new GridPane();
+    grid1 = new GridPane();
     grid1.setHgap(15);
     grid1.setVgap(10);
     grid1.relocate(100, 120);
-    GridPane grid2 = new GridPane();
+    backgroundPane.getChildren().add(grid1);
+    grid2 = new GridPane();
     grid2.setHgap(15);
     grid2.setVgap(10);
     grid2.relocate(400, 120);
     backgroundPane.getChildren().add(grid2);
-    GridPane grid3 = new GridPane();
+    grid3 = new GridPane();
     grid3.setHgap(15);
     grid3.setVgap(10);
     grid3.relocate(700, 120);
     backgroundPane.getChildren().add(grid3);
+  }
+  
+  public void setTileScreen() {
     int rowCounter = 0;
-    backgroundPane.getChildren().add(grid1);
     Bag bag = new Bag();
-    if(Server.getLobby().getGameSession().getMultiPlayer()) {
+    if(isMultiplayer) {
       bag = Client.getGameSession().getBag();
     }
     else {
@@ -135,7 +144,7 @@ public class ChangeTilesScreenController {
       counter++;
     }
     bag.refreshBag();
-    if(Server.getLobby().getGameSession().getMultiPlayer()) {
+    if(isMultiplayer) {
       Client.getGameSession().setBag(bag);
       Client.getGameSession().sendGameStateMessage(false); 
     }
@@ -154,7 +163,7 @@ public class ChangeTilesScreenController {
    */
   @FXML
   void back(ActionEvent event) throws Exception {
-    if(Server.getLobby().getGameSession().getMultiPlayer()) {
+    if(isMultiplayer) {
       FXMLLoader loader = new FXMLLoader();
       Parent content =
           loader.load(
@@ -170,5 +179,9 @@ public class ChangeTilesScreenController {
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
     }
+  }
+  
+  public void setMultiplayer(boolean b){
+    isMultiplayer = b;
   }
 }
