@@ -172,6 +172,26 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
             });
         break;
 
+      case TOO_MANY:
+        Platform.runLater(
+            new Runnable() {
+              @Override
+              public void run() {
+                Client.getGameSession().getLobbyScreenController().tooManyPlayers();
+              }
+            });
+        break;
+
+      case PLAYER_EXISTENT:
+        Platform.runLater(
+            new Runnable() {
+              @Override
+              public void run() {
+                Client.getGameSession().getLobbyScreenController().playerAlreadyExisting();
+              }
+            });
+        break;
+
       default:
         break;
     }

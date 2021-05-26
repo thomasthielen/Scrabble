@@ -244,7 +244,7 @@ public class GameSession {
    */
   public void sendGameStateMessage(boolean connectMessage) {
     GameState overrideGameState = new GameState(this, connectMessage);
-    Client.sendGameState(ownPlayer, overrideGameState);
+    Client.sendGameState(overrideGameState);
     if (gameScreenController != null) {
       gameScreenController.setPlayable(ownPlayer.isCurrentlyPlaying());
     }

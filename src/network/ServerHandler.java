@@ -1,7 +1,7 @@
 package network;
 
 import ai.AI;
-import data.DataHandler;
+import gameentities.Player;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -12,11 +12,13 @@ import network.messages.ConnectMessage;
 import network.messages.DictionaryMessage;
 import network.messages.DisconnectMessage;
 import network.messages.GameRunningMessage;
+import network.messages.PlayerExistentMessage;
 import network.messages.GameStateMessage;
 import network.messages.Message;
 import network.messages.MessageType;
 import network.messages.NotifyAIMessage;
 import network.messages.TooFewPlayerMessage;
+import network.messages.TooManyPlayerMessage;
 import session.GameState;
 
 /**
@@ -65,22 +67,39 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
     switch (mt) {
       case CONNECT:
         ConnectMessage cm = (ConnectMessage) msg;
-        
-        // TODO deny scenarios
+
+        // if a player tries to join with a username which is already existing in the lobby, he
+        // should be rejected
+        boolean playerExistent = false;
+        for (Player p : Server.getPlayerList()) {
+          if (p.equals(cm.getPlayer())) {
+            ctx.channel().writeAndFlush(new PlayerExistentMessage(cm.getPlayer()));
+            handlerRemoved(ctx);
+            playerExistent = true;
+            break;
+          }
+        }
 
         // if a player tries to join a running game, he should be rejected
-        if (!Server.isActive()) {
+        if (Server.isActive()) {
+          ctx.channel().writeAndFlush(new GameRunningMessage(null));
+          handlerRemoved(ctx);
+
+          // if a player tries to join a game with already 4 players in the lobby, he should be
+          // rejected
+        } else if (Server.getPlayerList().size() >= 4) {
+          ctx.channel().writeAndFlush(new TooManyPlayerMessage(null));
+          handlerRemoved(ctx);
+
+          // player is added to the game
+        } else if (!playerExistent) {
           Server.addPlayer(cm.getPlayer());
           Client.updateGameSession(new GameState(Server.getPlayerList()));
           for (Channel channel : channels) {
             channel.writeAndFlush(msg);
             channel.writeAndFlush(
-                new GameStateMessage(
-                    DataHandler.getOwnPlayer(), new GameState(Server.getPlayerList())));
+                new GameStateMessage(null, new GameState(Server.getPlayerList())));
           }
-        } else {
-          ctx.channel().writeAndFlush(new GameRunningMessage(DataHandler.getOwnPlayer()));
-          handlerRemoved(ctx);
         }
         break;
 
@@ -90,9 +109,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
         Client.updateGameSession(new GameState(Server.getPlayerList()));
         for (Channel channel : channels) {
           channel.writeAndFlush(msg);
-          channel.writeAndFlush(
-              new GameStateMessage(
-                  DataHandler.getOwnPlayer(), new GameState(Server.getPlayerList())));
+          channel.writeAndFlush(new GameStateMessage(null, new GameState(Server.getPlayerList())));
         }
         break;
 
@@ -101,7 +118,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
           channel.writeAndFlush(msg);
           channel.writeAndFlush(
               new GameStateMessage(
-                  DataHandler.getOwnPlayer(),
+                  null,
                   new GameState(
                       Server.getPlayerList(),
                       Client.getGameSession().getBag(),
@@ -155,7 +172,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
    */
   static void informTooFew() {
     for (Channel c : channels) {
-      c.writeAndFlush(new TooFewPlayerMessage(DataHandler.getOwnPlayer()));
+      c.writeAndFlush(new TooFewPlayerMessage(null));
     }
   }
 }

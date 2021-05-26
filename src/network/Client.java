@@ -110,8 +110,8 @@ public class Client {
    * @param p player instance of the player that has performed an action
    * @param game state object that contains all changes that have to be updated
    */
-  public static void sendGameState(Player p, GameState game) {
-    cf.channel().writeAndFlush(new GameStateMessage(p, game));
+  public static void sendGameState(GameState game) {
+    cf.channel().writeAndFlush(new GameStateMessage(null, game));
   }
 
   /**
@@ -122,8 +122,8 @@ public class Client {
    * @param p player instance of the host
    * @param chat chat history from the lobby screen that should be taken over to the game screen
    */
-  public static void reportStartGame(Player p, String chat) {
-    cf.channel().writeAndFlush(new StartGameMessage(p, chat));
+  public static void reportStartGame(String chat) {
+    cf.channel().writeAndFlush(new StartGameMessage(null, chat));
   }
 
   /**
@@ -155,8 +155,8 @@ public class Client {
    * @param p player instance of the host
    * @param f dictionary file that should be sent
    */
-  public static void sendDictionary(Player p, File f) {
-    cf.channel().writeAndFlush(new DictionaryMessage(p, f));
+  public static void sendDictionary(File f) {
+    cf.channel().writeAndFlush(new DictionaryMessage(null, f));
   }
 
   /**

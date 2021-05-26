@@ -1,7 +1,6 @@
 package network;
 
 import ai.AI;
-import data.DataHandler;
 import gameentities.Player;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -111,19 +110,13 @@ public class Server {
   }
 
   /**
-   * Checks if the maximum of 4 players are already in the game session. If not, it adds the player
-   * to the player list. If yes, it throws a TooManyPlayerException.
+   * Adds the player to the player list.
    *
    * @author tikrause
    * @param p player instance that should be added to the player list
-   * @throws TooManyPlayerException
    */
-  static void addPlayer(Player p) throws TooManyPlayerException {
-    if (players.size() >= 4) {
-      throw new TooManyPlayerException();
-    } else {
-      players.add(p);
-    }
+  static void addPlayer(Player p) {
+    players.add(p);
   }
 
   /**
@@ -137,8 +130,7 @@ public class Server {
     players.remove(p);
     if (Client.channelActive()) {
       Client.updateGameSession(new GameState(players));
-      Client.sendGameState(
-          DataHandler.getOwnPlayer(), new GameState(Client.getGameSession().getPlayerList()));
+      Client.sendGameState(new GameState(Client.getGameSession().getPlayerList()));
     }
     if (players.size() < 2) {
       ServerHandler.informTooFew();
@@ -161,8 +153,7 @@ public class Server {
       aiPlayers.add(ai);
       players.add(ai.getPlayer());
       Client.updateGameSession(new GameState(players));
-      Client.sendGameState(
-          DataHandler.getOwnPlayer(), new GameState(Client.getGameSession().getPlayerList()));
+      Client.sendGameState(new GameState(Client.getGameSession().getPlayerList()));
     }
   }
 
@@ -183,8 +174,7 @@ public class Server {
     aiPlayers.remove(removedPlayer);
     players.remove(aiPlayer);
     Client.updateGameSession(new GameState(players));
-    Client.sendGameState(
-        DataHandler.getOwnPlayer(), new GameState(Client.getGameSession().getPlayerList()));
+    Client.sendGameState(new GameState(Client.getGameSession().getPlayerList()));
   }
 
   /**

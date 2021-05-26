@@ -260,9 +260,9 @@ public class LobbyScreenController {
       if (Server.getPlayerList().size() > 1) {
         Client.getGameSession().setBag(Client.getGameSession().getBag());
         DataHandler.userDictionaryFile(chosenDictionary);
-        Client.sendDictionary(DataHandler.getOwnPlayer(), chosenDictionary);
+        Client.sendDictionary(chosenDictionary);
         Client.getGameSession().getPlayer().setCurrentlyPlaying(true);
-        Client.reportStartGame(DataHandler.getOwnPlayer(), chatHistory.toString());
+        Client.reportStartGame(chatHistory.toString());
         Server.setActive();
         Client.getGameSession().initialiseGameScreen(chatHistory.toString());
         switchToGameScreen(chatHistory.toString());
@@ -674,6 +674,36 @@ public class LobbyScreenController {
     Alert errorAlert = new Alert(AlertType.ERROR);
     errorAlert.setHeaderText("Game has already started.");
     errorAlert.setContentText("You can't join the server because the game has already started.");
+    errorAlert.showAndWait();
+    leave();
+  }
+
+  /**
+   * informs the player that tries to join a game with 4 players in the lobby and denies him from
+   * joining.
+   *
+   * @author tikrause
+   */
+  public void tooManyPlayers() {
+    Alert errorAlert = new Alert(AlertType.ERROR);
+    errorAlert.setHeaderText("Too many players.");
+    errorAlert.setContentText(
+        "You can't join the game session because there are already the maximum of 4 players in the game.");
+    errorAlert.showAndWait();
+    leave();
+  }
+
+  /**
+   * informs the player that tries to join a game where his username is already used and denies him
+   * from joining.
+   *
+   * @author tikrause
+   */
+  public void playerAlreadyExisting() {
+    // TODO
+    Alert errorAlert = new Alert(AlertType.ERROR);
+    errorAlert.setHeaderText("Username already exists.");
+    errorAlert.setContentText("You can't join the game because your username is already used.");
     errorAlert.showAndWait();
     leave();
   }
