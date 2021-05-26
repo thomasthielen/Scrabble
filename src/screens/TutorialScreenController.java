@@ -83,15 +83,6 @@ public class TutorialScreenController {
 
   @FXML
   void leaveTutorial(ActionEvent event) throws Exception {
-    StartScreen.getStage()
-        .setOnCloseRequest(
-            new EventHandler<WindowEvent>() {
-              @Override
-              public void handle(final WindowEvent event) {
-                Platform.exit();
-                System.exit(0);
-              }
-            });
     FXMLLoader loader = new FXMLLoader();
     Parent content;
     try {
