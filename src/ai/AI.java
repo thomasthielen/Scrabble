@@ -157,22 +157,28 @@ public class AI {
       return max.getsquares();
 
     } else {
+    	if(this.moves!=null) {
+    		int counter = 0;
+    	      int sumValue = 0;
+    	      for (PossibleMove pm : moves) {
+    	        sumValue = sumValue + pm.getValue();
+    	        counter++;
+    	      }
+    	      int avg = (sumValue / counter);
+    	      System.out.println("Average: " + avg);
+    	      for (PossibleMove pm : moves) {
+    	        if (pm.getValue() == avg) {
+    	          System.out.println("Averagemove returned");
+    	          return pm.getsquares();
+    	        }
+    	      }
+    	      
+    	      return moves.get(0).getsquares();
+    		
+    	}
 
-      int counter = 0;
-      int sumValue = 0;
-      for (PossibleMove pm : moves) {
-        sumValue = sumValue + pm.getValue();
-        counter++;
-      }
-      int avg = (sumValue / counter);
-      System.out.println("Average: " + avg);
-      for (PossibleMove pm : moves) {
-        if (pm.getValue() == avg) {
-          System.out.println("Averagemove returned");
-          return pm.getsquares();
-        }
-      }
-      return moves.get(0).getsquares();
+      
+      return null;
     }
   }
 
