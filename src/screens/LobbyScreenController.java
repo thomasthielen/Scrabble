@@ -2,9 +2,12 @@ package screens;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
+
+import org.apache.commons.io.FileUtils;
 
 import ai.AI;
 import data.DataHandler;
@@ -446,7 +449,13 @@ public class LobbyScreenController {
           @Override
           public void handle(ActionEvent event) {
             dictionarySelecter.setText(menuItem1.getText());
-            chosenDictionary = new File(Dictionary.COLLINS.getUrl());
+            InputStream is =
+                getClass().getClassLoader().getResourceAsStream(Dictionary.COLLINS.getUrl());
+            try {
+              FileUtils.copyInputStreamToFile(is, chosenDictionary);
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
           }
         });
     menuItem2.setOnAction(
@@ -454,7 +463,13 @@ public class LobbyScreenController {
           @Override
           public void handle(ActionEvent event) {
             dictionarySelecter.setText(menuItem2.getText());
-            chosenDictionary = new File(Dictionary.ENABLE.getUrl());
+            InputStream is =
+                getClass().getClassLoader().getResourceAsStream(Dictionary.ENABLE.getUrl());
+            try {
+              FileUtils.copyInputStreamToFile(is, chosenDictionary);
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
           }
         });
     menuItem3.setOnAction(
@@ -462,7 +477,13 @@ public class LobbyScreenController {
           @Override
           public void handle(ActionEvent event) {
             dictionarySelecter.setText(menuItem3.getText());
-            chosenDictionary = new File(Dictionary.SOWPODS.getUrl());
+            InputStream is =
+                getClass().getClassLoader().getResourceAsStream(Dictionary.SOWPODS.getUrl());
+            try {
+              FileUtils.copyInputStreamToFile(is, chosenDictionary);
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
           }
         });
     menuItem4.setOnAction(
@@ -470,7 +491,13 @@ public class LobbyScreenController {
           @Override
           public void handle(ActionEvent event) {
             dictionarySelecter.setText(menuItem4.getText());
-            chosenDictionary = new File(Dictionary.TWL06.getUrl());
+            InputStream is =
+                getClass().getClassLoader().getResourceAsStream(Dictionary.TWL06.getUrl());
+            try {
+              FileUtils.copyInputStreamToFile(is, chosenDictionary);
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
           }
         });
 
