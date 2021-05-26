@@ -83,9 +83,6 @@ public class OnlineScreenController {
     while (port < 65535) {
       try {
         Server.createServer(port);
-        // TODO
-        System.out.println(
-            "Your lobby has been created. IP: " + Server.getIp() + ", Port: " + Server.getPort());
         Client.initialiseClient("localhost", port, true);
         Client.connectToServer(DataHandler.getOwnPlayer());
         break;

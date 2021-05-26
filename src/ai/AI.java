@@ -9,6 +9,8 @@ import gameentities.Tile;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import network.Client;
 import network.Server;
 import session.GameSession;
 import session.GameState;
@@ -29,20 +31,15 @@ public class AI {
    * @author sisselha
    * @param username username
    * @param difficult difficulty of the AI
-   * @param multiplayer signals if multiplayer or not
    */
-  public AI(String username, boolean difficult, boolean multiplayer) {
-    this.gameReference = new GameSession(new Player(username), multiplayer);
+  public AI(String username, boolean difficult) {
+    this.gameReference = new GameSession(new Player(username));
     this.difficult = difficult;
   }
 
   public void setDictionary(File f) {
     dictionary = f;
     this.gameReference.getPlayer().getRack().initialDraw();
-    if (!gameReference.getMultiPlayer()) {
-      Server.getLobby().getGameSession().synchronise(new GameState(gameReference));
-      Server.updateAI(new GameState(gameReference));
-    }
   }
 
   public void getTheFirstMove() {
@@ -974,7 +971,10 @@ public class AI {
     if (squares != null) {
       this.gameReference.recallAll();
       for (Square s : squares) {
-        this.gameReference.placeTile(s.getX(), s.getY(), s.getTile());
+    	  Tile t = s.getTile();
+    	  t.setPlacedTemporarily(false);
+    	  t.setPlacedFinally(true);
+        this.gameReference.placeTile(s.getX(), s.getY(), t);
       }
       // this.printBoard();
 

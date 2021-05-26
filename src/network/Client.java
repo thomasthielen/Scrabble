@@ -66,7 +66,7 @@ public class Client {
       // connects the client to the server using TCP
       cf = bootstrap.connect(ip, port).sync();
       isRunning = true;
-      gameSession = new GameSession(p, true);
+      gameSession = new GameSession(p);
       cf.channel().writeAndFlush(new ConnectMessage(p));
     } catch (InterruptedException e) {
       // TODO

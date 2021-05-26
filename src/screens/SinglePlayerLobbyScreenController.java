@@ -1,6 +1,7 @@
 package screens;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -8,6 +9,7 @@ import ai.AI;
 import data.DataHandler;
 import data.StatisticKeys;
 import gameentities.Player;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +26,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.WindowEvent;
+import network.Client;
 import network.Server;
 import network.messages.TooManyPlayerException;
 import session.Dictionary;
@@ -93,8 +97,12 @@ public class SinglePlayerLobbyScreenController {
     deleteButton2.setVisible(false);
     deleteButton3.setVisible(false);
 
+    Client.getGameSession().setSinglePlayerLobbyScreenController(this);
+
     refreshPlayerList();
     setDictionaryMenu();
+
+    initializeCloseHandler();
   }
 
   /**
@@ -168,6 +176,17 @@ public class SinglePlayerLobbyScreenController {
    */
   @FXML
   void leaveLobby(ActionEvent event) throws Exception {
+    Client.disconnectClient(DataHandler.getOwnPlayer());
+    Server.serverShutdown();
+    StartScreen.getStage()
+        .setOnCloseRequest(
+            new EventHandler<WindowEvent>() {
+              @Override
+              public void handle(final WindowEvent event) {
+                Platform.exit();
+                System.exit(0);
+              }
+            });
     FXMLLoader loader = new FXMLLoader();
     Parent content =
         loader.load(
@@ -176,7 +195,6 @@ public class SinglePlayerLobbyScreenController {
                 .getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
-    Server.resetLobby();
   }
 
   /**
@@ -190,15 +208,13 @@ public class SinglePlayerLobbyScreenController {
   @FXML
   void startGame(ActionEvent event) throws Exception {
     if (Server.getAIPlayerList().size() > 0) {
-      Server.getLobby().getGameSession().setIsRunning(true);
+      Client.getGameSession().setBag(Client.getGameSession().getBag());
       DataHandler.userDictionaryFile(chosenDictionary);
-      Server.getLobby().getGameSession().synchronise(new GameState(Server.getPlayerList()));
-      Server.updateAI(new GameState(Server.getPlayerList()));
-      for (AI ai : Server.getAIPlayerList()) {
-        ai.setDictionary(chosenDictionary);
-      }
-      Server.getLobby().getGameSession().getPlayer().setCurrentlyPlaying(true);
-      Server.getLobby().getGameSession().initialiseSinglePlayerGameScreen();
+      Client.sendDictionary(DataHandler.getOwnPlayer(), chosenDictionary);
+      Client.getGameSession().getPlayer().setCurrentlyPlaying(true);
+      Client.reportStartGame(DataHandler.getOwnPlayer(), "");
+      Server.setActive();
+      Client.getGameSession().initialiseSinglePlayerGameScreen();
       switchToGameScreen();
     } else {
       Alert errorAlert = new Alert(AlertType.ERROR);
@@ -227,7 +243,7 @@ public class SinglePlayerLobbyScreenController {
   @FXML
   void easyAIPlayer(ActionEvent event) {
     try {
-      AI ai = new AI("EasyAI" + (Server.getEasyAICount() + 1), false, false);
+      AI ai = new AI("EasyAI" + (Server.getEasyAICount() + 1), false);
       Server.addAIPlayer(ai);
     } catch (TooManyPlayerException e) {
       Alert errorAlert = new Alert(AlertType.ERROR);
@@ -243,7 +259,7 @@ public class SinglePlayerLobbyScreenController {
   @FXML
   void hardAIPlayer(ActionEvent event) {
     try {
-      AI ai = new AI("HardAI" + (Server.getHardAICount() + 1), true, false);
+      AI ai = new AI("HardAI" + (Server.getHardAICount() + 1), true);
       Server.addAIPlayer(ai);
     } catch (TooManyPlayerException e) {
       Alert errorAlert = new Alert(AlertType.ERROR);
@@ -261,14 +277,18 @@ public class SinglePlayerLobbyScreenController {
     chooseAIPane.setVisible(false);
   }
 
-  public void switchToGameScreen() throws Exception {
+  public void switchToGameScreen() {
     FXMLLoader loader = new FXMLLoader();
     Parent content;
-    content =
-        loader.load(
-            getClass().getClassLoader().getResourceAsStream("screens/resources/GameScreen.fxml"));
-    StartScreen.getStage().setScene(new Scene(content));
-    StartScreen.getStage().show();
+    try {
+      content =
+          loader.load(
+              getClass().getClassLoader().getResourceAsStream("screens/resources/GameScreen.fxml"));
+      StartScreen.getStage().setScene(new Scene(content));
+      StartScreen.getStage().show();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   /** @author tikrause */
@@ -341,29 +361,30 @@ public class SinglePlayerLobbyScreenController {
    * @author jbleil
    */
   public void refreshPlayerList() {
-    ArrayList<Player> players = Server.getPlayerList();
-
-    for (int i = 0; i < players.size(); i++) {
-      playerInfos.get(i).setText(players.get(i).getUsername());
-      playerInfos.get(i).setVisible(true);
-      if (!players.get(i).isBot()) {
-        HashMap<StatisticKeys, Integer> map = players.get(i).getPlayerStatistics();
-        playerStatistics
-            .get(i)
-            .setText(
-                "Games won: "
-                    + map.get(StatisticKeys.WON)
-                    + "\nGames played: "
-                    + map.get(StatisticKeys.MATCHES)
-                    + "\nAverage Points: "
-                    + map.get(StatisticKeys.POINTSAVG));
-        playerStatistics.get(i).setVisible(true);
+    ArrayList<Player> players = Client.getGameSession().getPlayerList();
+    if (players.size() > 0) {
+      for (int i = 0; i < players.size(); i++) {
+        playerInfos.get(i).setText(players.get(i).getUsername());
+        playerInfos.get(i).setVisible(true);
+        if (!players.get(i).isBot()) {
+          HashMap<StatisticKeys, Integer> map = players.get(i).getPlayerStatistics();
+          playerStatistics
+              .get(i)
+              .setText(
+                  "Games won: "
+                      + map.get(StatisticKeys.WON)
+                      + "\nGames played: "
+                      + map.get(StatisticKeys.MATCHES)
+                      + "\nAverage Points: "
+                      + map.get(StatisticKeys.POINTSAVG));
+          playerStatistics.get(i).setVisible(true);
+        }
       }
-    }
 
-    for (int i = players.size(); i < playerInfos.size() && i < playerStatistics.size(); i++) {
-      playerInfos.get(i).setVisible(false);
-      playerStatistics.get(i).setVisible(false);
+      for (int i = players.size(); i < playerInfos.size() && i < playerStatistics.size(); i++) {
+        playerInfos.get(i).setVisible(false);
+        playerStatistics.get(i).setVisible(false);
+      }
     }
   }
 
@@ -375,4 +396,27 @@ public class SinglePlayerLobbyScreenController {
 
   @FXML
   void deleteAIPlayer3(ActionEvent event) {}
+
+  /**
+   * Handler for when the user closes the window.
+   *
+   * @author tikrause
+   */
+  private void initializeCloseHandler() {
+    StartScreen.getStage()
+        .setOnCloseRequest(
+            new EventHandler<WindowEvent>() {
+              @Override
+              public void handle(final WindowEvent event) {
+                try {
+                  Client.disconnectClient(DataHandler.getOwnPlayer());
+                  Server.serverShutdown();
+                } catch (InterruptedException e) {
+                  e.printStackTrace();
+                }
+                Platform.exit();
+                System.exit(0);
+              }
+            });
+  }
 }

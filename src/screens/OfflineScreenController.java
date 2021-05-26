@@ -1,12 +1,17 @@
 package screens;
 
+import java.net.BindException;
+import java.net.UnknownHostException;
+
 import data.DataHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import network.Client;
 import network.Server;
+import network.messages.TooManyPlayerException;
 
 /**
  * this class provides the controller for the Offline Screen
@@ -25,10 +30,13 @@ public class OfflineScreenController {
    */
   @FXML
   void playGame(ActionEvent event) throws Exception {
-    Server.initializeLobby();
-    Server.addPlayer(DataHandler.getOwnPlayer());
+    createSinglePlayerLobby();
     FXMLLoader loader = new FXMLLoader();
-    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/SinglePlayerLobbyScreen.fxml"));
+    Parent content =
+        loader.load(
+            getClass()
+                .getClassLoader()
+                .getResourceAsStream("screens/resources/SinglePlayerLobbyScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
@@ -44,7 +52,11 @@ public class OfflineScreenController {
   @FXML
   void trainingMode(ActionEvent event) throws Exception {
     FXMLLoader loader = new FXMLLoader();
-    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/TutorialScreen.fxml"));
+    Parent content =
+        loader.load(
+            getClass()
+                .getClassLoader()
+                .getResourceAsStream("screens/resources/TutorialScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
@@ -60,8 +72,32 @@ public class OfflineScreenController {
   @FXML
   void back(ActionEvent event) throws Exception {
     FXMLLoader loader = new FXMLLoader();
-    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
+    Parent content =
+        loader.load(
+            getClass()
+                .getClassLoader()
+                .getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
+  }
+
+  /**
+   * @author tikrause
+   * @throws TooManyPlayerException
+   */
+  void createSinglePlayerLobby() {
+    int port = 800;
+    while (port < 1000) {
+      try {
+        Server.createServer(port);
+        Client.initialiseClient("localhost", port, true);
+        Client.connectToServer(DataHandler.getOwnPlayer());
+        break;
+      } catch (BindException e) {
+        port++;
+      } catch (UnknownHostException | InterruptedException | TooManyPlayerException e) {
+        e.printStackTrace();
+      }
+    }
   }
 }

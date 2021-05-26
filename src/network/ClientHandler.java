@@ -128,9 +128,20 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         GameStateMessage gsm = (GameStateMessage) msg;
         GameState gs = gsm.getGameState();
         Client.updateGameSession(gs);
-        System.out.println("Received a GameState with the following players:" ); 
+        System.out.println("Received a GameState with the following players:");
         for (Player p : Client.getGameSession().getPlayerList()) {
           System.out.println(p.getUsername());
+        }
+        if (Client.getGameSession().getSinglePlayerLobbyScreenController() != null) {
+          Platform.runLater(
+              new Runnable() {
+                @Override
+                public void run() {
+                  Client.getGameSession()
+                      .getSinglePlayerLobbyScreenController()
+                      .refreshPlayerList();
+                }
+              });
         }
         break;
 
@@ -142,7 +153,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
       case TOO_FEW:
         if (Client.isHost()) {
           if (Client.getGameSession().getGameScreenController() != null) {
-        	  Client.getGameSession().cancelTimer();
+            Client.getGameSession().cancelTimer();
             Client.disconnectClient(DataHandler.getOwnPlayer());
             if (Server.isActive()) {
               Server.serverShutdown();

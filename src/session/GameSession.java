@@ -18,6 +18,7 @@ import network.Client;
 import network.Server;
 import screens.GameScreenController;
 import screens.LobbyScreenController;
+import screens.SinglePlayerLobbyScreenController;
 
 /**
  * Class used to manage all game entities and necessary methods.
@@ -39,6 +40,7 @@ public class GameSession {
   // Controllers extracted from the GUI handling
   private GameScreenController gameScreenController;
   private LobbyScreenController lobbyScreenController;
+  private SinglePlayerLobbyScreenController splsc;
 
   // The round timer and its values
   private Timer timer;
@@ -47,7 +49,6 @@ public class GameSession {
 
   // booleans to indicate the game status
   private boolean isRunning = false; // game is running (contrary to still in lobby)
-  private boolean multiplayer = false; // game is a multiplayer game (not singleplayer)
 
   // Counters for word value (used in checkMove() & scoreSquare() )
   private int dwsCount = 0; // amount of double word squares in the move
@@ -64,20 +65,15 @@ public class GameSession {
    * @param player the own player object of this GameSession object
    * @param multiplayer sets whether this is a multiplayer game
    */
-  public GameSession(Player player, boolean multiplayer) {
+  public GameSession(Player player) {
     players = new ArrayList<Player>();
     bag = new Bag();
     board = new Board();
     ownPlayer = player;
     ownPlayer.createRack(this);
-    this.multiplayer = multiplayer;
 
-    if (this.multiplayer) {
-      ownPlayer.setCurrentlyPlaying(Client.isHost());
-      sendGameStateMessage(true);
-    } else {
-      ownPlayer.setCurrentlyPlaying(true);
-    }
+    ownPlayer.setCurrentlyPlaying(Client.isHost());
+    sendGameStateMessage(true);
   }
 
   /**
@@ -226,6 +222,8 @@ public class GameSession {
       if (!ownPlayer.isBot() && lobbyScreenController != null) {
         lobbyScreenController.refreshPlayerList();
         resetTimer();
+      } else if (!ownPlayer.isBot() && splsc != null) {
+        splsc.refreshPlayerList();
       }
     }
   }
@@ -769,30 +767,14 @@ public class GameSession {
         break;
       }
     }
-    if (multiplayer) {
-      sendGameStateMessage(false);
-      for (Player p : players) {
-        if (p.isCurrentlyPlaying()) {
-          Player playing = p;
-          if (playing.isBot()) {
-            for (AI ai : Server.getAIPlayerList()) {
-              if (ai.getPlayer().equals(playing)) {
-                Client.notifyAI(DataHandler.getOwnPlayer(), ai.getPlayer());
-              }
-            }
-          }
-        }
-      }
-    } else {
-      Server.updateAI(new GameState(this));
-      for (Player p : players) {
-        if (p.isCurrentlyPlaying()) {
-          Player playing = p;
-          if (playing.isBot()) {
-            for (AI ai : Server.getAIPlayerList()) {
-              if (ai.getPlayer().equals(playing)) {
-                ai.makeMove();
-              }
+    sendGameStateMessage(false);
+    for (Player p : players) {
+      if (p.isCurrentlyPlaying()) {
+        Player playing = p;
+        if (playing.isBot()) {
+          for (AI ai : Server.getAIPlayerList()) {
+            if (ai.getPlayer().equals(playing)) {
+              Client.notifyAI(DataHandler.getOwnPlayer(), ai.getPlayer());
             }
           }
         }
@@ -849,7 +831,11 @@ public class GameSession {
         new Runnable() {
           @Override
           public void run() {
-            lobbyScreenController.switchToGameScreen(chat);
+            if (lobbyScreenController != null) {
+              lobbyScreenController.switchToGameScreen(chat);
+            } else {
+              splsc.switchToGameScreen();
+            }
           }
         });
   }
@@ -882,6 +868,10 @@ public class GameSession {
 
   public void setLobbyScreenController(LobbyScreenController lsc) {
     this.lobbyScreenController = lsc;
+  }
+
+  public void setSinglePlayerLobbyScreenController(SinglePlayerLobbyScreenController splsc) {
+    this.splsc = splsc;
   }
 
   /**
@@ -925,14 +915,6 @@ public class GameSession {
   }
 
   /**
-   * @author tikrause
-   * @return
-   */
-  public boolean getMultiPlayer() {
-    return multiplayer;
-  }
-
-  /**
    * Returns the value of this turn.
    *
    * @author tthielen
@@ -956,6 +938,10 @@ public class GameSession {
 
   public LobbyScreenController getLobbyScreenController() {
     return this.lobbyScreenController;
+  }
+
+  public SinglePlayerLobbyScreenController getSinglePlayerLobbyScreenController() {
+    return this.splsc;
   }
 
   // TODO: DELETE EVERYTHING BELOW THIS POINT

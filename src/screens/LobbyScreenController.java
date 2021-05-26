@@ -36,6 +36,7 @@ import network.Client;
 import network.Server;
 import network.messages.TooManyPlayerException;
 import session.Dictionary;
+import session.GameState;
 import javafx.event.EventHandler;
 
 /**
@@ -313,7 +314,7 @@ public class LobbyScreenController {
   @FXML
   void easyAIPlayer(ActionEvent event) {
     try {
-      AI ai = new AI("EasyAI" + (Server.getEasyAICount() + 1), false, true);
+      AI ai = new AI("EasyAI" + (Server.getEasyAICount() + 1), false);
       Server.addAIPlayer(ai);
       refreshPlayerList();
     } catch (TooManyPlayerException e) {
@@ -329,7 +330,7 @@ public class LobbyScreenController {
   @FXML
   void hardAIPlayer(ActionEvent event) {
     try {
-      AI ai = new AI("HardAI" + (Server.getHardAICount() + 1), true, true);
+      AI ai = new AI("HardAI" + (Server.getHardAICount() + 1), true);
       Server.addAIPlayer(ai);
       refreshPlayerList();
     } catch (TooManyPlayerException e) {

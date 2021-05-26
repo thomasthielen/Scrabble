@@ -22,12 +22,12 @@ import network.Server;
 public class ChangeTilesScreenController {
 
   @FXML private Pane backgroundPane;
-  
+
   private boolean isMultiplayer;
 
   private TextField[] countFields = new TextField[27];
   private TextField[] valueFields = new TextField[27];
-  
+
   GridPane grid1;
   GridPane grid2;
   GridPane grid3;
@@ -73,16 +73,11 @@ public class ChangeTilesScreenController {
     grid3.relocate(700, 120);
     backgroundPane.getChildren().add(grid3);
   }
-  
+
   public void setTileScreen() {
     int rowCounter = 0;
     Bag bag = new Bag();
-    if(isMultiplayer) {
-      bag = Client.getGameSession().getBag();
-    }
-    else {
-      bag = Server.getLobby().getGameSession().getBag();
-    }
+    bag = Client.getGameSession().getBag();
     for (TileContainer t : bag.getTileCounter()) {
       if (rowCounter < 9) {
         grid1.add(new Text(t.getTile().getLetter() + " :"), 0, rowCounter);
@@ -144,13 +139,8 @@ public class ChangeTilesScreenController {
       counter++;
     }
     bag.refreshBag();
-    if(isMultiplayer) {
-      Client.getGameSession().setBag(bag);
-      Client.getGameSession().sendGameStateMessage(false); 
-    }
-    else {
-      Server.getLobby().getGameSession().setBag(bag);
-    }
+    Client.getGameSession().setBag(bag);
+    Client.getGameSession().sendGameStateMessage(false);
     back(event);
   }
 
@@ -163,25 +153,28 @@ public class ChangeTilesScreenController {
    */
   @FXML
   void back(ActionEvent event) throws Exception {
-    if(isMultiplayer) {
+    if (isMultiplayer) {
       FXMLLoader loader = new FXMLLoader();
       Parent content =
           loader.load(
-              getClass().getClassLoader().getResourceAsStream("screens/resources/LobbyScreen.fxml"));
+              getClass()
+                  .getClassLoader()
+                  .getResourceAsStream("screens/resources/LobbyScreen.fxml"));
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
-    }
-    else {
+    } else {
       FXMLLoader loader = new FXMLLoader();
       Parent content =
           loader.load(
-              getClass().getClassLoader().getResourceAsStream("screens/resources/SinglePlayerLobbyScreen.fxml"));
+              getClass()
+                  .getClassLoader()
+                  .getResourceAsStream("screens/resources/SinglePlayerLobbyScreen.fxml"));
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
     }
   }
-  
-  public void setMultiplayer(boolean b){
+
+  public void setMultiplayer(boolean b) {
     isMultiplayer = b;
   }
 }

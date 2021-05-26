@@ -36,10 +36,6 @@
          </font>
       </Text>
       <MenuButton fx:id="dictionarySelecter" layoutX="409.0" layoutY="142.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: f88c00;" text="Dictionaries" textFill="WHITE">
-        <items>
-          <MenuItem mnemonicParsing="false" text="Action 1" />
-          <MenuItem mnemonicParsing="false" text="Action 2" />
-        </items>
       </MenuButton>
       <Button fx:id="fileForm" layoutX="409.0" layoutY="257.0" mnemonicParsing="false" onAction="#uploadDictionary" onMouseEntered="#openTooltip" onMouseExited="#closeTooltip" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: f88c00;" text="Upload dictionary" textFill="WHITE" />
       <Button fx:id="startGame" layoutX="300.0" layoutY="473.0" mnemonicParsing="false" onAction="#startGame" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: f88c00;" text="START GAME" textFill="WHITE">

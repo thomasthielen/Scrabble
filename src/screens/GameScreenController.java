@@ -68,8 +68,8 @@ public class GameScreenController {
   @FXML private ScrollPane playerStatisticsScrollPane;
 
   @FXML private Pane playerStatisticsPane;
-  
-  @ FXML private Pane backgroundPane;
+
+  @FXML private Pane backgroundPane;
 
   /** rackPane represents the Container for the Tiles in the Rack */
   @FXML private FlowPane rackPane;
@@ -160,11 +160,7 @@ public class GameScreenController {
    */
   public void initialize() throws Exception {
 
-    if (Server.getLobby() != null) {
-      gameSession = Server.getLobby().getGameSession();
-    } else {
-      gameSession = Client.getGameSession();
-    }
+    gameSession = Client.getGameSession();
     gameSession.setGameScreenController(this);
 
     // Disable all buttons which require a move to be made
@@ -202,12 +198,18 @@ public class GameScreenController {
     chatField.setMouseTransparent(true);
     chatField.setFocusTraversable(false);
 
-    chatButton.setVisible(gameSession.getMultiPlayer());
+    int humanPlayer = 0;
+    for (Player p : gameSession.getPlayerList()) {
+      if (!p.isBot()) {
+        humanPlayer++;
+      }
+    }
+    chatButton.setVisible(humanPlayer > 1);
 
     setPlayerStatistics();
     initializeCloseHandler();
     refreshPlayerNames();
-    
+
     ImageView starView = new ImageView(new Image("screens/resources/stern.jpg"));
     starView.setFitHeight(22);
     starView.setFitWidth(22);
@@ -234,9 +236,7 @@ public class GameScreenController {
     if (isFirstTime) {
       // Call the initial draw of tiles in the back end
       r.initialDraw();
-      if (gameSession.getMultiPlayer()) {
-        gameSession.sendGameStateMessage(false);
-      }
+      gameSession.sendGameStateMessage(false);
     }
 
     // Save those tiles in the ArrayList rackTiles
@@ -711,17 +711,13 @@ public class GameScreenController {
     cancelButton.setText("Cancel");
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == ButtonType.OK) {
-      if (gameSession.getMultiPlayer()) {
-        try {
-          Client.disconnectClient(DataHandler.getOwnPlayer());
-          if (Client.isHost()) {
-            Server.serverShutdown();
-          }
-        } catch (InterruptedException e) {
-          e.printStackTrace();
+      try {
+        Client.disconnectClient(DataHandler.getOwnPlayer());
+        if (Client.isHost()) {
+          Server.serverShutdown();
         }
-      } else {
-        Server.resetLobby();
+      } catch (InterruptedException e) {
+        e.printStackTrace();
       }
       leave();
     } else {
@@ -1288,12 +1284,7 @@ public class GameScreenController {
   }
 
   public void setPlayerStatistics() {
-    ArrayList<Player> players;
-    if (gameSession.getMultiPlayer()) {
-      players = Client.getGameSession().getPlayerList();
-    } else {
-      players = Server.getLobby().getGameSession().getPlayerList();
-    }
+    ArrayList<Player> players = Client.getGameSession().getPlayerList();
 
     for (int i = 0; i < players.size(); i++) {
       Text name = new Text(players.get(i).getUsername() + " :\n");
@@ -1322,17 +1313,12 @@ public class GameScreenController {
       }
     }
   }
-  
+
   public void refreshPlayerNames() {
-    ArrayList<Player> players;
-    if (gameSession.getMultiPlayer()) {
-      players = Client.getGameSession().getPlayerList();
-    } else {
-      players = Server.getLobby().getGameSession().getPlayerList();
-    }
-    
+    ArrayList<Player> players = Client.getGameSession().getPlayerList();
+
     for (int i = 0; i < players.size(); i++) {
-      Text name = new Text(players.get(i).getUsername() + " - ");//TODO: add points
+      Text name = new Text(players.get(i).getUsername() + " - "); // TODO: add points
       name.setFill(Paint.valueOf("#f88c00"));
       name.setFont(new Font(20));
       name.relocate(10, 14 + i * 40);
@@ -1390,15 +1376,13 @@ public class GameScreenController {
                 cancelButton.setText("Cancel");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
-                  if (gameSession.getMultiPlayer()) {
-                    try {
-                      Client.disconnectClient(DataHandler.getOwnPlayer());
-                      if (Client.isHost()) {
-                        Server.serverShutdown();
-                      }
-                    } catch (InterruptedException e) {
-                      e.printStackTrace();
+                  try {
+                    Client.disconnectClient(DataHandler.getOwnPlayer());
+                    if (Client.isHost()) {
+                      Server.serverShutdown();
                     }
+                  } catch (InterruptedException e) {
+                    e.printStackTrace();
                   }
                   Platform.exit();
                   System.exit(0);

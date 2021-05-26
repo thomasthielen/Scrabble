@@ -8,7 +8,6 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import network.messages.GameStateMessage;
 import network.messages.TooManyPlayerException;
 import session.GameState;
-import session.SinglePlayerLobby;
 
 import java.net.BindException;
 import java.net.InetAddress;
@@ -38,8 +37,6 @@ public class Server {
 
   private static ArrayList<Player> players = new ArrayList<Player>();
   private static ArrayList<AI> aiPlayers = new ArrayList<AI>();
-
-  private static SinglePlayerLobby spl;
 
   /**
    * initialises the server, lets the server wait for connections at the given port and opens a UDP
@@ -134,9 +131,6 @@ public class Server {
       throw new TooManyPlayerException();
     } else {
       players.add(p);
-      if (spl != null) {
-        spl.getGameSession().synchronise(new GameState(players));
-      }
     }
   }
 
@@ -169,11 +163,8 @@ public class Server {
     } else {
       aiPlayers.add(ai);
       players.add(ai.getPlayer());
-      if (spl == null) {
-        ServerHandler.updateAIPlayersInLobby();
-      } else {
-        spl.getGameSession().synchronise(new GameState(players));
-      }
+      Client.updateGameSession(new GameState(players));
+      Client.updateGameState(DataHandler.getOwnPlayer(), new GameState(Client.getGameSession().getPlayerList()));
     }
   }
 
@@ -229,35 +220,6 @@ public class Server {
       ai.updateGameSession(gs);
     }
     for (Player p : gs.getPlayers()) System.out.println("spieler" + p.getUsername());
-  }
-
-  /**
-   * getter method for the single player lobby that is saved on the server.
-   *
-   * @author tikrause
-   * @return spl single player lobby if created
-   */
-  public static SinglePlayerLobby getLobby() {
-    return spl;
-  }
-
-  /**
-   * initializes the lobby if a single player game is started.
-   *
-   * @author tikrause
-   */
-  public static void initializeLobby() {
-    spl = new SinglePlayerLobby();
-  }
-
-  /**
-   * resets the lobby if a single player game is left or has ended.
-   *
-   * @author tikrause
-   */
-  public static void resetLobby() {
-    spl = null;
-    resetPlayerList();
   }
 
   public static int getHardAICount() {
