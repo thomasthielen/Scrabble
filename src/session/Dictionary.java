@@ -1,7 +1,7 @@
 package session;
 
 /**
- * Enum to be able to choose from different existing dictionaries and their URLs
+ * Enum to be able to choose from different existing dictionaries and their URLs.
  *
  * @author tikrause
  */
@@ -16,8 +16,8 @@ public enum Dictionary {
   /**
    * Constructor for Dictionary with given String.
    *
-   * @param url
    * @author tikrause
+   * @param url URL of the dictionary
    */
   Dictionary(String url) {
     this.url = url;
@@ -26,8 +26,8 @@ public enum Dictionary {
   /**
    * Returns the URL of the chosen existing dictionary.
    *
-   * @return url
    * @author tikrause
+   * @return url URL of the dictionary
    */
   public String getUrl() {
     return this.url;

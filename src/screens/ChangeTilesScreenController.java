@@ -12,7 +12,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import network.Client;
-import network.Server;
 
 /**
  * The controller for the ChangeTilesScreen.
@@ -178,10 +177,22 @@ public class ChangeTilesScreenController {
     }
   }
 
+  /**
+   * saves the status if it is a multiplayer game or not to return to the right screen.
+   * 
+   * @author jbleil
+   * @param b is multiplayer or not
+   */
   void setMultiplayer(boolean b) {
     isMultiplayer = b;
   }
 
+  /**
+   * Stores the chat for when the host goes back after editing the tiles.
+   * 
+   * @author tikrause
+   * @param sb chat that has been stored
+   */
   void storeChat(StringBuffer sb) {
     storedChat = sb;
   }

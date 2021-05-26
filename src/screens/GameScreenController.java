@@ -1,14 +1,18 @@
 package screens;
 
+import data.DataHandler;
+import data.StatisticKeys;
+import gameentities.Player;
+import gameentities.Rack;
+import gameentities.Square;
+import gameentities.SquarePane;
+import gameentities.Tile;
+import gameentities.TileContainer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.regex.Pattern;
-
-import data.DataHandler;
-import data.StatisticKeys;
-import gameentities.*;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -38,12 +42,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.WindowEvent;
 import network.Client;
 import network.Server;
-import session.*;
+import session.GameSession;
 
 /**
  * This class provides the Controller for the Game Screen and handles all the interaction with the
@@ -663,8 +666,8 @@ public class GameScreenController {
   }
 
   /**
-   * This method serves as the Listener for "CHAT"-Button If the Chat is open it closes it and if
-   * it's closed it opens them
+   * This method serves as the Listener for "CHAT"-Button. If the Chat is open, it closes it and if
+   * it's closed, it opens it.
    *
    * @author jbleil
    * @param event
@@ -682,7 +685,7 @@ public class GameScreenController {
   }
 
   /**
-   * This method serves as the Listener for "X"-Button from the chatPane It closes the Chat
+   * This method serves as the Listener for "X"-Button from the chatPane. It closes the Chat.
    *
    * @author jbleil
    * @param event
@@ -744,15 +747,14 @@ public class GameScreenController {
   }
 
   /**
-   * This method serves as the Listener for "Send"-Button from the chatPane. It allows the user to
-   * send a message to the chat to all the other users in the game.
+   * Sends the typed message to all other users in the game session.
    *
    * @author tikrause
-   * @param event
+   * @param event user types in a message and clicks 'SEND'
    * @throws Exception
    */
   @FXML
-  void sendMessage(ActionEvent event) throws Exception {
+  void sendMessage(ActionEvent event) {
     String input = textField.getText().trim();
     if (Pattern.matches(".{1,140}", input)) {
       Client.sendChat(DataHandler.getOwnPlayer(), ": " + input);
@@ -773,22 +775,12 @@ public class GameScreenController {
   }
 
   /**
-   * This method serves as the Listener for the Enter-key in the chat text field. It serves as an
-   * alternative to the send message button.
+   * When a text message is received by another player in the game session, the chat pane is updated
+   * and the received message is shown.
    *
-   * @param event ActionEvent when enter is pressed in the text field
-   * @throws Exception
-   * @author jluellig
-   */
-  @FXML
-  void onEnter(ActionEvent event) throws Exception {
-    sendMessage(event);
-  }
-
-  /**
    * @author tikrause
-   * @param p
-   * @param chat
+   * @param p player that has sent the message
+   * @param chat message that has been received
    */
   public void receivedMessage(Player p, String chat) {
     if (!chatPane.isVisible()) {
@@ -802,6 +794,19 @@ public class GameScreenController {
     }
     chatHistory.append(p.getUsername() + chat + "\n");
     chatField.setText(chatHistory.toString());
+  }
+
+  /**
+   * This method serves as the Listener for the Enter-key in the chat text field. It serves as an
+   * alternative to the send message button.
+   *
+   * @param event ActionEvent when enter is pressed in the text field
+   * @throws Exception
+   * @author jluellig
+   */
+  @FXML
+  void onEnter(ActionEvent event) throws Exception {
+    sendMessage(event);
   }
 
   /**
@@ -1010,18 +1015,17 @@ public class GameScreenController {
     placeTileOnBoard(wildcardTile, wildcardStackPane);
     refreshSubmit();
   }
-  
+
   /**
-   * This method serves as the Listener for the Enter-key in the wildcard text field. It serves as an
-   * alternative to the submit wildcard button.
-   * 
-   * @param event the ActionEvent when enter is pressed in the wildcard text field
+   * This method serves as the Listener for the Enter-key in the wildcard text field. It serves as
+   * an alternative to the submit wildcard button.
    *
+   * @param event the ActionEvent when enter is pressed in the wildcard text field
    * @author jluellig
    */
   @FXML
   void onEnterWildcard(ActionEvent event) {
-	  submitWildcard(event);
+    submitWildcard(event);
   }
 
   /**
@@ -1281,6 +1285,11 @@ public class GameScreenController {
     refreshBagCount();
   }
 
+  /**
+   * Resets the window handler and brings the user back to the OnlineOrOfflineScrren.
+   *
+   * @author tikrause
+   */
   public void leave() {
     StartScreen.getStage()
         .setOnCloseRequest(
@@ -1350,16 +1359,21 @@ public class GameScreenController {
       name.setFont(new Font(20));
       name.relocate(10, 14 + i * 40);
       if (players.get(i).isCurrentlyPlaying()) {
-        //name.setFont(new Font("Segoe UI", FontWeight.BOLD));
+        // name.setFont(new Font("Segoe UI", FontWeight.BOLD));
       } else {
-        //name.setFont(new Font("Segoe UI", HIER NICHT BOLD));
+        // name.setFont(new Font("Segoe UI", HIER NICHT BOLD));
       }
 
       backgroundPane.getChildren().add(name);
     }
   }
 
-  /** @author tikrause */
+  /**
+   * Informs the player that all other human players except him have left the game and he can't
+   * continue playing.
+   *
+   * @author tikrause
+   */
   public void tooFewPlayerAlert() {
     Alert errorAlert = new Alert(AlertType.ERROR);
     errorAlert.setHeaderText("Too few players.");
@@ -1369,7 +1383,11 @@ public class GameScreenController {
     leave();
   }
 
-  /** @author tikrause */
+  /**
+   * Informs the player that the host has left the game and he can't continue playing.
+   *
+   * @author tikrause
+   */
   public void hostHasLeft() {
     Alert errorAlert = new Alert(AlertType.ERROR);
     errorAlert.setHeaderText("The host has left.");
@@ -1380,6 +1398,8 @@ public class GameScreenController {
   }
 
   /**
+   * Restores the chat from the lobby screen into the game screen when the game has started.
+   * 
    * @author tikrause
    * @param chat
    */

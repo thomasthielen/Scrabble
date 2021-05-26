@@ -32,8 +32,8 @@ public class ChooseServerScreenController {
   @FXML private TextField portField;
 
   /**
-   * This method serves as the Listener for "JOIN GAME"-Button. It redirects the user to the Lobby
-   * Screen.
+   * This method serves as the Listener for "JOIN GAME"-Button. It joins an existing server if the
+   * input of the user is correct and redirects the user to the Lobby Screen.
    *
    * @author tikrause
    * @param event the ActionEvent when the join Game-Button is pressed
@@ -81,7 +81,6 @@ public class ChooseServerScreenController {
         portField.clear();
       }
     } catch (BindException | ConnectException e) {
-      // TODO dauert ewig und stuerzt fast ab, bevor das AlertFenster erscheint
       Alert errorAlert = new Alert(AlertType.ERROR);
       errorAlert.setHeaderText("Input not valid.");
       errorAlert.setContentText("There is no server running on the given IP address and port.");

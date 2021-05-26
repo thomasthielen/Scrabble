@@ -200,21 +200,50 @@ public class LobbyScreenController {
   }
 
   /**
-   * This method serves as the Listener for "Leave Lobby"-Button It let's the user leave the Lobby
-   * and redirects him to the StartScreen
+   * This method serves as the Listener for "Leave Lobby"-Button. It lets the user leave the Lobby
+   * and cuts all connections.
    *
-   * @author jbleil
-   * @param event
+   * @author tikrause
+   * @param event user hits the 'LEAVE LOBBY'-Button
    * @throws Exception
    */
   @FXML
   void leaveLobby(ActionEvent event) throws Exception {
-    // TODO
     Client.disconnectClient(DataHandler.getOwnPlayer());
     if (Client.isHost()) {
       Server.serverShutdown();
     }
     leave();
+  }
+
+  /**
+   * Resets the window handler and brings the user back to the OnlineOrOfflineScrren.
+   *
+   * @author tikrause
+   */
+  void leave() {
+    StartScreen.getStage()
+        .setOnCloseRequest(
+            new EventHandler<WindowEvent>() {
+              @Override
+              public void handle(final WindowEvent event) {
+                Platform.exit();
+                System.exit(0);
+              }
+            });
+    FXMLLoader loader = new FXMLLoader();
+    Parent content;
+    try {
+      content =
+          loader.load(
+              getClass()
+                  .getClassLoader()
+                  .getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
+      StartScreen.getStage().setScene(new Scene(content));
+      StartScreen.getStage().show();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -250,18 +279,139 @@ public class LobbyScreenController {
   }
 
   /**
-   * TODO This method serves as the Listener for "Add AI Player"-Button It allows the user to add AI
-   * Players to the Lobby/Game The Button is only enabled if there are less then 4 Players in the
-   * Lobby
+   * Opens the pane to select the difficulty of the added AI.
    *
    * @author tikrause
-   * @param event
+   * @param event user clicks the button
    */
   @FXML
   void addAIPlayer(ActionEvent event) throws Exception {
     chooseAIPane.setVisible(true);
   }
 
+  /**
+   * Adds an easy AI player to the game and updates the player list.
+   *
+   * @author tikrause
+   * @param event user chooses to add an easy AI player
+   */
+  @FXML
+  void easyAIPlayer(ActionEvent event) {
+    try {
+      int aiCount = Server.getEasyAICount() + 1;
+      String aiName = "EasyAI" + aiCount;
+      for (AI aiPlayer : Server.getAIPlayerList()) {
+        if (aiName.equals(aiPlayer.getPlayer().getUsername())) {
+          aiName = "EasyAI" + ++aiCount;
+        }
+      }
+      AI ai = new AI(aiName, false);
+      Server.addAIPlayer(ai);
+      refreshPlayerList();
+      Client.sendChat(ai.getPlayer(), "You will definitely lose!");
+      chatHistory.append(ai.getPlayer().getUsername() + ": " + "You will definitely lose!" + "\n");
+      chatField.setText(chatHistory.toString());
+    } catch (TooManyPlayerException e) {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("Too many players.");
+      errorAlert.setContentText(
+          "You can't add another AI player because there are already the maximum of 4 players in the game.");
+      errorAlert.showAndWait();
+    }
+    closeChooseAIPane(new ActionEvent());
+  }
+
+  /**
+   * Adds an hard AI player to the game and updates the player list.
+   *
+   * @author tikrause
+   * @param event user chooses to add a hard AI player
+   */
+  @FXML
+  void hardAIPlayer(ActionEvent event) {
+    try {
+      int aiCount = Server.getHardAICount() + 1;
+      String aiName = "HardAI" + aiCount;
+      for (AI aiPlayer : Server.getAIPlayerList()) {
+        if (aiName.equals(aiPlayer.getPlayer().getUsername())) {
+          aiName = "HardAI" + ++aiCount;
+        }
+      }
+      AI ai = new AI(aiName, true);
+      Server.addAIPlayer(ai);
+      refreshPlayerList();
+      Client.sendChat(ai.getPlayer(), "You will have no chance!");
+      chatHistory.append(ai.getPlayer().getUsername() + ": " + "You will have no chance!" + "\n");
+      chatField.setText(chatHistory.toString());
+    } catch (TooManyPlayerException e) {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("Too many players.");
+      errorAlert.setContentText(
+          "You can't add another AI player because there are already the maximum of 4 players in the game.");
+      errorAlert.showAndWait();
+    }
+    closeChooseAIPane(new ActionEvent());
+  }
+
+  /**
+   * Deletes the second player in the list if it is an AI player and updates the player list.
+   *
+   * @author tikrause
+   * @param event user chooses to delete the AI player
+   */
+  @FXML
+  void deleteAIPlayer1(ActionEvent event) {
+    Player ai = Server.getPlayerList().get(1);
+    Server.removeAIPlayer(ai);
+    refreshPlayerList();
+    deleteButton1.setVisible(false);
+  }
+
+  /**
+   * Deletes the third player in the list if it is an AI player and updates the player list.
+   *
+   * @author tikrause
+   * @param event user chooses to delete the AI player
+   */
+  @FXML
+  void deleteAIPlayer2(ActionEvent event) {
+    Player ai = Server.getPlayerList().get(2);
+    Server.removeAIPlayer(ai);
+    refreshPlayerList();
+    deleteButton2.setVisible(false);
+  }
+
+  /**
+   * Deletes the fourth player in the list if it is an AI player and updates the player list.
+   *
+   * @author tikrause
+   * @param event user chooses to delete the AI player
+   */
+  @FXML
+  void deleteAIPlayer3(ActionEvent event) {
+    Player ai = Server.getPlayerList().get(3);
+    Server.removeAIPlayer(ai);
+    refreshPlayerList();
+    deleteButton3.setVisible(false);
+  }
+
+  /**
+   * Closes the pane to choose the difficulty of the AI.
+   *
+   * @author tikrause
+   * @param event user clicks the exit button
+   */
+  @FXML
+  void closeChooseAIPane(ActionEvent event) {
+    chooseAIPane.setVisible(false);
+  }
+
+  /**
+   * Sends the typed message to all other users in the game session.
+   *
+   * @author tikrause
+   * @param event user types in a message and clicks 'SEND'
+   */
   @FXML
   void sendMessage(ActionEvent event) {
     String input = textField.getText().trim();
@@ -281,6 +431,30 @@ public class LobbyScreenController {
       errorAlert.setContentText("The maximum length of a chat message is 140 characters.");
       errorAlert.showAndWait();
     }
+  }
+
+  /**
+   * When a text message is received by another player in the game session, the chat pane is updated
+   * and the received message is shown.
+   *
+   * @author tikrause
+   * @param p player that has sent the message
+   * @param chat message that has been received
+   */
+  public void receivedMessage(Player p, String chat) {
+    chatHistory.append(p.getUsername() + chat + "\n");
+    chatField.setText(chatHistory.toString());
+  }
+
+  /**
+   * Refreshs the chat when the host comes back from editing the tiles.
+   *
+   * @author tikrause
+   * @param sb chat that has been stored
+   */
+  void refreshChat(StringBuffer sb) {
+    chatHistory = sb;
+    chatField.setText(chatHistory.toString());
   }
 
   /**
@@ -315,91 +489,6 @@ public class LobbyScreenController {
     changeTilesScreenController.storeChat(chatHistory);
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
-  }
-
-  @FXML
-  void easyAIPlayer(ActionEvent event) {
-    try {
-      int aiCount = Server.getEasyAICount() + 1;
-      String aiName = "EasyAI" + aiCount;
-      for (AI aiPlayer : Server.getAIPlayerList()) {
-        if (aiName.equals(aiPlayer.getPlayer().getUsername())) {
-          aiName = "EasyAI" + ++aiCount;
-        }
-      }
-      AI ai = new AI(aiName, false);
-      Server.addAIPlayer(ai);
-      refreshPlayerList();
-    } catch (TooManyPlayerException e) {
-      Alert errorAlert = new Alert(AlertType.ERROR);
-      errorAlert.setHeaderText("Too many players.");
-      errorAlert.setContentText(
-          "You can't add another AI player because there are already the maximum of 4 players in the game.");
-      errorAlert.showAndWait();
-    }
-    closeChooseAIPane(new ActionEvent());
-  }
-
-  @FXML
-  void hardAIPlayer(ActionEvent event) {
-    try {
-      int aiCount = Server.getHardAICount() + 1;
-      String aiName = "HardAI" + aiCount;
-      for (AI aiPlayer : Server.getAIPlayerList()) {
-        if (aiName.equals(aiPlayer.getPlayer().getUsername())) {
-          aiName = "HardAI" + ++aiCount;
-        }
-      }
-      AI ai = new AI(aiName, true);
-      Server.addAIPlayer(ai);
-      refreshPlayerList();
-    } catch (TooManyPlayerException e) {
-      Alert errorAlert = new Alert(AlertType.ERROR);
-      errorAlert.setHeaderText("Too many players.");
-      errorAlert.setContentText(
-          "You can't add another AI player because there are already the maximum of 4 players in the game.");
-      errorAlert.showAndWait();
-    }
-    closeChooseAIPane(new ActionEvent());
-  }
-
-  @FXML
-  void deleteAIPlayer1(ActionEvent event) {
-    Player ai = Server.getPlayerList().get(1);
-    Server.removeAIPlayer(ai);
-    refreshPlayerList();
-    deleteButton1.setVisible(false);
-  }
-
-  @FXML
-  void deleteAIPlayer2(ActionEvent event) {
-    Player ai = Server.getPlayerList().get(2);
-    Server.removeAIPlayer(ai);
-    refreshPlayerList();
-    deleteButton2.setVisible(false);
-  }
-
-  @FXML
-  void deleteAIPlayer3(ActionEvent event) {
-    Player ai = Server.getPlayerList().get(3);
-    Server.removeAIPlayer(ai);
-    refreshPlayerList();
-    deleteButton3.setVisible(false);
-  }
-
-  @FXML
-  void closeChooseAIPane(ActionEvent event) {
-    chooseAIPane.setVisible(false);
-  }
-
-  /**
-   * @author tikrause
-   * @param p
-   * @param chat
-   */
-  public void receivedMessage(Player p, String chat) {
-    chatHistory.append(p.getUsername() + chat + "\n");
-    chatField.setText(chatHistory.toString());
   }
 
   /**
@@ -447,11 +536,11 @@ public class LobbyScreenController {
 
   /**
    * the method addIPAndPort displays the IP-Address and the Port of the current Lobby at the top of
-   * the Lobby
+   * the Lobby screen.
    *
    * @author jbleil
    */
-  public void addIPAndPort() {
+  void addIPAndPort() {
     Pane textPane = new Pane();
     Text ip = new Text(0, 0, "IP-Address: " + Server.getIp());
     ip.setFill(Paint.valueOf("#f88c00"));
@@ -479,12 +568,17 @@ public class LobbyScreenController {
       StartScreen.getStage().show();
       gsc.takeOverChat(chat);
     } catch (IOException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }
 
-  public void setDictionaryMenu() {
+  /**
+   * Sets all possible dictionaries that are given and implements their handlers if they are
+   * selected.
+   *
+   * @author tikrause
+   */
+  private void setDictionaryMenu() {
     MenuItem menuItem1 = new MenuItem("Collins Scrabble Words");
     MenuItem menuItem2 = new MenuItem("Enable (Words With Friends)");
     MenuItem menuItem3 = new MenuItem("Sowpods (Europe Scrabble Word List)");
@@ -556,32 +650,12 @@ public class LobbyScreenController {
     chosenDictionary = new File(Dictionary.COLLINS.getUrl());
   }
 
-  void leave() {
-    StartScreen.getStage()
-        .setOnCloseRequest(
-            new EventHandler<WindowEvent>() {
-              @Override
-              public void handle(final WindowEvent event) {
-                Platform.exit();
-                System.exit(0);
-              }
-            });
-    FXMLLoader loader = new FXMLLoader();
-    Parent content;
-    try {
-      content =
-          loader.load(
-              getClass()
-                  .getClassLoader()
-                  .getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
-      StartScreen.getStage().setScene(new Scene(content));
-      StartScreen.getStage().show();
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-  }
-
+  /**
+   * informs the other players that the host has left the session and therefore all other players
+   * are kicked.
+   *
+   * @author tikrause
+   */
   public void hostHasLeft() {
     Alert errorAlert = new Alert(AlertType.ERROR);
     errorAlert.setHeaderText("The host has left.");
@@ -591,6 +665,11 @@ public class LobbyScreenController {
     leave();
   }
 
+  /**
+   * informs the player that tries to join a running game and denies him from joining.
+   *
+   * @author tikrause
+   */
   public void gameAlreadyRunning() {
     Alert errorAlert = new Alert(AlertType.ERROR);
     errorAlert.setHeaderText("Game has already started.");
@@ -622,10 +701,5 @@ public class LobbyScreenController {
                 System.exit(0);
               }
             });
-  }
-
-  void refreshChat(StringBuffer sb) {
-    chatHistory = sb;
-    chatField.setText(chatHistory.toString());
   }
 }

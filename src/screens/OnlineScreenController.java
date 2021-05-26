@@ -32,7 +32,9 @@ public class OnlineScreenController {
   void hostGame(ActionEvent event) throws Exception {
     createMultiPlayerLobby();
     FXMLLoader loader = new FXMLLoader();
-    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/LobbyScreen.fxml"));
+    Parent content =
+        loader.load(
+            getClass().getClassLoader().getResourceAsStream("screens/resources/LobbyScreen.fxml"));
     LobbyScreenController lobbyScreenController = loader.getController();
     lobbyScreenController.addIPAndPort();
     StartScreen.getStage().setScene(new Scene(content));
@@ -50,7 +52,11 @@ public class OnlineScreenController {
   @FXML
   void joinGame(ActionEvent event) throws Exception {
     FXMLLoader loader = new FXMLLoader();
-    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/ChooseServerScreen.fxml"));
+    Parent content =
+        loader.load(
+            getClass()
+                .getClassLoader()
+                .getResourceAsStream("screens/resources/ChooseServerScreen.fxml"));
     ChooseServerScreenController chooseServerScreenController = loader.getController();
     chooseServerScreenController.initializeTab();
     StartScreen.getStage().setScene(new Scene(content));
@@ -68,17 +74,22 @@ public class OnlineScreenController {
   @FXML
   void back(ActionEvent event) throws Exception {
     FXMLLoader loader = new FXMLLoader();
-    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
+    Parent content =
+        loader.load(
+            getClass()
+                .getClassLoader()
+                .getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
 
   /**
-   * creates a new lobby for a Multiplayer game
+   * creates a new lobby for a multiplayer game, initializes the server at port 8000 and connects
+   * the host to the server. If the port is already used, port 8001 is tried and so on.
    *
    * @author tikrause
    */
-  void createMultiPlayerLobby() throws TooManyPlayerException {
+  void createMultiPlayerLobby() {
     int port = 8000;
     while (port < 65535) {
       try {
@@ -88,10 +99,8 @@ public class OnlineScreenController {
         break;
       } catch (BindException e) {
         port++;
-      } catch (UnknownHostException e) {
-        // TODO
-      } catch (InterruptedException e) {
-        // TODO
+      } catch (UnknownHostException | InterruptedException | TooManyPlayerException e) {
+        e.printStackTrace();
       }
     }
   }

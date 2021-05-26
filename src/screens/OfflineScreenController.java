@@ -82,10 +82,12 @@ public class OfflineScreenController {
   }
 
   /**
+   * Creates a single player lobby by creating a server connection that can't be connected to at the
+   * 'JOIN GAME' function.
+   *
    * @author tikrause
-   * @throws TooManyPlayerException
    */
-  void createSinglePlayerLobby() {
+  private void createSinglePlayerLobby() {
     int port = 800;
     while (port < 1000) {
       try {

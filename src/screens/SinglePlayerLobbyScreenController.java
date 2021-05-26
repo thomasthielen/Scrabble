@@ -171,8 +171,8 @@ public class SinglePlayerLobbyScreenController {
   }
 
   /**
-   * This method serves as the Listener for "Leave Lobby"-Button It let's the user leave the Lobby
-   * and redirects him to the StartScreen.
+   * This method serves as the Listener for "Leave Lobby"-Button. It lets the user leave the Lobby,
+   * resets the window listener and redirects him to the OnlineOrOfflineScreen.
    *
    * @author jbleil
    * @param event
@@ -232,18 +232,22 @@ public class SinglePlayerLobbyScreenController {
   }
 
   /**
-   * TODO This method serves as the Listener for "Add AI Player"-Button It allows the user to add AI
-   * Players to the Lobby/Game The Button is only enabled if there are less then 4 Players in the
-   * Lobby
+   * Opens the pane to select the difficulty of the added AI.
    *
    * @author tikrause
-   * @param event
+   * @param event user clicks the button
    */
   @FXML
   void addAIPlayer(ActionEvent event) throws Exception {
     chooseAIPane.setVisible(true);
   }
 
+  /**
+   * Adds an easy AI player to the game and updates the player list.
+   * 
+   * @author tikrause
+   * @param event user chooses to add an easy AI player
+   */
   @FXML
   void easyAIPlayer(ActionEvent event) {
     try {
@@ -267,6 +271,12 @@ public class SinglePlayerLobbyScreenController {
     closeChooseAIPane(new ActionEvent());
   }
 
+  /**
+   * Adds an hard AI player to the game and updates the player list.
+   * 
+   * @author tikrause
+   * @param event user chooses to add a hard AI player
+   */
   @FXML
   void hardAIPlayer(ActionEvent event) {
     try {
@@ -290,6 +300,12 @@ public class SinglePlayerLobbyScreenController {
     closeChooseAIPane(new ActionEvent());
   }
 
+  /**
+   * Deletes the first AI player in the list and updates the player list.
+   * 
+   * @author tikrause
+   * @param event user chooses to delete the AI player
+   */
   @FXML
   void deleteAIPlayer1(ActionEvent event) {
     Player ai = Server.getPlayerList().get(1);
@@ -298,6 +314,12 @@ public class SinglePlayerLobbyScreenController {
     deleteButton1.setVisible(false);
   }
 
+  /**
+   * Deletes the second AI player in the list and updates the player list.
+   * 
+   * @author tikrause
+   * @param event user chooses to delete the AI player
+   */
   @FXML
   void deleteAIPlayer2(ActionEvent event) {
     Player ai = Server.getPlayerList().get(2);
@@ -306,6 +328,12 @@ public class SinglePlayerLobbyScreenController {
     deleteButton2.setVisible(false);
   }
 
+  /**
+   * Deletes the second AI player in the list and updates the player list.
+   * 
+   * @author tikrause
+   * @param event user chooses to delete the AI player
+   */
   @FXML
   void deleteAIPlayer3(ActionEvent event) {
     Player ai = Server.getPlayerList().get(3);
@@ -314,6 +342,12 @@ public class SinglePlayerLobbyScreenController {
     deleteButton3.setVisible(false);
   }
 
+  /**
+   * Closes the pane to choose the difficulty of the AI.
+   * 
+   * @author tikrause
+   * @param event user clicks the exit button
+   */
   @FXML
   void closeChooseAIPane(ActionEvent event) {
     chooseAIPane.setVisible(false);
@@ -333,7 +367,11 @@ public class SinglePlayerLobbyScreenController {
     }
   }
 
-  /** @author tikrause */
+  /**
+   * Sets all possible dictionaries that are given and implements their handlers if they are selected.
+   * 
+   * @author tikrause
+   */
   public void setDictionaryMenu() {
     MenuItem menuItem1 = new MenuItem("Collins Scrabble Words");
     MenuItem menuItem2 = new MenuItem("Enable (Words With Friends)");
