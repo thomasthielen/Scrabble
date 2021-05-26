@@ -1,4 +1,4 @@
-package scrabble4;
+package gameentities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
