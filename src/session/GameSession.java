@@ -216,6 +216,13 @@ public class GameSession {
                   gameScreenController.loadPlacedTiles();
                 }
               });
+          Platform.runLater(
+              new Runnable() {
+                @Override
+                public void run() {
+                  gameScreenController.refreshPlayerNames();
+                }
+              });
         }
       }
 
