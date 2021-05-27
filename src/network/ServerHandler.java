@@ -106,7 +106,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
 
       case DISCONNECT:
         DisconnectMessage dcm = (DisconnectMessage) msg;
-        Server.removePlayer(dcm.getPlayerList(),dcm.getPlayer());
+        Server.removePlayer(dcm.getPlayerList(), dcm.getPlayer());
         Client.updateGameSession(new GameState(Server.getPlayerList()));
         for (Channel channel : channels) {
           channel.writeAndFlush(msg);

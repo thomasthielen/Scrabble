@@ -1,12 +1,19 @@
 package screens;
 
+import java.net.BindException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import data.DataHandler;
 import gameentities.Player;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,6 +24,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import network.Client;
 import network.Server;
 
@@ -71,8 +79,16 @@ public class EndScreenController {
     playAgainButton.setDisable(!Client.isHost());
     tooltipButton.setDisable(Client.isHost());
     tooltipPane.setVisible(false);
+
+    initializeCloseHandler();
   }
 
+  /**
+   * Informs the user that he can't restart the game until the host has restarted the session.
+   *
+   * @author tikrause
+   * @param event mouse event
+   */
   @FXML
   void openTooltip(MouseEvent event) {
     Text text =
@@ -84,11 +100,24 @@ public class EndScreenController {
     tooltipPane.setVisible(true);
   }
 
+  /**
+   * closes the tooltip pane.
+   *
+   * @author tikrause
+   * @param event mouse event
+   */
   @FXML
   void closeTooltip(MouseEvent event) {
     tooltipPane.setVisible(false);
   }
 
+  /**
+   * Implementation when the decides to leave the game.
+   *
+   * @author tikrause
+   * @param event 'LEAVE GAME'-Button pushed
+   * @throws Exception
+   */
   @FXML
   void leaveGame(ActionEvent event) throws Exception {
     Client.disconnectClient(DataHandler.getOwnPlayer());
@@ -98,8 +127,51 @@ public class EndScreenController {
     Client.getGameSession().getGameScreenController().leave();
   }
 
+  /**
+   * Reconnects the client to a new lobby that is running on the same server and port as the session
+   * before.
+   *
+   * @author tikrause
+   * @param event button pushed
+   * @throws Exception
+   */
   @FXML
-  void playAgain(ActionEvent event) throws Exception {}
+  void playAgain(ActionEvent event) throws Exception {
+    if (Client.isHost()) {
+      Client.enablePlayAgain(DataHandler.getOwnPlayer());
+    }
+    Client.disconnectClient(DataHandler.getOwnPlayer());
+    if (Client.isHost()) {
+      Server.serverShutdown();
+      try {
+        Server.createServer(Server.getPort());
+      } catch (UnknownHostException | InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+    Client.connectToServer(DataHandler.getOwnPlayer());
+    FXMLLoader loader = new FXMLLoader();
+    Parent content =
+        loader.load(
+            getClass().getClassLoader().getResourceAsStream("screens/resources/LobbyScreen.fxml"));
+    if (Client.isHost()) {
+      LobbyScreenController lobbyScreenController = loader.getController();
+      lobbyScreenController.addIPAndPort();
+    }
+    StartScreen.getStage().setScene(new Scene(content));
+    StartScreen.getStage().show();
+  }
+
+  /**
+   * Enables the possibility to rejoin the session for all clients after the host has restarted the
+   * session.
+   *
+   * @author tikrause
+   */
+  public void enablePlayAgain() {
+    playAgainButton.setDisable(false);
+    tooltipButton.setDisable(true);
+  }
 
   /**
    * This method serves as a Listener for the Text "Soni Sokell" and displays an instance of
@@ -129,5 +201,30 @@ public class EndScreenController {
     SiteLinkScreen sls = new SiteLinkScreen();
     Stage stage = new Stage();
     sls.start(stage);
+  }
+
+  /**
+   * Handler for when the user closes the window.
+   *
+   * @author tikrause
+   */
+  private void initializeCloseHandler() {
+    StartScreen.getStage()
+        .setOnCloseRequest(
+            new EventHandler<WindowEvent>() {
+              @Override
+              public void handle(final WindowEvent event) {
+                try {
+                  Client.disconnectClient(DataHandler.getOwnPlayer());
+                  if (Client.isHost()) {
+                    Server.serverShutdown();
+                  }
+                } catch (InterruptedException e) {
+                  e.printStackTrace();
+                }
+                Platform.exit();
+                System.exit(0);
+              }
+            });
   }
 }

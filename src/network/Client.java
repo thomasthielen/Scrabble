@@ -13,6 +13,7 @@ import network.messages.DisconnectMessage;
 import network.messages.EndGameMessage;
 import network.messages.GameStateMessage;
 import network.messages.NotifyAIMessage;
+import network.messages.PlayAgainMessage;
 import network.messages.SendChatMessage;
 import network.messages.StartGameMessage;
 import network.messages.TooManyPlayerException;
@@ -135,6 +136,16 @@ public class Client {
    */
   public static void reportEndGame(Player p) {
     cf.channel().writeAndFlush(new EndGameMessage(p));
+  }
+
+  /**
+   * Informs the other players that the host has selected to play again.
+   * 
+   * @author tikrause
+   * @param p player instance of the host
+   */
+  public static void enablePlayAgain(Player p) {
+	  cf.channel().writeAndFlush(new PlayAgainMessage(p));
   }
 
   /**

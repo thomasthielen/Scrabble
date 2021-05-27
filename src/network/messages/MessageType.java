@@ -17,5 +17,6 @@ public enum MessageType {
   TOO_FEW,
   TOO_MANY,
   GAME_RUNNING,
-  PLAYER_EXISTENT;
+  PLAYER_EXISTENT,
+  PLAY_AGAIN;
 }

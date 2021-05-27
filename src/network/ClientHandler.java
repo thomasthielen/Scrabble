@@ -62,7 +62,8 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
                 });
 
             // Option 1.2: The game is not running yet, but the lobby is already created
-          } else if (Client.getGameSession().getLobbyScreenController() != null) {
+          } else if (Client.getGameSession().getEndScreenController() == null
+              && Client.getGameSession().getLobbyScreenController() != null) {
             Client.getGameSession()
                 .getLobbyScreenController()
                 .receivedMessage(dcm.getPlayer(), " has left!");
@@ -127,6 +128,17 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
             });
         break;
 
+      case PLAY_AGAIN:
+        Platform.runLater(
+            new Runnable() {
+              @Override
+              public void run() {
+                Client.getGameSession().getEndScreenController().enablePlayAgain();
+                ;
+              }
+            });
+        break;
+
       case SEND_CHAT:
         SendChatMessage scm = (SendChatMessage) msg;
         if (Client.getGameSession().getGameScreenController() != null) {
@@ -164,7 +176,8 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
 
       case TOO_FEW:
         if (Client.isHost()) {
-          if (Client.getGameSession().getGameScreenController() != null) {
+          if (Client.getGameSession().getEndScreenController() == null
+              && Client.getGameSession().getGameScreenController() != null) {
             Client.getGameSession().cancelTimer();
             Client.disconnectClient(DataHandler.getOwnPlayer());
             if (Server.isActive()) {
