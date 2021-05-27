@@ -31,7 +31,7 @@ class LeaveGameTest {
   @Test
   void testLeaveGame() {
     ConnectMessage cm = new ConnectMessage(p);
-    DisconnectMessage dm = new DisconnectMessage(p, true);
+    //DisconnectMessage dm = new DisconnectMessage(p, true);
     ArrayList<Player> players;
     try {
       Server.createServer(port);
@@ -43,7 +43,7 @@ class LeaveGameTest {
       assertTrue(players.contains(p));
       
       Client.disconnectClient(p);
-      serverHandler.channelRead0(ctx, dm);
+      //serverHandler.channelRead0(ctx, dm);
       assertTrue(players.isEmpty());
     } catch (Exception e) {
       e.printStackTrace();

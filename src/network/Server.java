@@ -126,7 +126,8 @@ public class Server {
    * @author tikrause
    * @param p player instance that should be removed from the server list
    */
-  static void removePlayer(Player p) {
+  static void removePlayer(ArrayList<Player> playerList, Player p) {
+    players = playerList;
     players.remove(p);
     if (Client.channelActive()) {
       Client.updateGameSession(new GameState(players));

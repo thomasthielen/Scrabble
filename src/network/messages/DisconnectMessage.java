@@ -1,5 +1,7 @@
 package network.messages;
 
+import java.util.ArrayList;
+
 import gameentities.Player;
 
 /**
@@ -14,6 +16,7 @@ public class DisconnectMessage extends Message {
   private static final long serialVersionUID = 1L;
 
   private boolean host;
+  private ArrayList<Player> players;
 
   /**
    * Constructor: Creates a DisconnectMessage by using the MessageType.DISCONNECT, the Player object
@@ -23,9 +26,10 @@ public class DisconnectMessage extends Message {
    * @param p player object that has sent the message
    * @param host boolean if the leaving person is the host of the game session
    */
-  public DisconnectMessage(Player p, boolean host) {
+  public DisconnectMessage(Player p, boolean host, ArrayList<Player> players) {
     super(MessageType.DISCONNECT, p);
     this.host = host;
+    this.players = players;
   }
 
   /**
@@ -36,5 +40,15 @@ public class DisconnectMessage extends Message {
    */
   public boolean isHost() {
     return this.host;
+  }
+  
+  /**
+   * getter method for the player list
+   *
+   * @author tikrause
+   * @return ArrayList of the players
+   */
+  public ArrayList<Player> getPlayerList() {
+    return this.players;
   }
 }

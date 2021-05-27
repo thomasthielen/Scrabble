@@ -85,7 +85,7 @@ public class Client {
    * @param p player instance that should be disconnected from the game
    */
   public static void disconnectClient(Player p) throws InterruptedException {
-    cf.channel().writeAndFlush(new DisconnectMessage(p, isHost));
+    cf.channel().writeAndFlush(new DisconnectMessage(p, isHost, gameSession.getPlayerList()));
     cf.channel().close().sync();
     group.shutdownGracefully();
     group = null;
