@@ -1485,4 +1485,14 @@ public class GameScreenController {
     Stage stage = new Stage();
     sls.start(stage);
   }
+  
+  /**
+   * Getter Method for the chat history
+   *
+   * @author lsteltma
+   * @return the chat history of the game
+   */
+  public StringBuffer getChatHistory() {
+    return this.chatHistory;
+  }
 }
