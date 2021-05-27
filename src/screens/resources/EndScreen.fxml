@@ -19,7 +19,9 @@
             <Font size="24.0" />
          </font>
       </Button>
-      <Button layoutX="520.0" layoutY="452.0" mnemonicParsing="false" onAction="#playAgain" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: f88c00;" text="PLAY AGAIN" textFill="WHITE">
+      <Button fx:id="tooltipButton" layoutX="520.0" layoutY="452.0" mnemonicParsing="false" onMouseEntered="#openTooltip" onMouseExited="#closeTooltip" prefHeight="75.0" prefWidth="400.0">
+      </Button>
+      <Button fx:id="playAgainButton" layoutX="520.0" layoutY="452.0" mnemonicParsing="false" onAction="#playAgain" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: f88c00;" text="PLAY AGAIN" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
@@ -44,5 +46,6 @@
             <Font size="12.0" />
          </font>
       </Text>
+      <Pane fx:id="tooltipPane" layoutX="520.0" layoutY="222.0" prefHeight="155.0" prefWidth="300.0" style="-fx-background-color: #F4D896; -fx-border-color: #f88c00;" />
    </children>
 </Pane>

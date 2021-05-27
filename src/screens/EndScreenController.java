@@ -2,9 +2,12 @@ package screens;
 
 import java.util.ArrayList;
 
+import data.DataHandler;
+import gameentities.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -15,11 +18,16 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import network.Client;
-import gameentities.*;
+import network.Server;
 
 public class EndScreenController {
 
   @FXML private Pane backgroundPane;
+  
+  @FXML private Pane tooltipPane;
+  @FXML private Button tooltipButton;
+  
+  @FXML private Button playAgainButton;
 
   /**
    * the initialize method displays the Players, their place, their points and their avatar on the
@@ -58,10 +66,38 @@ public class EndScreenController {
     grid1.relocate(80, 150);
 
     backgroundPane.getChildren().add(grid1);
+    
+    Client.getGameSession().setEndScreenController(this);
+    playAgainButton.setDisable(!Client.isHost());
+    tooltipButton.setDisable(Client.isHost());
+    tooltipPane.setVisible(false);
   }
 
   @FXML
-  void leaveGame(ActionEvent event) throws Exception {}
+  void openTooltip(MouseEvent event) {
+    Text text =
+        new Text(
+            "You can upload your own dictionary for the\ngame! You can only use text files in which\nevery line starts with the word you want to\nadd to the dictionary. Every other information\n(that will not be used by this game) has to be\nseparated from the word in this line\nby a whitespace.");
+    text.relocate(10, 10);
+    text.setFill(Paint.valueOf("#f88c00"));
+    text.setFont(new Font(14));
+    tooltipPane.getChildren().add(text);
+    tooltipPane.setVisible(true);
+  }
+
+  @FXML
+  void closeTooltip(MouseEvent event) {
+    tooltipPane.setVisible(false);
+  }
+  
+  @FXML
+  void leaveGame(ActionEvent event) throws Exception {
+	  Client.disconnectClient(DataHandler.getOwnPlayer());
+      if (Client.isHost()) {
+        Server.serverShutdown();
+      }
+	  Client.getGameSession().getGameScreenController().leave();
+  }
 
   @FXML
   void playAgain(ActionEvent event) throws Exception {}

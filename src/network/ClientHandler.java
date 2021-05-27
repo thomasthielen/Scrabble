@@ -50,8 +50,8 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
 
         if (dcm.isHost()) {
 
-          // Option 1.1: The game is already running
-          if (Client.getGameSession().getGameScreenController() != null) {
+          // Option 1.1: The game is already running, but alre
+          if (Client.getGameSession().getEndScreenController() == null && Client.getGameSession().getGameScreenController() != null) {
             Platform.runLater(
                 new Runnable() {
                   @Override
@@ -84,7 +84,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
                 .getGameScreenController()
                 .receivedMessage(dcm.getPlayer(), " has left!");
             // TODO player list in GScreen:
-            // Client.getGameSession().getGameScreenController().refreshPlayerList();
+            Client.getGameSession().getGameScreenController().refreshPlayerNames();
 
             // Option 2.2: The game is not running yet, but the lobby is already created
           } else if (Client.getGameSession().getLobbyScreenController() != null) {

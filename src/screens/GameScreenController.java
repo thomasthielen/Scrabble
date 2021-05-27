@@ -754,6 +754,36 @@ public class GameScreenController {
       e.printStackTrace();
     }
   }
+  
+  /**
+   * Resets the window handler and brings the user back to the OnlineOrOfflineScrren.
+   *
+   * @author tikrause
+   */
+  public void leave() {
+    StartScreen.getStage()
+        .setOnCloseRequest(
+            new EventHandler<WindowEvent>() {
+              @Override
+              public void handle(final WindowEvent event) {
+                Platform.exit();
+                System.exit(0);
+              }
+            });
+    FXMLLoader loader = new FXMLLoader();
+    Parent content;
+    try {
+      content =
+          loader.load(
+              getClass()
+                  .getClassLoader()
+                  .getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
+      StartScreen.getStage().setScene(new Scene(content));
+      StartScreen.getStage().show();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
   /**
    * Sends the typed message to all other users in the game session.
@@ -1312,36 +1342,6 @@ public class GameScreenController {
     }
 
     refreshBagCount();
-  }
-
-  /**
-   * Resets the window handler and brings the user back to the OnlineOrOfflineScrren.
-   *
-   * @author tikrause
-   */
-  public void leave() {
-    StartScreen.getStage()
-        .setOnCloseRequest(
-            new EventHandler<WindowEvent>() {
-              @Override
-              public void handle(final WindowEvent event) {
-                Platform.exit();
-                System.exit(0);
-              }
-            });
-    FXMLLoader loader = new FXMLLoader();
-    Parent content;
-    try {
-      content =
-          loader.load(
-              getClass()
-                  .getClassLoader()
-                  .getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
-      StartScreen.getStage().setScene(new Scene(content));
-      StartScreen.getStage().show();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
   }
 
   public void setPlayerStatistics() {

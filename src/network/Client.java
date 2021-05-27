@@ -197,7 +197,7 @@ public class Client {
    * @author tikrause
    * @return if the client is connected to the server
    */
-  static boolean channelActive() {
+  public static boolean channelActive() {
     return cf != null;
   }
 }

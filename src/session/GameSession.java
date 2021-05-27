@@ -16,6 +16,7 @@ import gameentities.Tile;
 import javafx.application.Platform;
 import network.Client;
 import network.Server;
+import screens.EndScreenController;
 import screens.GameScreenController;
 import screens.LobbyScreenController;
 import screens.SinglePlayerLobbyScreenController;
@@ -41,6 +42,7 @@ public class GameSession {
   private GameScreenController gameScreenController;
   private LobbyScreenController lobbyScreenController;
   private SinglePlayerLobbyScreenController splsc;
+  private EndScreenController endScreenController;
 
   // The round timer and its values
   private Timer timer;
@@ -883,6 +885,10 @@ public class GameSession {
     this.splsc = splsc;
   }
 
+  public void setEndScreenController(EndScreenController esc) {
+    this.endScreenController = esc;
+  }
+
   /**
    * Returns the bag of the session. Used to draw tiles from the bag in the class Rack.
    *
@@ -951,6 +957,10 @@ public class GameSession {
 
   public SinglePlayerLobbyScreenController getSinglePlayerLobbyScreenController() {
     return this.splsc;
+  }
+
+  public EndScreenController getEndScreenController() {
+    return this.endScreenController;
   }
 
   // TODO: DELETE EVERYTHING BELOW THIS POINT
