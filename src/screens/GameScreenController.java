@@ -219,7 +219,7 @@ public class GameScreenController {
     initializeCloseHandler();
     refreshPlayerNames();
 
-    ImageView starView = new ImageView(new Image("screens/resources/stern.png"));
+    ImageView starView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("screens/resources/Stern.png")));
     starView.setFitHeight(22);
     starView.setFitWidth(22);
     gameBoard.add(starView, 7, 7);
@@ -742,6 +742,7 @@ public class GameScreenController {
       }
       leave();
       Alert alert = new Alert(AlertType.INFORMATION);
+      alert.setTitle("Information dialog");
       alert.setHeaderText("You have been kicked from the game.");
       alert.setContentText(
           "Due to exceeding the ten-minute overtime limit, you have been removed from the game.");
@@ -768,11 +769,13 @@ public class GameScreenController {
       textField.clear();
     } else if (input.isBlank()) {
       Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Message is empty.");
       errorAlert.setContentText("The chat message has to contain at least one character.");
       errorAlert.showAndWait();
     } else {
       Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Message too long.");
       errorAlert.setContentText("The maximum length of a chat message is 140 characters.");
       errorAlert.showAndWait();
@@ -1406,6 +1409,7 @@ public class GameScreenController {
    */
   public void tooFewPlayerAlert() {
     Alert errorAlert = new Alert(AlertType.ERROR);
+    errorAlert.setTitle("Error");
     errorAlert.setHeaderText("Too few players.");
     errorAlert.setContentText(
         "You can't play any longer because you are the only player left in the game session.");
@@ -1420,6 +1424,7 @@ public class GameScreenController {
    */
   public void hostHasLeft() {
     Alert errorAlert = new Alert(AlertType.ERROR);
+    errorAlert.setTitle("Error");
     errorAlert.setHeaderText("The host has left.");
     errorAlert.setContentText(
         "The host has left the game and therefore you have been disconnected from the server.");
