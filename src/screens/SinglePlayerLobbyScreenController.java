@@ -5,9 +5,13 @@ import data.DataHandler;
 import data.StatisticKeys;
 import gameentities.Player;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.apache.commons.io.IOUtils;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -246,7 +250,7 @@ public class SinglePlayerLobbyScreenController {
 
   /**
    * Adds an easy AI player to the game and updates the player list.
-   * 
+   *
    * @author tikrause
    * @param event user chooses to add an easy AI player
    */
@@ -276,7 +280,7 @@ public class SinglePlayerLobbyScreenController {
 
   /**
    * Adds an hard AI player to the game and updates the player list.
-   * 
+   *
    * @author tikrause
    * @param event user chooses to add a hard AI player
    */
@@ -306,7 +310,7 @@ public class SinglePlayerLobbyScreenController {
 
   /**
    * Deletes the first AI player in the list and updates the player list.
-   * 
+   *
    * @author tikrause
    * @param event user chooses to delete the AI player
    */
@@ -320,7 +324,7 @@ public class SinglePlayerLobbyScreenController {
 
   /**
    * Deletes the second AI player in the list and updates the player list.
-   * 
+   *
    * @author tikrause
    * @param event user chooses to delete the AI player
    */
@@ -334,7 +338,7 @@ public class SinglePlayerLobbyScreenController {
 
   /**
    * Deletes the second AI player in the list and updates the player list.
-   * 
+   *
    * @author tikrause
    * @param event user chooses to delete the AI player
    */
@@ -348,7 +352,7 @@ public class SinglePlayerLobbyScreenController {
 
   /**
    * Closes the pane to choose the difficulty of the AI.
-   * 
+   *
    * @author tikrause
    * @param event user clicks the exit button
    */
@@ -372,9 +376,11 @@ public class SinglePlayerLobbyScreenController {
   }
 
   /**
-   * Sets all possible dictionaries that are given and implements their handlers if they are selected.
-   * 
+   * Sets all possible dictionaries that are given and implements their handlers if they are
+   * selected.
+   *
    * @author tikrause
+   * @author jluellig
    */
   public void setDictionaryMenu() {
     MenuItem menuItem1 = new MenuItem("Collins Scrabble Words");
@@ -387,7 +393,17 @@ public class SinglePlayerLobbyScreenController {
           @Override
           public void handle(ActionEvent event) {
             dictionarySelecter.setText(menuItem1.getText());
-            chosenDictionary = new File(Dictionary.COLLINS.getUrl());
+            try {
+              File temp = File.createTempFile("scrabbleDict", ".txt");
+              temp.deleteOnExit();
+              FileOutputStream out = new FileOutputStream(temp);
+              IOUtils.copy(
+                  getClass().getClassLoader().getResourceAsStream(Dictionary.COLLINS.getUrl()),
+                  out);
+              chosenDictionary = temp;
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
           }
         });
     menuItem2.setOnAction(
@@ -395,7 +411,16 @@ public class SinglePlayerLobbyScreenController {
           @Override
           public void handle(ActionEvent event) {
             dictionarySelecter.setText(menuItem2.getText());
-            chosenDictionary = new File(Dictionary.ENABLE.getUrl());
+            try {
+              File temp = File.createTempFile("scrabbleDict", ".txt");
+              temp.deleteOnExit();
+              FileOutputStream out = new FileOutputStream(temp);
+              IOUtils.copy(
+                  getClass().getClassLoader().getResourceAsStream(Dictionary.ENABLE.getUrl()), out);
+              chosenDictionary = temp;
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
           }
         });
     menuItem3.setOnAction(
@@ -403,7 +428,17 @@ public class SinglePlayerLobbyScreenController {
           @Override
           public void handle(ActionEvent event) {
             dictionarySelecter.setText(menuItem3.getText());
-            chosenDictionary = new File(Dictionary.SOWPODS.getUrl());
+            try {
+              File temp = File.createTempFile("scrabbleDict", ".txt");
+              temp.deleteOnExit();
+              FileOutputStream out = new FileOutputStream(temp);
+              IOUtils.copy(
+                  getClass().getClassLoader().getResourceAsStream(Dictionary.SOWPODS.getUrl()),
+                  out);
+              chosenDictionary = temp;
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
           }
         });
     menuItem4.setOnAction(
@@ -411,7 +446,16 @@ public class SinglePlayerLobbyScreenController {
           @Override
           public void handle(ActionEvent event) {
             dictionarySelecter.setText(menuItem4.getText());
-            chosenDictionary = new File(Dictionary.TWL06.getUrl());
+            try {
+              File temp = File.createTempFile("scrabbleDict", ".txt");
+              temp.deleteOnExit();
+              FileOutputStream out = new FileOutputStream(temp);
+              IOUtils.copy(
+                  getClass().getClassLoader().getResourceAsStream(Dictionary.TWL06.getUrl()), out);
+              chosenDictionary = temp;
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
           }
         });
 
@@ -421,7 +465,16 @@ public class SinglePlayerLobbyScreenController {
     dictionarySelecter.getItems().add(menuItem4);
 
     dictionarySelecter.setText(menuItem1.getText());
-    chosenDictionary = new File(Dictionary.COLLINS.getUrl());
+    try {
+      File temp = File.createTempFile("scrabbleDict", ".txt");
+      temp.deleteOnExit();
+      FileOutputStream out = new FileOutputStream(temp);
+      IOUtils.copy(
+          getClass().getClassLoader().getResourceAsStream(Dictionary.COLLINS.getUrl()), out);
+      chosenDictionary = temp;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   @FXML

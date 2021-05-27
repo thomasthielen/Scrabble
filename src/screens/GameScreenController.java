@@ -754,7 +754,7 @@ public class GameScreenController {
       e.printStackTrace();
     }
   }
-  
+
   /**
    * Resets the window handler and brings the user back to the OnlineOrOfflineScrren.
    *

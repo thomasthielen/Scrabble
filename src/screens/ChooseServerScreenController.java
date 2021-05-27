@@ -67,7 +67,7 @@ public class ChooseServerScreenController {
         } else {
           Alert errorAlert = new Alert(AlertType.ERROR);
           errorAlert.setTitle("Error");
-errorAlert.setHeaderText("Input not valid.");
+          errorAlert.setHeaderText("Input not valid.");
           errorAlert.setContentText("The port number is not correct.");
           errorAlert.showAndWait();
           portField.clear();
@@ -75,7 +75,7 @@ errorAlert.setHeaderText("Input not valid.");
       } else {
         Alert errorAlert = new Alert(AlertType.ERROR);
         errorAlert.setTitle("Error");
-errorAlert.setHeaderText("Input not valid.");
+        errorAlert.setHeaderText("Input not valid.");
         errorAlert.setContentText(
             "The IP address is not in the correct format and therefore no valid address.");
         errorAlert.showAndWait();
@@ -85,7 +85,7 @@ errorAlert.setHeaderText("Input not valid.");
     } catch (BindException | ConnectException e) {
       Alert errorAlert = new Alert(AlertType.ERROR);
       errorAlert.setTitle("Error");
-errorAlert.setHeaderText("Input not valid.");
+      errorAlert.setHeaderText("Input not valid.");
       errorAlert.setContentText("There is no server running on the given IP address and port.");
       errorAlert.showAndWait();
       ipField.clear();
