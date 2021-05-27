@@ -17,8 +17,10 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 /**
  * This class provides the controller for the EditProfileScreen.
@@ -223,5 +225,35 @@ public class EditProfileScreenController {
         counter++;
       }
     }
+  }
+
+  /**
+   * This method serves as a Listener for the Text "Soni Sokell" and displays an instance of
+   * NameLinkScreen.
+   *
+   * @author jbleil
+   * @param event the MouseEvent that gets thrown when clicking on the "Soni Sokell" Text
+   * @throws Exception
+   */
+  @FXML
+  void openNameScreen(MouseEvent event) throws Exception {
+    NameLinkScreen nls = new NameLinkScreen();
+    Stage stage = new Stage();
+    nls.start(stage);
+  }
+
+  /**
+   * This method serves as a Listener for the Text "freeicons.io" and displays an instance of
+   * SiteLinkScreen.
+   *
+   * @author jbleil
+   * @param event the MouseEvent that gets thrown when clicking on the "freeicons.io" Text
+   * @throws Exception
+   */
+  @FXML
+  void openSiteScreen(MouseEvent event) throws Exception {
+    SiteLinkScreen sls = new SiteLinkScreen();
+    Stage stage = new Stage();
+    sls.start(stage);
   }
 }

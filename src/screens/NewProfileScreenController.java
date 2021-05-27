@@ -16,11 +16,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 /**
  * this class provides the controller for the new Profile Screen
@@ -54,7 +56,11 @@ public class NewProfileScreenController {
         DataHandler.addPlayer(input, avatar);
         DataHandler.setOwnPlayer(new Player(input, avatar));
         FXMLLoader loader = new FXMLLoader();
-        Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
+        Parent content =
+            loader.load(
+                getClass()
+                    .getClassLoader()
+                    .getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
         StartScreen.getStage().setScene(new Scene(content));
         StartScreen.getStage().show();
       } else if (alreadyUsed) {
@@ -103,7 +109,9 @@ public class NewProfileScreenController {
   @FXML
   void back(ActionEvent event) throws Exception {
     FXMLLoader loader = new FXMLLoader();
-    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/StartScreen.fxml"));
+    Parent content =
+        loader.load(
+            getClass().getClassLoader().getResourceAsStream("screens/resources/StartScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
@@ -145,7 +153,13 @@ public class NewProfileScreenController {
     int counter = 0;
     for (int i = 0; i < 2; i++) {
       for (int j = 0; j < 6; j++) {
-        Image img = new Image(getClass().getClassLoader().getResourceAsStream(array[counter].getUrl()), 52, 52, true, true);
+        Image img =
+            new Image(
+                getClass().getClassLoader().getResourceAsStream(array[counter].getUrl()),
+                52,
+                52,
+                true,
+                true);
         ToggleButton tb = new ToggleButton("", new ImageView(img));
         tb.setUserData(array[counter]);
         tb.setToggleGroup(buttonGroup);
@@ -153,5 +167,35 @@ public class NewProfileScreenController {
         counter++;
       }
     }
+  }
+
+  /**
+   * This method serves as a Listener for the Text "Soni Sokell" and displays an instance of
+   * NameLinkScreen.
+   *
+   * @author jbleil
+   * @param event the MouseEvent that gets thrown when clicking on the "Soni Sokell" Text
+   * @throws Exception
+   */
+  @FXML
+  void openNameScreen(MouseEvent event) throws Exception {
+    NameLinkScreen nls = new NameLinkScreen();
+    Stage stage = new Stage();
+    nls.start(stage);
+  }
+
+  /**
+   * This method serves as a Listener for the Text "freeicons.io" and displays an instance of
+   * SiteLinkScreen.
+   *
+   * @author jbleil
+   * @param event the MouseEvent that gets thrown when clicking on the "freeicons.io" Text
+   * @throws Exception
+   */
+  @FXML
+  void openSiteScreen(MouseEvent event) throws Exception {
+    SiteLinkScreen sls = new SiteLinkScreen();
+    Stage stage = new Stage();
+    sls.start(stage);
   }
 }

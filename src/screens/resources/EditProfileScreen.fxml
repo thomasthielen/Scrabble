@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.web.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.shape.*?>
@@ -22,12 +23,12 @@
       </Text>
       <TextField fx:id="nameField" layoutX="249.0" layoutY="147.0" onAction="#onEnter" prefHeight="42.0" prefWidth="322.0" />
       <Button layoutX="571.0" layoutY="148.0" mnemonicParsing="false" onAction="#submitChanges" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #f88c00;" text="SUBMIT CHANGES" textFill="WHITE" />
-      <Text fill="#f88c00" layoutX="197.0" layoutY="445.0" strokeType="OUTSIDE" strokeWidth="0.0" text="or you can delete your profile by clicking the button below">
+      <Text fill="#f88c00" layoutX="197.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="or you can delete your profile by clicking the button below">
          <font>
             <Font size="24.0" />
          </font>
       </Text>
-      <Button layoutX="300.0" layoutY="473.0" mnemonicParsing="false" onAction="#deleteProfile" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="DELETE PROFILE" textFill="WHITE">
+      <Button layoutX="300.0" layoutY="453.0" mnemonicParsing="false" onAction="#deleteProfile" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="DELETE PROFILE" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
@@ -35,6 +36,26 @@
       <Text fill="#f88c00" layoutX="266.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="and select an avatar from the selection below">
          <font>
             <Font size="24.0" />
+         </font>
+      </Text>
+      <Text fill="#f88c00" layoutX="704.0" layoutY="552.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All the Avatar-Icons are by">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Text>
+      <Text fill="#29c4f8" layoutX="846.0" layoutY="552.0" onMouseClicked="#openNameScreen" strokeType="OUTSIDE" strokeWidth="0.0" text="Soni Sokell">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Text>
+      <Text fill="#29c4f8" layoutX="925.0" layoutY="552.0" onMouseClicked="#openSiteScreen" strokeType="OUTSIDE" strokeWidth="0.0" text="freeicons.io">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Text>
+      <Text fill="#f88c00" layoutX="907.0" layoutY="552.0" strokeType="OUTSIDE" strokeWidth="0.0" text="on">
+         <font>
+            <Font size="12.0" />
          </font>
       </Text>
    </children>

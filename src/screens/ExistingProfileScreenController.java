@@ -23,7 +23,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 /**
  * this class provides the controller for the Existing Profile Screen
@@ -54,7 +56,11 @@ public class ExistingProfileScreenController {
       DataHandler.setOwnPlayerId(id);
       DataHandler.setOwnPlayer(new Player(username, avatar));
       FXMLLoader loader = new FXMLLoader();
-      Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
+      Parent content =
+          loader.load(
+              getClass()
+                  .getClassLoader()
+                  .getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
     } else {
@@ -81,7 +87,9 @@ public class ExistingProfileScreenController {
     for (Integer id : profiles.keySet()) {
       String username = (String) profiles.get(id)[0];
       Avatar avatar = Avatar.valueOf(profiles.get(id)[1]);
-      Image img = new Image(getClass().getClassLoader().getResourceAsStream(avatar.getUrl()), 52, 52, true, true);
+      Image img =
+          new Image(
+              getClass().getClassLoader().getResourceAsStream(avatar.getUrl()), 52, 52, true, true);
       ToggleButton tb = new ToggleButton(username, new ImageView(img));
       tb.setUserData(id);
       tb.setPrefWidth(260);
@@ -112,7 +120,11 @@ public class ExistingProfileScreenController {
     if (buttonGroup.getSelectedToggle() != null) {
       int id = (int) buttonGroup.getSelectedToggle().getUserData();
       FXMLLoader loader = new FXMLLoader();
-      Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/EditProfileScreen.fxml"));
+      Parent content =
+          loader.load(
+              getClass()
+                  .getClassLoader()
+                  .getResourceAsStream("screens/resources/EditProfileScreen.fxml"));
       EditProfileScreenController editProfileScreenController = loader.getController();
       editProfileScreenController.loadProfile(id);
       editProfileScreenController.addAvatars();
@@ -153,7 +165,9 @@ public class ExistingProfileScreenController {
   @FXML
   void back(ActionEvent event) throws Exception {
     FXMLLoader loader = new FXMLLoader();
-    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/StartScreen.fxml"));
+    Parent content =
+        loader.load(
+            getClass().getClassLoader().getResourceAsStream("screens/resources/StartScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
@@ -172,12 +186,46 @@ public class ExistingProfileScreenController {
       Optional<ButtonType> result = errorAlert.showAndWait();
       if (result.get() == ButtonType.OK) {
         FXMLLoader loader = new FXMLLoader();
-        Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/NewProfileScreen.fxml"));
+        Parent content =
+            loader.load(
+                getClass()
+                    .getClassLoader()
+                    .getResourceAsStream("screens/resources/NewProfileScreen.fxml"));
         NewProfileScreenController newProfileScreenController = loader.getController();
         newProfileScreenController.addAvatars();
         StartScreen.getStage().setScene(new Scene(content));
         StartScreen.getStage().show();
       }
     }
+  }
+
+  /**
+   * This method serves as a Listener for the Text "Soni Sokell" and displays an instance of
+   * NameLinkScreen.
+   *
+   * @author jbleil
+   * @param event the MouseEvent that gets thrown when clicking on the "Soni Sokell" Text
+   * @throws Exception
+   */
+  @FXML
+  void openNameScreen(MouseEvent event) throws Exception {
+    NameLinkScreen nls = new NameLinkScreen();
+    Stage stage = new Stage();
+    nls.start(stage);
+  }
+
+  /**
+   * This method serves as a Listener for the Text "freeicons.io" and displays an instance of
+   * SiteLinkScreen.
+   *
+   * @author jbleil
+   * @param event the MouseEvent that gets thrown when clicking on the "freeicons.io" Text
+   * @throws Exception
+   */
+  @FXML
+  void openSiteScreen(MouseEvent event) throws Exception {
+    SiteLinkScreen sls = new SiteLinkScreen();
+    Stage stage = new Stage();
+    sls.start(stage);
   }
 }
