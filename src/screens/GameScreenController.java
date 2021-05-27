@@ -173,7 +173,7 @@ public class GameScreenController {
     // Enable the swap button
     openSwapButton.setDisable(false);
     // Set the endGame button to invisible
-    endGame.setVisible(false);
+    //endGame.setVisible(false);
 
     // Fill the gameBoard with SquarePanes which are also held in squarePanes (!)
     System.out.println(gameBoard.getColumnConstraints());
@@ -1069,8 +1069,12 @@ public class GameScreenController {
   }
 
   @FXML
-  void endGame(ActionEvent event) {
+  void endGame(ActionEvent event) throws Exception {
     gameSession.endGame();
+    FXMLLoader loader = new FXMLLoader();
+    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/EndScreen.fxml"));
+    StartScreen.getStage().setScene(new Scene(content));
+    StartScreen.getStage().show();
   }
 
   // All following methods are functions used multiple times in the methods above
@@ -1189,7 +1193,7 @@ public class GameScreenController {
       skipTurnButton.setVisible(false);
       currentlyPlaying.setVisible(true);
 
-      endGame.setVisible(false);
+      //endGame.setVisible(false);
     } else {
       playable = true;
       submitButton.setVisible(true);
@@ -1201,7 +1205,7 @@ public class GameScreenController {
       if (gameSession.getSuccessiveScorelessTurns() >= 6) {
         endGame.setVisible(true);
       } else {
-        endGame.setVisible(false);
+        //endGame.setVisible(false);
       }
     }
   }
@@ -1363,7 +1367,6 @@ public class GameScreenController {
       } else {
         // name.setFont(new Font("Segoe UI", HIER NICHT BOLD));
       }
-
       backgroundPane.getChildren().add(name);
     }
   }
@@ -1399,7 +1402,7 @@ public class GameScreenController {
 
   /**
    * Restores the chat from the lobby screen into the game screen when the game has started.
-   * 
+   *
    * @author tikrause
    * @param chat
    */
