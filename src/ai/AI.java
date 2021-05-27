@@ -983,6 +983,10 @@ public class AI {
 
   public void makeMove() {
     this.tiles = this.gameReference.getPlayer().getRack().getTiles();
+    System.out.println("\nAI tiles before playing:" ); 
+    for (Tile t : tiles) {
+      System.out.print(t.getLetter() + " "); 
+    }
 
     this.printtiles(this.tiles);
     if (!dictionaryInitialized) {
@@ -1007,6 +1011,12 @@ public class AI {
     if (gameReference.checkMove()) {
       gameReference.makePlay();
     }
+    
+    System.out.println("\nAI tiles after playing:" ); 
+    for (Tile t : tiles) {
+      System.out.print(t.getLetter() + " "); 
+    }
+    System.out.println( ); 
   }
 
   public ArrayList<Word> getwords() {

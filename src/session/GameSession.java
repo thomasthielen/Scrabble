@@ -72,7 +72,7 @@ public class GameSession {
     ownPlayer = player;
     ownPlayer.createRack(this);
 
-    ownPlayer.setCurrentlyPlaying(Client.isHost());
+    ownPlayer.setCurrentlyPlaying(Client.isHost() && !player.isBot());
     sendGameStateMessage(true);
   }
 
@@ -507,7 +507,6 @@ public class GameSession {
       }
 
       String newWord = sb.toString();
-      System.out.println("Main word: " + newWord + " " + data.DataHandler.checkWord(newWord));
       if (sb.length() > 1) {
         if (!data.DataHandler.checkWord(newWord)) {
           return false;
@@ -587,7 +586,6 @@ public class GameSession {
         }
 
         String newWord = sb.toString();
-        System.out.println("Main word: " + newWord + " " + data.DataHandler.checkWord(newWord));
         if (sb.length() > 1) {
           if (!data.DataHandler.checkWord(newWord)) {
             return false;
@@ -676,8 +674,6 @@ public class GameSession {
         turnValue += wordValue;
 
         String newWord = sb.toString();
-        System.out.println(
-            "Secondary word: " + newWord + " " + data.DataHandler.checkWord(newWord));
         if (!data.DataHandler.checkWord(newWord)) {
           return false;
         }
