@@ -4,6 +4,9 @@ import data.DataHandler;
 import gameentities.Player;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -43,33 +46,63 @@ public class EndScreenController {
    */
   public void initialize() {
     ArrayList<Player> players = Client.getGameSession().getPlayerList();
+    Collections.sort(players);
+    for(int i = 0; i < players.size() - 1; i++) {
+      Player help = new Player("");
+      help = players.get(i);
+      players.set(i, players.get(i+1));
+      players.set(i+1, help);
+    }
     GridPane grid1 = new GridPane();
     grid1.setHgap(50);
     grid1.setVgap(20);
-    grid1.setPrefWidth(200);
+
+    double[] width = new double[4];
+
+    for (int i = 0; i < width.length; i++) {
+      width[i] = 0;
+    }
 
     for (int i = 0; i < players.size(); i++) {
       Text place = new Text((i + 1) + ".Place:");
       place.setFill(Paint.valueOf("#f88c00"));
       place.setFont(new Font(18));
       grid1.add(place, i, 0);
+      width[0] += place.getLayoutBounds().getWidth();
       GridPane.setHalignment(place, HPos.CENTER);
+
       Image avatar = new Image(players.get(i).getAvatar().getUrl(), 52, 52, true, true);
-      grid1.add(new ImageView(avatar), i, 1);
-      GridPane.setHalignment(new ImageView(avatar), HPos.CENTER);
+      ImageView imageView = new ImageView(avatar);
+      grid1.add(imageView, i, 1);
+      width[1] += avatar.getWidth();
+
       Text name = new Text(players.get(i).getUsername());
       name.setFill(Paint.valueOf("#f88c00"));
       name.setFont(new Font(18));
       name.relocate(0, 150);
       grid1.add(name, i, 2);
+      width[2] += name.getLayoutBounds().getWidth();
       GridPane.setHalignment(name, HPos.CENTER);
+
       Text points = new Text("Points: " + players.get(i).getScore());
       points.setFill(Paint.valueOf("#f88c00"));
       points.setFont(new Font(18));
       grid1.add(points, i, 3);
+      width[3] += points.getLayoutBounds().getWidth();
       GridPane.setHalignment(points, HPos.CENTER);
+
+      if (name.getLayoutBounds().getWidth() > points.getLayoutBounds().getWidth()) {
+        imageView.setStyle(
+            "-fx-translate-x: " + (name.getLayoutBounds().getWidth() - 52) / 2 + ";");
+      } else {
+        imageView.setStyle(
+            "-fx-translate-x: " + (points.getLayoutBounds().getWidth() - 52) / 2 + ";");
+      }
     }
-    grid1.relocate(80, 150);
+
+    Arrays.sort(width);
+    System.out.println(width[3]);
+    grid1.relocate(500 - ((players.size() - 1) * 50) - width[3] / 2, 150);
 
     backgroundPane.getChildren().add(grid1);
 
