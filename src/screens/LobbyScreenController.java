@@ -617,7 +617,7 @@ public class LobbyScreenController {
           Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
           clipboard.setContents(selection, selection);
           
-          ip.setText(ipNormal + "\tCopied IP to clipboard!");
+          ip.setText(ipNormal + "\t\tCopied IP to clipboard!");
           
           Timer timer = new Timer();
           timer.schedule(new TimerTask() {
