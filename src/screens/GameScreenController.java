@@ -1492,7 +1492,7 @@ public class GameScreenController {
    * @author lsteltma
    * @return the chat history of the game
    */
-  public StringBuffer getChatHistory() {
-    return this.chatHistory;
+  public String getChatHistory() {
+    return this.chatHistory.toString();
   }
 }
