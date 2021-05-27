@@ -135,6 +135,7 @@ public class EndScreenController {
    */
   @FXML
   void playAgain(ActionEvent event) throws Exception {
+    boolean multiPlayer = (Client.getGameSession().getLobbyScreenController() != null);
     if (Client.isHost()) {
       Client.enablePlayAgain(DataHandler.getOwnPlayer());
     }
@@ -149,12 +150,24 @@ public class EndScreenController {
     }
     Client.connectToServer(DataHandler.getOwnPlayer());
     FXMLLoader loader = new FXMLLoader();
-    Parent content =
-        loader.load(
-            getClass().getClassLoader().getResourceAsStream("screens/resources/LobbyScreen.fxml"));
-    if (Client.isHost()) {
-      LobbyScreenController lobbyScreenController = loader.getController();
-      lobbyScreenController.addIPAndPort();
+    Parent content;
+    if (multiPlayer) {
+      content =
+          loader.load(
+              getClass()
+                  .getClassLoader()
+                  .getResourceAsStream("screens/resources/LobbyScreen.fxml"));
+
+      if (Client.isHost()) {
+        LobbyScreenController lobbyScreenController = loader.getController();
+        lobbyScreenController.addIPAndPort();
+      }
+    } else {
+      content =
+          loader.load(
+              getClass()
+                  .getClassLoader()
+                  .getResourceAsStream("screens/resources/SinglePlayerLobbyScreen.fxml"));
     }
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
