@@ -170,7 +170,7 @@ public class EditProfileScreenController {
     HashMap<Integer, String[]> profiles = DataHandler.getPlayerInfo();
     for (int key : profiles.keySet()) {
       String s = (String) profiles.get(key)[0];
-      if (s.equals(nameField.getText().trim())) {
+      if (s.equals(username)) {
         return true;
       }
     }

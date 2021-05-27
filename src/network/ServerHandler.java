@@ -72,7 +72,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
         // should be rejected
         boolean playerExistent = false;
         for (Player p : Server.getPlayerList()) {
-          if (p.equals(cm.getPlayer())) {
+          if (p.getUsername().equals(cm.getPlayer().getUsername())) {
             ctx.channel().writeAndFlush(new PlayerExistentMessage(cm.getPlayer()));
             handlerRemoved(ctx);
             playerExistent = true;

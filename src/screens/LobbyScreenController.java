@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
@@ -25,6 +26,7 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
@@ -312,7 +314,7 @@ public class LobbyScreenController {
       AI ai = new AI(aiName, false);
       Server.addAIPlayer(ai);
       refreshPlayerList();
-      Client.sendChat(ai.getPlayer(), "You will definitely lose!");
+      Client.sendChat(ai.getPlayer(), ": You will definitely lose!");
       chatHistory.append(ai.getPlayer().getUsername() + ": " + "You will definitely lose!" + "\n");
       chatField.setText(chatHistory.toString());
     } catch (TooManyPlayerException e) {
@@ -344,7 +346,7 @@ public class LobbyScreenController {
       AI ai = new AI(aiName, true);
       Server.addAIPlayer(ai);
       refreshPlayerList();
-      Client.sendChat(ai.getPlayer(), "You will have no chance!");
+      Client.sendChat(ai.getPlayer(), ": You will have no chance!");
       chatHistory.append(ai.getPlayer().getUsername() + ": " + "You will have no chance!" + "\n");
       chatField.setText(chatHistory.toString());
     } catch (TooManyPlayerException e) {
@@ -630,15 +632,16 @@ public class LobbyScreenController {
           public void handle(ActionEvent event) {
             dictionarySelecter.setText(menuItem3.getText());
             try {
-                File temp = File.createTempFile("scrabbleDict", ".txt");
-                temp.deleteOnExit();
-                FileOutputStream out = new FileOutputStream(temp);
-                IOUtils.copy(
-                    getClass().getClassLoader().getResourceAsStream(Dictionary.SOWPODS.getUrl()), out);
-                chosenDictionary = temp;
-              } catch (Exception e) {
-                e.printStackTrace();
-              }
+              File temp = File.createTempFile("scrabbleDict", ".txt");
+              temp.deleteOnExit();
+              FileOutputStream out = new FileOutputStream(temp);
+              IOUtils.copy(
+                  getClass().getClassLoader().getResourceAsStream(Dictionary.SOWPODS.getUrl()),
+                  out);
+              chosenDictionary = temp;
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
           }
         });
     menuItem4.setOnAction(
@@ -647,15 +650,15 @@ public class LobbyScreenController {
           public void handle(ActionEvent event) {
             dictionarySelecter.setText(menuItem4.getText());
             try {
-                File temp = File.createTempFile("scrabbleDict", ".txt");
-                temp.deleteOnExit();
-                FileOutputStream out = new FileOutputStream(temp);
-                IOUtils.copy(
-                    getClass().getClassLoader().getResourceAsStream(Dictionary.TWL06.getUrl()), out);
-                chosenDictionary = temp;
-              } catch (Exception e) {
-                e.printStackTrace();
-              }
+              File temp = File.createTempFile("scrabbleDict", ".txt");
+              temp.deleteOnExit();
+              FileOutputStream out = new FileOutputStream(temp);
+              IOUtils.copy(
+                  getClass().getClassLoader().getResourceAsStream(Dictionary.TWL06.getUrl()), out);
+              chosenDictionary = temp;
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
           }
         });
 
@@ -666,16 +669,15 @@ public class LobbyScreenController {
 
     dictionarySelecter.setText(menuItem1.getText());
     try {
-        File temp = File.createTempFile("scrabbleDict", ".txt");
-        temp.deleteOnExit();
-        FileOutputStream out = new FileOutputStream(temp);
-        IOUtils.copy(
-            getClass().getClassLoader().getResourceAsStream(Dictionary.COLLINS.getUrl()),
-            out);
-        chosenDictionary = temp;
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+      File temp = File.createTempFile("scrabbleDict", ".txt");
+      temp.deleteOnExit();
+      FileOutputStream out = new FileOutputStream(temp);
+      IOUtils.copy(
+          getClass().getClassLoader().getResourceAsStream(Dictionary.COLLINS.getUrl()), out);
+      chosenDictionary = temp;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -729,12 +731,70 @@ public class LobbyScreenController {
    * @author jluellig
    */
   public void playerAlreadyExisting() {
-    // TODO
-    Alert errorAlert = new Alert(AlertType.ERROR);
-    errorAlert.setHeaderText("Username already exists.");
-    errorAlert.setContentText("You can't join the game because your username is already used.");
-    errorAlert.showAndWait();
-    leave();
+    String currentUsername = DataHandler.getOwnPlayer().getUsername();
+    boolean alreadyUsed = false;
+    TextInputDialog dialog = new TextInputDialog(currentUsername);
+    dialog.setHeaderText("Username already exists.");
+    dialog.setContentText(
+        "You can't join the game because your username is already used."
+            + "\nPlease change your username to connect to the game:");
+    Optional<String> result = dialog.showAndWait();
+    if (result.isPresent()) {
+      if (Pattern.matches("[a-zA-Z0-9]{2,15}", result.get())
+          && !(alreadyUsed = usernameAlreadyUsed(result.get()))) {
+        DataHandler.alterPlayerUsername(result.get(), DataHandler.getOwnPlayerId());
+        DataHandler.getOwnPlayer().setUsername(result.get());
+        currentUsername = result.get();
+      } else if (alreadyUsed) {
+        Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setHeaderText("Username already exists.");
+        errorAlert.setContentText("Try a different username.");
+        errorAlert.showAndWait();
+        playerAlreadyExisting();
+        return;
+      } else {
+        Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setHeaderText("Input not valid.");
+        errorAlert.setContentText(
+            "The username must contain 2-15 letters or numbers. It can't contain any special characters.");
+        errorAlert.showAndWait();
+        playerAlreadyExisting();
+        return;
+      }
+      try {
+          Client.connectToServer(DataHandler.getOwnPlayer());
+          FXMLLoader loader = new FXMLLoader();
+          Parent content =
+              loader.load(
+                  getClass()
+                      .getClassLoader()
+                      .getResourceAsStream("screens/resources/LobbyScreen.fxml"));
+          StartScreen.getStage().setScene(new Scene(content));
+          StartScreen.getStage().show();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+    } else {
+    	leave();
+    }
+  }
+
+  /**
+   * Checks if the given username is already used in the database.
+   *
+   * @param username the input username that should be checked
+   * @return true if the given username is already a username in the database, otherwise false
+   * @author jluellig
+   */
+  private boolean usernameAlreadyUsed(String username) {
+    HashMap<Integer, String[]> profiles = DataHandler.getPlayerInfo();
+    for (int key : profiles.keySet()) {
+      String s = (String) profiles.get(key)[0];
+      if (s.equals(username)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
