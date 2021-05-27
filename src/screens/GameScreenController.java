@@ -42,7 +42,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import network.Client;
 import network.Server;
@@ -173,7 +175,7 @@ public class GameScreenController {
     // Enable the swap button
     openSwapButton.setDisable(false);
     // Set the endGame button to invisible
-    //endGame.setVisible(false);
+    endGame.setVisible(false);
 
     // Fill the gameBoard with SquarePanes which are also held in squarePanes (!)
     System.out.println(gameBoard.getColumnConstraints());
@@ -1072,7 +1074,9 @@ public class GameScreenController {
   void endGame(ActionEvent event) throws Exception {
     gameSession.endGame();
     FXMLLoader loader = new FXMLLoader();
-    Parent content = loader.load(getClass().getClassLoader().getResourceAsStream("screens/resources/EndScreen.fxml"));
+    Parent content =
+        loader.load(
+            getClass().getClassLoader().getResourceAsStream("screens/resources/EndScreen.fxml"));
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
@@ -1193,7 +1197,7 @@ public class GameScreenController {
       skipTurnButton.setVisible(false);
       currentlyPlaying.setVisible(true);
 
-      //endGame.setVisible(false);
+      endGame.setVisible(false);
     } else {
       playable = true;
       submitButton.setVisible(true);
@@ -1205,7 +1209,7 @@ public class GameScreenController {
       if (gameSession.getSuccessiveScorelessTurns() >= 6) {
         endGame.setVisible(true);
       } else {
-        //endGame.setVisible(false);
+        endGame.setVisible(false);
       }
     }
   }
@@ -1352,23 +1356,31 @@ public class GameScreenController {
 
   public void refreshPlayerNames() {
     ArrayList<Player> players = Client.getGameSession().getPlayerList();
+    GridPane grid = new GridPane();
+    grid.setHgap(10);
+    grid.setVgap(10);
 
     for (int i = 0; i < players.size(); i++) {
-      Text name =
-          new Text(
-              players.get(i).getUsername()
-                  + "\t - "
-                  + players.get(i).getScore()); // TODO: add points
+      grid.add(
+          new ImageView(new Image(players.get(i).getAvatar().getUrl(), 45, 45, true, true)), 0, i);
+      Text name = new Text(players.get(i).getUsername()); // TODO: add points
       name.setFill(Paint.valueOf("#f88c00"));
-      name.setFont(new Font(20));
-      name.relocate(10, 14 + i * 40);
+      name.setFont(new Font(16));
+      grid.add(name, 1, i);
+      Text points = new Text("-  " + players.get(i).getScore());
+      points.setFill(Paint.valueOf("#f88c00"));
+      points.setFont(new Font(16));
+      grid.add(points, 2, i);
       if (players.get(i).isCurrentlyPlaying()) {
-        // name.setFont(new Font("Segoe UI", FontWeight.BOLD));
+        name.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
+        points.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
       } else {
-        // name.setFont(new Font("Segoe UI", HIER NICHT BOLD));
+        name.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 16));
+        points.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 16));
       }
-      backgroundPane.getChildren().add(name);
     }
+    grid.relocate(10, 14);
+    backgroundPane.getChildren().add(grid);
   }
 
   /**
@@ -1447,5 +1459,27 @@ public class GameScreenController {
                 }
               }
             });
+  }
+
+  @FXML
+  void openNameScreen(MouseEvent event) {
+    NameLinkScreen nls = new NameLinkScreen();
+    Stage stage = new Stage();
+    nls.start(stage);
+  }
+
+  /**
+   * This method serves as a Listener for the Text "freeicons.io" and displays an instance of
+   * SiteLinkScreen.
+   *
+   * @author jbleil
+   * @param event the MouseEvent that gets thrown when clicking on the "freeicons.io" Text
+   * @throws Exception
+   */
+  @FXML
+  void openSiteScreen(MouseEvent event) {
+    SiteLinkScreen sls = new SiteLinkScreen();
+    Stage stage = new Stage();
+    sls.start(stage);
   }
 }
