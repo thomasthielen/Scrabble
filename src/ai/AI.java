@@ -892,7 +892,9 @@ public class AI {
             Word word = new Word();
             ArrayList<Square> squares = new ArrayList<Square>();
             buffer = new StringBuffer();
-            lowerneighbour = this.gameReference.getBoard().getLowerNeighbour(upperneighbour);
+            if(upperneighbour!=null) {
+            	lowerneighbour = this.gameReference.getBoard().getLowerNeighbour(upperneighbour);
+            }
             if (lowerneighbour != null) {
               word.setBeginningX(lowerneighbour.getX());
               word.setBeginningY(lowerneighbour.getY());
