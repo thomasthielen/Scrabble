@@ -54,7 +54,7 @@ class Database {
       // create table Statistics if it doesn't already exist
       stm.executeUpdate(
           "CREATE TABLE IF NOT EXISTS Statistics (PlayerID INTEGER NOT NULL, Date TEXT NOT NULL, "
-              + "Win INTEGER NOT NULL, Points INTEGER NOT NULL, PRIMARY KEY(Date), "
+              + "Win INTEGER NOT NULL, Points INTEGER NOT NULL, "
               + "FOREIGN KEY(PlayerID) references PlayerInfo (ID))");
     } catch (Exception e) {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());

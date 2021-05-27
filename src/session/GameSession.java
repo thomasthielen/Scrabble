@@ -803,7 +803,6 @@ public class GameSession {
     Collections.sort(players);
     boolean hasWon = (players.get(players.size() - 1).equals(ownPlayer));
     DataHandler.addStatistics(DataHandler.getOwnPlayerId(), hasWon, ownPlayer.getScore());
-    // TODO end game screen (statistics of the current, ranking, end game, new game)
   }
 
   /**

@@ -9,6 +9,8 @@ import gameentities.Tile;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import network.Client;
 import network.Server;
@@ -970,21 +972,25 @@ public class AI {
   }
 
   public void makeMove() {
-    this.tiles = this.gameReference.getPlayer().getRack().getTiles();
+	  Timer timer = new Timer();
+	  timer.schedule(new TimerTask() {
+		  @Override
+		  public void run() {
+    tiles = gameReference.getPlayer().getRack().getTiles();
 
-    this.printtiles(this.tiles);
+    printtiles(tiles);
     if (!dictionaryInitialized) {
       DataHandler.botDictionaryFile(dictionary);
       dictionaryInitialized = true;
     }
-    ArrayList<Square> squares = this.getthebestmove();
+    ArrayList<Square> squares = getthebestmove();
     if (squares != null) {
-      this.gameReference.recallAll();
+      gameReference.recallAll();
       for (Square s : squares) {
         Tile t = s.getTile();
         t.setPlacedTemporarily(false);
         t.setPlacedFinally(true);
-        this.gameReference.placeTile(s.getX(), s.getY(), t);
+        gameReference.placeTile(s.getX(), s.getY(), t);
       }
 
     } else {
@@ -994,6 +1000,8 @@ public class AI {
     if (gameReference.checkMove()) {
       gameReference.makePlay();
     }
+		  }}, 5000);
+	  
   }
 
   public ArrayList<Word> getwords() {
