@@ -1328,7 +1328,7 @@ public class GameScreenController {
 
   public void setPlayerStatistics() {
     ArrayList<Player> players = Client.getGameSession().getPlayerList();
-
+    playerStatisticsScrollPane.setFitToWidth(true);
     for (int i = 0; i < players.size(); i++) {
       Text name = new Text(players.get(i).getUsername() + " :\n");
       name.setFont(new Font(20));
