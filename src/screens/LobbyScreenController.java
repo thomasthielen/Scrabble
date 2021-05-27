@@ -55,6 +55,8 @@ public class LobbyScreenController {
 
   @FXML private Pane chooseAIPane;
 
+  @FXML private Pane tooltipPaneHost;
+
   @FXML private Pane tooltipPane;
 
   @FXML private Rectangle aiPlayerRectangle;
@@ -83,6 +85,12 @@ public class LobbyScreenController {
   @FXML private Text selectDictionaryText;
   @FXML private Text editTilesText;
 
+  @FXML private Rectangle addAIPlayerTooltip;
+  @FXML private Rectangle uploadDictionaryTooltip;
+  @FXML private Rectangle chooseDictionaryTooltip;
+  @FXML private Rectangle startGameTooltip;
+  @FXML private Rectangle editTilesTooltip;
+
   @FXML private Button fileForm;
   @FXML private Button addAIPlayer;
   @FXML private Button startGame;
@@ -100,6 +108,8 @@ public class LobbyScreenController {
   private File chosenDictionary;
   private StringBuffer chatHistory = new StringBuffer();
 
+  private Text tooltipText;
+
   public void initialize() throws Exception {
     playerInfos.add(playerInfo1);
     playerInfos.add(playerInfo2);
@@ -110,6 +120,12 @@ public class LobbyScreenController {
     playerStatistics.add(playerStatistic2);
     playerStatistics.add(playerStatistic3);
     playerStatistics.add(playerStatistic4);
+
+    addAIPlayerTooltip.setVisible(false);
+    uploadDictionaryTooltip.setVisible(false);
+    chooseDictionaryTooltip.setVisible(false);
+    startGameTooltip.setVisible(false);
+    editTilesTooltip.setVisible(false);
 
     deleteButtons = new Button[3];
     deleteButtons[0] = deleteButton1;
@@ -129,6 +145,12 @@ public class LobbyScreenController {
       uploadDictionaryText.setOpacity(0.5);
       selectDictionaryText.setOpacity(0.5);
       editTilesText.setOpacity(0.5);
+
+      addAIPlayerTooltip.setVisible(true);
+      uploadDictionaryTooltip.setVisible(true);
+      chooseDictionaryTooltip.setVisible(true);
+      startGameTooltip.setVisible(true);
+      editTilesTooltip.setVisible(true);
     }
 
     refreshPlayerList();
@@ -140,6 +162,7 @@ public class LobbyScreenController {
     chatField.setWrapText(true);
 
     chooseAIPane.setVisible(false);
+    tooltipPaneHost.setVisible(false);
     tooltipPane.setVisible(false);
 
     initializeCloseHandler();
@@ -199,13 +222,13 @@ public class LobbyScreenController {
     text.relocate(10, 10);
     text.setFill(Paint.valueOf("#f88c00"));
     text.setFont(new Font(14));
-    tooltipPane.getChildren().add(text);
-    tooltipPane.setVisible(true);
+    tooltipPaneHost.getChildren().add(text);
+    tooltipPaneHost.setVisible(true);
   }
 
   @FXML
   void closeTooltip(MouseEvent event) {
-    tooltipPane.setVisible(false);
+    tooltipPaneHost.setVisible(false);
   }
 
   /**
@@ -746,9 +769,8 @@ public class LobbyScreenController {
     boolean alreadyUsed = false;
     TextInputDialog dialog = new TextInputDialog(currentUsername);
     dialog.setTitle("Confirmation dialog");
-    Button cancelButton =
-            (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
-        cancelButton.setText("Cancel");
+    Button cancelButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
+    cancelButton.setText("Cancel");
     dialog.setHeaderText("Username already exists.");
     dialog.setContentText(
         "You can't join the game because your username is already used."
@@ -779,20 +801,20 @@ public class LobbyScreenController {
         return;
       }
       try {
-          Client.connectToServer(DataHandler.getOwnPlayer());
-          FXMLLoader loader = new FXMLLoader();
-          Parent content =
-              loader.load(
-                  getClass()
-                      .getClassLoader()
-                      .getResourceAsStream("screens/resources/LobbyScreen.fxml"));
-          StartScreen.getStage().setScene(new Scene(content));
-          StartScreen.getStage().show();
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
+        Client.connectToServer(DataHandler.getOwnPlayer());
+        FXMLLoader loader = new FXMLLoader();
+        Parent content =
+            loader.load(
+                getClass()
+                    .getClassLoader()
+                    .getResourceAsStream("screens/resources/LobbyScreen.fxml"));
+        StartScreen.getStage().setScene(new Scene(content));
+        StartScreen.getStage().show();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     } else {
-    	leave();
+      leave();
     }
   }
 
@@ -837,5 +859,160 @@ public class LobbyScreenController {
                 System.exit(0);
               }
             });
+  }
+
+  /**
+   * This method serves as a Listener for the dictionarySelector. By hovering over the Button it
+   * displays the Tooltip-Text.
+   *
+   * @author jbleil
+   * @param event MouseEvent that gets triggered when hovering over the dictionarySelector.
+   */
+  @FXML
+  void displayChooseDictionaryTooltip(MouseEvent event) {
+    tooltipText = new Text("Only the Host can choose a dictionary.");
+    tooltipText.setFill(Paint.valueOf("#f88c00"));
+    tooltipText.setFont(new Font(14));
+    tooltipText.relocate(4, 2);
+    tooltipPane.getChildren().add(tooltipText);
+    tooltipPane.relocate(374, dictionarySelecter.getLayoutY() - 25);
+    tooltipPane.setVisible(true);
+  }
+
+  /**
+   * This method serves as a Listener for the dictionarySelector. By hovering out off the Button it
+   * clears the Tooltip-Text.
+   *
+   * @author jbleil
+   * @param event MouseEvent that gets triggered when hovering over the dictionarySelector.
+   */
+  @FXML
+  void closeChooseDictionaryTooltip(MouseEvent event) {
+    tooltipPane.setVisible(false);
+    tooltipPane.getChildren().remove(tooltipText);
+  }
+
+  /**
+   * This method serves as a Listener for the uploadDictionary Button. By hovering over the Button
+   * it displays the Tooltip-Text.
+   *
+   * @author jbleil
+   * @param event MouseEvent that gets triggered when hovering over the uploadDictionary Button.
+   */
+  @FXML
+  void displayUploadDictionaryTooltip(MouseEvent event) {
+    tooltipText = new Text("Only the Host can upload a dictionary.");
+    tooltipText.setFill(Paint.valueOf("#f88c00"));
+    tooltipText.setFont(new Font(14));
+    tooltipText.relocate(4, 2);
+    tooltipPane.getChildren().add(tooltipText);
+    tooltipPane.relocate(374, fileForm.getLayoutY() - 25);
+    tooltipPane.setVisible(true);
+  }
+
+  /**
+   * This method serves as a Listener for the uploadDictionary Button. By hovering out off the
+   * Button it clears the Tooltip-Text.
+   *
+   * @author jbleil
+   * @param event MouseEvent that gets triggered when hovering over the uploadDictionary Button.
+   */
+  @FXML
+  void openUploadDictionaryTooltip(MouseEvent event) {
+    tooltipPane.setVisible(false);
+    tooltipPane.getChildren().remove(tooltipText);
+  }
+
+  /**
+   * This method serves as a Listener for the editTiles Button. By hovering over the Button it
+   * displays the Tooltip-Text.
+   *
+   * @author jbleil
+   * @param event MouseEvent that gets triggered when hovering over the editTiles Button.
+   */
+  @FXML
+  void displayEditTilesTooltip(MouseEvent event) {
+    tooltipText = new Text("Only the Host can edit the Tiles.");
+    tooltipText.setFill(Paint.valueOf("#f88c00"));
+    tooltipText.setFont(new Font(14));
+    tooltipText.relocate(4, 2);
+    tooltipPane.getChildren().add(tooltipText);
+    tooltipPane.relocate(374, editTiles.getLayoutY() - 25);
+    tooltipPane.setVisible(true);
+  }
+
+  /**
+   * This method serves as a Listener for the editTiles Button. By hovering out off the Button it
+   * clears the Tooltip-Text.
+   *
+   * @author jbleil
+   * @param event MouseEvent that gets triggered when hovering over the editTiles Button.
+   */
+  @FXML
+  void openEditTilesTooltip(MouseEvent event) {
+    tooltipPane.setVisible(false);
+    tooltipPane.getChildren().remove(tooltipText);
+  }
+
+  /**
+   * This method serves as a Listener for the startGame Button. By hovering over the Button it
+   * displays the Tooltip-Text.
+   *
+   * @author jbleil
+   * @param event MouseEvent that gets triggered when hovering over the startGame Button.
+   */
+  @FXML
+  void displayStartGameTooltip(MouseEvent event) {
+    tooltipText = new Text("Only the Host can start the game.");
+    tooltipText.setFill(Paint.valueOf("#f88c00"));
+    tooltipText.setFont(new Font(14));
+    tooltipText.relocate(4, 2);
+    tooltipPane.getChildren().add(tooltipText);
+    tooltipPane.relocate(374, startGame.getLayoutY() - 25);
+    tooltipPane.setVisible(true);
+  }
+
+  /**
+   * This method serves as a Listener for the startGame Button. By hovering out off the Button it
+   * clears the Tooltip-Text.
+   *
+   * @author jbleil
+   * @param event MouseEvent that gets triggered when hovering over the startGame Button.
+   */
+  @FXML
+  void closeStartGameTooltip(MouseEvent event) {
+    tooltipPane.setVisible(false);
+    tooltipPane.getChildren().remove(tooltipText);
+  }
+
+  /**
+   * This method serves as a Listener for the addAIPlayer Button. By hovering over the Button it
+   * displays the Tooltip-Text.
+   *
+   * @author jbleil
+   * @param event MouseEvent that gets triggered when hovering over the addAIPlayer Button.
+   */
+  @FXML
+  void displayAddAIPlayerTooltip(MouseEvent event) {
+    tooltipText = new Text("Only the Host can choose a dictionary.");
+    tooltipText.setFill(Paint.valueOf("#f88c00"));
+    tooltipText.setFont(new Font(14));
+    tooltipText.relocate(4, 2);
+    tooltipPane.getChildren().add(tooltipText);
+    tooltipPane.relocate(14, addAIPlayer.getLayoutY() - 25);
+    tooltipPane.setVisible(true);
+  }
+
+  /**
+   * This method serves as a Listener for the addAIPlayer Button. By hovering out off the Button it
+   * clears the Tooltip-Text.
+   *
+   * @author jbleil
+   * @param event MouseEvent that gets triggered when hovering over the addAIPlayer Button.
+   */
+  @FXML
+  void closeAddAIPlayerTooltip(MouseEvent event) {
+    tooltipPane.setVisible(false);
+    tooltipPane.getChildren().remove(tooltipText);
   }
 }

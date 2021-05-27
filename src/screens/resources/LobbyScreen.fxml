@@ -28,6 +28,7 @@
          </font>
       </Text>
       <Button fx:id="fileForm" layoutX="409.0" layoutY="257.0" mnemonicParsing="false" onAction="#uploadDictionary" onMouseEntered="#openTooltip" onMouseExited="#closeTooltip" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Upload dictionary" textFill="WHITE" />
+      <Button fx:id="editTiles" layoutX="409.0" layoutY="376.0" mnemonicParsing="false" onAction="#editTiles" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Edit Tiles" textFill="WHITE" />
       <Button fx:id="startGame" layoutX="300.0" layoutY="473.0" mnemonicParsing="false" onAction="#startGame" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="START GAME" textFill="WHITE">
          <font>
             <Font size="24.0" />
@@ -35,6 +36,11 @@
       </Button>
       <Button layoutX="863.0" layoutY="22.0" mnemonicParsing="false" onAction="#leaveLobby" prefHeight="40.0" prefWidth="123.0" style="-fx-background-color: #f88c00;" text="Leave Lobby" textFill="WHITE" />
       <Button fx:id="addAIPlayer" layoutX="14.0" layoutY="473.0" mnemonicParsing="false" onAction="#addAIPlayer" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #F88C00;" text="Add AI Player" textFill="WHITE" />
+      <Rectangle fx:id="chooseDictionaryTooltip" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="40.0" layoutX="409.0" layoutY="142.0" onMouseEntered="#displayChooseDictionaryTooltip" onMouseExited="#closeChooseDictionaryTooltip" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="180.0" />
+      <Rectangle fx:id="uploadDictionaryTooltip" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="40.0" layoutX="409.0" layoutY="257.0" onMouseEntered="#displayUploadDictionaryTooltip" onMouseExited="#openUploadDictionaryTooltip" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="180.0" />
+      <Rectangle fx:id="editTilesTooltip" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="40.0" layoutX="409.0" layoutY="376.0" onMouseEntered="#displayEditTilesTooltip" onMouseExited="#openEditTilesTooltip" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="180.0" />
+      <Rectangle fx:id="startGameTooltip" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="75.0" layoutX="300.0" layoutY="473.0" onMouseEntered="#displayStartGameTooltip" onMouseExited="#closeStartGameTooltip" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="400.0" />
+      <Rectangle fx:id="addAIPlayerTooltip" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="40.0" layoutX="14.0" layoutY="473.0" onMouseEntered="#displayAddAIPlayerTooltip" onMouseExited="#closeAddAIPlayerTooltip" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="180.0" />
       <Pane layoutX="765.0" layoutY="72.0" prefHeight="475.0" prefWidth="221.0" style="-fx-background-color: #FFFFFF;">
          <children>
             <TextArea fx:id="chatField" layoutX="8.0" layoutY="51.0" prefHeight="372.0" prefWidth="204.0" />
@@ -56,7 +62,6 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <Button fx:id="editTiles" layoutX="409.0" layoutY="376.0" mnemonicParsing="false" onAction="#editTiles" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #f88c00;" text="Edit Tiles" textFill="WHITE" />
       <Text fx:id="playerInfo1" fill="#f88c00" layoutX="14.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
          <font>
             <Font size="20.0" />
@@ -113,6 +118,7 @@
             <Button layoutX="14.0" layoutY="121.0" mnemonicParsing="false" onAction="#hardAIPlayer" prefHeight="39.0" prefWidth="349.0" style="-fx-background-color: #f88c00;" text="HARD" textFill="WHITE" />
          </children>
       </Pane>
-      <Pane fx:id="tooltipPane" layoutX="349.0" layoutY="98.0" prefHeight="155.0" prefWidth="300.0" style="-fx-background-color: #F4D896; -fx-border-color: #f88c00;" />
+      <Pane fx:id="tooltipPaneHost" layoutX="349.0" layoutY="98.0" prefHeight="155.0" prefWidth="300.0" style="-fx-background-color: #F4D896; -fx-border-color: #f88c00;" />
+      <Pane fx:id="tooltipPane" layoutX="79.0" layoutY="19.0" prefHeight="22.0" prefWidth="250.0" style="-fx-background-color: #F4D896; -fx-border-color: #F88C00;" />
    </children>
 </Pane>
