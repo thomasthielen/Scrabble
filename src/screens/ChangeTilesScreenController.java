@@ -1,5 +1,7 @@
 package screens;
 
+import java.util.regex.Pattern;
+
 import gameentities.Bag;
 import gameentities.TileContainer;
 import javafx.event.ActionEvent;
@@ -7,7 +9,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -132,17 +136,57 @@ public class ChangeTilesScreenController {
    */
   @FXML
   void submitChanges(ActionEvent event) throws Exception {
-    Bag bag = new Bag();
-    int counter = 0;
-    for (TileContainer t : bag.getTileCounter()) {
-      t.getTile().setValue(Integer.parseInt(valueFields[counter].getText()));
-      t.setCount(Integer.parseInt(countFields[counter].getText()));
-      counter++;
+
+    boolean countOkay = true;
+    boolean valueOkay = true;
+
+    for (TextField tf : countFields) {
+      String text = tf.getText();
+      if (Pattern.matches("[0-9]+", text) && Integer.valueOf(text) < 101) {
+        continue;
+      } else {
+        countOkay = false;
+        break;
+      }
     }
-    bag.refreshBag();
-    Client.getGameSession().setBag(bag);
-    Client.getGameSession().sendGameStateMessage(false);
-    back(event);
+
+    if (countOkay) {
+      for (TextField tf : valueFields) {
+        String text = tf.getText();
+        if (Pattern.matches("[0-9]+", text) && Integer.valueOf(text) < 21) {
+          continue;
+        } else {
+          valueOkay = false;
+          break;
+        }
+      }
+    }
+
+    if (countOkay && valueOkay) {
+      Bag bag = new Bag();
+      int counter = 0;
+      for (TileContainer t : bag.getTileCounter()) {
+        t.getTile().setValue(Integer.parseInt(valueFields[counter].getText()));
+        t.setCount(Integer.parseInt(countFields[counter].getText()));
+        counter++;
+      }
+      bag.refreshBag();
+      Client.getGameSession().setBag(bag);
+      Client.getGameSession().sendGameStateMessage(false);
+      back(event);
+    } else if (valueOkay){
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("Invalid tile count entered.");
+      errorAlert.setContentText("It must be a number between 0 and 100.");
+      errorAlert.showAndWait();
+      return;
+    } else {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setHeaderText("Invalid tile value entered.");
+      errorAlert.setContentText("It must be a number between 0 and 20.");
+      errorAlert.showAndWait();
+      return;
+    }
   }
 
   /**
@@ -179,7 +223,7 @@ public class ChangeTilesScreenController {
 
   /**
    * saves the status if it is a multiplayer game or not to return to the right screen.
-   * 
+   *
    * @author jbleil
    * @param b is multiplayer or not
    */
@@ -189,7 +233,7 @@ public class ChangeTilesScreenController {
 
   /**
    * Stores the chat for when the host goes back after editing the tiles.
-   * 
+   *
    * @author tikrause
    * @param sb chat that has been stored
    */
