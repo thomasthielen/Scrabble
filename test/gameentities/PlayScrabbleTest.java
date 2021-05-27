@@ -2,22 +2,102 @@ package gameentities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import network.Client;
+import network.Server;
+import session.GameSession;
+import session.GameState;
+
+/**
+ * This is the test class to make sure the functional requirements of the UC2: Play Scrabble work
+ * correctly
+ *
+ * @author lsteltma
+ */
 class PlayScrabbleTest {
   private Board board;
   private Bag bag;
   private Tile tile;
+  private Player player1, player2;
+  private int port;
+  private GameState gameState;
+  private GameSession gameSession;
+  private ArrayList<Player> players;
 
   @BeforeEach
   void init() {
+    port = 8000;
+    player1 = new Player("player1");
+    player2 = new Player("player2");
+    players = new ArrayList<Player>();
+    players.add(player1);
+    players.add(player2);
+    gameState = new GameState(players, this.bag = new Bag(), this.board = new Board());
+
+    try {
+      Server.createServer(port);
+      Client.initialiseClient(Server.getIp(), port, true);
+      Client.connectToServer(player1);
+      gameSession = Client.getGameSession();
+      gameSession.synchronise(gameState);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
     // initializing the board
-    board = new Board();
+    this.board = new Board();
     // initializing the bag
-    bag = new Bag();
+    this.bag = new Bag();
     // initializing the Tile as a wildcard
     tile = new Tile('*', 0);
+  }
+
+  @AfterEach
+  void end() {
+    try {
+      Server.serverShutdown();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  void testSkipTurn() {
+    gameSession.synchronise(gameState);
+    gameSession.skipTurn();
+    assertEquals("player1", gameSession.getPlayer().getUsername());
+  }
+
+  @Test
+  void testExchangeTiles() {
+    gameSession.synchronise(gameState);
+
+    player1.createRack(gameSession);
+    ArrayList<Tile> before = player1.getRack().getTiles();
+    assertNotNull(before);
+    ArrayList<Integer> swap = new ArrayList<Integer>();
+    swap.add(2);
+    swap.add(4);
+    player1.exchangeTiles(swap);
+    ArrayList<Tile> after = player1.getRack().getTiles();
+    assertNotNull(after);
+    assertEquals(before, after);
+  }
+
+  @Test
+  void testPlayTile() {
+    gameSession.synchronise(gameState);
+
+    player1.createRack(gameSession);
+    board.placeTile(8, 8, new Tile('A', 1));
+    player1.incScore(1);
+    assertEquals(1, player1.getScore());
+    assertEquals('A', board.getTile(8, 8).getLetter());
   }
 
   @Test
@@ -39,7 +119,7 @@ class PlayScrabbleTest {
     // now the bag should contain one Tile more
     assertEquals(100, bag.getRemainingCount());
   }
-  
+
   @Test
   void testWildcard() {
     // set the Letter of the wildcard
@@ -48,7 +128,7 @@ class PlayScrabbleTest {
     assertEquals('B', tile.getLetter());
     // check if the Value is correct
     assertEquals(0, tile.getValue());
-    
+
     // reset the wildcard
     tile.resetLetter();
     // check if the char got reseted
@@ -366,5 +446,13 @@ class PlayScrabbleTest {
     assertEquals(Premium.NONE, board.getSquare(15, 11).getPremium());
     assertEquals(Premium.NONE, board.getSquare(15, 13).getPremium());
     assertEquals(Premium.NONE, board.getSquare(15, 14).getPremium());
+  }
+
+  @Test
+  void testPass() {
+    for (Square sq : board.getSquareList()) {
+      assertFalse(sq.isTaken());
+    }
+    //    gameSession.skipTurn();
   }
 }
