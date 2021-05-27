@@ -27,7 +27,7 @@ public class AI {
   private boolean dictionaryInitialized = false;
   private File dictionary;
 
-  /**
+  /**ee
    * @author sisselha
    * @param username username
    * @param difficult difficulty of the AI
@@ -44,9 +44,9 @@ public class AI {
     Server.updateRackOfAIPlayer(this);
   }
   /**
-   * If the AI has to make the first move,
-   * the method initializes all possible moves the AI 
-   * can make with the given letters.
+   * If the AI has to make the first move, the method initializes all possible moves the AI can make
+   * with the given letters.
+   *
    * @author sisselha
    */
   public void getTheFirstMove() {
@@ -67,42 +67,34 @@ public class AI {
       }
 
       String s = buf.toString();
-      // System.out.println(s);
+
       HashMap<BitOptionKeys, ArrayList<String>> map = DataHandler.getBitOptions(s);
       if (map != null) {
         ArrayList<String> suffixe = map.get(BitOptionKeys.SUFFIXES);
         for (int j = 0; j < suffixe.size(); j++) {
-          // System.out.println(s+" "+suffixe.get(i));
           this.gameReference.recallAll();
           ArrayList<Tile> tilescopy = this.copytiles(this.tiles);
-
           ArrayList<String> buchstaben = this.addArrayLists(list.get(i), suffixe.get(j));
-          //		    	  for (int z=0;z<list.size();z++) {
-          //		    		  System.out.println();
-          //		    		  for (int g=0; g<list.get(z).size();g++) {
-          //		    			  System.out.print(list.get(z).get(g));
-          //		    		  }
-          //		    	  }
-          //		    	  System.out.println(s + suffixe.get(j));
-          // this.printword(buchstaben);
-          // System.out.println();
           ArrayList<Square> placedsquares =
               this.checkMatch(buchstaben, new ArrayList<Square>(), tilescopy);
           if (placedsquares != null) {
-            // System.out.println("Squares");
             if (gameReference.checkMove()) {
               PossibleMove pm = new PossibleMove(placedsquares, gameReference.getTurnValue());
-              // System.out.println("Move");
               this.moves.add(pm);
             }
           }
         }
       }
     }
-
-    // this.printtiles(this.tiles);
   }
 
+  /**
+   * This method checks if another player has already put something on the board or if the AI has
+   * the first move, if the board is empty it returns true, otherwise false.
+   *
+   * @author sisselha
+   * @return
+   */
   public boolean boardIsEmpty() {
     for (Square s : this.gameReference.getBoard().getSquareList()) {
       if (s.isTaken()) {
@@ -112,6 +104,16 @@ public class AI {
     return true;
   }
 
+  /**
+   * This method first splits a string into its individual letters so that 
+   * each individual string has a length of one. Then the strings are added
+   *  to the ArrayList. The ArrayList consists of strings of length 1.
+   * 
+   * @author sisselha
+   * @param list1 Arraylist of String
+   * @param suf String of the suffix
+   * @return
+   */
   public ArrayList<String> addArrayLists(ArrayList<String> list1, String suf) {
     ArrayList<String> list = new ArrayList<String>();
     for (int i = 0; i < list1.size(); i++) {
@@ -124,6 +126,22 @@ public class AI {
 
     return list;
   }
+  
+  /**
+   * This method recursively checks the last element of the string array list 
+   * to see if the letter in the list matches a tile in the TileArrayList, if
+   *  it does, the StringArrayList is reduced by the last element and the 
+   *  matching tile is removed from the TileArrayList.Then the matching tile is 
+   *  placed on the square and added to the Square-ArrayList. Afterwards the method is 
+   *  called again until the String-ArrayList is empty and the placed squares 
+   *  are returned.
+   * 
+   * @author sisselha 
+   * @param letters The word to be placed on the board is stored in a StringArrayList.
+   * @param squares 
+   * @param tiles
+   * @return
+   */
 
   public ArrayList<Square> checkMatch(
       ArrayList<String> letters, ArrayList<Square> squares, ArrayList<Tile> tiles) {
@@ -145,11 +163,16 @@ public class AI {
       return null;
     }
   }
+  /**
+   * 
+   * @author sisselha 
+   * @return
+   */
 
   public ArrayList<Square> getthebestmove() {
     if (this.boardIsEmpty()) {
       this.getTheFirstMove();
-      // System.out.println("erster Move");
+
     } else {
       this.setbestmoves();
     }
@@ -162,33 +185,30 @@ public class AI {
         }
       }
       return max.getsquares();
-
     } else {
-    	if(this.moves.size()!=0) {
-    		int counter = 0;
-    	      int sumValue = 0;
-    	      for (PossibleMove pm : moves) {
-    	        sumValue = sumValue + pm.getValue();
-    	        counter++;
-    	      }
-    	      int avg =0;
-    	      if(counter!=0) {
-    	    	  avg = (sumValue / counter);
-    	      }
-    	      
-    	      System.out.println("Average: " + avg);
-    	      for (PossibleMove pm : moves) {
-    	        if (pm.getValue() == avg) {
-    	          System.out.println("Averagemove returned");
-    	          return pm.getsquares();
-    	        }
-    	      }
-    	      
-    	      return moves.get(0).getsquares();
-    		
-    	}
+      if (this.moves.size() != 0) {
+        int counter = 0;
+        int sumValue = 0;
+        for (PossibleMove pm : moves) {
+          sumValue = sumValue + pm.getValue();
+          counter++;
+        }
+        int avg = 0;
+        if (counter != 0) {
+          avg = (sumValue / counter);
+        }
 
-      
+        System.out.println("Average: " + avg);
+        for (PossibleMove pm : moves) {
+          if (pm.getValue() == avg) {
+            System.out.println("Averagemove returned");
+            return pm.getsquares();
+          }
+        }
+
+        return moves.get(0).getsquares();
+      }
+
       return null;
     }
   }
@@ -271,13 +291,12 @@ public class AI {
 
     for (int i = 0; i < words.size(); i++) {
       Word wort = words.get(i);
-      // this.printtiles(tiles);
+
       ArrayList<Square> squares = wort.getsquares();
       StringBuffer buffer = new StringBuffer();
 
       for (int j = 0; j < squares.size(); j++) {
         buffer.append(squares.get(j).getTile().getLetter());
-        // System.out.println(squares.get(j).getTile().getLetter());
       }
 
       String s = buffer.toString();
@@ -292,19 +311,15 @@ public class AI {
         String pre = prefixe.get(j);
         String suf = suffixe.get(j);
         this.gameReference.recallAll();
-        // System.out.println(pre+" "+s+" "+suf);
+
         char[] laengepre = pre.toCharArray();
         char[] laengesuf = suf.toCharArray();
         ArrayList<String> buchstaben = prefixplussuffix(pre, suf);
 
-        // if()
-        //        System.out.println("Wir �berpr�fufen jetzt " + pre + " " + s + " " + suf);
-        //        System.out.println();
-        //        System.out.println();
         if (wort.getColumn()) {
-          // System.out.println("colum");
+
           ArrayList<Tile> tilescopy = this.copytiles(this.tiles);
-          // this.printtiles(tilescopy);
+
           if (checkabove(laengepre.length, wort, this.gameReference.getBoard())
               && checkdown(laengesuf.length, wort, this.gameReference.getBoard())) {
             placedsquare =
@@ -318,29 +333,25 @@ public class AI {
                     this.gameReference.getBoard());
 
             if (placedsquare != null) {
-              // System.out.println("squares");
-              // this.printBoard();
 
-              //							System.out.println("Squares");
               this.gameReference.recallAll();
               for (Square x : placedsquare) {
                 this.gameReference.placeTile(x.getX(), x.getY(), x.getTile());
               }
               if (gameReference.checkMove()) {
                 PossibleMove pm = new PossibleMove(placedsquare, gameReference.getTurnValue());
-                // System.out.println("Moveffrfrrf hinzugef�gt");
+
                 this.moves.add(pm);
               } else {
-                // this.printBoard();
-                // System.out.println("Move nicht zul�ssig");
+
               }
             }
           }
 
         } else {
-          // System.out.println("row");
+
           ArrayList<Tile> tilescopy = this.copytiles(this.tiles);
-          // System.out.println(laengepre);
+
           if (checkleft(laengepre.length, wort, this.gameReference.getBoard())
               && checkright(laengesuf.length, wort, this.gameReference.getBoard())) {
             placedsquare =
@@ -353,12 +364,10 @@ public class AI {
                     laengesuf.length,
                     this.gameReference.getBoard());
             if (placedsquare != null) {
-              // System.out.println("Squares nicht null");
-              // this.printword(buchstaben);
+
               if (gameReference.checkMove()) {
                 PossibleMove pm = new PossibleMove(placedsquare, gameReference.getTurnValue());
                 this.moves.add(pm);
-                // System.out.println("Move!!!");
               }
             }
           }
@@ -375,7 +384,7 @@ public class AI {
       for (int j = 0; j < tiles.size(); j++) {
         Word w = words.get(i);
         if (w.getColumn()) {
-          // System.out.println("colum");
+
           StringBuffer buffer = new StringBuffer();
           buffer.append(String.valueOf(w.getsquares().get(0).getTile().getLetter()));
           String s = buffer.toString();
@@ -383,7 +392,7 @@ public class AI {
           if (map == null) {
             break;
           }
-          // System.out.println("Map ist nicht null");
+
           ArrayList<String> suffixe = map.get(BitOptionKeys.SUFFIXES);
           ArrayList<String> prefixe = map.get(BitOptionKeys.PREFIXES);
           for (int z = 0; z < suffixe.size(); z++) {
@@ -392,7 +401,7 @@ public class AI {
             char[] suffix = suffixe.get(z).toCharArray();
             ArrayList<String> buchstaben = this.prefixplussuffix(prefixe.get(z), suffixe.get(z));
             ArrayList<Square> squares = new ArrayList<Square>();
-            // System.out.println("Wir �berpr�fen jetzt: "+prefixe.get(z)+" "+s+" "+suffixe.get(z));
+
             this.gameReference.recallAll();
             if (this.checkabove(prefix.length, w, this.gameReference.getBoard())
                 && this.checkdown(suffix.length, w, this.gameReference.getBoard())) {
@@ -407,22 +416,18 @@ public class AI {
                       this.gameReference.getBoard());
             }
             if (squares != null && squares.size() > 1) {
-              // System.out.println(words.get(i).getLetter()+" "+suffixe.get(z));
-              for (Square ss : squares) {
-                // System.out.println(" Letter: "+ ss.getTile().getLetter()+" X: "+ ss.getX()+" Y:
-                // "+ss.getY());
-              }
+
+              for (Square ss : squares) {}
+
               if (gameReference.checkMove()) {
                 PossibleMove pm = new PossibleMove(squares, gameReference.getTurnValue());
                 this.moves.add(pm);
-                // this.printBoard();
-                // System.out.println("Letter- Move!!!");
               }
             }
           }
 
         } else {
-          // System.out.println("ROW");
+
           StringBuffer buffer = new StringBuffer();
           buffer.append(String.valueOf(w.getsquares().get(0).getTile().getLetter()));
           String s = buffer.toString();
@@ -452,15 +457,12 @@ public class AI {
                       this.gameReference.getBoard());
             }
             if (squares != null && squares.size() > 1) {
-              // System.out.println(words.get(i).getLetter()+" "+suffixe.get(j));
-              for (Square ss : squares) {
-                // System.out.println(" Letter: "+ ss.getTile().getLetter()+" X: "+ ss.getX()+" Y:
-                // "+ss.getY());
-              }
+
+              for (Square ss : squares) {}
+
               if (gameReference.checkMove()) {
                 PossibleMove pm = new PossibleMove(squares, gameReference.getTurnValue());
                 this.moves.add(pm);
-                // System.out.println("Letter- Move!!!");
               }
             }
           }
@@ -478,7 +480,6 @@ public class AI {
       int y,
       boolean colum) {
 
-    // this.printtiles(tiles);
     if (buchstaben.size() == 0) {
       return squares;
     } else {
@@ -502,7 +503,7 @@ public class AI {
             String s = buchstaben.get(buchstaben.size() - 1);
             char[] c = s.toCharArray();
             if (c[0] == tiles.get(i).getLetter()) {
-              // System.out.println("Match");
+
               this.gameReference.placeTile(x, y - buchstaben.size(), tiles.get(i));
               Square square = new Square(x, y - buchstaben.size());
               square.placeTile(tiles.get(i));
@@ -593,7 +594,7 @@ public class AI {
   }
 
   public boolean checkleft(int pre, Word wort, Board board) {
-    // System.out.println("Checkleft: Pre: "+pre+" WortbeginningX: "+wort.getBeginningX());
+
     if ((wort.getBeginningX() - pre) < 1) {
       return false;
     } else {
@@ -656,19 +657,17 @@ public class AI {
       int suf,
       Board board) {
 
-    // this.printword(buchstaben);
     if (buchstaben.size() == 0) {
-      // System.out.println("Move hinzugef�gt");
+
       return placedsquares;
     } else {
       if (buchstaben.size() <= pre) {
-        // System.out.println("Pr�fix");
+
         if (board
             .getSquare(wort.getBeginningX(), wort.getBeginningY() + (pre - buchstaben.size() + 1))
             .isTaken()) {
           char[] c = buchstaben.get(buchstaben.size() - 1).toCharArray();
-          // System.out.println("Taken: "+wort.getBeginningX()+ " "+ wort.getBeginningY()+" Pre: " +
-          // pre+" Buchstaben"+buchstaben.size());
+
           if (board
                   .getSquare(
                       wort.getBeginningX(), wort.getBeginningY() + (pre - buchstaben.size() + 1))
@@ -686,9 +685,9 @@ public class AI {
         } else {
           char[] c = buchstaben.get(buchstaben.size() - 1).toCharArray();
           for (int i = 0; i < remainingtiles.size(); i++) {
-            // System.out.println(c[0] +" "+remainingtiles.get(i).getLetter());
+
             if (remainingtiles.get(i).getLetter() == c[0]) {
-              // System.out.println("Match");
+
               this.gameReference.placeTile(
                   wort.getBeginningX(),
                   wort.getBeginningY() + (pre - buchstaben.size() + 1),
@@ -707,9 +706,9 @@ public class AI {
         }
 
       } else {
-        // System.out.println("SUFFIX");
+
         if (board.getSquare(wort.getBeginningX(), wort.getEndingY() - suf).isTaken()) {
-          // System.out.println("Taken");
+
           char[] c = buchstaben.get(buchstaben.size() - 1).toCharArray();
           if (board.getSquare(wort.getBeginningX(), wort.getEndingY() - suf).getTile().getLetter()
               == c[0]) {
@@ -726,9 +725,9 @@ public class AI {
           char[] c = buchstaben.get(buchstaben.size() - 1).toCharArray();
 
           for (int i = 0; i < remainingtiles.size(); i++) {
-            // System.out.println(c[0] +" "+remainingtiles.get(i).getLetter());
+
             if (remainingtiles.get(i).getLetter() == c[0]) {
-              // System.out.println("Match");
+
               this.gameReference.placeTile(
                   wort.getBeginningX(), (wort.getEndingY() - suf), remainingtiles.get(i));
               Square square = new Square(wort.getBeginningX(), (wort.getEndingY() - suf));
@@ -756,20 +755,15 @@ public class AI {
       int pre,
       int suf,
       Board board) {
-    //    System.out.println("Horizontal Buchstabengr��e= " + buchstaben.size());
-    //    System.out.println();
-    // this.printword(buchstaben);
-    // this.printtiles(remainingtiles);
+
     int size = buchstaben.size();
     if (size == 0) {
-      // System.out.println("Move hinzugef�gt Horizontal");
+
       return placedsquares;
     } else {
 
       if (buchstaben.size() <= pre) {
-        // System.out.println("Pr�fix");
-        // System.out.println(pre);
-        // System.out.println(wort.getBeginningX());
+
         if (board
             .getSquare((wort.getBeginningX() - pre) + buchstaben.size() - 1, wort.getBeginningY())
             .isTaken()) {
@@ -792,9 +786,9 @@ public class AI {
           char[] c = buchstaben.get(buchstaben.size() - 1).toCharArray();
           for (int i = 0; i < remainingtiles.size(); i++) {
             String s = String.valueOf(c);
-            // System.out.println("Pr�fix passt nicht"+ s + " "+ remainingtiles.get(i).getLetter());
+
             if (remainingtiles.get(i).getLetter() == c[0]) {
-              // System.out.println("Pr�fix passt"+ s + " "+ remainingtiles.get(i).getLetter());
+
               this.gameReference.placeTile(
                   wort.getBeginningX() - pre + buchstaben.size() - 1,
                   wort.getBeginningY(),
@@ -830,13 +824,9 @@ public class AI {
           char[] c = buchstaben.get(buchstaben.size() - 1).toCharArray();
           for (int i = 0; i < remainingtiles.size(); i++) {
             String s = String.valueOf(c[0]);
-            // System.out.println(remainingtiles.size());
-            // System.out.println(s+" "+remainingtiles.get(i).getLetter());
+
             if (remainingtiles.get(i).getLetter() == c[0]) {
 
-              // System.out.println("passt");
-              // this.printword(buchstaben);
-              // this.printtiles(remainingtiles);
               this.gameReference.placeTile(
                   wort.getEndingX() + suf, wort.getEndingY(), remainingtiles.get(i));
               Square square = new Square(wort.getEndingX() + suf, wort.getEndingY());
@@ -845,12 +835,10 @@ public class AI {
               placedsquares.add(square);
               buchstaben.remove(buchstaben.size() - 1);
               suf = suf - 1;
-              // this.printword(buchstaben);
-              // this.printtiles(remainingtiles);
+
               return checktileshorizontal(
                   buchstaben, placedsquares, remainingtiles, wort, pre, suf, board);
             }
-            // System.out.println("passt nicht");
           }
         }
       }
@@ -892,8 +880,8 @@ public class AI {
             Word word = new Word();
             ArrayList<Square> squares = new ArrayList<Square>();
             buffer = new StringBuffer();
-            if(upperneighbour!=null) {
-            	lowerneighbour = this.gameReference.getBoard().getLowerNeighbour(upperneighbour);
+            if (upperneighbour != null) {
+              lowerneighbour = this.gameReference.getBoard().getLowerNeighbour(upperneighbour);
             }
             if (lowerneighbour != null) {
               word.setBeginningX(lowerneighbour.getX());
@@ -912,7 +900,7 @@ public class AI {
             String nword = buffer.toString();
             if (buffer.length() > 1) {
               if (DataHandler.checkWord(nword)) {
-                // System.out.println("Wort korrekt");
+
                 word.setSquares(squares);
                 word.setColumn(true);
                 this.words.add(word);
@@ -939,16 +927,16 @@ public class AI {
                 word.setEndingX(rightneighbour.getX());
                 word.setEndingY(rightneighbour.getY());
                 rightneighbour = this.gameReference.getBoard().getRightNeighbour(rightneighbour);
-                if(rightneighbour==null) {
-                	break;
+                if (rightneighbour == null) {
+                  break;
                 }
               }
             }
             String nword = buffer.toString();
-            // System.out.println(nword);
+
             if (buffer.length() > 1) {
               if (DataHandler.checkWord(nword)) {
-                // System.out.println("Wort korrekt");
+
                 word.setSquares(squares);
                 word.setColumn(false);
                 this.words.add(word);
@@ -983,10 +971,6 @@ public class AI {
 
   public void makeMove() {
     this.tiles = this.gameReference.getPlayer().getRack().getTiles();
-    System.out.println("\nAI tiles before playing:" ); 
-    for (Tile t : tiles) {
-      System.out.print(t.getLetter() + " "); 
-    }
 
     this.printtiles(this.tiles);
     if (!dictionaryInitialized) {
@@ -997,12 +981,11 @@ public class AI {
     if (squares != null) {
       this.gameReference.recallAll();
       for (Square s : squares) {
-    	  Tile t = s.getTile();
-    	  t.setPlacedTemporarily(false);
-    	  t.setPlacedFinally(true);
+        Tile t = s.getTile();
+        t.setPlacedTemporarily(false);
+        t.setPlacedFinally(true);
         this.gameReference.placeTile(s.getX(), s.getY(), t);
       }
-      // this.printBoard();
 
     } else {
       gameReference.skipTurn();
@@ -1011,12 +994,6 @@ public class AI {
     if (gameReference.checkMove()) {
       gameReference.makePlay();
     }
-    
-    System.out.println("\nAI tiles after playing:" ); 
-    for (Tile t : tiles) {
-      System.out.print(t.getLetter() + " "); 
-    }
-    System.out.println( ); 
   }
 
   public ArrayList<Word> getwords() {
@@ -1035,8 +1012,7 @@ public class AI {
             this.gameReference
                 .getBoard()
                 .getLowerNeighbour(this.gameReference.getBoard().getSquareList().get(i));
-        // System.out.println("Letter: "+
-        // this.gameReference.getBoard().getSquareList().get(i).getTile().getLetter());
+
         if ((rightneighbour != null) && (lowerneighbour != null)) {
           if (rightneighbour.isTaken() && (!lowerneighbour.isTaken())) {
             System.out.println(rightneighbour.getTile().getLetter());
