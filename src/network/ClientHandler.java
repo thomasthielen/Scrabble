@@ -140,7 +140,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
 
       case DICTIONARY:
         DictionaryMessage dm = (DictionaryMessage) msg;
-        DataHandler.userDictionaryFile(dm.getFile());
+        DataHandler.setUserDictionary(dm.getDict());
         break;
 
       case TOO_FEW:

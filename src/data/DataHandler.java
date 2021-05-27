@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.SortedSet;
 import java.util.regex.Pattern;
 
 /**
@@ -51,6 +52,28 @@ public class DataHandler {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+  
+  /**
+   * Returns the UserDictionary.
+   * 
+   * @return dict
+   *
+   * @author jluellig
+   */
+  public static HashMap<Character, HashMap<Character, SortedSet<String>>> getUserDictionary() {
+	  return UserDictionary.getDict();
+  }
+  
+  /**
+   * Sets the User Dictionary.
+   * 
+   * @param dict the user dictionary HashMap
+   *
+   * @author jluellig
+   */
+  public static void setUserDictionary(HashMap<Character, HashMap<Character, SortedSet<String>>> dict) {
+	  UserDictionary.setDict(dict);
   }
 
   /**

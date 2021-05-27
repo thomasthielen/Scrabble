@@ -1,6 +1,7 @@
 package network;
 
 import ai.AI;
+import data.DataHandler;
 import gameentities.Player;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -131,7 +132,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
         Channel c = ctx.channel();
         for (Channel channel : channels) {
           if (channel != c) {
-            channel.writeAndFlush(dm);
+            channel.writeAndFlush(new DictionaryMessage(null, DataHandler.getUserDictionary()));
           }
         }
         for (AI ai : Server.getAIPlayerList()) {
