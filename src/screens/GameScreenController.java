@@ -109,6 +109,8 @@ public class GameScreenController {
 
   @FXML private Text timerText;
 
+  private GridPane previousPlayerList;
+
   private static ArrayList<Rectangle> rack = new ArrayList<Rectangle>();
 
   private static ArrayList<Text> letters = new ArrayList<Text>();
@@ -1358,6 +1360,15 @@ public class GameScreenController {
   }
 
   public void refreshPlayerNames() {
+    for (Node node : backgroundPane.getChildren()) {
+      if (node instanceof GridPane) {
+        GridPane gp = (GridPane) node;
+        if (gp == previousPlayerList) {
+          gp.getChildren().clear();
+        }
+      }
+    }
+
     ArrayList<Player> players = Client.getGameSession().getPlayerList();
     GridPane grid = new GridPane();
     grid.setHgap(10);
@@ -1383,6 +1394,7 @@ public class GameScreenController {
       }
     }
     grid.relocate(10, 14);
+    previousPlayerList = grid;
     backgroundPane.getChildren().add(grid);
   }
 
