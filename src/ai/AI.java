@@ -939,6 +939,9 @@ public class AI {
                 word.setEndingX(rightneighbour.getX());
                 word.setEndingY(rightneighbour.getY());
                 rightneighbour = this.gameReference.getBoard().getRightNeighbour(rightneighbour);
+                if(rightneighbour==null) {
+                	break;
+                }
               }
             }
             String nword = buffer.toString();
