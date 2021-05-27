@@ -105,7 +105,14 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         break;
 
       case END_GAME:
-        // TODO
+        Client.getGameSession().endGame();
+        Platform.runLater(
+            new Runnable() {
+              @Override
+              public void run() {
+                Client.getGameSession().getGameScreenController().switchToEndScreen();
+              }
+            });
         break;
 
       case SEND_CHAT:

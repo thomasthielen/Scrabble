@@ -219,7 +219,10 @@ public class GameScreenController {
     initializeCloseHandler();
     refreshPlayerNames();
 
-    ImageView starView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("screens/resources/Stern.png")));
+    ImageView starView =
+        new ImageView(
+            new Image(
+                getClass().getClassLoader().getResourceAsStream("screens/resources/Stern.png")));
     starView.setFitHeight(22);
     starView.setFitWidth(22);
     gameBoard.add(starView, 7, 7);
@@ -1078,13 +1081,23 @@ public class GameScreenController {
 
   @FXML
   void endGame(ActionEvent event) throws Exception {
+    Client.reportEndGame(DataHandler.getOwnPlayer());
+    switchToEndScreen();
+  }
+
+  public void switchToEndScreen() {
     gameSession.endGame();
     FXMLLoader loader = new FXMLLoader();
-    Parent content =
-        loader.load(
-            getClass().getClassLoader().getResourceAsStream("screens/resources/EndScreen.fxml"));
-    StartScreen.getStage().setScene(new Scene(content));
-    StartScreen.getStage().show();
+    Parent content;
+    try {
+      content =
+          loader.load(
+              getClass().getClassLoader().getResourceAsStream("screens/resources/EndScreen.fxml"));
+      StartScreen.getStage().setScene(new Scene(content));
+      StartScreen.getStage().show();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   // All following methods are functions used multiple times in the methods above
