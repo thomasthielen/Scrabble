@@ -1212,6 +1212,8 @@ public class GameScreenController {
       } else {
         endGame.setVisible(false);
       }
+      
+      openSwapButton.setDisable(gameSession.getBag().getRemainingCount() < 7);
     }
   }
 
