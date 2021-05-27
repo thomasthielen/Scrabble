@@ -16,9 +16,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+/**
+ * this class provides the controller for the Tutorial Screen
+ *
+ * @author jbleil
+ * @author lsteltma
+ */
 public class TutorialScreenController {
 
   private ArrayList<Image> images = new ArrayList<Image>();
@@ -35,6 +42,11 @@ public class TutorialScreenController {
 
   @FXML private Pane backgroundPane;
 
+  /**
+   * This method initializes all the functionalities on the Screen
+   *
+   * @author lsteltma
+   */
   public void initialize() {
     images.add(
         new Image(getClass().getClassLoader().getResourceAsStream("screens/resources/Rack1.jpg")));
@@ -65,39 +77,75 @@ public class TutorialScreenController {
     initializeImage();
 
     updateImage();
-    
+
     initializeArrowKeys();
   }
 
+  /**
+   * This method initializes the slide Counter so that the user can see on which slide of the
+   * tutorial he currently is
+   *
+   * @author lsteltma
+   */
   private void initializeSlideCounter() {
     imageCounter = new Text((activeImage + 1) + "/9");
     imageCounter.setFont(new Font(25));
-    imageCounter.setX(20);
-    imageCounter.setY(40);
+    imageCounter.setFill(Color.WHITE);
+    imageCounter.setX(600);
+    imageCounter.setY(56);
     backgroundPane.getChildren().add(imageCounter);
   }
 
+  /**
+   * This method initializes the first active image shown on the screen
+   *
+   * @author lsteltma
+   */
   private void initializeImage() {
     iv = new ImageView(images.get(activeImage));
-    iv.setX(200);
-    iv.setY(100);
+    iv.setX(60);
+    iv.setY(70);
     iv.setPreserveRatio(true);
-    iv.setFitWidth(600);
+    iv.setFitWidth(880);
     backgroundPane.getChildren().add(iv);
   }
 
+  /**
+   * This method is the listener for the previous button.
+   *
+   * @author jbleil
+   * @author lsteltma
+   * @param event
+   * @throws Exception
+   */
   @FXML
   void previous(ActionEvent event) throws Exception {
     activeImage -= activeImage > 0 ? 1 : 0;
     updateImage();
   }
 
+  /**
+   * This method is the listener for the next button
+   *
+   * @author jbleil
+   * @author lsteltma
+   * @param event
+   * @throws Exception
+   */
   @FXML
   void next(ActionEvent event) throws Exception {
     activeImage += activeImage < 8 ? 1 : 0;
     updateImage();
   }
 
+  /**
+   * This method is the listener for the leave button
+   *
+   * @author jbleil
+   * @author lsteltma
+   * @param event
+   * @throws Exception
+   */
   @FXML
   void leaveTutorial(ActionEvent event) throws Exception {
     FXMLLoader loader = new FXMLLoader();
@@ -115,19 +163,25 @@ public class TutorialScreenController {
     }
   }
 
+  /**
+   * This method is called every time the previous or next button gets pressed to update the shown
+   * image
+   *
+   * @author lsteltma
+   */
   private void updateImage() {
     for (Node node : backgroundPane.getChildren()) {
       if (node instanceof Text && ((Text) node).getText().contains("/9")) {
         ((Text) node).setText((activeImage + 1) + "/9");
       }
-      if (node instanceof Button && ((Button) node).getText().equals("PREVIOUS")) {
+      if (node instanceof Button && ((Button) node).getText().equals("<")) {
         if (activeImage <= 0) {
           ((Button) node).setDisable(true);
         } else {
           ((Button) node).setDisable(false);
         }
       }
-      if (node instanceof Button && ((Button) node).getText().equals("NEXT")) {
+      if (node instanceof Button && ((Button) node).getText().equals(">")) {
         if (activeImage >= 8) {
           ((Button) node).setDisable(true);
         } else {
