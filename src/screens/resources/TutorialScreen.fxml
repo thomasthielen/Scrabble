@@ -14,16 +14,8 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Text>
-      <Button fx:id="previousButton" layoutX="80.0" layoutY="461.0" mnemonicParsing="false" onAction="#previous" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="PREVIOUS" textFill="WHITE">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Button>
-      <Button fx:id="nextButton" layoutX="520.0" layoutY="461.0" mnemonicParsing="false" onAction="#next" prefHeight="75.0" prefWidth="400.0" style="-fx-background-color: #f88c00;" text="NEXT" textFill="WHITE">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Button>
       <Button layoutX="851.0" layoutY="22.0" mnemonicParsing="false" onAction="#leaveTutorial" prefHeight="40.0" prefWidth="135.0" style="-fx-background-color: #f88c00;" text="Leave Tutorial" textFill="WHITE" />
+      <Button fx:id="previousButton" layoutX="20.0" layoutY="231.0" mnemonicParsing="false" onAction="#previous" prefHeight="100.0" prefWidth="40.0" style="-fx-background-color: #f88c00;" text="&lt;" textFill="WHITE" />
+      <Button fx:id="nextButton" layoutX="940.0" layoutY="231.0" mnemonicParsing="false" onAction="#next" prefHeight="100.0" prefWidth="40.0" style="-fx-background-color: #f88c00;" text="&gt;" textFill="WHITE" />
    </children>
 </Pane>
