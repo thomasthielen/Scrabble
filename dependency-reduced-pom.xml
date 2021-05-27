@@ -76,6 +76,10 @@
           <release>11</release>
         </configuration>
       </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M5</version>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
@@ -85,10 +89,6 @@
       <version>5.8.0-M1</version>
       <scope>test</scope>
       <exclusions>
-        <exclusion>
-          <artifactId>apiguardian-api</artifactId>
-          <groupId>org.apiguardian</groupId>
-        </exclusion>
         <exclusion>
           <artifactId>opentest4j</artifactId>
           <groupId>org.opentest4j</groupId>
@@ -113,10 +113,6 @@
           <artifactId>kotlin-stdlib-jdk8</artifactId>
           <groupId>org.jetbrains.kotlin</groupId>
         </exclusion>
-        <exclusion>
-          <artifactId>apiguardian-api</artifactId>
-          <groupId>org.apiguardian</groupId>
-        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
@@ -128,10 +124,6 @@
         <exclusion>
           <artifactId>junit-platform-engine</artifactId>
           <groupId>org.junit.platform</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>apiguardian-api</artifactId>
-          <groupId>org.apiguardian</groupId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -152,10 +144,6 @@
         <exclusion>
           <artifactId>junit-platform-suite-commons</artifactId>
           <groupId>org.junit.platform</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>apiguardian-api</artifactId>
-          <groupId>org.apiguardian</groupId>
         </exclusion>
       </exclusions>
     </dependency>

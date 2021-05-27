@@ -1,12 +1,14 @@
 package screens;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
-import org.apache.commons.io.FileUtils;
+
+import org.apache.commons.io.IOUtils;
+
 import ai.AI;
 import data.DataHandler;
 import data.StatisticKeys;
@@ -577,6 +579,7 @@ public class LobbyScreenController {
    * selected.
    *
    * @author tikrause
+   * @author jluellig
    */
   private void setDictionaryMenu() {
     MenuItem menuItem1 = new MenuItem("Collins Scrabble Words");
@@ -589,11 +592,15 @@ public class LobbyScreenController {
           @Override
           public void handle(ActionEvent event) {
             dictionarySelecter.setText(menuItem1.getText());
-            InputStream is =
-                getClass().getClassLoader().getResourceAsStream(Dictionary.COLLINS.getUrl());
             try {
-              FileUtils.copyInputStreamToFile(is, chosenDictionary);
-            } catch (IOException e) {
+              File temp = File.createTempFile("scrabbleDict", ".txt");
+              temp.deleteOnExit();
+              FileOutputStream out = new FileOutputStream(temp);
+              IOUtils.copy(
+                  getClass().getClassLoader().getResourceAsStream(Dictionary.COLLINS.getUrl()),
+                  out);
+              chosenDictionary = temp;
+            } catch (Exception e) {
               e.printStackTrace();
             }
           }
@@ -603,11 +610,14 @@ public class LobbyScreenController {
           @Override
           public void handle(ActionEvent event) {
             dictionarySelecter.setText(menuItem2.getText());
-            InputStream is =
-                getClass().getClassLoader().getResourceAsStream(Dictionary.ENABLE.getUrl());
             try {
-              FileUtils.copyInputStreamToFile(is, chosenDictionary);
-            } catch (IOException e) {
+              File temp = File.createTempFile("scrabbleDict", ".txt");
+              temp.deleteOnExit();
+              FileOutputStream out = new FileOutputStream(temp);
+              IOUtils.copy(
+                  getClass().getClassLoader().getResourceAsStream(Dictionary.ENABLE.getUrl()), out);
+              chosenDictionary = temp;
+            } catch (Exception e) {
               e.printStackTrace();
             }
           }
@@ -617,13 +627,16 @@ public class LobbyScreenController {
           @Override
           public void handle(ActionEvent event) {
             dictionarySelecter.setText(menuItem3.getText());
-            InputStream is =
-                getClass().getClassLoader().getResourceAsStream(Dictionary.SOWPODS.getUrl());
             try {
-              FileUtils.copyInputStreamToFile(is, chosenDictionary);
-            } catch (IOException e) {
-              e.printStackTrace();
-            }
+                File temp = File.createTempFile("scrabbleDict", ".txt");
+                temp.deleteOnExit();
+                FileOutputStream out = new FileOutputStream(temp);
+                IOUtils.copy(
+                    getClass().getClassLoader().getResourceAsStream(Dictionary.SOWPODS.getUrl()), out);
+                chosenDictionary = temp;
+              } catch (Exception e) {
+                e.printStackTrace();
+              }
           }
         });
     menuItem4.setOnAction(
@@ -631,13 +644,16 @@ public class LobbyScreenController {
           @Override
           public void handle(ActionEvent event) {
             dictionarySelecter.setText(menuItem4.getText());
-            InputStream is =
-                getClass().getClassLoader().getResourceAsStream(Dictionary.TWL06.getUrl());
             try {
-              FileUtils.copyInputStreamToFile(is, chosenDictionary);
-            } catch (IOException e) {
-              e.printStackTrace();
-            }
+                File temp = File.createTempFile("scrabbleDict", ".txt");
+                temp.deleteOnExit();
+                FileOutputStream out = new FileOutputStream(temp);
+                IOUtils.copy(
+                    getClass().getClassLoader().getResourceAsStream(Dictionary.TWL06.getUrl()), out);
+                chosenDictionary = temp;
+              } catch (Exception e) {
+                e.printStackTrace();
+              }
           }
         });
 
@@ -647,7 +663,17 @@ public class LobbyScreenController {
     dictionarySelecter.getItems().add(menuItem4);
 
     dictionarySelecter.setText(menuItem1.getText());
-    chosenDictionary = new File(Dictionary.COLLINS.getUrl());
+    try {
+        File temp = File.createTempFile("scrabbleDict", ".txt");
+        temp.deleteOnExit();
+        FileOutputStream out = new FileOutputStream(temp);
+        IOUtils.copy(
+            getClass().getClassLoader().getResourceAsStream(Dictionary.COLLINS.getUrl()),
+            out);
+        chosenDictionary = temp;
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
   }
 
   /**
@@ -698,6 +724,7 @@ public class LobbyScreenController {
    * from joining.
    *
    * @author tikrause
+   * @author jluellig
    */
   public void playerAlreadyExisting() {
     // TODO
