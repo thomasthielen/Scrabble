@@ -775,11 +775,7 @@ public class GameSession {
       if (p.isCurrentlyPlaying()) {
         Player playing = p;
         if (playing.isBot()) {
-          for (AI ai : Server.getAIPlayerList()) {
-            if (ai.getPlayer().equals(playing)) {
-              Client.notifyAI(DataHandler.getOwnPlayer(), ai.getPlayer());
-            }
-          }
+          Client.notifyAI(DataHandler.getOwnPlayer(), playing);
         }
       }
     }
@@ -806,7 +802,7 @@ public class GameSession {
     boolean hasWon = (players.get(players.size() - 1).equals(ownPlayer));
     DataHandler.addStatistics(DataHandler.getOwnPlayerId(), hasWon, ownPlayer.getScore());
     // TODO end game screen (statistics of the current, ranking, end game, new game)
-    // TODO send end game message to all
+    Client.reportEndGame(ownPlayer);
   }
 
   /**
