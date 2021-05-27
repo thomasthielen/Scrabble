@@ -1212,7 +1212,7 @@ public class GameScreenController {
       } else {
         endGame.setVisible(false);
       }
-      
+
       openSwapButton.setDisable(gameSession.getBag().getRemainingCount() < 7);
     }
   }
@@ -1484,15 +1484,5 @@ public class GameScreenController {
     SiteLinkScreen sls = new SiteLinkScreen();
     Stage stage = new Stage();
     sls.start(stage);
-  }
-  
-  /**
-   * Getter Method for the chat history
-   *
-   * @author lsteltma
-   * @return the chat history of the game
-   */
-  public String getChatHistory() {
-    return this.chatHistory.toString();
   }
 }

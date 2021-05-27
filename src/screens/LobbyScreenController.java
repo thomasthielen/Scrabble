@@ -821,4 +821,14 @@ public class LobbyScreenController {
               }
             });
   }
+  
+  /**
+   * Getter Method for the chat history
+   *
+   * @author lsteltma
+   * @return the chat history of the game
+   */
+  public String getChatHistory() {
+    return this.chatHistory.toString();
+  }
 }
