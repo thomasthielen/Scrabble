@@ -22,6 +22,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
@@ -163,6 +164,7 @@ public class LobbyScreenController {
       // check if the file is too large
       if (file.length() > 524288000) {
         Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setTitle("Error");
         errorAlert.setHeaderText("File too large.");
         errorAlert.setContentText("The file that you have chosen exceeds the limit of 500 MB.");
         errorAlert.showAndWait();
@@ -182,6 +184,7 @@ public class LobbyScreenController {
       dictionarySelecter.setText(menuItemNew.getText());
     } catch (NullPointerException npe) {
       Alert errorAlert = new Alert(AlertType.INFORMATION);
+      errorAlert.setTitle("Information");
       errorAlert.setHeaderText("No choice made.");
       errorAlert.setContentText("You haven't chosen a file to upload your own dictionary.");
       errorAlert.showAndWait();
@@ -274,6 +277,7 @@ public class LobbyScreenController {
         switchToGameScreen(chatHistory.toString());
       } else {
         Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setTitle("Error");
         errorAlert.setHeaderText("Too few players.");
         errorAlert.setContentText(
             "You can't start a MultiPlayer game alone. Please wait for other players to join your lobby or add an AI player.\n\n"
@@ -319,6 +323,7 @@ public class LobbyScreenController {
       chatField.setText(chatHistory.toString());
     } catch (TooManyPlayerException e) {
       Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Too many players.");
       errorAlert.setContentText(
           "You can't add another AI player because there are already the maximum of 4 players in the game.");
@@ -351,6 +356,7 @@ public class LobbyScreenController {
       chatField.setText(chatHistory.toString());
     } catch (TooManyPlayerException e) {
       Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Too many players.");
       errorAlert.setContentText(
           "You can't add another AI player because there are already the maximum of 4 players in the game.");
@@ -428,11 +434,13 @@ public class LobbyScreenController {
       textField.clear();
     } else if (input.isBlank()) {
       Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Message is empty.");
       errorAlert.setContentText("The chat message has to contain at least one character.");
       errorAlert.showAndWait();
     } else {
       Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Message too long.");
       errorAlert.setContentText("The maximum length of a chat message is 140 characters.");
       errorAlert.showAndWait();
@@ -688,6 +696,7 @@ public class LobbyScreenController {
    */
   public void hostHasLeft() {
     Alert errorAlert = new Alert(AlertType.ERROR);
+    errorAlert.setTitle("Error");
     errorAlert.setHeaderText("The host has left.");
     errorAlert.setContentText(
         "The host has left the game and therefore you have been disconnected from the server.");
@@ -702,6 +711,7 @@ public class LobbyScreenController {
    */
   public void gameAlreadyRunning() {
     Alert errorAlert = new Alert(AlertType.ERROR);
+    errorAlert.setTitle("Error");
     errorAlert.setHeaderText("Game has already started.");
     errorAlert.setContentText("You can't join the server because the game has already started.");
     errorAlert.showAndWait();
@@ -716,6 +726,7 @@ public class LobbyScreenController {
    */
   public void tooManyPlayers() {
     Alert errorAlert = new Alert(AlertType.ERROR);
+    errorAlert.setTitle("Error");
     errorAlert.setHeaderText("Too many players.");
     errorAlert.setContentText(
         "You can't join the game session because there are already the maximum of 4 players in the game.");
@@ -734,6 +745,10 @@ public class LobbyScreenController {
     String currentUsername = DataHandler.getOwnPlayer().getUsername();
     boolean alreadyUsed = false;
     TextInputDialog dialog = new TextInputDialog(currentUsername);
+    dialog.setTitle("Confirmation dialog");
+    Button cancelButton =
+            (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
+        cancelButton.setText("Cancel");
     dialog.setHeaderText("Username already exists.");
     dialog.setContentText(
         "You can't join the game because your username is already used."
@@ -747,6 +762,7 @@ public class LobbyScreenController {
         currentUsername = result.get();
       } else if (alreadyUsed) {
         Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setTitle("Error");
         errorAlert.setHeaderText("Username already exists.");
         errorAlert.setContentText("Try a different username.");
         errorAlert.showAndWait();
@@ -754,6 +770,7 @@ public class LobbyScreenController {
         return;
       } else {
         Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setTitle("Error");
         errorAlert.setHeaderText("Input not valid.");
         errorAlert.setContentText(
             "The username must contain 2-15 letters or numbers. It can't contain any special characters.");
