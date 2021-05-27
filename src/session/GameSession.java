@@ -787,14 +787,16 @@ public class GameSession {
         }
       }
     }
-    
-    Platform.runLater(
-        new Runnable() {
-          @Override
-          public void run() {
-            gameScreenController.refreshPlayerNames();
-          }
-        });
+
+    if (gameScreenController != null) {
+      Platform.runLater(
+          new Runnable() {
+            @Override
+            public void run() {
+              gameScreenController.refreshPlayerNames();
+            }
+          });
+    }
   }
 
   /**
