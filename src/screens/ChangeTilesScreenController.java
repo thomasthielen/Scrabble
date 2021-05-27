@@ -209,6 +209,7 @@ public class ChangeTilesScreenController {
                   .getResourceAsStream("screens/resources/LobbyScreen.fxml"));
       LobbyScreenController lobbyScreenController = loader.getController();
       lobbyScreenController.refreshChat(storedChat);
+      lobbyScreenController.addIPAndPort();
       StartScreen.getStage().setScene(new Scene(content));
       StartScreen.getStage().show();
     } else {
