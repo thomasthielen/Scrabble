@@ -674,8 +674,10 @@ public class GameSession {
         turnValue += wordValue;
 
         String newWord = sb.toString();
-        if (!data.DataHandler.checkWord(newWord)) {
-          return false;
+        if (sb.length() > 1) {
+          if (!data.DataHandler.checkWord(newWord)) {
+            return false;
+          }
         }
       }
     }
