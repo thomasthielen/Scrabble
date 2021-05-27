@@ -59,20 +59,23 @@ public class ChooseServerScreenController {
             StartScreen.getStage().show();
           } catch (TooManyPlayerException te) {
             Alert errorAlert = new Alert(AlertType.ERROR);
+            errorAlert.setTitle("Error");
             errorAlert.setHeaderText("Too many players.");
             errorAlert.setContentText("There are already the maximum of 4 players in the game.");
             errorAlert.showAndWait();
           }
         } else {
           Alert errorAlert = new Alert(AlertType.ERROR);
-          errorAlert.setHeaderText("Input not valid.");
+          errorAlert.setTitle("Error");
+errorAlert.setHeaderText("Input not valid.");
           errorAlert.setContentText("The port number is not correct.");
           errorAlert.showAndWait();
           portField.clear();
         }
       } else {
         Alert errorAlert = new Alert(AlertType.ERROR);
-        errorAlert.setHeaderText("Input not valid.");
+        errorAlert.setTitle("Error");
+errorAlert.setHeaderText("Input not valid.");
         errorAlert.setContentText(
             "The IP address is not in the correct format and therefore no valid address.");
         errorAlert.showAndWait();
@@ -81,7 +84,8 @@ public class ChooseServerScreenController {
       }
     } catch (BindException | ConnectException e) {
       Alert errorAlert = new Alert(AlertType.ERROR);
-      errorAlert.setHeaderText("Input not valid.");
+      errorAlert.setTitle("Error");
+errorAlert.setHeaderText("Input not valid.");
       errorAlert.setContentText("There is no server running on the given IP address and port.");
       errorAlert.showAndWait();
       ipField.clear();

@@ -65,12 +65,14 @@ public class NewProfileScreenController {
         StartScreen.getStage().show();
       } else if (alreadyUsed) {
         Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setTitle("Error");
         errorAlert.setHeaderText("Username already exists.");
         errorAlert.setContentText("Try a different username.");
         errorAlert.showAndWait();
         inputForm.clear();
       } else {
         Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setTitle("Error");
         errorAlert.setHeaderText("Input not valid.");
         errorAlert.setContentText(
             "The username must contain 2-15 letters or numbers. It can't contain any special characters.");
@@ -79,6 +81,7 @@ public class NewProfileScreenController {
       }
     } else {
       Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setTitle("Error");
       errorAlert.setHeaderText("No avatar selected.");
       errorAlert.setContentText("Please select an avatar from the list.");
       errorAlert.showAndWait();

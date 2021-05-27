@@ -174,14 +174,16 @@ public class ChangeTilesScreenController {
       Client.getGameSession().setBag(bag);
       Client.getGameSession().sendGameStateMessage(false);
       back(event);
-    } else if (valueOkay){
+    } else if (valueOkay) {
       Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Invalid tile count entered.");
       errorAlert.setContentText("It must be a number between 0 and 100.");
       errorAlert.showAndWait();
       return;
     } else {
       Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Invalid tile value entered.");
       errorAlert.setContentText("It must be a number between 0 and 20.");
       errorAlert.showAndWait();

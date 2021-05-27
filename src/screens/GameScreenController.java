@@ -745,7 +745,7 @@ public class GameScreenController {
       }
       leave();
       Alert alert = new Alert(AlertType.INFORMATION);
-      alert.setTitle("Information dialog");
+      alert.setTitle("Information");
       alert.setHeaderText("You have been kicked from the game.");
       alert.setContentText(
           "Due to exceeding the ten-minute overtime limit, you have been removed from the game.");

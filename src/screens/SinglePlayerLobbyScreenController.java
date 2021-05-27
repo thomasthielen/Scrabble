@@ -1,16 +1,16 @@
 package screens;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import ai.AI;
 import data.DataHandler;
 import data.StatisticKeys;
 import gameentities.Player;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -31,7 +31,6 @@ import network.Client;
 import network.Server;
 import network.messages.TooManyPlayerException;
 import session.Dictionary;
-import javafx.event.EventHandler;
 
 /**
  * This class provides the Controller for the Single Player Lobby Screen
@@ -128,6 +127,7 @@ public class SinglePlayerLobbyScreenController {
       // check if the file is too large
       if (file.length() > 524288000) {
         Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setTitle("Error");
         errorAlert.setHeaderText("File too large.");
         errorAlert.setContentText("The file that you have chosen exceeds the limit of 500 MB.");
         errorAlert.showAndWait();
@@ -147,6 +147,7 @@ public class SinglePlayerLobbyScreenController {
       dictionarySelecter.setText(menuItemNew.getText());
     } catch (NullPointerException npe) {
       Alert errorAlert = new Alert(AlertType.INFORMATION);
+      errorAlert.setTitle("Information");
       errorAlert.setHeaderText("No choice made.");
       errorAlert.setContentText("You haven't chosen a file to upload your own dictionary.");
       errorAlert.showAndWait();
@@ -222,6 +223,7 @@ public class SinglePlayerLobbyScreenController {
       switchToGameScreen();
     } else {
       Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Too few players.");
       errorAlert.setContentText(
           "You can't start the game before adding an AI player.\n"
@@ -262,6 +264,7 @@ public class SinglePlayerLobbyScreenController {
       Server.addAIPlayer(ai);
     } catch (TooManyPlayerException e) {
       Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Too many players.");
       errorAlert.setContentText(
           "You can't add another AI player because there are already the maximum of 3 AI players in the game.");
@@ -291,6 +294,7 @@ public class SinglePlayerLobbyScreenController {
       Server.addAIPlayer(ai);
     } catch (TooManyPlayerException e) {
       Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Too many players.");
       errorAlert.setContentText(
           "You can't add another AI player because there are already the maximum of 3 AI players in the game.");

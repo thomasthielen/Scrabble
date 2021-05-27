@@ -65,6 +65,7 @@ public class ExistingProfileScreenController {
       StartScreen.getStage().show();
     } else {
       Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setTitle("Error");
       errorAlert.setHeaderText("No profile selected.");
       errorAlert.setContentText("Please select a profile from the list above or create a new one.");
       errorAlert.showAndWait();
@@ -132,6 +133,7 @@ public class ExistingProfileScreenController {
       StartScreen.getStage().show();
     } else {
       Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setTitle("Error");
       errorAlert.setHeaderText("No profile selected.");
       errorAlert.setContentText("Please select a profile from the list above or create a new one.");
       errorAlert.showAndWait();
@@ -181,6 +183,7 @@ public class ExistingProfileScreenController {
   protected void checkProfilesEmpty() throws Exception {
     if (profiles.isEmpty()) {
       Alert errorAlert = new Alert(AlertType.INFORMATION);
+      errorAlert.setTitle("Information");
       errorAlert.setHeaderText("There are no existing profiles.");
       errorAlert.setContentText("Please create a new profile.");
       Optional<ButtonType> result = errorAlert.showAndWait();

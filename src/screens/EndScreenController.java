@@ -1,11 +1,9 @@
 package screens;
 
-import java.net.BindException;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-
 import data.DataHandler;
 import gameentities.Player;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
