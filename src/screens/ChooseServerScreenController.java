@@ -44,7 +44,7 @@ public class ChooseServerScreenController {
     try {
       if (Pattern.matches(
           "[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}", ipField.getText().trim())) {
-        if (Pattern.matches("[0-9]{4,5}", portField.getText().trim())) {
+        if (Pattern.matches("[1-9][0-9]{3,4}", portField.getText().trim())) {
           try {
             Client.initialiseClient(
                 ipField.getText().trim(), Integer.valueOf(portField.getText().trim()), false);
@@ -68,7 +68,6 @@ public class ChooseServerScreenController {
           errorAlert.setHeaderText("Input not valid.");
           errorAlert.setContentText("The port number is not correct.");
           errorAlert.showAndWait();
-          ipField.clear();
           portField.clear();
         }
       } else {

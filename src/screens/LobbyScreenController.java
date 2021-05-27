@@ -134,6 +134,8 @@ public class LobbyScreenController {
     chatField.setEditable(false);
     chatField.setMouseTransparent(true);
     chatField.setFocusTraversable(false);
+    chatField.setWrapText(true);
+
     chooseAIPane.setVisible(false);
     tooltipPane.setVisible(false);
 

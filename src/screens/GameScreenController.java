@@ -203,6 +203,7 @@ public class GameScreenController {
     chatField.setEditable(false);
     chatField.setMouseTransparent(true);
     chatField.setFocusTraversable(false);
+    chatField.setWrapText(true);
 
     int humanPlayer = 0;
     for (Player p : gameSession.getPlayerList()) {
