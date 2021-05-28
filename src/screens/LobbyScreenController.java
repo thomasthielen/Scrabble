@@ -266,7 +266,7 @@ public class LobbyScreenController {
   void leaveLobby(ActionEvent event) throws Exception {
     Client.disconnectClient(DataHandler.getOwnPlayer());
     if (Client.isHost()) {
-      Server.serverShutdown();
+      Server.shutdown();
     }
     leave();
   }
@@ -928,7 +928,7 @@ public class LobbyScreenController {
                 try {
                   Client.disconnectClient(DataHandler.getOwnPlayer());
                   if (Client.isHost()) {
-                    Server.serverShutdown();
+                    Server.shutdown();
                   }
                 } catch (InterruptedException e) {
                   e.printStackTrace();

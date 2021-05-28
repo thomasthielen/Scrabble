@@ -73,7 +73,7 @@ public class Server {
    * @author tikrause
    * @throws InterruptedException message channel thread interrupted
    */
-  public static void serverShutdown() throws InterruptedException {
+  public static void shutdown() throws InterruptedException {
     isRunning = false;
     resetPlayerLists();
     channel.close().sync();

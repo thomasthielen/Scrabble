@@ -181,7 +181,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
             Client.getGameSession().cancelTimer();
             Client.disconnectClient(DataHandler.getOwnPlayer());
             if (Server.isActive()) {
-              Server.serverShutdown();
+              Server.shutdown();
             }
             Platform.runLater(
                 new Runnable() {
@@ -195,7 +195,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         break;
 
       case GAME_RUNNING:
-        Client.clientShutdown();
+        Client.shutdown();
         Platform.runLater(
             new Runnable() {
               @Override
@@ -206,7 +206,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         break;
 
       case TOO_MANY:
-        Client.clientShutdown();
+        Client.shutdown();
         Platform.runLater(
             new Runnable() {
               @Override
@@ -217,7 +217,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         break;
 
       case PLAYER_EXISTENT:
-        Client.clientShutdown();
+        Client.shutdown();
         Platform.runLater(
             new Runnable() {
               @Override

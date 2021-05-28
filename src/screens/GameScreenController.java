@@ -724,7 +724,7 @@ public class GameScreenController {
       try {
         Client.disconnectClient(DataHandler.getOwnPlayer());
         if (Client.isHost()) {
-          Server.serverShutdown();
+          Server.shutdown();
         }
       } catch (InterruptedException e) {
         e.printStackTrace();
@@ -739,7 +739,7 @@ public class GameScreenController {
     try {
       Client.disconnectClient(DataHandler.getOwnPlayer());
       if (Client.isHost()) {
-        Server.serverShutdown();
+        Server.shutdown();
       }
       leave();
       Alert alert = new Alert(AlertType.INFORMATION);
@@ -1476,7 +1476,7 @@ public class GameScreenController {
                   try {
                     Client.disconnectClient(DataHandler.getOwnPlayer());
                     if (Client.isHost()) {
-                      Server.serverShutdown();
+                      Server.shutdown();
                     }
                   } catch (InterruptedException e) {
                     e.printStackTrace();

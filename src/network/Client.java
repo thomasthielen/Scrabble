@@ -89,7 +89,7 @@ public class Client {
    */
   public static void disconnectClient(Player p) throws InterruptedException {
     cf.channel().writeAndFlush(new DisconnectMessage(p, isHost, gameSession.getPlayerList()));
-    clientShutdown();
+    shutdown();
   }
 
   /**
@@ -98,7 +98,7 @@ public class Client {
    * @author tikrause
    * @throws InterruptedException message channel thread interrupted
    */
-  public static void clientShutdown() throws InterruptedException {
+  public static void shutdown() throws InterruptedException {
     cf.channel().close().sync();
     group.shutdownGracefully();
     group = null;

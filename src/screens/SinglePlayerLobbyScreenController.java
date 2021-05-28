@@ -186,7 +186,7 @@ public class SinglePlayerLobbyScreenController {
   @FXML
   void leaveLobby(ActionEvent event) throws Exception {
     Client.disconnectClient(DataHandler.getOwnPlayer());
-    Server.serverShutdown();
+    Server.shutdown();
     StartScreen.getStage()
         .setOnCloseRequest(
             new EventHandler<WindowEvent>() {
@@ -546,7 +546,7 @@ public class SinglePlayerLobbyScreenController {
               public void handle(final WindowEvent event) {
                 try {
                   Client.disconnectClient(DataHandler.getOwnPlayer());
-                  Server.serverShutdown();
+                  Server.shutdown();
                 } catch (InterruptedException e) {
                   e.printStackTrace();
                 }

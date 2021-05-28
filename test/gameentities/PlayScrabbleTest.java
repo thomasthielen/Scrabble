@@ -60,7 +60,7 @@ class PlayScrabbleTest {
   @AfterEach
   void end() {
     try {
-      Server.serverShutdown();
+      Server.shutdown();
     } catch (Exception e) {
       e.printStackTrace();
     }

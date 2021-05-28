@@ -151,7 +151,7 @@ public class EndScreenController {
   void leaveGame(ActionEvent event) throws Exception {
     Client.disconnectClient(DataHandler.getOwnPlayer());
     if (Client.isHost()) {
-      Server.serverShutdown();
+      Server.shutdown();
     }
     Client.getGameSession().getGameScreenController().leave();
   }
@@ -171,7 +171,7 @@ public class EndScreenController {
     }
     Client.disconnectClient(DataHandler.getOwnPlayer());
     if (Client.isHost()) {
-      Server.serverShutdown();
+      Server.shutdown();
       try {
         Server.createServer(Server.getPort());
       } catch (InterruptedException e) {
@@ -259,7 +259,7 @@ public class EndScreenController {
                 try {
                   Client.disconnectClient(DataHandler.getOwnPlayer());
                   if (Client.isHost()) {
-                    Server.serverShutdown();
+                    Server.shutdown();
                   }
                 } catch (InterruptedException e) {
                   e.printStackTrace();
