@@ -71,7 +71,7 @@ public class EndScreenController {
       width[0] += place.getLayoutBounds().getWidth();
       GridPane.setHalignment(place, HPos.CENTER);
 
-      Image avatar = new Image(players.get(i).getAvatar().getUrl(), 52, 52, true, true);
+      Image avatar = new Image(getClass().getClassLoader().getResourceAsStream(players.get(i).getAvatar().getUrl()), 52, 52, true, true);
       ImageView imageView = new ImageView(avatar);
       grid1.add(imageView, i, 1);
       width[1] += avatar.getWidth();

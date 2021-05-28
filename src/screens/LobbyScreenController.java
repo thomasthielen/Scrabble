@@ -841,10 +841,9 @@ public class LobbyScreenController {
   }
 
   /**
-   * informs the player that tries to join a game where his username is already used and denies him
+   * Informs the player that tries to join a game where his username is already used and denies him
    * from joining.
    *
-   * @author tikrause
    * @author jluellig
    */
   public void playerAlreadyExisting() {
@@ -864,7 +863,6 @@ public class LobbyScreenController {
           && !(alreadyUsed = usernameAlreadyUsed(result.get()))) {
         DataHandler.alterPlayerUsername(result.get(), DataHandler.getOwnPlayerId());
         DataHandler.getOwnPlayer().setUsername(result.get());
-        currentUsername = result.get();
       } else if (alreadyUsed) {
         Alert errorAlert = new Alert(AlertType.ERROR);
         errorAlert.setTitle("Error");
@@ -1077,7 +1075,7 @@ public class LobbyScreenController {
    */
   @FXML
   void displayAddAIPlayerTooltip(MouseEvent event) {
-    tooltipText = new Text("Only the Host can choose a dictionary.");
+    tooltipText = new Text("Only the Host can add AI players.");
     tooltipText.setFill(Paint.valueOf("#f88c00"));
     tooltipText.setFont(new Font(14));
     tooltipText.relocate(4, 2);

@@ -1391,7 +1391,7 @@ public class GameScreenController {
 
     for (int i = 0; i < players.size(); i++) {
       grid.add(
-          new ImageView(new Image(players.get(i).getAvatar().getUrl(), 45, 45, true, true)), 0, i);
+          new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(players.get(i).getAvatar().getUrl()), 45, 45, true, true)), 0, i);
       Text name = new Text(players.get(i).getUsername()); // TODO: add points
       name.setFill(Paint.valueOf("#f88c00"));
       grid.add(name, 1, i);
