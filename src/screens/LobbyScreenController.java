@@ -169,7 +169,6 @@ public class LobbyScreenController {
     setDictionaryMenu();
 
     chatField.setEditable(false);
-    chatField.setMouseTransparent(true);
     chatField.setFocusTraversable(false);
     chatField.setWrapText(true);
 
