@@ -75,7 +75,6 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
         for (Player p : Server.getPlayerList()) {
           if (p.getUsername().equals(cm.getPlayer().getUsername())) {
             ctx.channel().writeAndFlush(new PlayerExistentMessage(cm.getPlayer()));
-            handlerRemoved(ctx);
             playerExistent = true;
             break;
           }
@@ -84,13 +83,11 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
         // if a player tries to join a running game, he should be rejected
         if (Server.isActive()) {
           ctx.channel().writeAndFlush(new GameRunningMessage(null));
-          handlerRemoved(ctx);
 
           // if a player tries to join a game with already 4 players in the lobby, he should be
           // rejected
         } else if (Server.getPlayerList().size() >= 4) {
           ctx.channel().writeAndFlush(new TooManyPlayerMessage(null));
-          handlerRemoved(ctx);
 
           // player is added to the game
         } else if (!playerExistent) {

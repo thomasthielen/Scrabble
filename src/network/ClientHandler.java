@@ -195,6 +195,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         break;
 
       case GAME_RUNNING:
+        Client.clientShutdown();
         Platform.runLater(
             new Runnable() {
               @Override
@@ -205,6 +206,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         break;
 
       case TOO_MANY:
+        Client.clientShutdown();
         Platform.runLater(
             new Runnable() {
               @Override
@@ -215,6 +217,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         break;
 
       case PLAYER_EXISTENT:
+        Client.clientShutdown();
         Platform.runLater(
             new Runnable() {
               @Override

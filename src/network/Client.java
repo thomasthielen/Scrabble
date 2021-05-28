@@ -58,6 +58,7 @@ public class Client {
    *
    * @author tikrause
    * @param p player instance that should be connected to the game
+   * @throws TooManyPlayersException 4 players are already in the session and no one else can join
    */
   public static void connectToServer(Player p) throws TooManyPlayerException {
     group = new NioEventLoopGroup();
@@ -84,9 +85,20 @@ public class Client {
    *
    * @author tikrause
    * @param p player instance that should be disconnected from the game
+   * @throws InterruptedException message channel thread interrupted
    */
   public static void disconnectClient(Player p) throws InterruptedException {
     cf.channel().writeAndFlush(new DisconnectMessage(p, isHost, gameSession.getPlayerList()));
+    clientShutdown();
+  }
+
+  /**
+   * Disconnects the client from the server and resets the client channels.
+   *
+   * @author tikrause
+   * @throws InterruptedException message channel thread interrupted
+   */
+  public static void clientShutdown() throws InterruptedException {
     cf.channel().close().sync();
     group.shutdownGracefully();
     group = null;
