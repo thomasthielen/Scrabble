@@ -64,7 +64,7 @@ public class Server {
 
     // creates a connection using UDP
     channel = bootstrap.bind(port).sync().channel();
-    Server.resetPlayerLists();
+    resetPlayerLists();
   }
 
   /**

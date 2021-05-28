@@ -98,7 +98,7 @@ public class Client {
    * @author tikrause
    * @throws InterruptedException message channel thread interrupted
    */
-  public static void shutdown() throws InterruptedException {
+  static void shutdown() throws InterruptedException {
     cf.channel().close().sync();
     group.shutdownGracefully();
     group = null;
@@ -217,7 +217,7 @@ public class Client {
    * @author tikrause
    * @return if the client is connected to the server
    */
-  public static boolean channelActive() {
+  static boolean channelActive() {
     return cf != null;
   }
 }
