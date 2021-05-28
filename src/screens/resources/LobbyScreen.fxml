@@ -64,22 +64,22 @@
       </Text>
       <Text fx:id="playerInfo1" fill="#f88c00" layoutX="14.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
          <font>
-            <Font size="20.0" />
+            <Font size="16.0" />
          </font>
       </Text>
       <Text fx:id="playerInfo2" fill="#f88c00" layoutX="14.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2">
          <font>
-            <Font size="20.0" />
+            <Font size="16.0" />
          </font>
       </Text>
       <Text fx:id="playerInfo3" fill="#f88c00" layoutX="14.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3">
          <font>
-            <Font size="20.0" />
+            <Font size="16.0" />
          </font>
       </Text>
       <Text fx:id="playerInfo4" fill="#f88c00" layoutX="14.0" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 4">
          <font>
-            <Font size="20.0" />
+            <Font size="16.0" />
          </font>
       </Text>
       <Text fx:id="playerStatistic1" layoutX="14.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics 1" />

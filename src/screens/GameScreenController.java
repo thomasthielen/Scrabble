@@ -1395,18 +1395,16 @@ public class GameScreenController {
           new ImageView(new Image(players.get(i).getAvatar().getUrl(), 45, 45, true, true)), 0, i);
       Text name = new Text(players.get(i).getUsername()); // TODO: add points
       name.setFill(Paint.valueOf("#f88c00"));
-      name.setFont(new Font(16));
       grid.add(name, 1, i);
       Text points = new Text("-  " + players.get(i).getScore());
       points.setFill(Paint.valueOf("#f88c00"));
-      points.setFont(new Font(16));
       grid.add(points, 2, i);
       if (players.get(i).isCurrentlyPlaying()) {
-        name.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
-        points.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
+        name.setFont(Font.font("Segoe UI", FontWeight.BOLD, 10));
+        points.setFont(Font.font("Segoe UI", FontWeight.BOLD, 10));
       } else {
-        name.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 16));
-        points.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 16));
+        name.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 10));
+        points.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 10));
       }
     }
     grid.relocate(10, 14);

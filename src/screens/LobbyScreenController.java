@@ -585,16 +585,16 @@ public class LobbyScreenController {
    */
   void addIPAndPort() {
     Pane textPane = new Pane();
-    
+
     Text info = new Text(0, 0, "Click to copy:");
     info.setFont(Font.font("Segoe UI", FontWeight.BOLD, 12));
     info.setFill(Paint.valueOf("#f88c00"));
     info.setTextAlignment(TextAlignment.CENTER);
-    
+
     Text ip = new Text(0, 20, "IP-Address: " + Server.getIp());
     ip.setFill(Paint.valueOf("#f88c00"));
     ip.setTextAlignment(TextAlignment.CENTER);
-    
+
     String ipNormal = ip.getText();
 
     Text port = new Text(0, 40, "Port: " + Server.getPort());
@@ -602,51 +602,55 @@ public class LobbyScreenController {
     port.setTextAlignment(TextAlignment.CENTER);
 
     String portNormal = port.getText();
-    
+
     textPane.getChildren().add(info);
     textPane.getChildren().add(ip);
     textPane.getChildren().add(port);
     textPane.relocate(14, 30);
     lobbyPane.getChildren().add(textPane);
-    
+
     ip.setOnMouseClicked(
         e -> {
           port.setText(portNormal);
-          
+
           StringSelection selection = new StringSelection(Server.getIp());
           Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
           clipboard.setContents(selection, selection);
-          
+
           ip.setText(ipNormal + "\t\tCopied IP to clipboard!");
-          
+
           Timer timer = new Timer();
-          timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-              ip.setText(ipNormal);
-              timer.cancel();
-            }
-          }, 2000);
+          timer.schedule(
+              new TimerTask() {
+                @Override
+                public void run() {
+                  ip.setText(ipNormal);
+                  timer.cancel();
+                }
+              },
+              2000);
         });
-    
+
     port.setOnMouseClicked(
         e -> {
           ip.setText(ipNormal);
-          
+
           StringSelection selection = new StringSelection(String.valueOf(Server.getPort()));
           Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
           clipboard.setContents(selection, selection);
-          
+
           port.setText(portNormal + "\t\t\t\tCopied Port to clipboard!");
-          
+
           Timer timer = new Timer();
-          timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-              port.setText(portNormal);
-              timer.cancel();
-            }
-          }, 2000);
+          timer.schedule(
+              new TimerTask() {
+                @Override
+                public void run() {
+                  port.setText(portNormal);
+                  timer.cancel();
+                }
+              },
+              2000);
         });
   }
 
