@@ -16,7 +16,13 @@ import network.Server;
 import session.GameSession;
 import session.GameState;
 
-/** @author sisselha */
+/**
+ * an AI instance of the game that calculates
+ * a move using given methods
+ * 
+ * @author sisselha
+ *
+ */
 public class AI {
 
   private ArrayList<PossibleMove> moves;
@@ -39,6 +45,12 @@ public class AI {
     this.gameReference = new GameSession(new Player(username));
     this.difficult = difficult;
   }
+  
+  /**
+   * 
+   * @author tikrause
+   * @param dictionary
+   */
 
   public void initializeAI(File dictionary) {
     this.dictionary = dictionary;
