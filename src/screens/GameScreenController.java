@@ -1348,13 +1348,13 @@ public class GameScreenController {
     playerStatisticsScrollPane.setFitToWidth(true);
     for (int i = 0; i < players.size(); i++) {
       Text name = new Text(players.get(i).getUsername() + " :\n");
-      name.setFont(new Font(20));
+      name.setFont(new Font(16));
       name.setFill(Paint.valueOf("#707070"));
-      name.relocate(10, 40 + 80 * i);
+      name.relocate(10, 45 + 75 * i);
       playerStatisticsPane.getChildren().add(name);
       if (!players.get(i).isBot()) {
         if (i > 1) {
-          playerStatisticsPane.setPrefHeight(playerStatisticsPane.getPrefHeight() + (i - 1) * 40);
+          playerStatisticsPane.setPrefHeight(playerStatisticsPane.getPrefHeight() + (i - 1) * 60);
         }
         HashMap<StatisticKeys, Integer> map = players.get(i).getPlayerStatistics();
         Text statistics =
@@ -1366,9 +1366,9 @@ public class GameScreenController {
                     + "\nAverage Points: "
                     + map.get(StatisticKeys.POINTSAVG)
                     + "\n");
-        statistics.setFont(new Font(14));
+        statistics.setFont(new Font(12));
         statistics.setFill(Paint.valueOf("#707070"));
-        statistics.relocate(10, 60 + 80 * i);
+        statistics.relocate(10, 65 + 75 * i);
         playerStatisticsPane.getChildren().add(statistics);
       }
     }
