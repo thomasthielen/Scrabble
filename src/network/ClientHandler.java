@@ -89,7 +89,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
                 new Runnable() {
                   @Override
                   public void run() {
-                    Client.getGameSession().getLobbyScreenController().refreshPlayerList();
+                    Client.getGameSession().getGameScreenController().refreshPlayerNames();
                   }
                 });
 

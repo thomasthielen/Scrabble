@@ -160,7 +160,7 @@ public class GameScreenController {
   private int unreadMessages = 0;
 
   /**
-   * initializes the GameScreen. 
+   * initializes the GameScreen.
    *
    * @author jbleil
    * @throws Exception
@@ -722,6 +722,9 @@ public class GameScreenController {
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == ButtonType.OK) {
       try {
+        if (Client.getGameSession().getPlayer().isCurrentlyPlaying()) {
+          Client.getGameSession().nextPlayer();
+        }
         Client.disconnectClient(DataHandler.getOwnPlayer());
         if (Client.isHost()) {
           Server.shutdown();
@@ -1390,7 +1393,17 @@ public class GameScreenController {
 
     for (int i = 0; i < players.size(); i++) {
       grid.add(
-          new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(players.get(i).getAvatar().getUrl()), 45, 45, true, true)), 0, i);
+          new ImageView(
+              new Image(
+                  getClass()
+                      .getClassLoader()
+                      .getResourceAsStream(players.get(i).getAvatar().getUrl()),
+                  45,
+                  45,
+                  true,
+                  true)),
+          0,
+          i);
       Text name = new Text(players.get(i).getUsername()); // TODO: add points
       name.setFill(Paint.valueOf("#f88c00"));
       grid.add(name, 1, i);
@@ -1474,6 +1487,9 @@ public class GameScreenController {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
                   try {
+                    if (Client.getGameSession().getPlayer().isCurrentlyPlaying()) {
+                      Client.getGameSession().nextPlayer();
+                    }
                     Client.disconnectClient(DataHandler.getOwnPlayer());
                     if (Client.isHost()) {
                       Server.shutdown();
