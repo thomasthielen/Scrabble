@@ -51,7 +51,7 @@ import session.Dictionary;
 import javafx.event.EventHandler;
 
 /**
- * This class provides the Controller for the Lobby Screen
+ * This class provides the Controller for the Lobby Screen.
  *
  * @author jbleil
  */
@@ -116,6 +116,12 @@ public class LobbyScreenController {
 
   private Text tooltipText;
 
+  /**
+   * this method initializes the LobbyScreen
+   *
+   * @author jbleil
+   * @throws Exception
+   */
   public void initialize() throws Exception {
     playerInfos.add(playerInfo1);
     playerInfos.add(playerInfo2);
@@ -220,6 +226,13 @@ public class LobbyScreenController {
     }
   }
 
+  /**
+   * this method serves as a Listener for the uploadDictionaryButton. It Displays the Tooltip Text
+   * when entered.
+   *
+   * @author jbleil
+   * @param event MouseEvent that gets triggered when the mouse hovers over the button
+   */
   @FXML
   void openTooltip(MouseEvent event) {
     Text text =
@@ -232,6 +245,13 @@ public class LobbyScreenController {
     tooltipPaneHost.setVisible(true);
   }
 
+  /**
+   * this method serves as a Listener for the uploadDictionaryButton. It closes the Tooltip Text
+   * when the mouse leaves the button.
+   *
+   * @author jbleil
+   * @param event MouseEvent that gets triggered when the mouse hovers over the button
+   */
   @FXML
   void closeTooltip(MouseEvent event) {
     tooltipPaneHost.setVisible(false);
@@ -286,11 +306,11 @@ public class LobbyScreenController {
 
   /**
    * This method serves as the Listener for "START GAME"-Button It let's the user start the game and
-   * redirects him to the GameScreen
+   * redirects him to the GameScreen.
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event ActionEvent that gets triggered when the startGame Button is clicked
+   * @throws Exception the Exception that is throws if FXML file is not found
    */
   @FXML
   void startGame(ActionEvent event) throws Exception {
@@ -516,7 +536,7 @@ public class LobbyScreenController {
    * this method opens the ChangeTilesScreen.
    *
    * @author jbleil
-   * @param event
+   * @param event ActionEvent that gets triggered when the Edit Tiles Button is clicked
    */
   @FXML
   void editTiles(ActionEvent event) throws Exception {

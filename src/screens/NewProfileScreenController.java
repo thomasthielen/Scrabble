@@ -14,18 +14,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
- * this class provides the controller for the new Profile Screen
+ * this class provides the controller for the new Profile Screen.
  *
  * @author jbleil
  */
@@ -106,7 +106,7 @@ public class NewProfileScreenController {
    * Screen.
    *
    * @author jbleil
-   * @param event
+   * @param event ActionEvent that gets triggered when the back button is clicked
    * @throws Exception
    */
   @FXML
@@ -178,10 +178,9 @@ public class NewProfileScreenController {
    *
    * @author jbleil
    * @param event the MouseEvent that gets thrown when clicking on the "Soni Sokell" Text
-   * @throws Exception
    */
   @FXML
-  void openNameScreen(MouseEvent event) throws Exception {
+  void openNameScreen(MouseEvent event) {
     NameLinkScreen nls = new NameLinkScreen();
     Stage stage = new Stage();
     nls.start(stage);
@@ -193,10 +192,9 @@ public class NewProfileScreenController {
    *
    * @author jbleil
    * @param event the MouseEvent that gets thrown when clicking on the "freeicons.io" Text
-   * @throws Exception
    */
   @FXML
-  void openSiteScreen(MouseEvent event) throws Exception {
+  void openSiteScreen(MouseEvent event) {
     SiteLinkScreen sls = new SiteLinkScreen();
     Stage stage = new Stage();
     sls.start(stage);

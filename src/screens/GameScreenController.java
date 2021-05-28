@@ -52,7 +52,7 @@ import session.GameSession;
 
 /**
  * This class provides the Controller for the Game Screen and handles all the interaction with the
- * Players during the game
+ * Players during the game.
  *
  * @author jbleil
  */
@@ -60,24 +60,24 @@ public class GameScreenController {
 
   /**
    * gameBoard represents the Container for the Game Board, the tiles and the (for the game flow
-   * necessary) buttons
+   * necessary) buttons.
    */
   @FXML private GridPane gameBoard;
 
-  /** gameBoardPane represents the Container for the Game Board and */
+  /** gameBoardPane represents the Container for the Game Board and. */
   @FXML private Pane gameBoardPane; // TODO: Might want to rename this compared to gameBoard
 
   /** chatPane represents the Container for the Chat */
   @FXML private Pane chatPane;
 
-  /** playerStatisticsPane represents the Container for the Player Statistics */
+  /** playerStatisticsPane represents the Container for the Player Statistics. */
   @FXML private ScrollPane playerStatisticsScrollPane;
 
   @FXML private Pane playerStatisticsPane;
 
   @FXML private Pane backgroundPane;
 
-  /** rackPane represents the Container for the Tiles in the Rack */
+  /** rackPane represents the Container for the Tiles in the Rack. */
   @FXML private FlowPane rackPane;
 
   /** swapRack */
@@ -160,8 +160,7 @@ public class GameScreenController {
   private int unreadMessages = 0;
 
   /**
-   * TODO - set Chat and Player Statistic visibility = false - set 7 Tiles in the Rack - fill the
-   * board with Rectangles -> opacity = 100 (see through) - fill gridPane with Rectangles
+   * initializes the GameScreen. 
    *
    * @author jbleil
    * @throws Exception
@@ -292,10 +291,10 @@ public class GameScreenController {
   }
 
   /**
-   * If the Rack is clicked the clicked Tile is set as selected
+   * If the Rack is clicked the clicked Tile is set as selected.
    *
    * @author jbleil
-   * @param event
+   * @param event MouseEvent that is triggered when the rack is clicked
    */
   @FXML
   void rackClicked(MouseEvent event) {
@@ -422,7 +421,7 @@ public class GameScreenController {
   }
 
   /**
-   * TODO - initialize a new tile
+   * initializes a new Tile.
    *
    * @author jbleil
    * @throws Exception
@@ -1492,6 +1491,13 @@ public class GameScreenController {
             });
   }
 
+  /**
+   * This method serves as a Listener for the Text "Soni Sokell" and displays an instance of
+   * SiteLinkScreen.
+   *
+   * @author jbleil
+   * @param event the MouseEvent that gets thrown when clicking on the "Soni Sokell" Text
+   */
   @FXML
   void openNameScreen(MouseEvent event) {
     NameLinkScreen nls = new NameLinkScreen();
@@ -1505,7 +1511,6 @@ public class GameScreenController {
    *
    * @author jbleil
    * @param event the MouseEvent that gets thrown when clicking on the "freeicons.io" Text
-   * @throws Exception
    */
   @FXML
   void openSiteScreen(MouseEvent event) {

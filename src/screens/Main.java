@@ -3,17 +3,17 @@ package screens;
 import javafx.application.Application;
 
 /**
- * This class launches the UI
+ * This class launches the UI.
  *
  * @author jbleil
  */
 public class Main {
 
   /**
-   * this method launches the Application
+   * this method launches the Application.
    *
    * @author jbleil
-   * @param args
+   * @param args String[] of the main method
    */
   public static void main(String[] args) {
     Application.launch(StartScreen.class);

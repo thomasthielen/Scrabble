@@ -180,8 +180,8 @@ public class SinglePlayerLobbyScreenController {
    * resets the window listener and redirects him to the OnlineOrOfflineScreen.
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event ActionEvent that gets triggered when the Leave Lobby Button is clicked
+   * @throws Exception the Exception that is thrown when the FXML file is not found
    */
   @FXML
   void leaveLobby(ActionEvent event) throws Exception {
@@ -211,8 +211,8 @@ public class SinglePlayerLobbyScreenController {
    * redirects him to the GameScreen
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event ActionEvent that gets triggered when the Start Game Button is clicked
+   * @throws Exception the Exception that is thrown when the FXML file is not found
    */
   @FXML
   void startGame(ActionEvent event) throws Exception {

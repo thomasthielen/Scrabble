@@ -7,7 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 /**
- * this class provides the controller for the Online or Offline Screen
+ * this class provides the controller for the Online or Offline Screen.
  *
  * @author jbleil
  */
@@ -15,11 +15,11 @@ public class OnlineOrOfflineScreenController {
 
   /**
    * This method serves as the Listener for "ONLINE"-Button It redirects the user to the Online
-   * Screen
+   * Screen.
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event ActionEvent that gets triggered when the Online Button is clicked
+   * @throws Exception the Exception that is thrown when the FXML file is not found
    */
   @FXML
   void onlineGame(ActionEvent event) throws Exception {
@@ -31,11 +31,11 @@ public class OnlineOrOfflineScreenController {
 
   /**
    * This method serves as the Listener for "SINGLEPLAYER"-Button It redirects the user to the
-   * Offline Screen
+   * Offline Screen.
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event ActionEvent that gets triggered when the Offline Tutorial Button is clicked
+   * @throws Exception the Exception that is thrown when the FXML file is not found
    */
   @FXML
   void offlineGame(ActionEvent event) throws Exception {
@@ -46,11 +46,11 @@ public class OnlineOrOfflineScreenController {
   }
 
   /**
-   * This method serves as the Listener for "Back"-Button It redirects the user to the Start Screen
+   * This method serves as the Listener for "Back"-Button It redirects the user to the Start Screen.
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event ActionEvent that gets triggered when the Back Tutorial Button is clicked
+   * @throws Exception the Exception that is thrown when the FXML file is not found
    */
   @FXML
   void back(ActionEvent event) throws Exception {

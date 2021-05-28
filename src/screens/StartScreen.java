@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * This class runs the initial start of the UI and sets the stage for all the following scenes
+ * This class runs the initial start of the UI and sets the stage for all the following scenes.
  *
  * @author jbleil
  */
@@ -16,7 +16,7 @@ public class StartScreen extends Application {
   private static Stage stage = new Stage();
 
   /**
-   * this method sets the scene for the Start screen
+   * this method sets the scene for the Start screen.
    *
    * @author jbleil
    */
@@ -29,10 +29,10 @@ public class StartScreen extends Application {
   }
 
   /**
-   * this method returns the Stage of the Application
+   * this method returns the Stage of the Application.
    *
    * @author jbleil
-   * @return
+   * @return returns the stage
    */
   public static Stage getStage() {
     return stage;

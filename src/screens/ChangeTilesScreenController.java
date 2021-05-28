@@ -79,6 +79,10 @@ public class ChangeTilesScreenController {
     backgroundPane.getChildren().add(grid3);
   }
 
+  /**
+   * this method sets the TextFields for the ChangeTilesScreen and fills them initially with the properties from the current Bag.
+   * @author jbleil
+   */
   public void setTileScreen() {
     int rowCounter = 0;
     Bag bag = new Bag();
@@ -130,7 +134,7 @@ public class ChangeTilesScreenController {
   /**
    * Stores the changes that were made.
    *
-   * @param event the ActionEvent when the submitChanges-Button is pressed
+   * @param event the ActionEvent when the submitChanges-Button is pressed.
    * @throws Exception
    * @author jbleil
    */

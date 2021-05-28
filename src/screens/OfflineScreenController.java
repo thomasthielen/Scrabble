@@ -14,7 +14,7 @@ import network.Server;
 import network.messages.TooManyPlayerException;
 
 /**
- * this class provides the controller for the Offline Screen
+ * this class provides the controller for the Offline Screen.
  *
  * @author jbleil
  */
@@ -22,11 +22,11 @@ public class OfflineScreenController {
 
   /**
    * This method serves as the Listener for "PLAY GAME"-Button It redirects the user to the Lobby
-   * Screen
+   * Screen.
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event ActionEvent that gets triggered when the Play Game Button is clicked
+   * @throws Exception the Exception that is thrown when the FXML file is not found
    */
   @FXML
   void playGame(ActionEvent event) throws Exception {
@@ -42,12 +42,12 @@ public class OfflineScreenController {
   }
 
   /**
-   * This method serves as the Listener for "TRAINING MODE"-Button It redirects the user to the
+   * This method serves as the Listener for "TUORIAL MODE"-Button It redirects the user to the
    * Lobby Screen
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event ActionEvent that gets triggered when the Play Tutorial Button is clicked
+   * @throws Exception the Exception that is thrown when the FXML file is not found
    */
   @FXML
   void trainingMode(ActionEvent event) throws Exception {
@@ -66,8 +66,8 @@ public class OfflineScreenController {
    * Offline Screen
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event ActionEvent that gets triggered when the Back Button is clicked
+   * @throws Exception the Exception that is thrown when the FXML file is not found
    */
   @FXML
   void back(ActionEvent event) throws Exception {

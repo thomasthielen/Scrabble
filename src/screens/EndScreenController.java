@@ -47,11 +47,11 @@ public class EndScreenController {
   public void initialize() {
     ArrayList<Player> players = Client.getGameSession().getPlayerList();
     Collections.sort(players);
-    for(int i = 0; i < players.size() - 1; i++) {
+    for (int i = 0; i < players.size() - 1; i++) {
       Player help = new Player("");
       help = players.get(i);
-      players.set(i, players.get(i+1));
-      players.set(i+1, help);
+      players.set(i, players.get(i + 1));
+      players.set(i + 1, help);
     }
     GridPane grid1 = new GridPane();
     grid1.setHgap(50);
@@ -164,7 +164,7 @@ public class EndScreenController {
    *
    * @author tikrause
    * @param event button pushed
-   * @throws Exception
+   * @throws Exception 
    */
   @FXML
   void playAgain(ActionEvent event) throws Exception {
@@ -223,7 +223,7 @@ public class EndScreenController {
    *
    * @author jbleil
    * @param event the MouseEvent that gets thrown when clicking on the "Soni Sokell" Text
-   * @throws Exception
+   * @throws Exception the Exception when the fxml file is not found
    */
   @FXML
   void openNameScreen(MouseEvent event) throws Exception {
@@ -238,7 +238,7 @@ public class EndScreenController {
    *
    * @author jbleil
    * @param event the MouseEvent that gets thrown when clicking on the "freeicons.io" Text
-   * @throws Exception
+   * @throws Exception the Exception when the fxml file is not found
    */
   @FXML
   void openSiteScreen(MouseEvent event) throws Exception {

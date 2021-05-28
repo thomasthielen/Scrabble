@@ -1,9 +1,9 @@
 package screens;
 
+import data.DataHandler;
 import java.net.BindException;
 import java.net.UnknownHostException;
 
-import data.DataHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +14,7 @@ import network.Server;
 import network.messages.TooManyPlayerException;
 
 /**
- * this class provides the controller for the Online Screen
+ * this class provides the controller for the Online Screen.
  *
  * @author jbleil
  */
@@ -22,11 +22,11 @@ public class OnlineScreenController {
 
   /**
    * This method serves as the Listener for "HOST GAME"-Button It redirects the user to the Lobby
-   * Screen
+   * Screen.
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event ActionEvent that gets triggered when the Host Game Button is clicked
+   * @throws Exception the Exception that is thrown when the FXML file is not found
    */
   @FXML
   void hostGame(ActionEvent event) throws Exception {
@@ -46,8 +46,8 @@ public class OnlineScreenController {
    * Server Screen
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event ActionEvent that gets triggered when the Join Game Button is clicked
+   * @throws Exception the Exception that is thrown when the FXML file is not found
    */
   @FXML
   void joinGame(ActionEvent event) throws Exception {
@@ -65,11 +65,11 @@ public class OnlineScreenController {
 
   /**
    * This method serves as the Listener for "Back"-Button It redirects the user to the Online or
-   * Offline Screen
+   * Offline Screen.
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event ActionEvent that gets triggered when the Back Button is clicked
+   * @throws Exception the Exception that is thrown when the FXML file is not found
    */
   @FXML
   void back(ActionEvent event) throws Exception {

@@ -14,13 +14,13 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -28,7 +28,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 /**
- * this class provides the controller for the Existing Profile Screen
+ * this class provides the controller for the Existing Profile Screen.
  *
  * @author jbleil
  */
@@ -44,8 +44,8 @@ public class ExistingProfileScreenController {
    * or Offline Screen.
    *
    * @author jluellig
-   * @param event
-   * @throws Exception
+   * @param event ActionEvent that gets triggered when the startGame Button is clicked
+   * @throws Exception the Exception when the fxml file is not found
    */
   @FXML
   void startGame(ActionEvent event) throws Exception {
@@ -161,8 +161,8 @@ public class ExistingProfileScreenController {
    * Screen.
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event ActionEvent that gets triggered when the back Button is clicked.
+   * @throws Exception the Exception when the fxml file is not found
    */
   @FXML
   void back(ActionEvent event) throws Exception {
@@ -208,7 +208,7 @@ public class ExistingProfileScreenController {
    *
    * @author jbleil
    * @param event the MouseEvent that gets thrown when clicking on the "Soni Sokell" Text
-   * @throws Exception
+   * @throws Exception the Exception when the fxml file is not found
    */
   @FXML
   void openNameScreen(MouseEvent event) throws Exception {
