@@ -1,5 +1,9 @@
 package screens;
 
+import ai.AI;
+import data.DataHandler;
+import data.StatisticKeys;
+import gameentities.Player;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -12,20 +16,15 @@ import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
-
-import org.apache.commons.io.IOUtils;
-
-import ai.AI;
-import data.DataHandler;
-import data.StatisticKeys;
-import gameentities.Player;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuButton;
@@ -34,7 +33,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -47,8 +45,8 @@ import javafx.stage.WindowEvent;
 import network.Client;
 import network.Server;
 import network.messages.TooManyPlayerException;
+import org.apache.commons.io.IOUtils;
 import session.Dictionary;
-import javafx.event.EventHandler;
 
 /**
  * This class provides the Controller for the Lobby Screen.
@@ -356,15 +354,15 @@ public class LobbyScreenController {
   @FXML
   void easyAIPlayer(ActionEvent event) {
     try {
-      int aiCount = Server.getEasyAICount() + 1;
+      int aiCount = Server.getEasyBotCount() + 1;
       String aiName = "EasyAI" + aiCount;
-      for (AI aiPlayer : Server.getAIPlayerList()) {
+      for (AI aiPlayer : Server.getBotPlayerList()) {
         if (aiName.equals(aiPlayer.getPlayer().getUsername())) {
           aiName = "EasyAI" + ++aiCount;
         }
       }
       AI ai = new AI(aiName, false);
-      Server.addAIPlayer(ai);
+      Server.addBotPlayer(ai);
       refreshPlayerList();
       Client.sendChat(ai.getPlayer(), ": You will definitely lose!");
       chatHistory.append(ai.getPlayer().getUsername() + ": " + "You will definitely lose!" + "\n");
@@ -389,15 +387,15 @@ public class LobbyScreenController {
   @FXML
   void hardAIPlayer(ActionEvent event) {
     try {
-      int aiCount = Server.getHardAICount() + 1;
+      int aiCount = Server.getHardBotCount() + 1;
       String aiName = "HardAI" + aiCount;
-      for (AI aiPlayer : Server.getAIPlayerList()) {
+      for (AI aiPlayer : Server.getBotPlayerList()) {
         if (aiName.equals(aiPlayer.getPlayer().getUsername())) {
           aiName = "HardAI" + ++aiCount;
         }
       }
       AI ai = new AI(aiName, true);
-      Server.addAIPlayer(ai);
+      Server.addBotPlayer(ai);
       refreshPlayerList();
       Client.sendChat(ai.getPlayer(), ": You will have no chance!");
       chatHistory.append(ai.getPlayer().getUsername() + ": " + "You will have no chance!" + "\n");
@@ -422,7 +420,7 @@ public class LobbyScreenController {
   @FXML
   void deleteAIPlayer1(ActionEvent event) {
     Player ai = Server.getPlayerList().get(1);
-    Server.removeAIPlayer(ai);
+    Server.removeBotPlayer(ai);
     refreshPlayerList();
     deleteButton1.setVisible(false);
   }
@@ -436,7 +434,7 @@ public class LobbyScreenController {
   @FXML
   void deleteAIPlayer2(ActionEvent event) {
     Player ai = Server.getPlayerList().get(2);
-    Server.removeAIPlayer(ai);
+    Server.removeBotPlayer(ai);
     refreshPlayerList();
     deleteButton2.setVisible(false);
   }
@@ -450,7 +448,7 @@ public class LobbyScreenController {
   @FXML
   void deleteAIPlayer3(ActionEvent event) {
     Player ai = Server.getPlayerList().get(3);
-    Server.removeAIPlayer(ai);
+    Server.removeBotPlayer(ai);
     refreshPlayerList();
     deleteButton3.setVisible(false);
   }

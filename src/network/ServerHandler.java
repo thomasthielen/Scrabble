@@ -13,11 +13,11 @@ import network.messages.ConnectMessage;
 import network.messages.DictionaryMessage;
 import network.messages.DisconnectMessage;
 import network.messages.GameRunningMessage;
-import network.messages.PlayerExistentMessage;
 import network.messages.GameStateMessage;
 import network.messages.Message;
 import network.messages.MessageType;
-import network.messages.NotifyAIMessage;
+import network.messages.NotifyBotsMessage;
+import network.messages.PlayerExistentMessage;
 import network.messages.TooFewPlayerMessage;
 import network.messages.TooManyPlayerMessage;
 import session.GameState;
@@ -135,15 +135,15 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
             channel.writeAndFlush(new DictionaryMessage(null, DataHandler.getUserDictionary()));
           }
         }
-        for (AI ai : Server.getAIPlayerList()) {
+        for (AI ai : Server.getBotPlayerList()) {
           ai.initializeAI(dm.getFile());
         }
         break;
 
       case NOTIFY_AI:
-        NotifyAIMessage nam = (NotifyAIMessage) msg;
-        for (AI ai : Server.getAIPlayerList()) {
-          if (ai.getPlayer().equals(nam.getAIPlayer())) {
+        NotifyBotsMessage nam = (NotifyBotsMessage) msg;
+        for (AI ai : Server.getBotPlayerList()) {
+          if (ai.getPlayer().equals(nam.getBotPlayer())) {
             ai.makeMove();
           }
         }
@@ -151,8 +151,15 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
 
       case GAME_STATE:
         GameStateMessage gsm = (GameStateMessage) msg;
-        Server.updateAI(gsm.getGameState());
+        Server.updateBots(gsm.getGameState());
         Client.updateGameSession(gsm.getGameState());
+        Channel ownChannel = ctx.channel();
+        for (Channel channel : channels) {
+          if (channel != ownChannel) {
+            channel.writeAndFlush(msg);
+          }
+        }
+        break;
 
       default:
         Channel in = ctx.channel();

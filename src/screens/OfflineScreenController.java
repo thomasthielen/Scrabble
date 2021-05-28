@@ -1,9 +1,8 @@
 package screens;
 
+import data.DataHandler;
 import java.net.BindException;
 import java.net.UnknownHostException;
-
-import data.DataHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -97,7 +96,7 @@ public class OfflineScreenController {
         break;
       } catch (BindException e) {
         port++;
-      } catch (UnknownHostException | InterruptedException | TooManyPlayerException e) {
+      } catch (InterruptedException | TooManyPlayerException e) {
         e.printStackTrace();
       }
     }

@@ -2,11 +2,9 @@ package screens;
 
 import data.DataHandler;
 import gameentities.Player;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -147,7 +145,7 @@ public class EndScreenController {
    *
    * @author tikrause
    * @param event 'LEAVE GAME'-Button pushed
-   * @throws Exception
+   * @throws Exception exceptions caused by disconnecting the client
    */
   @FXML
   void leaveGame(ActionEvent event) throws Exception {
@@ -164,11 +162,10 @@ public class EndScreenController {
    *
    * @author tikrause
    * @param event button pushed
-   * @throws Exception 
+   * @throws Exception exceptions caused by disconnecting or reconnecting the client
    */
   @FXML
   void playAgain(ActionEvent event) throws Exception {
-    boolean multiPlayer = (Client.getGameSession().getLobbyScreenController() != null);
     if (Client.isHost()) {
       Client.enablePlayAgain(DataHandler.getOwnPlayer());
     }
@@ -177,10 +174,11 @@ public class EndScreenController {
       Server.serverShutdown();
       try {
         Server.createServer(Server.getPort());
-      } catch (UnknownHostException | InterruptedException e) {
+      } catch (InterruptedException e) {
         e.printStackTrace();
       }
     }
+    boolean multiPlayer = (Client.getGameSession().getLobbyScreenController() != null);
     Client.connectToServer(DataHandler.getOwnPlayer());
     FXMLLoader loader = new FXMLLoader();
     Parent content;

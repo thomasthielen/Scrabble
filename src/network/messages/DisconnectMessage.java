@@ -1,8 +1,7 @@
 package network.messages;
 
-import java.util.ArrayList;
-
 import gameentities.Player;
+import java.util.ArrayList;
 
 /**
  * Implementation of the disconnect message. A DisconnectMessage is created for every Player leaving
@@ -43,7 +42,7 @@ public class DisconnectMessage extends Message {
   }
   
   /**
-   * getter method for the player list
+   * getter method for the player list.
    *
    * @author tikrause
    * @return ArrayList of the players

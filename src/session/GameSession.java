@@ -779,7 +779,7 @@ public class GameSession {
       if (p.isCurrentlyPlaying()) {
         Player playing = p;
         if (playing.isBot()) {
-          Client.notifyAI(DataHandler.getOwnPlayer(), playing);
+          Client.notifyBots(DataHandler.getOwnPlayer(), playing);
         }
       }
     }

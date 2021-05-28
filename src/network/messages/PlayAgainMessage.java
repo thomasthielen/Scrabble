@@ -18,7 +18,7 @@ public class PlayAgainMessage extends Message {
    * PlayAgainMessage is created with the name of the host.
    *
    * @author tikrause
-   * @param player player instance of the host
+   * @param p player instance of the host
    */
   public PlayAgainMessage(Player p) {
     super(MessageType.PLAY_AGAIN, p);

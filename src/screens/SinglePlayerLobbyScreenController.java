@@ -216,7 +216,7 @@ public class SinglePlayerLobbyScreenController {
    */
   @FXML
   void startGame(ActionEvent event) throws Exception {
-    if (Server.getAIPlayerList().size() > 0) {
+    if (Server.getBotPlayerList().size() > 0) {
       Client.getGameSession().setBag(Client.getGameSession().getBag());
       DataHandler.userDictionaryFile(chosenDictionary);
       Client.sendDictionary(chosenDictionary);
@@ -257,15 +257,15 @@ public class SinglePlayerLobbyScreenController {
   @FXML
   void easyAIPlayer(ActionEvent event) {
     try {
-      int aiCount = Server.getEasyAICount() + 1;
+      int aiCount = Server.getEasyBotCount() + 1;
       String aiName = "EasyAI" + aiCount;
-      for (AI aiPlayer : Server.getAIPlayerList()) {
+      for (AI aiPlayer : Server.getBotPlayerList()) {
         if (aiName.equals(aiPlayer.getPlayer().getUsername())) {
           aiName = "EasyAI" + ++aiCount;
         }
       }
       AI ai = new AI(aiName, false);
-      Server.addAIPlayer(ai);
+      Server.addBotPlayer(ai);
     } catch (TooManyPlayerException e) {
       Alert errorAlert = new Alert(AlertType.ERROR);
       errorAlert.setTitle("Error");
@@ -287,15 +287,15 @@ public class SinglePlayerLobbyScreenController {
   @FXML
   void hardAIPlayer(ActionEvent event) {
     try {
-      int aiCount = Server.getHardAICount() + 1;
+      int aiCount = Server.getHardBotCount() + 1;
       String aiName = "HardAI" + aiCount;
-      for (AI aiPlayer : Server.getAIPlayerList()) {
+      for (AI aiPlayer : Server.getBotPlayerList()) {
         if (aiName.equals(aiPlayer.getPlayer().getUsername())) {
           aiName = "HardAI" + ++aiCount;
         }
       }
       AI ai = new AI(aiName, true);
-      Server.addAIPlayer(ai);
+      Server.addBotPlayer(ai);
     } catch (TooManyPlayerException e) {
       Alert errorAlert = new Alert(AlertType.ERROR);
       errorAlert.setTitle("Error");
@@ -317,7 +317,7 @@ public class SinglePlayerLobbyScreenController {
   @FXML
   void deleteAIPlayer1(ActionEvent event) {
     Player ai = Server.getPlayerList().get(1);
-    Server.removeAIPlayer(ai);
+    Server.removeBotPlayer(ai);
     refreshPlayerList();
     deleteButton1.setVisible(false);
   }
@@ -331,7 +331,7 @@ public class SinglePlayerLobbyScreenController {
   @FXML
   void deleteAIPlayer2(ActionEvent event) {
     Player ai = Server.getPlayerList().get(2);
-    Server.removeAIPlayer(ai);
+    Server.removeBotPlayer(ai);
     refreshPlayerList();
     deleteButton2.setVisible(false);
   }
@@ -345,7 +345,7 @@ public class SinglePlayerLobbyScreenController {
   @FXML
   void deleteAIPlayer3(ActionEvent event) {
     Player ai = Server.getPlayerList().get(3);
-    Server.removeAIPlayer(ai);
+    Server.removeBotPlayer(ai);
     refreshPlayerList();
     deleteButton3.setVisible(false);
   }

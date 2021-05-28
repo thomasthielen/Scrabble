@@ -1,7 +1,7 @@
 package network.messages;
 
-import java.io.Serializable;
 import gameentities.Player;
+import java.io.Serializable;
 
 /**
  * Abstract class for all messages that can be sent between the server and the clients.

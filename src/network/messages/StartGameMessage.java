@@ -3,7 +3,8 @@ package network.messages;
 import gameentities.Player;
 
 /**
- * Implementation of the StartGameMessage. A StartGameMessage is created when the host starts the game and the other players should be informed.
+ * Implementation of the StartGameMessage. A StartGameMessage is created when the host starts the
+ * game and the other players should be informed.
  *
  * @author tikrause
  */
@@ -15,7 +16,8 @@ public class StartGameMessage extends Message {
   private String chat;
 
   /**
-   * Constructor: creating a StartGameMessage with the MessageType.START_GAME, the name of the creator and the lobby chat that should be taken over into the game screen.
+   * Constructor: creating a StartGameMessage with the MessageType.START_GAME, the name of the
+   * creator and the lobby chat that should be taken over into the game screen.
    *
    * @author tikrause
    * @param p player object of the creator
@@ -27,8 +29,9 @@ public class StartGameMessage extends Message {
   }
 
   /**
-   * getter method for the chat history that should be taken over from the lobby screen into the game screen.
-   * 
+   * getter method for the chat history that should be taken over from the lobby screen into the
+   * game screen.
+   *
    * @author tikrause
    * @return chat history
    */

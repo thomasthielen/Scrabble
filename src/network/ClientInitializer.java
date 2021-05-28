@@ -18,7 +18,7 @@ public class ClientInitializer extends ChannelInitializer<SocketChannel> {
    * initializes the client channel.
    *
    * @author tikrause
-   * @param socketCh
+   * @param socketCh client socket channel
    */
   @Override
   protected void initChannel(SocketChannel socketCh) throws Exception {

@@ -40,14 +40,16 @@ public class Server {
    *
    * @author tikrause
    * @param bindPort port where the server should wait for connections
-   * @throws UnknownHostException
-   * @throws BindException
-   * @throws InterruptedException
+   * @throws BindException port is not available
+   * @throws InterruptedException thread interrupted
    */
-  public static void createServer(int bindPort)
-      throws UnknownHostException, BindException, InterruptedException {
+  public static void createServer(int bindPort) throws BindException, InterruptedException {
     port = bindPort;
-    ip = InetAddress.getLocalHost().getHostAddress();
+    try {
+      ip = InetAddress.getLocalHost().getHostAddress();
+    } catch (UnknownHostException e) {
+      e.printStackTrace();
+    }
     System.out.println(ip);
 
     // simplifies the connection process
@@ -68,7 +70,7 @@ public class Server {
    * closes all connections, resets the player lists and is no longer waiting at the given port.
    *
    * @author tikrause
-   * @throws InterruptedException
+   * @throws InterruptedException message channel thread interrupted
    */
   public static void serverShutdown() throws InterruptedException {
     isRunning = false;
@@ -87,7 +89,7 @@ public class Server {
    * @author tikrause
    * @param gs changes that should be updated in the game session of the AI players
    */
-  static void updateAI(GameState gs) {
+  static void updateBots(GameState gs) {
     for (AI ai : aiPlayers) {
       ai.updateGameSession(gs);
     }
@@ -145,9 +147,9 @@ public class Server {
    *
    * @author tikrause
    * @param ai AI instance that should be added to the game
-   * @throws TooManyPlayerException
+   * @throws TooManyPlayerException 4 players are already in the session and no one else can join
    */
-  public static void addAIPlayer(AI ai) throws TooManyPlayerException {
+  public static void addBotPlayer(AI ai) throws TooManyPlayerException {
     if (players.size() >= 4) {
       throw new TooManyPlayerException();
     } else {
@@ -164,7 +166,7 @@ public class Server {
    * @author tikrause
    * @param aiPlayer player instance of the AI that should be removed from the game
    */
-  public static void removeAIPlayer(Player aiPlayer) {
+  public static void removeBotPlayer(Player aiPlayer) {
     AI removedPlayer = null;
     for (AI ai : aiPlayers) {
       if (ai.getPlayer().equals(aiPlayer)) {
@@ -204,7 +206,7 @@ public class Server {
    * @author tikrause
    * @return aiPlayers AI player list of all AI players in the game session
    */
-  public static ArrayList<AI> getAIPlayerList() {
+  public static ArrayList<AI> getBotPlayerList() {
     return aiPlayers;
   }
 
@@ -255,7 +257,7 @@ public class Server {
    * @author tikrause
    * @return number of easy AI players
    */
-  public static int getEasyAICount() {
+  public static int getEasyBotCount() {
     int count = 0;
     for (AI ai : aiPlayers) {
       if (!ai.getDifficulty()) {
@@ -273,7 +275,7 @@ public class Server {
    * @author tikrause
    * @return number of hard AI players
    */
-  public static int getHardAICount() {
+  public static int getHardBotCount() {
     int count = 0;
     for (AI ai : aiPlayers) {
       if (ai.getDifficulty()) {

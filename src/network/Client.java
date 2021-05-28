@@ -12,7 +12,7 @@ import network.messages.DictionaryMessage;
 import network.messages.DisconnectMessage;
 import network.messages.EndGameMessage;
 import network.messages.GameStateMessage;
-import network.messages.NotifyAIMessage;
+import network.messages.NotifyBotsMessage;
 import network.messages.PlayAgainMessage;
 import network.messages.SendChatMessage;
 import network.messages.StartGameMessage;
@@ -108,7 +108,6 @@ public class Client {
    * server.
    *
    * @author tikrause
-   * @param p player instance of the player that has performed an action
    * @param game state object that contains all changes that have to be updated
    */
   public static void sendGameState(GameState game) {
@@ -120,7 +119,6 @@ public class Client {
    * chat history from the lobby screen to all clients.
    *
    * @author tikrause
-   * @param p player instance of the host
    * @param chat chat history from the lobby screen that should be taken over to the game screen
    */
   public static void reportStartGame(String chat) {
@@ -140,12 +138,12 @@ public class Client {
 
   /**
    * Informs the other players that the host has selected to play again.
-   * 
+   *
    * @author tikrause
    * @param p player instance of the host
    */
   public static void enablePlayAgain(Player p) {
-	  cf.channel().writeAndFlush(new PlayAgainMessage(p));
+    cf.channel().writeAndFlush(new PlayAgainMessage(p));
   }
 
   /**
@@ -163,7 +161,6 @@ public class Client {
    * Sends the dictionary file that has been chosen to all clients.
    *
    * @author tikrause
-   * @param p player instance of the host
    * @param f dictionary file that should be sent
    */
   public static void sendDictionary(File f) {
@@ -177,8 +174,8 @@ public class Client {
    * @param p player instance of the player that has finished his move
    * @param aiPlayer that should make a move now
    */
-  public static void notifyAI(Player p, Player aiPlayer) {
-    cf.channel().writeAndFlush(new NotifyAIMessage(p, aiPlayer));
+  public static void notifyBots(Player p, Player aiPlayer) {
+    cf.channel().writeAndFlush(new NotifyBotsMessage(p, aiPlayer));
   }
 
   /**

@@ -20,8 +20,8 @@ public class SendChatMessage extends Message {
    * and the text that is sent as a chat message.
    *
    * @author tikrause
-   * @param from
-   * @param message
+   * @param p player that has sent the message
+   * @param message sent message
    */
   public SendChatMessage(Player p, String message) {
     super(MessageType.SEND_CHAT, p);

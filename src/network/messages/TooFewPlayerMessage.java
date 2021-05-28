@@ -15,7 +15,8 @@ public class TooFewPlayerMessage extends Message {
   private static final long serialVersionUID = 1L;
 
   /**
-   * Constructor: creating a TooFewPlayerMessage with the MessageType.TOO_FEW and the player object of the creator.
+   * Constructor: creating a TooFewPlayerMessage with the MessageType.TOO_FEW and the player object
+   * of the creator.
    *
    * @author tikrause
    * @param p player object of the creator

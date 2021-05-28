@@ -3,8 +3,9 @@ package network.messages;
 import gameentities.Player;
 
 /**
- * Implementation of the PlayerExistentMessage. A PlayerExistentMessage is created to inform a player that
- * wants to join the server that the game has already started and the player gets rejected.
+ * Implementation of the PlayerExistentMessage. A PlayerExistentMessage is created to inform a
+ * player that wants to join the server that the game has already started and the player gets
+ * rejected.
  *
  * @author tikrause
  */
