@@ -703,20 +703,20 @@ public class GameScreenController {
   }
 
   /**
-   * This method serves as the Listener for "Leave Game"-Button It let's the user leave the game and
-   * redirects him to the StartScreen
+   * This method serves as the Listener for the "Leave Game"-Button. It asks the user whether he
+   * wants to leave the game and removes him after his confirmation.
    *
-   * @author jbleil
-   * @param event
-   * @throws Exception
+   * @author tikrause
+   * @param event user clicks the 'LEAVE GAME'-Button
    */
   @FXML
-  void leaveGame(ActionEvent event) throws Exception {
+  void leaveGame(ActionEvent event) {
     Alert alert = new Alert(AlertType.CONFIRMATION);
     alert.setTitle("Confirmation dialog");
     alert.setHeaderText("You are trying to leave the game.");
     alert.setContentText(
-        "When you leave the game, you get disconnected from the server and can't join this session anymore.");
+        "When you leave the game, you get disconnected from the server "
+            + "and can't join this session anymore.");
     Button cancelButton = (Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL);
     cancelButton.setText("Cancel");
     Optional<ButtonType> result = alert.showAndWait();
@@ -738,6 +738,11 @@ public class GameScreenController {
     }
   }
 
+  /**
+   * Removes the player from the game and informs him if he exceeded the 10 minute limit.
+   *
+   * @author tikrause
+   */
   public void leaveGameCall() {
     try {
       Client.disconnectClient(DataHandler.getOwnPlayer());
