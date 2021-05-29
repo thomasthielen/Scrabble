@@ -117,7 +117,6 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
         break;
 
       case END_GAME:
-        Client.getGameSession().endGame();
         Platform.runLater(
             new Runnable() {
               @Override
