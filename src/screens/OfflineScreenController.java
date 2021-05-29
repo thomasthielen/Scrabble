@@ -2,7 +2,6 @@ package screens;
 
 import data.DataHandler;
 import java.net.BindException;
-import java.net.UnknownHostException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +15,7 @@ import network.messages.TooManyPlayerException;
  * this class provides the controller for the Offline Screen.
  *
  * @author jbleil
+ * @author tikrause
  */
 public class OfflineScreenController {
 
@@ -41,8 +41,8 @@ public class OfflineScreenController {
   }
 
   /**
-   * This method serves as the Listener for "TUORIAL MODE"-Button It redirects the user to the
-   * Lobby Screen
+   * This method serves as the Listener for "TUORIAL MODE"-Button. It redirects the user to the
+   * Lobby Screen.
    *
    * @author jbleil
    * @param event ActionEvent that gets triggered when the Play Tutorial Button is clicked
@@ -61,8 +61,8 @@ public class OfflineScreenController {
   }
 
   /**
-   * This method serves as the Listener for "Back"-Button It redirects the user to the Online or
-   * Offline Screen
+   * This method serves as the Listener for "Back"-Button. It redirects the user to the Online or
+   * Offline Screen.
    *
    * @author jbleil
    * @param event ActionEvent that gets triggered when the Back Button is clicked

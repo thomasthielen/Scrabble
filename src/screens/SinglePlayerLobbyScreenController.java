@@ -9,9 +9,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.apache.commons.io.IOUtils;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,11 +17,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
@@ -34,12 +31,15 @@ import javafx.stage.WindowEvent;
 import network.Client;
 import network.Server;
 import network.messages.TooManyPlayerException;
+import org.apache.commons.io.IOUtils;
 import session.Dictionary;
 
 /**
- * This class provides the Controller for the Single Player Lobby Screen
+ * This class provides the Controller for the Single Player Lobby Screen.
  *
  * @author tikrause
+ * @author jbleil
+ * @author jluellig
  */
 public class SinglePlayerLobbyScreenController {
 
@@ -53,7 +53,7 @@ public class SinglePlayerLobbyScreenController {
 
   @FXML private Pane lobbyPane;
 
-  @FXML private Pane chooseAIPane;
+  @FXML private Pane chooseBotPane;
 
   @FXML private Pane tooltipPane;
 
@@ -83,7 +83,7 @@ public class SinglePlayerLobbyScreenController {
    * @author jbleil
    */
   public void initialize() {
-    chooseAIPane.setVisible(false);
+    chooseBotPane.setVisible(false);
     tooltipPane.setVisible(false);
 
     playerInfos.add(playerInfo1);
@@ -118,10 +118,9 @@ public class SinglePlayerLobbyScreenController {
    *
    * @author jluellig
    * @param event ActionEvent when the "Upload dictionary"-Button is clicked
-   * @throws Exception
    */
   @FXML
-  void uploadDictionary(ActionEvent event) throws Exception {
+  void uploadDictionary(ActionEvent event) {
     try {
       FileChooser fileChooser = new FileChooser();
       fileChooser
@@ -158,11 +157,23 @@ public class SinglePlayerLobbyScreenController {
     }
   }
 
+  /**
+   * Opens the tooltip.
+   *
+   * @param event the MouseEvent when the mouse enters the range of the tooltip
+   * @author jbleil
+   */
   @FXML
   void openTooltip(MouseEvent event) {
     Text text =
         new Text(
-            "You can upload your own dictionary for the\ngame! You can only use text files in which\nevery line starts with the word you want to\nadd to the dictionary. Every other information\n(that will not be used by this game) has to be\nseparated from the word in this line\nby a whitespace.");
+            "You can upload your own dictionary for the"
+                + "\ngame! You can only use text files in which"
+                + "\nevery line starts with the word you want to"
+                + "\nadd to the dictionary. Every other information"
+                + "\n(that will not be used by this game) has to be"
+                + "\nseparated from the word in this line"
+                + "\nby a whitespace.");
     text.relocate(10, 10);
     text.setFill(Paint.valueOf("#f88c00"));
     text.setFont(new Font(14));
@@ -170,6 +181,12 @@ public class SinglePlayerLobbyScreenController {
     tooltipPane.setVisible(true);
   }
 
+  /**
+   * Closes the tooltip.
+   *
+   * @param event the MouseEvent when the mouse leaves the range of the tooltip
+   * @author jbleil
+   */
   @FXML
   void closeTooltip(MouseEvent event) {
     tooltipPane.setVisible(false);
@@ -207,8 +224,8 @@ public class SinglePlayerLobbyScreenController {
   }
 
   /**
-   * This method serves as the Listener for "START GAME"-Button It let's the user start the game and
-   * redirects him to the GameScreen
+   * This method serves as the Listener for "START GAME"-Button. It lets the user start the game and
+   * redirects him to the GameScreen.
    *
    * @author jbleil
    * @param event ActionEvent that gets triggered when the Start Game Button is clicked
@@ -244,8 +261,8 @@ public class SinglePlayerLobbyScreenController {
    * @param event user clicks the button
    */
   @FXML
-  void addAIPlayer(ActionEvent event) throws Exception {
-    chooseAIPane.setVisible(true);
+  void addBotPlayer(ActionEvent event) throws Exception {
+    chooseBotPane.setVisible(true);
   }
 
   /**
@@ -255,7 +272,7 @@ public class SinglePlayerLobbyScreenController {
    * @param event user chooses to add an easy AI player
    */
   @FXML
-  void easyAIPlayer(ActionEvent event) {
+  void easyBotPlayer(ActionEvent event) {
     try {
       int aiCount = Server.getEasyBotCount() + 1;
       String aiName = "EasyAI" + aiCount;
@@ -271,11 +288,12 @@ public class SinglePlayerLobbyScreenController {
       errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Too many players.");
       errorAlert.setContentText(
-          "You can't add another AI player because there are already the maximum of 3 AI players in the game.");
+          "You can't add another AI player because there are already "
+              + "the maximum of 3 AI players in the game.");
       errorAlert.showAndWait();
     }
     refreshPlayerList();
-    closeChooseAIPane(new ActionEvent());
+    closeChooseBotPane(new ActionEvent());
   }
 
   /**
@@ -301,11 +319,12 @@ public class SinglePlayerLobbyScreenController {
       errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Too many players.");
       errorAlert.setContentText(
-          "You can't add another AI player because there are already the maximum of 3 AI players in the game.");
+          "You can't add another AI player because there are already "
+              + "the maximum of 3 AI players in the game.");
       errorAlert.showAndWait();
     }
     refreshPlayerList();
-    closeChooseAIPane(new ActionEvent());
+    closeChooseBotPane(new ActionEvent());
   }
 
   /**
@@ -315,7 +334,7 @@ public class SinglePlayerLobbyScreenController {
    * @param event user chooses to delete the AI player
    */
   @FXML
-  void deleteAIPlayer1(ActionEvent event) {
+  void deleteBotPlayer1(ActionEvent event) {
     Player ai = Server.getPlayerList().get(1);
     Server.removeBotPlayer(ai);
     refreshPlayerList();
@@ -329,7 +348,7 @@ public class SinglePlayerLobbyScreenController {
    * @param event user chooses to delete the AI player
    */
   @FXML
-  void deleteAIPlayer2(ActionEvent event) {
+  void deleteBotPlayer2(ActionEvent event) {
     Player ai = Server.getPlayerList().get(2);
     Server.removeBotPlayer(ai);
     refreshPlayerList();
@@ -343,7 +362,7 @@ public class SinglePlayerLobbyScreenController {
    * @param event user chooses to delete the AI player
    */
   @FXML
-  void deleteAIPlayer3(ActionEvent event) {
+  void deleteBotPlayer3(ActionEvent event) {
     Player ai = Server.getPlayerList().get(3);
     Server.removeBotPlayer(ai);
     refreshPlayerList();
@@ -357,10 +376,15 @@ public class SinglePlayerLobbyScreenController {
    * @param event user clicks the exit button
    */
   @FXML
-  void closeChooseAIPane(ActionEvent event) {
-    chooseAIPane.setVisible(false);
+  void closeChooseBotPane(ActionEvent event) {
+    chooseBotPane.setVisible(false);
   }
 
+  /**
+   * Sends the user to the GameScreen.
+   *
+   * @author jbleil
+   */
   public void switchToGameScreen() {
     FXMLLoader loader = new FXMLLoader();
     Parent content;
@@ -384,10 +408,6 @@ public class SinglePlayerLobbyScreenController {
    */
   public void setDictionaryMenu() {
     MenuItem menuItem1 = new MenuItem("Collins Scrabble Words");
-    MenuItem menuItem2 = new MenuItem("Enable (Words With Friends)");
-    MenuItem menuItem3 = new MenuItem("Sowpods (Europe Scrabble Word List)");
-    MenuItem menuItem4 = new MenuItem("TWL06 (North America Scrabble Word List)");
-
     menuItem1.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
@@ -406,6 +426,8 @@ public class SinglePlayerLobbyScreenController {
             }
           }
         });
+
+    MenuItem menuItem2 = new MenuItem("Enable (Words With Friends)");
     menuItem2.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
@@ -423,6 +445,8 @@ public class SinglePlayerLobbyScreenController {
             }
           }
         });
+
+    MenuItem menuItem3 = new MenuItem("Sowpods (Europe Scrabble Word List)");
     menuItem3.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
@@ -441,6 +465,8 @@ public class SinglePlayerLobbyScreenController {
             }
           }
         });
+
+    MenuItem menuItem4 = new MenuItem("TWL06 (North America Scrabble Word List)");
     menuItem4.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
@@ -477,6 +503,13 @@ public class SinglePlayerLobbyScreenController {
     }
   }
 
+  /**
+   * Opens the ChangeTilesScreen. Listener for the "Edit Tiles"-Button.
+   *
+   * @param event the ActionEvent when the edit Tiles-Button is pressed.
+   * @throws Exception
+   * @author jbleil
+   */
   @FXML
   void editTiles(ActionEvent event) throws Exception {
     FXMLLoader loader = new FXMLLoader();

@@ -3,7 +3,6 @@ package screens;
 import data.DataHandler;
 import gameentities.Avatar;
 import gameentities.Player;
-
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -25,8 +24,9 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
- * this class provides the controller for the new Profile Screen.
+ * This class provides the controller for the new Profile Screen.
  *
+ * @author jluellig
  * @author jbleil
  */
 public class NewProfileScreenController {
@@ -43,7 +43,7 @@ public class NewProfileScreenController {
    *
    * @author jluellig
    * @param event ActionEvent when the "Start Game"-Button is clicked
-   * @throws Exception
+   * @throws Exception the Exception when the FXML-File is not found
    */
   @FXML
   void startGame(ActionEvent event) throws Exception {
@@ -75,7 +75,8 @@ public class NewProfileScreenController {
         errorAlert.setTitle("Error");
         errorAlert.setHeaderText("Input not valid.");
         errorAlert.setContentText(
-            "The username must contain 2-15 letters or numbers. It can't contain any special characters.");
+            "The username must contain 2-15 letters or numbers. "
+                + "It can't contain any special characters.");
         errorAlert.showAndWait();
         inputForm.clear();
       }
@@ -93,7 +94,7 @@ public class NewProfileScreenController {
    * alternative to the start game button.
    *
    * @param event ActionEvent when enter is pressed in the text field
-   * @throws Exception
+   * @throws Exception the Exception from startGame()
    * @author jluellig
    */
   @FXML
@@ -107,7 +108,7 @@ public class NewProfileScreenController {
    *
    * @author jbleil
    * @param event ActionEvent that gets triggered when the back button is clicked
-   * @throws Exception
+   * @throws Exception the Exception when the FXML-File is not found
    */
   @FXML
   void back(ActionEvent event) throws Exception {
@@ -139,10 +140,11 @@ public class NewProfileScreenController {
   }
 
   /**
-   * this method displays all the choosable avatars on the Screen.
+   * Displays all the choosable avatars on the Screen.
    *
    * @author jbleil
-   * @throws FileNotFoundException
+   * @throws FileNotFoundException the exception that occurs when the image file for the avatar is
+   *     not found
    */
   protected void addAvatars() throws FileNotFoundException {
     buttonGroup = new ToggleGroup();

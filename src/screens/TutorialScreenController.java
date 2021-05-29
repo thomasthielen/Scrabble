@@ -2,7 +2,6 @@ package screens;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -21,10 +20,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 /**
- * this class provides the controller for the Tutorial Screen
+ * This class provides the controller for the Tutorial Screen.
  *
- * @author jbleil
  * @author lsteltma
+ * @author jluellig
+ * @author jbleil
  */
 public class TutorialScreenController {
 
@@ -43,7 +43,7 @@ public class TutorialScreenController {
   @FXML private Pane backgroundPane;
 
   /**
-   * This method initializes all the functionalities on the Screen
+   * This method initializes all the functionalities on the Screen.
    *
    * @author lsteltma
    */
@@ -82,8 +82,8 @@ public class TutorialScreenController {
   }
 
   /**
-   * This method initializes the slide Counter so that the user can see on which slide of the
-   * tutorial he currently is
+   * This method initializes the slide counter so that the user can see on which slide of the
+   * tutorial he currently is.
    *
    * @author lsteltma
    */
@@ -97,7 +97,7 @@ public class TutorialScreenController {
   }
 
   /**
-   * This method initializes the first active image shown on the screen
+   * This method initializes the first active image shown on the screen.
    *
    * @author lsteltma
    */
@@ -115,36 +115,34 @@ public class TutorialScreenController {
    *
    * @author jbleil
    * @author lsteltma
-   * @param event
-   * @throws Exception
+   * @param event the ActionEvent when the previous-Button is klicked
    */
   @FXML
-  void previous(ActionEvent event) throws Exception {
+  void previous(ActionEvent event) {
     activeImage -= activeImage > 0 ? 1 : 0;
     updateImage();
   }
 
   /**
-   * This method is the listener for the next button
+   * This method is the listener for the next button.
    *
    * @author jbleil
    * @author lsteltma
-   * @param event
-   * @throws Exception
+   * @param event the ActionEvent when the next-Button is klicked
    */
   @FXML
-  void next(ActionEvent event) throws Exception {
+  void next(ActionEvent event) {
     activeImage += activeImage < 8 ? 1 : 0;
     updateImage();
   }
 
   /**
-   * This method is the listener for the leave button
+   * This method is the listener for the leave button.
    *
    * @author jbleil
    * @author lsteltma
-   * @param event
-   * @throws Exception
+   * @param event the ActionEvent when the leave-Button is klicked
+   * @throws Exception the Exception when the FXML file is not found
    */
   @FXML
   void leaveTutorial(ActionEvent event) throws Exception {
@@ -165,7 +163,7 @@ public class TutorialScreenController {
 
   /**
    * This method is called every time the previous or next button gets pressed to update the shown
-   * image
+   * image.
    *
    * @author lsteltma
    */

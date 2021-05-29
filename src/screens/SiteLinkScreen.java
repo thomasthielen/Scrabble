@@ -34,9 +34,9 @@ public class SiteLinkScreen extends Application {
 
     webView.getEngine().load("https://freeicons.io");
 
-    VBox vBox = new VBox(webView);
+    VBox vbox = new VBox(webView);
 
-    Scene scene = new Scene(vBox, 1000, 562);
+    Scene scene = new Scene(vbox, 1000, 562);
 
     primaryStage.setScene(scene);
 

@@ -10,7 +10,7 @@ import javafx.application.Application;
 public class Main {
 
   /**
-   * this method launches the Application.
+   * This method launches the Application.
    *
    * @author jbleil
    * @param args String[] of the main method

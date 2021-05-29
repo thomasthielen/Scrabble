@@ -1,6 +1,10 @@
 package screens;
 
 import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 
 /**
  * This class provides the methods to launch the Screen for the Name Link of "Soni Sokell" which is
@@ -8,11 +12,6 @@ import javafx.application.Application;
  *
  * @author jbleil
  */
-import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
-import javafx.scene.web.WebView;
-import javafx.stage.Stage;
-
 public class NameLinkScreen extends Application {
 
   /**
@@ -35,9 +34,9 @@ public class NameLinkScreen extends Application {
 
     webView.getEngine().load("https://freeicons.io/profile/6200");
 
-    VBox vBox = new VBox(webView);
+    VBox vbox = new VBox(webView);
 
-    Scene scene = new Scene(vBox, 1000, 562);
+    Scene scene = new Scene(vbox, 1000, 562);
 
     primaryStage.setScene(scene);
 
