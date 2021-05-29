@@ -19,7 +19,9 @@ import java.util.regex.Pattern;
  */
 public class DataHandler {
 
+  // the user's own Player object
   private static Player ownPlayer;
+  // the ID of the user's profile in the database
   private static int ownPlayerID;
 
   /**
@@ -53,27 +55,26 @@ public class DataHandler {
       e.printStackTrace();
     }
   }
-  
+
   /**
    * Returns the UserDictionary.
-   * 
-   * @return dict
    *
+   * @return dict
    * @author jluellig
    */
   public static HashMap<Character, HashMap<Character, SortedSet<String>>> getUserDictionary() {
-	  return UserDictionary.getDict();
+    return UserDictionary.getDict();
   }
-  
+
   /**
    * Sets the User Dictionary.
-   * 
-   * @param dict the user dictionary HashMap
    *
+   * @param dict the user dictionary HashMap
    * @author jluellig
    */
-  public static void setUserDictionary(HashMap<Character, HashMap<Character, SortedSet<String>>> dict) {
-	  UserDictionary.setDict(dict);
+  public static void setUserDictionary(
+      HashMap<Character, HashMap<Character, SortedSet<String>>> dict) {
+    UserDictionary.setDict(dict);
   }
 
   /**

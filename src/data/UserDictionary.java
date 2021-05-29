@@ -32,27 +32,26 @@ class UserDictionary {
       }
     }
   }
-  
+
   /**
    * Returns the UserDictionary.
-   * 
-   * @return dict
    *
+   * @return dict
    * @author jluellig
    */
   protected static HashMap<Character, HashMap<Character, SortedSet<String>>> getDict() {
-	  return dict;
+    return dict;
   }
-  
+
   /**
    * Sets the User Dictionary.
-   * 
-   * @param dict the user dictionary HashMap
    *
+   * @param dict the user dictionary HashMap
    * @author jluellig
    */
-  protected static void setDict(HashMap<Character, HashMap<Character, SortedSet<String>>> dictionary) {
-	  dict = dictionary;
+  protected static void setDict(
+      HashMap<Character, HashMap<Character, SortedSet<String>>> dictionary) {
+    dict = dictionary;
   }
 
   /**

@@ -10,7 +10,11 @@ import java.util.ArrayList;
  */
 class WordBit {
 
+  // every prefix, that gives a correct word of the dictionary if it is combined with the String and
+  // the specific suffix
   private ArrayList<String> prefixes;
+  // every suffix, that gives a correct word of the dictionary if it is combined with the String and
+  // the specific prefix
   private ArrayList<String> suffixes;
 
   /**
