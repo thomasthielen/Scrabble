@@ -39,33 +39,33 @@ public class Bag implements Serializable {
    */
   private void fillBag() {
     // Add the tiles and their counts in tileCounter
-    tileCounter.add(new TileContainer(new Tile('E', 1), 12));
-    tileCounter.add(new TileContainer(new Tile('A', 1), 9));
-    tileCounter.add(new TileContainer(new Tile('I', 1), 9));
-    tileCounter.add(new TileContainer(new Tile('O', 1), 8));
-    tileCounter.add(new TileContainer(new Tile('N', 1), 6));
-    tileCounter.add(new TileContainer(new Tile('R', 1), 6));
-    tileCounter.add(new TileContainer(new Tile('T', 1), 6));
-    tileCounter.add(new TileContainer(new Tile('L', 1), 4));
-    tileCounter.add(new TileContainer(new Tile('S', 1), 4));
-    tileCounter.add(new TileContainer(new Tile('U', 1), 4));
+    tileCounter.add(new TileContainer(new Tile('E', 1), 8));
+    tileCounter.add(new TileContainer(new Tile('A', 1), 0));
+    tileCounter.add(new TileContainer(new Tile('I', 1), 0));
+    tileCounter.add(new TileContainer(new Tile('O', 1), 0));
+    tileCounter.add(new TileContainer(new Tile('N', 1), 4));
+    tileCounter.add(new TileContainer(new Tile('R', 1), 0));
+    tileCounter.add(new TileContainer(new Tile('T', 1), 0));
+    tileCounter.add(new TileContainer(new Tile('L', 1), 0));
+    tileCounter.add(new TileContainer(new Tile('S', 1), 0));
+    tileCounter.add(new TileContainer(new Tile('U', 1), 0));
     tileCounter.add(new TileContainer(new Tile('D', 2), 4));
-    tileCounter.add(new TileContainer(new Tile('G', 2), 3));
-    tileCounter.add(new TileContainer(new Tile('B', 3), 2));
-    tileCounter.add(new TileContainer(new Tile('C', 3), 2));
-    tileCounter.add(new TileContainer(new Tile('M', 3), 2));
-    tileCounter.add(new TileContainer(new Tile('P', 3), 2));
-    tileCounter.add(new TileContainer(new Tile('F', 4), 2));
-    tileCounter.add(new TileContainer(new Tile('H', 4), 2));
-    tileCounter.add(new TileContainer(new Tile('V', 4), 2));
-    tileCounter.add(new TileContainer(new Tile('W', 4), 2));
-    tileCounter.add(new TileContainer(new Tile('Y', 4), 2));
-    tileCounter.add(new TileContainer(new Tile('K', 5), 1));
-    tileCounter.add(new TileContainer(new Tile('J', 8), 1));
-    tileCounter.add(new TileContainer(new Tile('X', 8), 1));
-    tileCounter.add(new TileContainer(new Tile('Q', 10), 1));
-    tileCounter.add(new TileContainer(new Tile('Z', 10), 1));
-    tileCounter.add(new TileContainer(new Tile('*', 0), 2)); // Wildcard / Blank Tile
+    tileCounter.add(new TileContainer(new Tile('G', 2), 0));
+    tileCounter.add(new TileContainer(new Tile('B', 3), 0));
+    tileCounter.add(new TileContainer(new Tile('C', 3), 0));
+    tileCounter.add(new TileContainer(new Tile('M', 3), 0));
+    tileCounter.add(new TileContainer(new Tile('P', 3), 0));
+    tileCounter.add(new TileContainer(new Tile('F', 4), 0));
+    tileCounter.add(new TileContainer(new Tile('H', 4), 0));
+    tileCounter.add(new TileContainer(new Tile('V', 4), 0));
+    tileCounter.add(new TileContainer(new Tile('W', 4), 0));
+    tileCounter.add(new TileContainer(new Tile('Y', 4), 0));
+    tileCounter.add(new TileContainer(new Tile('K', 5), 0));
+    tileCounter.add(new TileContainer(new Tile('J', 8), 0));
+    tileCounter.add(new TileContainer(new Tile('X', 8), 0));
+    tileCounter.add(new TileContainer(new Tile('Q', 10), 0));
+    tileCounter.add(new TileContainer(new Tile('Z', 10), 0));
+    tileCounter.add(new TileContainer(new Tile('*', 0), 0)); // Wildcard / Blank Tile
 
     refreshBag();
   }
@@ -89,10 +89,11 @@ public class Bag implements Serializable {
    * Returns a random tile, reduces the count in the corresponding TileContainer and removes the
    * tile from remainingTiles.
    *
-   * @author tthielen
+   * @author tthielens
    * @return Tile, randomly drawn from the bag
    */
   public Tile drawTile() {
+    System.out.println("drawTile() called with " + remainingTiles.size() + " tiles remaining"); 
     if (!this.isEmpty) {
       // Draw a random tile out of remainingTiles
       int rand = (int) (remainingTiles.size() * Math.random());
@@ -114,6 +115,7 @@ public class Bag implements Serializable {
       return randTile;
 
     } else {
+      System.out.println("bag is empty"); 
       return null;
     }
   }

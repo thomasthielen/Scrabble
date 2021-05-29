@@ -16,7 +16,7 @@ public class Rack implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private ArrayList<Tile> tiles = new ArrayList<Tile>();
-  // 2
+  // Used for tile positioning
   private Tile[] tileArray = new Tile[7];
   // References
   private Bag bag;
@@ -59,15 +59,16 @@ public class Rack implements Serializable {
    * Redraws tiles until there are 7 tiles on the rack again or the bag is empty.
    *
    * @author tthielen
+   * @param ai whether the refilling player is an AI or not.
    */
-  public void refillDraw(boolean isBot) {
+  public void refillDraw(boolean ai) {
     while (this.tiles.size() < 7) {
       if (bag.isEmpty()) {
         return;
       }
       Tile newTile = bag.drawTile();
       tiles.add(newTile);
-      if (!isBot) {
+      if (!ai) {
         for (int i = 0; i < tileArray.length; i++) {
           if (tileArray[i] == null) {
             tileArray[i] = newTile;
@@ -76,7 +77,7 @@ public class Rack implements Serializable {
         }
       }
     }
-    if (!isBot) {
+    if (!ai) {
       tiles.clear();
       for (int i = 0; i < tileArray.length; i++) {
         if (tileArray[i] != null) {
@@ -154,17 +155,16 @@ public class Rack implements Serializable {
   }
 
   /**
-   * Adds a tile back to the rack.
+   * Adds a tile back to the rack on the correct position.
    *
    * @author tthielen
    * @param tile the tile that should be added to the rack
+   * @param position the position of the tile on the rack
    */
-  public void returnTile(Tile tile) {
-    for (int i = 0; i < tileArray.length; i++) {
-      if (tileArray[i] == null) {
-        tileArray[i] = tile;
-        break;
-      }
+  public void returnTile(Tile tile, int position) {
+    if (tileArray[position] == null) {
+      System.out.println("returned to position " + position);
+      tileArray[position] = tile;
     }
     this.tiles.clear();
     for (int i = 0; i < tileArray.length; i++) {
@@ -172,6 +172,16 @@ public class Rack implements Serializable {
         tiles.add(tileArray[i]);
       }
     }
+  }
+  
+  /**
+   * Adds a tile back to the rack. Used for AI.
+   *
+   * @author tthielen
+   * @param tile the tile that should be added to the rack
+   */
+  public void returnTile(Tile tile) {
+    tiles.add(tile);
   }
 
   /**

@@ -548,17 +548,17 @@ public class LobbyScreenController {
   @FXML
   void editTiles(ActionEvent event) throws Exception {
     FXMLLoader loader = new FXMLLoader();
-    ChangeTilesScreenController changeTilesScreenController = loader.getController();
-    changeTilesScreenController.setMultiplayer(true);
-    changeTilesScreenController.setTileScreen();
-    changeTilesScreenController.storeChat(chatHistory);
     Parent content =
         loader.load(
             getClass()
                 .getClassLoader()
                 .getResourceAsStream("screens/resources/ChangeTilesScreen.fxml"));
+    ChangeTilesScreenController changeTilesScreenController = loader.getController();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
+    changeTilesScreenController.setMultiplayer(true);
+    changeTilesScreenController.setTileScreen();
+    changeTilesScreenController.storeChat(chatHistory);
   }
 
   /**

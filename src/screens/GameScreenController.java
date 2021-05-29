@@ -339,9 +339,11 @@ public class GameScreenController {
               // Back end methods
               returnTile.setSelected(false);
               returnTile.setPlacedTemporarily(false);
+              
+              int position = rackTiles.indexOf(returnTile);
 
               // Get the correct square via the coordinates taken in the board selection
-              gameSession.recallTile(boardSelectedX, boardSelectedY);
+              gameSession.recallTile(boardSelectedX, boardSelectedY, position);
 
               // Find the corresponding SquarePane and thus the StackPane
               Square boardSquare = gameSession.getBoard().getSquare(boardSelectedX, boardSelectedY);
@@ -354,8 +356,7 @@ public class GameScreenController {
               }
 
               // Reset the opacity of the returned tile on the rack
-              int i = rackTiles.indexOf(returnTile);
-              Node n = rackPane.getChildren().get(i);
+              Node n = rackPane.getChildren().get(position);
               rackPanes.get(rackPanes.indexOf(n)).setOpacity(1);
 
               wildcardTile = clickedOnTile;
@@ -382,10 +383,11 @@ public class GameScreenController {
               // OPTION 2: The clicked on tile is the selected tile on the board
             } else if (boardSelected && clickedOnTile == returnTile) {
               deselectAll();
-
+              
               gameBoardTiles.remove(clickedOnTile);
+              int position = rackTiles.indexOf(clickedOnTile);
 
-              gameSession.recallTile(boardSelectedX, boardSelectedY);
+              gameSession.recallTile(boardSelectedX, boardSelectedY, position);
               clickedOnTile.setPlacedTemporarily(false);
 
               // Find the corresponding SquarePane and thus the StackPane
@@ -401,8 +403,7 @@ public class GameScreenController {
               boardStackPane.getChildren().clear();
 
               // Reset the opacity of the returned tile on the rack
-              int i = rackTiles.indexOf(clickedOnTile);
-              Node n = rackPane.getChildren().get(i);
+              Node n = rackPane.getChildren().get(position);
               rackPanes.get(rackPanes.indexOf(n)).setOpacity(1);
 
               // OPTION 3: The clicked on tile is currently selected:
@@ -480,15 +481,14 @@ public class GameScreenController {
 
                     // OPTION 1.1: Exchange both tiles
 
-                    // back end methods
                     Tile returnTile = gameSession.getBoard().getTile(clickedOnX, clickedOnY);
                     returnTile.setSelected(false);
                     returnTile.setPlacedTemporarily(false);
-                    gameSession.recallTile(clickedOnX, clickedOnY);
+                    int position = rackTiles.indexOf(returnTile);
+                    gameSession.recallTile(clickedOnX, clickedOnY, position);
 
                     // Reset the opacity of the returned tile on the rack
-                    int i = rackTiles.indexOf(returnTile);
-                    Node n = rackPane.getChildren().get(i);
+                    Node n = rackPane.getChildren().get(position);
                     rackPanes.get(rackPanes.indexOf(n)).setOpacity(1);
 
                     gameBoardTiles.remove(returnTile);
@@ -545,9 +545,15 @@ public class GameScreenController {
                   } else if (boardSelected) {
                     // Swap the tiles!
 
-                    // recall both tiles in the back end
-                    gameSession.recallTile(clickedOnX, clickedOnY); // the clicked on tile
-                    gameSession.recallTile(boardSelectedX, boardSelectedY); // the selected tile
+                    // recall both tiles in the back ends
+                    gameSession.recallTile(
+                        clickedOnX,
+                        clickedOnY,
+                        rackTiles.indexOf(clickedOnTile)); // the clicked on tile
+                    gameSession.recallTile(
+                        boardSelectedX,
+                        boardSelectedY,
+                        rackTiles.indexOf(selectedTile)); // the selected tile
                     // place both tiles at their new positions in the back end
                     gameSession.placeTile(
                         boardSelectedX,
@@ -593,7 +599,8 @@ public class GameScreenController {
                   }
                   // OPTION 2.4: Move the selected tile to an empty location
                 } else if (clickedOnTile == null && boardSelected) {
-                  gameSession.recallTile(boardSelectedX, boardSelectedY);
+                  gameSession.recallTile(
+                      boardSelectedX, boardSelectedY, rackTiles.indexOf(selectedTile));
                   gameSession.placeTile(
                       clickedOnX, clickedOnY, selectedTile, rackTiles.indexOf(selectedTile));
 
@@ -883,7 +890,7 @@ public class GameScreenController {
       tile.setPlacedTemporarily(false);
     }
     // Call the back end method
-    gameSession.recallAll();
+    gameSession.recallAll(false);
     // Refresh the submit button
     refreshSubmit();
 
@@ -1078,16 +1085,17 @@ public class GameScreenController {
    */
   @FXML
   void closeWildcardPane(ActionEvent event) {
+    int position = rackTiles.indexOf(wildcardTile);
+    
     wildcardPane.setVisible(false);
-    gameSession.recallTile(wildcardSquare.getX(), wildcardSquare.getY());
+    gameSession.recallTile(wildcardSquare.getX(), wildcardSquare.getY(), position);
     wildcardStackPane.getChildren().clear();
 
     deselectAll();
     gameBoardTiles.remove(wildcardTile);
 
     wildcardTile.setPlacedTemporarily(false);
-    int i = rackTiles.indexOf(wildcardTile);
-    Node n = rackPane.getChildren().get(i);
+    Node n = rackPane.getChildren().get(position);
     rackPanes.get(rackPanes.indexOf(n)).setOpacity(1);
 
     refreshSubmit();
@@ -1593,6 +1601,16 @@ public class GameScreenController {
             });
   }
 
+  /**
+   * Returns the saved rackTiles of this turn.
+   *
+   * @author tthielen
+   * @return rackTiles
+   */
+  public ArrayList<Tile> getRackTiles() {
+    return this.rackTiles;
+  }
+  
   /**
    * Serves as a Listener for the Text "Soni Sokell" and displays an instance of SiteLinkScreen.
    *

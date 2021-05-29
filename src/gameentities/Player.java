@@ -95,9 +95,21 @@ public class Player implements Serializable, Comparable<Player> {
     this.rack.playTileBot(tile);
     ;
   }
-
+  
   /**
-   * Adds a tile back to the rack.
+   * Adds a tile back to the rack on the correct position.
+   *
+   * @author tthielen
+   * @param tile the tile that should be added back to the player's rack
+   * @param position the position of the tile on the rack
+   */
+  public void returnTile(Tile tile, int position) {
+    this.rack.returnTile(tile, position);
+    ;
+  }
+  
+  /**
+   * Adds a tile back to the rack. Used for AI.
    *
    * @author tthielen
    * @param tile the tile that should be added back to the player's rack

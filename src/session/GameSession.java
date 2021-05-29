@@ -321,8 +321,24 @@ public class GameSession {
   }
 
   /**
+   * /** Recalls the temporarily placed tile from the board and places it back on the rack of the
+   * player (on the exact position of the tile on the rack).
+   *
+   * @author tthielen
+   * @param posX the position on the x-axis
+   * @param posY the position on the y-axis
+   * @param position the position of the tile on the rack
+   */
+  public void recallTile(int posX, int posY, int position) {
+    Tile recallTile = board.recallTile(posX, posY);
+    recallTile.resetLetter();
+    ownPlayer.returnTile(recallTile, position);
+    occupiedSquares.remove(board.getSquare(posX, posY));
+  }
+  
+  /**
    * Recalls the temporarily placed tile from the board and places it back on the rack of the
-   * player.
+   * player. Used for AI, as the position on the rack is not relevant for them.
    *
    * @author tthielen
    * @param posX the position on the x-axis
@@ -331,7 +347,6 @@ public class GameSession {
   public void recallTile(int posX, int posY) {
     // Take the tile from the respective square
     Tile recallTile = board.recallTile(posX, posY);
-    // Reset the letter of the tile, should it have been a wildcard tile
     recallTile.resetLetter();
     // Return the tile to the rack of the player
     ownPlayer.returnTile(recallTile);
@@ -343,20 +358,44 @@ public class GameSession {
    * Recalls all placed tiles to the rack.
    *
    * @author tthielen
+   * @param ai whether the calling player is an AI or not
    */
-  public void recallAll() {
-    ArrayList<Integer> posXcollection = new ArrayList<Integer>();
-    ArrayList<Integer> posYcollection = new ArrayList<Integer>();
+  public void recallAll(boolean ai) {
+    if (ai) {
+      ArrayList<Integer> posXcollection = new ArrayList<Integer>();
+      ArrayList<Integer> posYcollection = new ArrayList<Integer>();
 
-    for (Square s : occupiedSquares) {
-      posXcollection.add(s.getX());
-      posYcollection.add(s.getY());
+      for (Square s : occupiedSquares) {
+        posXcollection.add(s.getX());
+        posYcollection.add(s.getY());
+      }
+
+      int iterations = occupiedSquares.size();
+      for (int i = 0; i < iterations; i++) {
+        recallTile(posXcollection.get(i), posYcollection.get(i));
+      }
+    } else {
+      ArrayList<Integer> posXcollection = new ArrayList<Integer>();
+      ArrayList<Integer> posYcollection = new ArrayList<Integer>();
+      ArrayList<Integer> positions = new ArrayList<Integer>();
+
+      ArrayList<Tile> rackTiles = gameScreenController.getRackTiles();
+
+      for (Square s : occupiedSquares) {
+        posXcollection.add(s.getX());
+        posYcollection.add(s.getY());
+        Tile returnTile = s.getTile();
+        positions.add(rackTiles.indexOf(returnTile));
+      }
+
+      int iterations = occupiedSquares.size();
+
+      for (int i = 0; i < iterations; i++) {
+        recallTile(posXcollection.get(i), posYcollection.get(i), positions.get(i));
+      }
     }
 
-    int iterations = occupiedSquares.size();
-    for (int i = 0; i < iterations; i++) {
-      recallTile(posXcollection.get(i), posYcollection.get(i));
-    }
+    occupiedSquares.clear();
   }
 
   /**
