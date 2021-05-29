@@ -1,10 +1,10 @@
 package session;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import gameentities.Bag;
 import gameentities.Board;
 import gameentities.Player;
+import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Class used to synchronize game entities between players. At each necessary moment, the
