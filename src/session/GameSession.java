@@ -783,7 +783,9 @@ public class GameSession {
           new Runnable() {
             @Override
             public void run() {
-              gameScreenController.switchToEndScreen();
+              if (gameScreenController != null) {
+                gameScreenController.switchToEndScreen();
+              }
             }
           });
     }

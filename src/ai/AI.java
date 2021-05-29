@@ -188,7 +188,6 @@ public class AI {
       this.setMoves();
     }
     PossibleMove max = new PossibleMove(null, 0);
-    //System.out.println(moves.size() + "m�gliche Z�ge");
     if (this.difficult) {
       for (PossibleMove pm : moves) {
         if (pm.getValue() > max.getValue()) {
@@ -208,10 +207,8 @@ public class AI {
         if (counter != 0) {
           avg = (sumValue / counter);
         }
-        //System.out.println("Average: " + avg);
         for (PossibleMove pm : moves) {
           if (pm.getValue() == avg) {
-            //System.out.println("Averagemove returned");
             return pm.getsquares();
           }
         }
@@ -510,22 +507,6 @@ public class AI {
       letters.add(String.valueOf(feld2[z]));
     }
     return letters;
-  }
-  
-  /**
-   * prints the tiles
-   * 
-   * 
-   * @author sisselha 
-   * @param list ArrayList tiles
-   */
-
-  public void printTiles(ArrayList<Tile> list) {
-    //System.out.println("die Tiles sind:");
-    for (int i = 0; i < list.size(); i++) {
-      //System.out.print(" " + String.valueOf(list.get(i).getLetter()));
-    }
-    //System.out.println("das waren die Tiles");
   }
 
   /**
@@ -864,7 +845,6 @@ public class AI {
           @Override
           public void run() {
             tiles = gameReference.getPlayer().getRack().getTiles();
-            printTiles(tiles);
             if (!dictionaryInitialized) {
               DataHandler.botDictionaryFile(dictionary);
               dictionaryInitialized = true;
@@ -906,7 +886,6 @@ public class AI {
                 .getLowerNeighbour(this.gameReference.getBoard().getSquareList().get(i));
         if ((rightneighbour != null) && (lowerneighbour != null)) {
           if (rightneighbour.isTaken() && (!lowerneighbour.isTaken())) {
-            //System.out.println(rightneighbour.getTile().getLetter());
             int x = this.gameReference.getBoard().getSquareList().get(i).getX();
             int y = this.gameReference.getBoard().getSquareList().get(i).getY();
             char c = this.gameReference.getBoard().getSquareList().get(i).getTile().getLetter();
@@ -920,9 +899,7 @@ public class AI {
             squares.add(this.gameReference.getBoard().getSquareList().get(i));
             w.setSquares(squares);
             words.add(w);
-            //System.out.println("Colum geaddet: " + c);
           } else if ((!rightneighbour.isTaken()) && lowerneighbour.isTaken()) {
-            //System.out.println(lowerneighbour.getTile().getLetter());
             int x = this.gameReference.getBoard().getSquareList().get(i).getX();
             int y = this.gameReference.getBoard().getSquareList().get(i).getY();
             char c = this.gameReference.getBoard().getSquareList().get(i).getTile().getLetter();
