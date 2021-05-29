@@ -56,7 +56,7 @@ public class AI {
     this.dictionary = dictionary;
     this.gameReference.setBag(Client.getGameSession().getBag());
     this.gameReference.getPlayer().getRack().initialDraw();
-    Server.updateRackOfAIPlayer(this);
+    Server.updateRackOfBotPlayer(this);
   }
   /**
    * If the AI has to make the first move, the method initializes all possible moves the AI can make

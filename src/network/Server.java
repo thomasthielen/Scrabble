@@ -102,7 +102,7 @@ public class Server {
    * @author tthielen
    * @param ai the AI whose rack is meant to be updated
    */
-  public static void updateRackOfAIPlayer(AI ai) {
+  public static void updateRackOfBotPlayer(AI ai) {
     for (int i = 0; i < players.size(); i++) {
       if (players.get(i).equals(ai.getPlayer())) {
         players.set(i, ai.getPlayer());
