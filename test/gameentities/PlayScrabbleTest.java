@@ -1,21 +1,22 @@
 package gameentities;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.ArrayList;
-
+import network.Client;
+import network.Server;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import network.Client;
-import network.Server;
 import session.GameSession;
 import session.GameState;
 
 /**
  * This is the test class to make sure the functional requirements of the UC2: Play Scrabble work
- * correctly
+ * correctly.
  *
  * @author lsteltma
  */
@@ -23,7 +24,8 @@ class PlayScrabbleTest {
   private Board board;
   private Bag bag;
   private Tile tile;
-  private Player player1, player2;
+  private Player player1;
+  private Player player2;
   private int port;
   private GameState gameState;
   private GameSession gameSession;
