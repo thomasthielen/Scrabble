@@ -335,7 +335,7 @@ public class GameSession {
     ownPlayer.returnTile(recallTile, position);
     occupiedSquares.remove(board.getSquare(posX, posY));
   }
-  
+
   /**
    * Recalls the temporarily placed tile from the board and places it back on the rack of the
    * player. Used for AI, as the position on the rack is not relevant for them.
@@ -778,7 +778,14 @@ public class GameSession {
     ownPlayer.incScore(turnValue);
     ownPlayer.refillRack();
     if (checkEndCondition()) {
-      endGame();
+      Client.reportEndGame(DataHandler.getOwnPlayer());
+      Platform.runLater(
+          new Runnable() {
+            @Override
+            public void run() {
+              gameScreenController.switchToEndScreen();
+            }
+          });
     }
 
     for (Square s : occupiedSquares) {
