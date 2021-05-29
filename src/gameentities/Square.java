@@ -127,7 +127,6 @@ public class Square implements Serializable {
    * Recalls the tile from the square and returns it.
    *
    * @author tthielen
-   * @param tile the tile that should be recalled
    */
   public Tile recallTile() {
     final Tile returnTile = this.tile;

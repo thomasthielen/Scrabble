@@ -60,14 +60,14 @@ public class Rack implements Serializable {
    *
    * @author tthielen
    */
-  public void refillDraw(boolean isAI) {
+  public void refillDraw(boolean isBot) {
     while (this.tiles.size() < 7) {
       if (bag.isEmpty()) {
         return;
       }
       Tile newTile = bag.drawTile();
       tiles.add(newTile);
-      if (!isAI) {
+      if (!isBot) {
         for (int i = 0; i < tileArray.length; i++) {
           if (tileArray[i] == null) {
             tileArray[i] = newTile;
@@ -76,7 +76,7 @@ public class Rack implements Serializable {
         }
       }
     }
-    if (!isAI) {
+    if (!isBot) {
       tiles.clear();
       for (int i = 0; i < tileArray.length; i++) {
         if (tileArray[i] != null) {
@@ -140,9 +140,9 @@ public class Rack implements Serializable {
    * Plays a tile of the AI. Doesn't consider exact position of the tile.
    *
    * @author tthielen
-   * @param tile
+   * @param tile the tile of the AI that should be played
    */
-  public void playTileAI(Tile tile) {
+  public void playTileBot(Tile tile) {
     Tile removeTile = null;
     for (Tile t : tiles) {
       if (t.getLetter() == tile.getLetter()) {
@@ -157,7 +157,7 @@ public class Rack implements Serializable {
    * Adds a tile back to the rack.
    *
    * @author tthielen
-   * @param tile
+   * @param tile the tile that should be added to the rack
    */
   public void returnTile(Tile tile) {
     for (int i = 0; i < tileArray.length; i++) {

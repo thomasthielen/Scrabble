@@ -141,8 +141,6 @@ public class Board implements Serializable {
   }
 
   // The following 3 methods are used in the secondary word check
-  // TODO: Use those in the main word check as well and delete the others
-  // TODO: Simplify them, for god's sake, those are a nightmare
 
   /**
    * Returns the next neighbour (right/bottom) of the given square according to the given boolean.
@@ -228,7 +226,7 @@ public class Board implements Serializable {
       return false;
     }
   }
-  
+
   /**
    * Returns whether the given square has a neighbouring square which holds a tile which was played
    * in a previous turn.
@@ -261,7 +259,12 @@ public class Board implements Serializable {
     return false;
   }
 
-  // Testing Purposes TODO: DELETE
+  /**
+   * Returns the squares of the board.
+   *
+   * @author tthielen
+   * @return squares
+   */
   public ArrayList<Square> getSquareList() {
     return this.squares;
   }

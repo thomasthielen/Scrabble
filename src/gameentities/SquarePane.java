@@ -1,13 +1,12 @@
 package gameentities;
 
 import java.io.Serializable;
-
 import javafx.scene.layout.StackPane;
 
 /**
- * Implementation of the SquarePane objects
+ * Implementation of the SquarePane objects.
  *
- * <p>The attributes include a Square and a StackPane
+ * <p>The attributes include a Square and a StackPane.
  *
  * @author lsteltma
  */
@@ -21,7 +20,7 @@ public class SquarePane implements Serializable {
    * Constructor: Creates a SquarePane object by adding a given square to a new StackPane.
    *
    * @author lsteltma
-   * @param square
+   * @param square the square that should be added to the StackPane
    */
   public SquarePane(Square square) {
     this.square = square;

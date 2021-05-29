@@ -42,20 +42,20 @@ public class TileContainer implements Serializable {
   public void decCount() {
     this.count--;
   }
-  
+
   /**
    * Sets the count of the tile in the bag.
-   * 
+   *
    * @author tthielen
    * @param count the count of the tile in the bag
    */
   public void setCount(int count) {
     this.count = count;
   }
-  
+
   /**
    * Sets the value of the tile.
-   * 
+   *
    * @author tthielen
    * @param value the value of the tile
    */

@@ -93,7 +93,7 @@ public class Player implements Serializable, Comparable<Player> {
    * @param tile the tile that should be played
    */
   public void playTileBot(Tile tile) {
-    this.rack.playTileAI(tile);
+    this.rack.playTileBot(tile);
     ;
   }
 
@@ -194,7 +194,7 @@ public class Player implements Serializable, Comparable<Player> {
    * Returns whether the player is an AI player or not.
    *
    * @author tikrause
-   * @return
+   * @return isBot
    */
   public boolean isBot() {
     return isBot;
