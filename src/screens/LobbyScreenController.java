@@ -118,7 +118,7 @@ public class LobbyScreenController {
   private Text tooltipText;
 
   /**
-   * This method initializes the LobbyScreen.
+   * Initializes the LobbyScreen.
    *
    * @author jbleil
    * @author tthielen
@@ -181,8 +181,8 @@ public class LobbyScreenController {
   }
 
   /**
-   * This method serves as the listener for the "Upload dictionary"-Button. It allows the user to
-   * upload his own dictionary for the game.
+   * Serves as the listener for the "Upload dictionary"-Button. It allows the user to upload his own
+   * dictionary for the game.
    *
    * @author jluellig
    * @param event ActionEvent when the "Upload dictionary"-Button is clicked
@@ -226,8 +226,7 @@ public class LobbyScreenController {
   }
 
   /**
-   * this method serves as a Listener for the uploadDictionaryButton. It Displays the Tooltip Text
-   * when entered.
+   * Serves as a Listener for the uploadDictionaryButton. It Displays the Tooltip Text when entered.
    *
    * @author jbleil
    * @param event MouseEvent that gets triggered when the mouse hovers over the button
@@ -251,8 +250,8 @@ public class LobbyScreenController {
   }
 
   /**
-   * this method serves as a Listener for the uploadDictionaryButton. It closes the Tooltip Text
-   * when the mouse leaves the button.
+   * Serves as a Listener for the uploadDictionaryButton. It closes the Tooltip Text when the mouse
+   * leaves the button.
    *
    * @author jbleil
    * @param event MouseEvent that gets triggered when the mouse hovers over the button
@@ -263,8 +262,8 @@ public class LobbyScreenController {
   }
 
   /**
-   * This method serves as the Listener for "Leave Lobby"-Button. It lets the user leave the Lobby
-   * and cuts all connections.
+   * Serves as the Listener for "Leave Lobby"-Button. It lets the user leave the Lobby and cuts all
+   * connections.
    *
    * @author tikrause
    * @param event user hits the 'LEAVE LOBBY'-Button
@@ -309,8 +308,8 @@ public class LobbyScreenController {
   }
 
   /**
-   * This method serves as the Listener for "START GAME"-Button It let's the user start the game and
-   * redirects him to the GameScreen.
+   * Serves as the Listener for "START GAME"-Button It let's the user start the game and redirects
+   * him to the GameScreen.
    *
    * @author jbleil
    * @param event ActionEvent that gets triggered when the startGame Button is clicked
@@ -385,7 +384,7 @@ public class LobbyScreenController {
               + "there are already the maximum of 4 players in the game.");
       errorAlert.showAndWait();
     }
-    closeChooseAIPane(new ActionEvent());
+    closeChooseBotPane(new ActionEvent());
   }
 
   /**
@@ -419,7 +418,7 @@ public class LobbyScreenController {
               + "there are already the maximum of 4 players in the game.");
       errorAlert.showAndWait();
     }
-    closeChooseAIPane(new ActionEvent());
+    closeChooseBotPane(new ActionEvent());
   }
 
   /**
@@ -471,7 +470,7 @@ public class LobbyScreenController {
    * @param event user clicks the exit button
    */
   @FXML
-  void closeChooseAIPane(ActionEvent event) {
+  void closeChooseBotPane(ActionEvent event) {
     chooseBotPane.setVisible(false);
   }
 
@@ -518,7 +517,7 @@ public class LobbyScreenController {
   }
 
   /**
-   * Refreshs the chat when the host comes back from editing the tiles.
+   * Refreshes the chat when the host comes back from editing the tiles.
    *
    * @author tikrause
    * @param sb chat that has been stored
@@ -529,8 +528,8 @@ public class LobbyScreenController {
   }
 
   /**
-   * This method serves as the Listener for the Enter-key in the chat text field. It serves as an
-   * alternative to the send message button.
+   * Serves as the Listener for the Enter-key in the chat text field. It serves as an alternative to
+   * the send message button.
    *
    * @param event ActionEvent when enter is pressed in the text field
    * @author jluellig
@@ -541,7 +540,7 @@ public class LobbyScreenController {
   }
 
   /**
-   * this method opens the ChangeTilesScreen.
+   * Opens the ChangeTilesScreen.
    *
    * @author jbleil
    * @param event ActionEvent that gets triggered when the Edit Tiles Button is clicked
@@ -549,23 +548,24 @@ public class LobbyScreenController {
   @FXML
   void editTiles(ActionEvent event) throws Exception {
     FXMLLoader loader = new FXMLLoader();
+    ChangeTilesScreenController changeTilesScreenController = loader.getController();
+    changeTilesScreenController.setMultiplayer(true);
+    changeTilesScreenController.setTileScreen();
+    changeTilesScreenController.storeChat(chatHistory);
     Parent content =
         loader.load(
             getClass()
                 .getClassLoader()
                 .getResourceAsStream("screens/resources/ChangeTilesScreen.fxml"));
-    ChangeTilesScreenController changeTilesScreenController = loader.getController();
-    changeTilesScreenController.setMultiplayer(true);
-    changeTilesScreenController.setTileScreen();
-    changeTilesScreenController.storeChat(chatHistory);
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
 
   /**
-   * this method is responsible for displaying the player names and statistics in the game lobby.
+   * Responsible for displaying the player names and statistics in the game lobby.
    *
    * @author jbleil
+   * @author tthielen
    */
   public void refreshPlayerList() {
     ArrayList<Player> players = Client.getGameSession().getPlayerList();
@@ -606,13 +606,11 @@ public class LobbyScreenController {
   }
 
   /**
-   * the method addIPAndPort displays the IP-Address and the Port of the current Lobby at the top of
-   * the Lobby screen.
+   * Displays the IP-Address and the Port of the current Lobby at the top of the Lobby screen.
    *
    * @author jbleil
    */
-  void addIPAndPort() {
-    Pane textPane = new Pane();
+  protected void addipAndPort() {
 
     Text info = new Text(0, 0, "Click to copy:");
     info.setFont(Font.font("Segoe UI", FontWeight.BOLD, 12));
@@ -623,20 +621,19 @@ public class LobbyScreenController {
     ip.setFill(Paint.valueOf("#f88c00"));
     ip.setTextAlignment(TextAlignment.CENTER);
 
-    String ipNormal = ip.getText();
-
     Text port = new Text(0, 40, "Port: " + Server.getPort());
     port.setFill(Paint.valueOf("#f88c00"));
     port.setTextAlignment(TextAlignment.CENTER);
 
-    String portNormal = port.getText();
-
+    Pane textPane = new Pane();
     textPane.getChildren().add(info);
     textPane.getChildren().add(ip);
     textPane.getChildren().add(port);
     textPane.relocate(14, 30);
     lobbyPane.getChildren().add(textPane);
 
+    String ipNormal = ip.getText();
+    String portNormal = port.getText();
     ip.setOnMouseClicked(
         e -> {
           port.setText(portNormal);
@@ -682,6 +679,12 @@ public class LobbyScreenController {
         });
   }
 
+  /**
+   * Switches to the game screen and carries over the chat.
+   *
+   * @author jbleil
+   * @param chat the previously written chat messages
+   */
   public void switchToGameScreen(String chat) {
     Client.getGameSession().startTimer();
     Client.getGameSession().setIsRunning(true);
@@ -709,10 +712,6 @@ public class LobbyScreenController {
    */
   private void setDictionaryMenu() {
     MenuItem menuItem1 = new MenuItem("Collins Scrabble Words");
-    MenuItem menuItem2 = new MenuItem("Enable (Words With Friends)");
-    MenuItem menuItem3 = new MenuItem("Sowpods (Europe Scrabble Word List)");
-    MenuItem menuItem4 = new MenuItem("TWL06 (North America Scrabble Word List)");
-
     menuItem1.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
@@ -731,6 +730,8 @@ public class LobbyScreenController {
             }
           }
         });
+
+    MenuItem menuItem2 = new MenuItem("Enable (Words With Friends)");
     menuItem2.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
@@ -748,6 +749,8 @@ public class LobbyScreenController {
             }
           }
         });
+
+    MenuItem menuItem3 = new MenuItem("Sowpods (Europe Scrabble Word List)");
     menuItem3.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
@@ -766,6 +769,8 @@ public class LobbyScreenController {
             }
           }
         });
+
+    MenuItem menuItem4 = new MenuItem("TWL06 (North America Scrabble Word List)");
     menuItem4.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
@@ -803,7 +808,7 @@ public class LobbyScreenController {
   }
 
   /**
-   * informs the other players that the host has left the session and therefore all other players
+   * Informs the other players that the host has left the session and therefore all other players
    * are kicked.
    *
    * @author tikrause
@@ -819,7 +824,7 @@ public class LobbyScreenController {
   }
 
   /**
-   * informs the player that tries to join a running game and denies him from joining.
+   * Informs the player that tries to join a running game and denies him from joining.
    *
    * @author tikrause
    */
@@ -833,7 +838,7 @@ public class LobbyScreenController {
   }
 
   /**
-   * informs the player that tries to join a game with 4 players in the lobby and denies him from
+   * Informs the player that tries to join a game with 4 players in the lobby and denies him from
    * joining.
    *
    * @author tikrause
@@ -843,7 +848,8 @@ public class LobbyScreenController {
     errorAlert.setTitle("Error");
     errorAlert.setHeaderText("Too many players.");
     errorAlert.setContentText(
-        "You can't join the game session because there are already the maximum of 4 players in the game.");
+        "You can't join the game session because "
+            + "there are already the maximum of 4 players in the game.");
     errorAlert.showAndWait();
     leave();
   }
@@ -884,7 +890,8 @@ public class LobbyScreenController {
         errorAlert.setTitle("Error");
         errorAlert.setHeaderText("Input not valid.");
         errorAlert.setContentText(
-            "The username must contain 2-15 letters or numbers. It can't contain any special characters.");
+            "The username must contain 2-15 letters or "
+                + "numbers. It can't contain any special characters.");
         errorAlert.showAndWait();
         playerAlreadyExisting();
         return;
@@ -951,8 +958,8 @@ public class LobbyScreenController {
   }
 
   /**
-   * This method serves as a Listener for the dictionarySelector. By hovering over the Button it
-   * displays the Tooltip-Text.
+   * Serves as a Listener for the dictionarySelector. By hovering over the Button it displays the
+   * Tooltip-Text.
    *
    * @author jbleil
    * @param event MouseEvent that gets triggered when hovering over the dictionarySelector.
@@ -969,8 +976,8 @@ public class LobbyScreenController {
   }
 
   /**
-   * This method serves as a Listener for the dictionarySelector. By hovering out off the Button it
-   * clears the Tooltip-Text.
+   * Serves as a Listener for the dictionarySelector. By hovering out off the Button it clears the
+   * Tooltip-Text.
    *
    * @author jbleil
    * @param event MouseEvent that gets triggered when hovering over the dictionarySelector.
@@ -982,8 +989,8 @@ public class LobbyScreenController {
   }
 
   /**
-   * This method serves as a Listener for the uploadDictionary Button. By hovering over the Button
-   * it displays the Tooltip-Text.
+   * TServes as a Listener for the uploadDictionary Button. By hovering over the Button it displays
+   * the Tooltip-Text.
    *
    * @author jbleil
    * @param event MouseEvent that gets triggered when hovering over the uploadDictionary Button.
@@ -1000,8 +1007,8 @@ public class LobbyScreenController {
   }
 
   /**
-   * This method serves as a Listener for the uploadDictionary Button. By hovering out off the
-   * Button it clears the Tooltip-Text.
+   * Serves as a Listener for the uploadDictionary Button. By hovering out off the Button it clears
+   * the Tooltip-Text.
    *
    * @author jbleil
    * @param event MouseEvent that gets triggered when hovering over the uploadDictionary Button.
@@ -1013,8 +1020,8 @@ public class LobbyScreenController {
   }
 
   /**
-   * This method serves as a Listener for the editTiles Button. By hovering over the Button it
-   * displays the Tooltip-Text.
+   * Serves as a Listener for the editTiles Button. By hovering over the Button it displays the
+   * Tooltip-Text.
    *
    * @author jbleil
    * @param event MouseEvent that gets triggered when hovering over the editTiles Button.
@@ -1031,8 +1038,8 @@ public class LobbyScreenController {
   }
 
   /**
-   * This method serves as a Listener for the editTiles Button. By hovering out off the Button it
-   * clears the Tooltip-Text.
+   * Serves as a Listener for the editTiles Button. By hovering out off the Button it clears the
+   * Tooltip-Text.
    *
    * @author jbleil
    * @param event MouseEvent that gets triggered when hovering over the editTiles Button.
@@ -1044,8 +1051,8 @@ public class LobbyScreenController {
   }
 
   /**
-   * This method serves as a Listener for the startGame Button. By hovering over the Button it
-   * displays the Tooltip-Text.
+   * Serves as a Listener for the startGame Button. By hovering over the Button it displays the
+   * Tooltip-Text.
    *
    * @author jbleil
    * @param event MouseEvent that gets triggered when hovering over the startGame Button.
@@ -1062,8 +1069,8 @@ public class LobbyScreenController {
   }
 
   /**
-   * This method serves as a Listener for the startGame Button. By hovering out off the Button it
-   * clears the Tooltip-Text.
+   * Serves as a Listener for the startGame Button. By hovering out off the Button it clears the
+   * Tooltip-Text.
    *
    * @author jbleil
    * @param event MouseEvent that gets triggered when hovering over the startGame Button.
@@ -1075,14 +1082,14 @@ public class LobbyScreenController {
   }
 
   /**
-   * This method serves as a Listener for the addAIPlayer Button. By hovering over the Button it
-   * displays the Tooltip-Text.
+   * Serves as a Listener for the addAIPlayer Button. By hovering over the Button it displays the
+   * Tooltip-Text.
    *
    * @author jbleil
    * @param event MouseEvent that gets triggered when hovering over the addAIPlayer Button.
    */
   @FXML
-  void displayAddAIPlayerTooltip(MouseEvent event) {
+  void displayAddBotPlayerTooltip(MouseEvent event) {
     tooltipText = new Text("Only the Host can add AI players.");
     tooltipText.setFill(Paint.valueOf("#f88c00"));
     tooltipText.setFont(new Font(14));
@@ -1093,14 +1100,14 @@ public class LobbyScreenController {
   }
 
   /**
-   * This method serves as a Listener for the addAIPlayer Button. By hovering out off the Button it
-   * clears the Tooltip-Text.
+   * Serves as a Listener for the addAIPlayer Button. By hovering out off the Button it clears the
+   * Tooltip-Text.
    *
    * @author jbleil
    * @param event MouseEvent that gets triggered when hovering over the addAIPlayer Button.
    */
   @FXML
-  void closeAddAIPlayerTooltip(MouseEvent event) {
+  void closeAddBotPlayerTooltip(MouseEvent event) {
     tooltipPane.setVisible(false);
     tooltipPane.getChildren().remove(tooltipText);
   }

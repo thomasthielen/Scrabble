@@ -35,7 +35,7 @@ public class OnlineScreenController {
         loader.load(
             getClass().getClassLoader().getResourceAsStream("screens/resources/LobbyScreen.fxml"));
     LobbyScreenController lobbyScreenController = loader.getController();
-    lobbyScreenController.addIPAndPort();
+    lobbyScreenController.addipAndPort();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }

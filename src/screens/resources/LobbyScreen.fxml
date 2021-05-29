@@ -40,7 +40,7 @@
       <Rectangle fx:id="uploadDictionaryTooltip" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="40.0" layoutX="409.0" layoutY="257.0" onMouseEntered="#displayUploadDictionaryTooltip" onMouseExited="#openUploadDictionaryTooltip" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="180.0" />
       <Rectangle fx:id="editTilesTooltip" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="40.0" layoutX="409.0" layoutY="376.0" onMouseEntered="#displayEditTilesTooltip" onMouseExited="#openEditTilesTooltip" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="180.0" />
       <Rectangle fx:id="startGameTooltip" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="75.0" layoutX="300.0" layoutY="473.0" onMouseEntered="#displayStartGameTooltip" onMouseExited="#closeStartGameTooltip" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="400.0" />
-      <Rectangle fx:id="addBotPlayerTooltip" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="40.0" layoutX="14.0" layoutY="473.0" onMouseEntered="#displayAddAIPlayerTooltip" onMouseExited="#closeAddAIPlayerTooltip" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="180.0" />
+      <Rectangle fx:id="addBotPlayerTooltip" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="40.0" layoutX="14.0" layoutY="473.0" onMouseEntered="#displayAddBotPlayerTooltip" onMouseExited="#closeAddBotPlayerTooltip" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="180.0" />
       <Pane layoutX="765.0" layoutY="72.0" prefHeight="475.0" prefWidth="221.0" style="-fx-background-color: #FFFFFF;">
          <children>
             <TextArea fx:id="chatField" layoutX="8.0" layoutY="51.0" prefHeight="372.0" prefWidth="204.0" />
@@ -108,7 +108,7 @@
       </Text>
       <Pane fx:id="chooseBotPane" layoutX="12.0" layoutY="316.0" prefHeight="200.0" prefWidth="425.0" style="-fx-background-color: #F4D896; -fx-border-color: #f88c00;">
          <children>
-            <Button layoutX="382.0" layoutY="13.0" mnemonicParsing="false" onAction="#closeChooseAIPane" style="-fx-background-color: #f88c00;" text="X" textFill="WHITE">
+            <Button layoutX="382.0" layoutY="13.0" mnemonicParsing="false" onAction="#closeChooseBotPane" style="-fx-background-color: #f88c00;" text="X" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>

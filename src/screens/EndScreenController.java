@@ -202,7 +202,7 @@ public class EndScreenController {
 
       if (Client.isHost()) {
         LobbyScreenController lobbyScreenController = loader.getController();
-        lobbyScreenController.addIPAndPort();
+        lobbyScreenController.addipAndPort();
       }
     } else {
       content =
