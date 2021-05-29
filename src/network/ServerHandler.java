@@ -1,6 +1,6 @@
 package network;
 
-import ai.AI;
+import ai.Bot;
 import data.DataHandler;
 import gameentities.Player;
 import io.netty.channel.Channel;
@@ -132,14 +132,14 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
             channel.writeAndFlush(new DictionaryMessage(null, DataHandler.getUserDictionary()));
           }
         }
-        for (AI ai : Server.getBotPlayerList()) {
+        for (Bot ai : Server.getBotPlayerList()) {
           ai.initializeAI(dm.getFile());
         }
         break;
 
       case NOTIFY_AI:
         NotifyBotsMessage nam = (NotifyBotsMessage) msg;
-        for (AI ai : Server.getBotPlayerList()) {
+        for (Bot ai : Server.getBotPlayerList()) {
           if (ai.getPlayer().equals(nam.getBotPlayer())) {
             ai.makeMove();
           }

@@ -1,6 +1,6 @@
 package network;
 
-import ai.AI;
+import ai.Bot;
 import gameentities.Player;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -32,7 +32,7 @@ public class Server {
   private static Channel channel;
 
   private static ArrayList<Player> players = new ArrayList<Player>();
-  private static ArrayList<AI> aiPlayers = new ArrayList<AI>();
+  private static ArrayList<Bot> aiPlayers = new ArrayList<Bot>();
 
   /**
    * initializes the server, lets the server wait for connections at the given port and opens a UDP
@@ -90,7 +90,7 @@ public class Server {
    * @param gs changes that should be updated in the game session of the AI players
    */
   static void updateBots(GameState gs) {
-    for (AI ai : aiPlayers) {
+    for (Bot ai : aiPlayers) {
       ai.updateGameSession(gs);
     }
   }
@@ -101,7 +101,7 @@ public class Server {
    * @author tthielen
    * @param ai the AI whose rack is meant to be updated
    */
-  public static void updateRackOfBotPlayer(AI ai) {
+  public static void updateRackOfBotPlayer(Bot ai) {
     for (int i = 0; i < players.size(); i++) {
       if (players.get(i).equals(ai.getPlayer())) {
         players.set(i, ai.getPlayer());
@@ -149,7 +149,7 @@ public class Server {
    * @param ai AI instance that should be added to the game
    * @throws TooManyPlayerException 4 players are already in the session and no one else can join
    */
-  public static void addBotPlayer(AI ai) throws TooManyPlayerException {
+  public static void addBotPlayer(Bot ai) throws TooManyPlayerException {
     if (players.size() >= 4) {
       throw new TooManyPlayerException();
     } else {
@@ -167,8 +167,8 @@ public class Server {
    * @param aiPlayer player instance of the AI that should be removed from the game
    */
   public static void removeBotPlayer(Player aiPlayer) {
-    AI removedPlayer = null;
-    for (AI ai : aiPlayers) {
+    Bot removedPlayer = null;
+    for (Bot ai : aiPlayers) {
       if (ai.getPlayer().equals(aiPlayer)) {
         removedPlayer = ai;
         break;
@@ -206,7 +206,7 @@ public class Server {
    * @author tikrause
    * @return aiPlayers AI player list of all AI players in the game session
    */
-  public static ArrayList<AI> getBotPlayerList() {
+  public static ArrayList<Bot> getBotPlayerList() {
     return aiPlayers;
   }
 
@@ -259,7 +259,7 @@ public class Server {
    */
   public static int getEasyBotCount() {
     int count = 0;
-    for (AI ai : aiPlayers) {
+    for (Bot ai : aiPlayers) {
       if (!ai.getDifficulty()) {
         count++;
       }
@@ -277,7 +277,7 @@ public class Server {
    */
   public static int getHardBotCount() {
     int count = 0;
-    for (AI ai : aiPlayers) {
+    for (Bot ai : aiPlayers) {
       if (ai.getDifficulty()) {
         count++;
       }

@@ -1,6 +1,6 @@
 package screens;
 
-import ai.AI;
+import ai.Bot;
 import data.DataHandler;
 import data.StatisticKeys;
 import gameentities.Player;
@@ -276,12 +276,12 @@ public class SinglePlayerLobbyScreenController {
     try {
       int aiCount = Server.getEasyBotCount() + 1;
       String aiName = "EasyAI" + aiCount;
-      for (AI aiPlayer : Server.getBotPlayerList()) {
+      for (Bot aiPlayer : Server.getBotPlayerList()) {
         if (aiName.equals(aiPlayer.getPlayer().getUsername())) {
           aiName = "EasyAI" + ++aiCount;
         }
       }
-      AI ai = new AI(aiName, false);
+      Bot ai = new Bot(aiName, false);
       Server.addBotPlayer(ai);
     } catch (TooManyPlayerException e) {
       Alert errorAlert = new Alert(AlertType.ERROR);
@@ -307,12 +307,12 @@ public class SinglePlayerLobbyScreenController {
     try {
       int aiCount = Server.getHardBotCount() + 1;
       String aiName = "HardAI" + aiCount;
-      for (AI aiPlayer : Server.getBotPlayerList()) {
+      for (Bot aiPlayer : Server.getBotPlayerList()) {
         if (aiName.equals(aiPlayer.getPlayer().getUsername())) {
           aiName = "HardAI" + ++aiCount;
         }
       }
-      AI ai = new AI(aiName, true);
+      Bot ai = new Bot(aiName, true);
       Server.addBotPlayer(ai);
     } catch (TooManyPlayerException e) {
       Alert errorAlert = new Alert(AlertType.ERROR);

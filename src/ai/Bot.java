@@ -17,13 +17,11 @@ import session.GameSession;
 import session.GameState;
 
 /**
- * an AI instance of the game that calculates
- * a move using given methods
- * 
- * @author sisselha
+ * an AI instance of the game that calculates a move using given methods
  *
+ * @author sisselha
  */
-public class AI {
+public class Bot {
 
   private ArrayList<PossibleMove> moves;
   private ArrayList<Word> words;
@@ -35,23 +33,19 @@ public class AI {
   private File dictionary;
 
   /**
-   * 
-   *
    * @author sisselha
    * @param username username
    * @param difficult difficulty of the AI
    */
-  public AI(String username, boolean difficult) {
+  public Bot(String username, boolean difficult) {
     this.gameReference = new GameSession(new Player(username));
     this.difficult = difficult;
   }
-  
+
   /**
-   * 
    * @author tikrause
    * @param dictionary
    */
-
   public void initializeAI(File dictionary) {
     this.dictionary = dictionary;
     this.gameReference.setBag(Client.getGameSession().getBag());
@@ -149,8 +143,8 @@ public class AI {
    * @param letters The word to be placed on the board is stored in a StringArrayList.
    * @param squares The squres to be placed for this move
    * @param tiles the tiles that the player has available for laying
-   * @return the complete squares that are placed on the board for the selected word 
-   * are stored in an ArrayList
+   * @return the complete squares that are placed on the board for the selected word are stored in
+   *     an ArrayList
    */
   public ArrayList<Square> checkMatch(
       ArrayList<String> letters, ArrayList<Square> squares, ArrayList<Tile> tiles) {
@@ -173,11 +167,10 @@ public class AI {
     }
   }
   /**
-   * this method iterates through all possible moves the AI can make and 
-   * chooses the move with the best score when the difficulty level is set 
-   * to difficult. If the difficulty level is easy, then it returns a move 
-   * that is in the average
-   * 
+   * this method iterates through all possible moves the AI can make and chooses the move with the
+   * best score when the difficulty level is set to difficult. If the difficulty level is easy, then
+   * it returns a move that is in the average
+   *
    * @author sisselha
    * @return the ArrayList of squares for the selected move is returned
    */
@@ -218,9 +211,6 @@ public class AI {
     }
   }
 
-  
-
-  
   /**
    * Initializes a complete list of all possible moves that can be placed on the board with the
    * given tiles in the bag to the words that are already lying on the board
@@ -391,7 +381,6 @@ public class AI {
     }
   }
 
-  
   /**
    * copies an arraylist and returns it
    *
@@ -406,11 +395,10 @@ public class AI {
     return tile;
   }
 
-
   /**
    * Checks if the prefix of the word to be created fits the field
-   * 
-   * @author sisselha 
+   *
+   * @author sisselha
    * @param prefix the prefix of the word, which is tried to be created with the given tiles
    * @param word the word that is already on the board
    * @param board board
@@ -425,14 +413,13 @@ public class AI {
   }
   /**
    * Checks if the suffix of the word to be created fits the field
-   * 
-   * @author sisselha 
+   *
+   * @author sisselha
    * @param suffix the suffix of the word, which is tried to be created with the given tiles
    * @param word the word that is already on the board
    * @param board board
    * @return
    */
-
   public boolean checkDown(int suf, Word word, Board board) {
     if ((word.getEndingY() - suf) < 1) {
       return false;
@@ -442,14 +429,13 @@ public class AI {
   }
   /**
    * Checks if the suffix of the word to be created fits the field
-   * 
-   * @author sisselha 
+   *
+   * @author sisselha
    * @param suffix the suffix of the word, which is tried to be created with the given tiles
    * @param word the word that is already on the board
    * @param board board
    * @return
    */
-
   public boolean checkRight(int suf, Word wort, Board board) {
     if ((wort.getEndingX() + suf) > 15) {
       return false;
@@ -459,14 +445,13 @@ public class AI {
   }
   /**
    * Checks if the prefix of the word to be created fits the field
-   * 
-   * @author sisselha 
+   *
+   * @author sisselha
    * @param prefix the prefix of the word, which is tried to be created with the given tiles
    * @param word the word that is already on the board
    * @param board board
    * @return
    */
-
   public boolean checkLeft(int pre, Word wort, Board board) {
     if ((wort.getBeginningX() - pre) < 1) {
       return false;
@@ -490,8 +475,8 @@ public class AI {
   }
   /**
    * converts the prefix and suffix of a word into a String ArrayList
-   * 
-   * @author sisselha 
+   *
+   * @author sisselha
    * @param pre the prefix of the word
    * @param suf the suffix of the word
    * @return
@@ -514,7 +499,7 @@ public class AI {
    * in the list matches a tile in the TileArrayList, if it does, the StringArrayList is reduced by
    * the last element and the matching tile is removed from the TileArrayList.Then the matching tile
    * is placed on the square and added to the Square-ArrayList. Afterwards the method is called
-   * again until the String-ArrayList is empty and the placed squares are returned. this method is 
+   * again until the String-ArrayList is empty and the placed squares are returned. this method is
    * for words placed vertically on the board
    *
    * @author sisselha
@@ -522,13 +507,12 @@ public class AI {
    * @param placedsquares The squares to be placed for this move
    * @param remainingtiles the tiles that the player has available for laying
    * @param word the word that is already on the board
-   * @param pre the length of the prefix 
+   * @param pre the length of the prefix
    * @param suf the length of the suffix
-   * @param board board 
-   * @return the complete squares that are placed on the board for the selected word 
-   * are stored in an ArrayList
+   * @param board board
+   * @return the complete squares that are placed on the board for the selected word are stored in
+   *     an ArrayList
    */
-
   public ArrayList<Square> checktilesVertical(
       ArrayList<String> letters,
       ArrayList<Square> placedsquares,
@@ -615,7 +599,7 @@ public class AI {
    * in the list matches a tile in the TileArrayList, if it does, the StringArrayList is reduced by
    * the last element and the matching tile is removed from the TileArrayList.Then the matching tile
    * is placed on the square and added to the Square-ArrayList. Afterwards the method is called
-   * again until the String-ArrayList is empty and the placed squares are returned. this method is 
+   * again until the String-ArrayList is empty and the placed squares are returned. this method is
    * for words placed horizontally on the board
    *
    * @author sisselha
@@ -623,13 +607,12 @@ public class AI {
    * @param placedsquares The squares to be placed for this move
    * @param remainingtiles the tiles that the player has available for laying
    * @param word the word that is already on the board
-   * @param pre the length of the prefix 
+   * @param pre the length of the prefix
    * @param suf the length of the suffix
-   * @param board board 
-   * @return the complete squares that are placed on the board for the selected word 
-   * are stored in an ArrayList
+   * @param board board
+   * @return the complete squares that are placed on the board for the selected word are stored in
+   *     an ArrayList
    */
-
   public ArrayList<Square> checkTilesHorizontal(
       ArrayList<String> letters,
       ArrayList<Square> placedsquares,
@@ -713,13 +696,8 @@ public class AI {
       return null;
     }
   }
-  
-  
-  /**
-   * 
-   * @author sisselha
-   */
 
+  /** @author sisselha */
   public void scanBoardForWords() {
     this.words = new ArrayList<Word>();
     for (int i = 0; i < this.gameReference.getBoard().getSquareList().size(); i++) {
