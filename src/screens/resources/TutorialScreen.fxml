@@ -17,5 +17,6 @@
       <Button layoutX="851.0" layoutY="22.0" mnemonicParsing="false" onAction="#leaveTutorial" prefHeight="40.0" prefWidth="135.0" style="-fx-background-color: #f88c00;" text="Leave Tutorial" textFill="WHITE" />
       <Button fx:id="previousButton" layoutX="20.0" layoutY="231.0" mnemonicParsing="false" onAction="#previous" prefHeight="100.0" prefWidth="40.0" style="-fx-background-color: #f88c00;" text="&lt;" textFill="WHITE" />
       <Button fx:id="nextButton" layoutX="940.0" layoutY="231.0" mnemonicParsing="false" onAction="#next" prefHeight="100.0" prefWidth="40.0" style="-fx-background-color: #f88c00;" text="&gt;" textFill="WHITE" />
+      <Button fx:id="startGameButton" layoutX="701.0" layoutY="22.0" mnemonicParsing="false" onAction="#startGame" prefHeight="40.0" prefWidth="135.0" style="-fx-background-color: #f88c00;" text="Start Game" textFill="WHITE" />
    </children>
 </Pane>

@@ -42,6 +42,8 @@ public class TutorialScreenController {
 
   @FXML private Pane backgroundPane;
 
+  @FXML private Button startGameButton;
+
   /**
    * This method initializes all the functionalities on the Screen.
    *
@@ -222,4 +224,14 @@ public class TutorialScreenController {
           });
     }
   }
+
+  /**
+   * This method serves as a Listener for the startGameButton. When the Button is clicked it starts
+   * a Tutorial Game.
+   *
+   * @author jbleil
+   * @param event ActionEvent that gets triggered when the startGameButton is clicked
+   */
+  @FXML
+  void startGame(ActionEvent event) {}
 }
