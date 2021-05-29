@@ -854,7 +854,7 @@ public class AI {
   }
 
   public void updateGameSession(GameState state) {
-    this.gameReference.synchronise(state);
+    this.gameReference.synchronize(state);
   }
 
   public void makeMove() {

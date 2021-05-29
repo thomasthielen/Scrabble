@@ -319,7 +319,7 @@ public class LobbyScreenController {
         Client.getGameSession().getPlayer().setCurrentlyPlaying(true);
         Client.reportStartGame(chatHistory.toString());
         Server.setActive();
-        Client.getGameSession().initialiseGameScreen(chatHistory.toString());
+        Client.getGameSession().initializeGameScreen(chatHistory.toString());
         switchToGameScreen(chatHistory.toString());
       } else {
         Alert errorAlert = new Alert(AlertType.ERROR);

@@ -223,7 +223,7 @@ public class SinglePlayerLobbyScreenController {
       Client.getGameSession().getPlayer().setCurrentlyPlaying(true);
       Client.reportStartGame("");
       Server.setActive();
-      Client.getGameSession().initialiseSinglePlayerGameScreen();
+      Client.getGameSession().initializeSinglePlayerGameScreen();
       switchToGameScreen();
     } else {
       Alert errorAlert = new Alert(AlertType.ERROR);

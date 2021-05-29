@@ -2,7 +2,6 @@ package gameentities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import session.GameSession;
 
 /**

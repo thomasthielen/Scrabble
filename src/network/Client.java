@@ -112,7 +112,7 @@ public class Client {
    * @param gameState changes that should be updated in the game session
    */
   static void updateGameSession(GameState gameState) {
-    gameSession.synchronise(gameState);
+    gameSession.synchronize(gameState);
   }
 
   /**

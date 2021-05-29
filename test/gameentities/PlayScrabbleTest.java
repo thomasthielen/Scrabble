@@ -44,7 +44,7 @@ class PlayScrabbleTest {
       Client.initialiseClient(Server.getIp(), port, true);
       Client.connectToServer(player1);
       gameSession = Client.getGameSession();
-      gameSession.synchronise(gameState);
+      gameSession.synchronize(gameState);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -68,14 +68,14 @@ class PlayScrabbleTest {
 
   @Test
   void testSkipTurn() {
-    gameSession.synchronise(gameState);
+    gameSession.synchronize(gameState);
     gameSession.skipTurn();
     assertEquals("player1", gameSession.getPlayer().getUsername());
   }
 
   @Test
   void testExchangeTiles() {
-    gameSession.synchronise(gameState);
+    gameSession.synchronize(gameState);
 
     player1.createRack(gameSession);
     ArrayList<Tile> before = player1.getRack().getTiles();
@@ -91,7 +91,7 @@ class PlayScrabbleTest {
 
   @Test
   void testPlayTile() {
-    gameSession.synchronise(gameState);
+    gameSession.synchronize(gameState);
 
     player1.createRack(gameSession);
     board.placeTile(8, 8, new Tile('A', 1));

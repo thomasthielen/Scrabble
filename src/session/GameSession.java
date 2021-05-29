@@ -1,11 +1,5 @@
 package session;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import ai.AI;
 import data.DataHandler;
 import gameentities.Bag;
 import gameentities.Board;
@@ -13,9 +7,12 @@ import gameentities.Player;
 import gameentities.Premium;
 import gameentities.Square;
 import gameentities.Tile;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Timer;
+import java.util.TimerTask;
 import javafx.application.Platform;
 import network.Client;
-import network.Server;
 import screens.EndScreenController;
 import screens.GameScreenController;
 import screens.LobbyScreenController;
@@ -65,7 +62,6 @@ public class GameSession {
    *
    * @author tthielen
    * @param player the own player object of this GameSession object
-   * @param multiplayer sets whether this is a multiplayer game
    */
   public GameSession(Player player) {
     players = new ArrayList<Player>();
@@ -137,7 +133,8 @@ public class GameSession {
   private String printTime() {
     int minutes = this.seconds / 60;
     int seconds = this.seconds % 60;
-    String minutesText, secondsText;
+    String minutesText;
+    String secondsText;
     if (minutes == 10) {
       minutesText = "" + minutes;
     } else {
@@ -152,12 +149,13 @@ public class GameSession {
   }
 
   /**
-   * TODO: Add comment.
+   * Initializes the GameScreen by calling setPlayable according to the player being host or not and
+   * transferring the chat of the lobby.
    *
    * @author tikrause
-   * @param chat
+   * @param chat all previously written messages in chat
    */
-  public void initialiseGameScreen(String chat) {
+  public void initializeGameScreen(String chat) {
     Platform.runLater(
         new Runnable() {
           @Override
@@ -173,7 +171,7 @@ public class GameSession {
    *
    * @author tikrause
    */
-  public void initialiseSinglePlayerGameScreen() {
+  public void initializeSinglePlayerGameScreen() {
     Platform.runLater(
         new Runnable() {
           @Override
@@ -190,7 +188,7 @@ public class GameSession {
    * @author tikrause
    * @param overrideGameState the GameState which contains the data to synchronize
    */
-  public void synchronise(GameState overrideGameState) {
+  public void synchronize(GameState overrideGameState) {
     // Don't synchronize if the game is running AND the received message is the first
     if (!overrideGameState.isConnectGameState() || !isRunning) {
       this.seconds = RESET;
@@ -328,11 +326,11 @@ public class GameSession {
    */
   public void recallTile(int posX, int posY) {
     // Take the tile from the respective square
-    Tile rTile = board.recallTile(posX, posY);
+    Tile recallTile = board.recallTile(posX, posY);
     // Reset the letter of the tile, should it have been a wildcard tile
-    rTile.resetLetter();
+    recallTile.resetLetter();
     // Return the tile to the rack of the player
-    ownPlayer.returnTile(rTile);
+    ownPlayer.returnTile(recallTile);
     // Remove the respective square from the list of placedSquares
     occupiedSquares.remove(board.getSquare(posX, posY));
   }
@@ -343,17 +341,17 @@ public class GameSession {
    * @author tthielen
    */
   public void recallAll() {
-    ArrayList<Integer> posXCollection = new ArrayList<Integer>();
-    ArrayList<Integer> posYCollection = new ArrayList<Integer>();
+    ArrayList<Integer> posXcollection = new ArrayList<Integer>();
+    ArrayList<Integer> posYcollection = new ArrayList<Integer>();
 
     for (Square s : occupiedSquares) {
-      posXCollection.add(s.getX());
-      posYCollection.add(s.getY());
+      posXcollection.add(s.getX());
+      posYcollection.add(s.getY());
     }
 
     int iterations = occupiedSquares.size();
     for (int i = 0; i < iterations; i++) {
-      recallTile(posXCollection.get(i), posYCollection.get(i));
+      recallTile(posXcollection.get(i), posYcollection.get(i));
     }
   }
 
@@ -544,13 +542,13 @@ public class GameSession {
         }
       }
 
-      // (!) Used to test if the main word needs to be checked when only one tile was placed
-      Square leftOld = iterator;
-
       StringBuffer sb = new StringBuffer();
       int wordValue = 0;
       dwsCount = 0;
       twsCount = 0;
+
+      // (!) Used to test if the main word needs to be checked when only one tile was placed
+      final Square leftOld = iterator;
 
       // Go to the right to the rightmost square with a tile
       do {
@@ -830,13 +828,18 @@ public class GameSession {
             @Override
             public void run() {
               gameScreenController.leaveGameCall();
-              // TODO: Show a dialogue and send a different message to all other players
             }
           });
       timer.cancel();
     }
   }
 
+  /**
+   * Calls switch to GameScreen in lobbyScreenController.
+   *
+   * @author tthielen
+   * @param chat the complete log of chat written in the lobby
+   */
   public void switchToGameScreen(String chat) {
     Platform.runLater(
         new Runnable() {
@@ -851,6 +854,11 @@ public class GameSession {
         });
   }
 
+  /**
+   * Calls setPlayable() in gameScreenController to enable or disable buttons.
+   *
+   * @author tthielen
+   */
   public void setPlayable() {
     Platform.runLater(
         new Runnable() {
@@ -872,28 +880,62 @@ public class GameSession {
     this.ownPlayer.getRack().synchronizeBag(this);
   }
 
+  /**
+   * Sets the corresponding GameScreenController.
+   *
+   * @author tthielen
+   * @param gsc the corresponding GameScreenController
+   */
   public void setGameScreenController(GameScreenController gsc) {
     this.gameScreenController = gsc;
     setPlayable();
   }
 
+  /**
+   * Sets the corresponding LobbyScreenController.
+   *
+   * @author tthielen
+   * @param lsc the corresponding LobbyScreenController
+   */
   public void setLobbyScreenController(LobbyScreenController lsc) {
     this.lobbyScreenController = lsc;
   }
 
+  /**
+   * Sets the corresponding SinglePlayerLobbyScreenController.
+   *
+   * @author tthielen
+   * @param splsc the corresponding SinglePlayerLobbyScreenController
+   */
   public void setSinglePlayerLobbyScreenController(SinglePlayerLobbyScreenController splsc) {
     this.splsc = splsc;
   }
 
+  /**
+   * Sets the corresponding EndScreenController.
+   *
+   * @author tthielen
+   * @param esc the corresponding EndScreenController
+   */
   public void setEndScreenController(EndScreenController esc) {
     this.endScreenController = esc;
+  }
+
+  /**
+   * Sets whether the game is running or not.
+   *
+   * @author tthielen
+   * @param running whether the game is running or not
+   */
+  public void setIsRunning(boolean running) {
+    this.isRunning = running;
   }
 
   /**
    * Returns the bag of the session. Used to draw tiles from the bag in the class Rack.
    *
    * @author tthielen
-   * @return bag
+   * @return the bag of the GameSession
    */
   public Bag getBag() {
     return bag;
@@ -903,7 +945,7 @@ public class GameSession {
    * Returns the board of the session.
    *
    * @author tthielen
-   * @return board
+   * @return the board of the GameSession
    */
   public Board getBoard() {
     return board;
@@ -913,7 +955,7 @@ public class GameSession {
    * Returns the ownPlayer of the session.
    *
    * @author tthielen
-   * @return ownPlayer
+   * @return the ownPlayer of the GameSession
    */
   public Player getPlayer() {
     return ownPlayer;
@@ -923,7 +965,7 @@ public class GameSession {
    * Returns the ownPlayer of the session.
    *
    * @author tthielen
-   * @return ownPlayer
+   * @return the player list of the GameSession
    */
   public ArrayList<Player> getPlayerList() {
     return players;
@@ -933,45 +975,59 @@ public class GameSession {
    * Returns the value of this turn.
    *
    * @author tthielen
-   * @return turnValue
+   * @return the turnValue of the GameSession
    */
   public int getTurnValue() {
     return turnValue;
   }
 
+  /**
+   * Returns the current amount of successive scoreless turns.
+   *
+   * @author tthielen
+   * @return the successiveScorelessTurns of the GameSession
+   */
   public int getSuccessiveScorelessTurns() {
     return successiveScorelessTurns;
   }
 
-  public void setIsRunning(boolean running) {
-    this.isRunning = running;
-  }
-
+  /**
+   * Returns the corresponding GameScreenController of the session.
+   *
+   * @author tthielen
+   * @return the GameScreenController of the GameSession
+   */
   public GameScreenController getGameScreenController() {
     return this.gameScreenController;
   }
 
+  /**
+   * Returns the corresponding LobbyScreenController of the session.
+   *
+   * @author tthielen
+   * @return the LobbyScreenController of the GameSession
+   */
   public LobbyScreenController getLobbyScreenController() {
     return this.lobbyScreenController;
   }
 
+  /**
+   * Returns the corresponding SinglePlayerLobbyScreenController of the session.
+   *
+   * @author tthielen
+   * @return the SinglePlayerLobbyScreenController of the GameSession
+   */
   public SinglePlayerLobbyScreenController getSinglePlayerLobbyScreenController() {
     return this.splsc;
   }
 
+  /**
+   * Returns the corresponding EndScreenController of the session.
+   *
+   * @author tthielen
+   * @return the EndScreenController of the GameSession
+   */
   public EndScreenController getEndScreenController() {
     return this.endScreenController;
-  }
-
-  // TODO: DELETE EVERYTHING BELOW THIS POINT
-
-  private boolean isActive = false;
-
-  public void setActive(boolean isActive) {
-    this.isActive = isActive;
-  }
-
-  public boolean isActive() {
-    return this.isActive;
   }
 }
