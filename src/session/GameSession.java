@@ -13,6 +13,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Platform;
 import network.Client;
+import network.Server;
 import screens.EndScreenController;
 import screens.GameScreenController;
 import screens.LobbyScreenController;
@@ -263,7 +264,9 @@ public class GameSession {
    */
   public void skipTurn() {
     successiveScorelessTurns++;
-    nextPlayer();
+    if (!ownPlayer.isBot() || Server.getPlayerList().size() > 1) {
+      nextPlayer();
+    }
   }
 
   // 2: Swap tiles
@@ -744,7 +747,9 @@ public class GameSession {
     occupiedSquares.removeAll(occupiedSquares);
 
     successiveScorelessTurns = 0;
-    nextPlayer();
+    if (!ownPlayer.isBot() || Server.getPlayerList().size() > 0) {
+      nextPlayer();
+    }
   }
 
   // OTHER METHODS:

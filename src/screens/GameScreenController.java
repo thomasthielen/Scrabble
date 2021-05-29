@@ -716,7 +716,9 @@ public class GameScreenController {
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == ButtonType.OK) {
       try {
-        if (Client.getGameSession().getPlayer().isCurrentlyPlaying()) {
+        if (Client.isHost()) {
+          Server.resetPlayerLists();
+        } else if (Client.getGameSession().getPlayer().isCurrentlyPlaying()) {
           Client.getGameSession().nextPlayer();
         }
         Client.disconnectClient(DataHandler.getOwnPlayer());
@@ -1566,7 +1568,9 @@ public class GameScreenController {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
                   try {
-                    if (Client.getGameSession().getPlayer().isCurrentlyPlaying()) {
+                    if (Client.isHost()) {
+                      Server.resetPlayerLists();
+                    } else if (Client.getGameSession().getPlayer().isCurrentlyPlaying()) {
                       Client.getGameSession().nextPlayer();
                     }
                     Client.disconnectClient(DataHandler.getOwnPlayer());

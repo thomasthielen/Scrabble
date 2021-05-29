@@ -185,7 +185,7 @@ public class Server {
    *
    * @author tikrause
    */
-  private static void resetPlayerLists() {
+  public static void resetPlayerLists() {
     players.clear();
     aiPlayers.clear();
   }
