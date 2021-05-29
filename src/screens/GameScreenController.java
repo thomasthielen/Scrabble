@@ -76,6 +76,8 @@ public class GameScreenController {
   @FXML private Pane playerStatisticsPane;
 
   @FXML private Pane backgroundPane;
+  
+  @FXML private Pane tutorialPane;
 
   /** rackPane represents the Container for the Tiles in the Rack. */
   @FXML private FlowPane rackPane;
@@ -177,6 +179,8 @@ public class GameScreenController {
     openSwapButton.setDisable(false);
     // Set the endGame button to invisible
     endGame.setVisible(false);
+    
+    tutorialPane.setVisible(false);
 
     // Fill the gameBoard with SquarePanes which are also held in squarePanes
     squarePanes.clear();
