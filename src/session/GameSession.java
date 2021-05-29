@@ -799,7 +799,6 @@ public class GameSession {
    * @author tikrause
    */
   public void endGame() {
-    System.out.println("endGame called");
     Collections.sort(players);
     boolean hasWon = (players.get(players.size() - 1).equals(ownPlayer));
     DataHandler.addStatistics(DataHandler.getOwnPlayerId(), hasWon, ownPlayer.getScore());

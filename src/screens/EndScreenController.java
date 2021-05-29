@@ -99,7 +99,6 @@ public class EndScreenController {
     }
 
     Arrays.sort(width);
-    System.out.println(width[3]);
     grid1.relocate(500 - ((players.size() - 1) * 50) - width[3] / 2, 150);
 
     backgroundPane.getChildren().add(grid1);

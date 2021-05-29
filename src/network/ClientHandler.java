@@ -31,7 +31,6 @@ public class ClientHandler extends SimpleChannelInboundHandler<Message> {
   @Override
   protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
     MessageType mt = msg.getMessageType();
-    System.out.println(mt);
     switch (mt) {
       case CONNECT:
         ConnectMessage cm = (ConnectMessage) msg;

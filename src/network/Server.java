@@ -50,7 +50,6 @@ public class Server {
     } catch (UnknownHostException e) {
       e.printStackTrace();
     }
-    System.out.println(ip);
 
     // simplifies the connection process
     bossGroup = new NioEventLoopGroup();

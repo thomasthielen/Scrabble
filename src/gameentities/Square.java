@@ -107,7 +107,7 @@ public class Square implements Serializable {
         break;
 
       default:
-        System.out.println("Error: Invalid coordinates!");
+        break;
     }
   }
 
