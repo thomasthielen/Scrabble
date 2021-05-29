@@ -303,7 +303,7 @@ public class SinglePlayerLobbyScreenController {
    * @param event user chooses to add a hard AI player
    */
   @FXML
-  void hardAIPlayer(ActionEvent event) {
+  void hardBotPlayer(ActionEvent event) {
     try {
       int aiCount = Server.getHardBotCount() + 1;
       String aiName = "HardAI" + aiCount;
@@ -507,7 +507,7 @@ public class SinglePlayerLobbyScreenController {
    * Opens the ChangeTilesScreen. Listener for the "Edit Tiles"-Button.
    *
    * @param event the ActionEvent when the edit Tiles-Button is pressed.
-   * @throws Exception
+   * @throws Exception if fxml file not found
    * @author jbleil
    */
   @FXML
