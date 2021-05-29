@@ -41,7 +41,7 @@ class PlayScrabbleTest {
 
     try {
       Server.createServer(port);
-      Client.initialiseClient(Server.getIp(), port, true);
+      Client.initializeClient(Server.getIp(), port, true);
       Client.connectToServer(player1);
       gameSession = Client.getGameSession();
       gameSession.synchronize(gameState);

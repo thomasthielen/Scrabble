@@ -31,7 +31,7 @@ class LeaveGameTest {
     ArrayList<Player> players;
     try {
       Server.createServer(port);
-      Client.initialiseClient(Server.getIp(), port, true);
+      Client.initializeClient(Server.getIp(), port, true);
       Client.connectToServer(player);
       serverHandler.channelRead0(ctx, cm);
       players = Server.getPlayerList();

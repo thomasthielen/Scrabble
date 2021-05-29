@@ -35,16 +35,16 @@ public class Client {
   private static GameSession gameSession;
 
   /**
-   * Initialises the client with the server data to enable the communication to the server.
+   * Initializes the client with the server data to enable the communication to the server.
    *
-   * <p>initialiseClient() must be invoked before connectToServer()
+   * <p>initializeClient() must be invoked before connectToServer()
    *
    * @author tikrause
    * @param ipKey IP address of the server that should be communicated to
    * @param bindPort port that is used by the server for the communication
    * @param host boolean if the connecting client is the host of the game session
    */
-  public static void initialiseClient(String ipKey, int bindPort, boolean host) {
+  public static void initializeClient(String ipKey, int bindPort, boolean host) {
     ip = ipKey;
     port = bindPort;
     isHost = host;
@@ -54,7 +54,7 @@ public class Client {
    * Connects the client instance to the server and opens a TCP connection that can be used to send
    * or receive messages and to update the game status.
    *
-   * <p>initialiseClient() must be invoked before connectToServer()
+   * <p>initializeClient() must be invoked before connectToServer()
    *
    * @author tikrause
    * @param p player instance that should be connected to the game

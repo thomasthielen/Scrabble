@@ -93,7 +93,7 @@ public class OnlineScreenController {
     while (port < 65535) {
       try {
         Server.createServer(port);
-        Client.initialiseClient("localhost", port, true);
+        Client.initializeClient("localhost", port, true);
         Client.connectToServer(DataHandler.getOwnPlayer());
         break;
       } catch (BindException e) {

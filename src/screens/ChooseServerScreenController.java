@@ -46,7 +46,7 @@ public class ChooseServerScreenController {
           "[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}", ipField.getText().trim())) {
         if (Pattern.matches("[1-9][0-9]{3,4}", portField.getText().trim())) {
           try {
-            Client.initialiseClient(
+            Client.initializeClient(
                 ipField.getText().trim(), Integer.valueOf(portField.getText().trim()), false);
             Client.connectToServer(DataHandler.getOwnPlayer());
             FXMLLoader loader = new FXMLLoader();

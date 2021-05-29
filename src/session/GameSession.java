@@ -23,6 +23,7 @@ import screens.SinglePlayerLobbyScreenController;
  * Class used to manage all game entities and necessary methods.
  *
  * @author tthielen
+ * @author tikrause
  */
 public class GameSession {
 
@@ -168,7 +169,7 @@ public class GameSession {
   }
 
   /**
-   * TODO: Add comment.
+   * Initializes the GameScreen by calling setPlayable according to the player being host or not.
    *
    * @author tikrause
    */

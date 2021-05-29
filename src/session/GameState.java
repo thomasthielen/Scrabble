@@ -2,17 +2,17 @@ package session;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import gameentities.Bag;
 import gameentities.Board;
 import gameentities.Player;
 
 /**
- * Class used to synchronise game entities between players. At each necessary moment, the
- * synchronise() method of GameSession is called and the momentary GameState object is sent to /
+ * Class used to synchronize game entities between players. At each necessary moment, the
+ * synchronize() method of GameSession is called and the momentary GameState object is sent to /
  * received by all other players.
  *
  * @author tthielen
+ * @author tikrause
  */
 public class GameState implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -28,9 +28,9 @@ public class GameState implements Serializable {
    * Constructor: Creates a GameState object by saving all relevant attributes within.
    *
    * @author tthielen
-   * @param players
-   * @param bag
-   * @param board
+   * @param players the players that should be added to the GameState
+   * @param bag the bag that should be added to the GameState
+   * @param board the board that should be added to the GameState
    */
   public GameState(ArrayList<Player> players, Bag bag, Board board) {
     this.players = players;
@@ -40,26 +40,25 @@ public class GameState implements Serializable {
   }
 
   /**
-   * Constructor: Creates a GameState object with the player list to send the initial game session object.
+   * Constructor: Creates a GameState object with the player list to send the initial game session
+   * object.
    *
    * @author tikrause
-   * @param players
-   * @param bag
-   * @param board
+   * @param players the players that should be added to the GameState
    */
   public GameState(ArrayList<Player> players) {
     this.players = players;
     this.playersOnly = true;
   }
-  
-  public GameState(GameSession gameSession) {
-    this.players = gameSession.getPlayerList();
-    this.bag = gameSession.getBag();
-    this.board = gameSession.getBoard();
-    this.successiveScorelessTurns = gameSession.getSuccessiveScorelessTurns();
-    this.playersOnly = false;
-  }
-  
+
+  /**
+   * Constructor: Creates a GameState Object with a GameSession and the information whether the
+   * GameState is sent with the connect message.
+   *
+   * @author tthielen
+   * @param gameSession the gamesession that should be added
+   * @param connectGameState if the gamestate is sent with the connect message
+   */
   public GameState(GameSession gameSession, boolean connectGameState) {
     this.players = gameSession.getPlayerList();
     this.bag = gameSession.getBag();
@@ -67,10 +66,6 @@ public class GameState implements Serializable {
     this.successiveScorelessTurns = gameSession.getSuccessiveScorelessTurns();
     this.playersOnly = false;
     this.connectGameState = connectGameState;
-  }
-  
-  public void addPlayer(Player player) {
-    this.players.add(player);
   }
 
   /**
@@ -102,15 +97,33 @@ public class GameState implements Serializable {
   public Board getBoard() {
     return this.board;
   }
-  
+
+  /**
+   * Returns whether the GameState is sent with a connect message.
+   *
+   * @return connectGameState
+   * @author tthielen
+   */
   public boolean isConnectGameState() {
     return this.connectGameState;
   }
-  
+
+  /**
+   * Returns whether the GameState is players only.
+   *
+   * @return playersOnly
+   * @author tthielen
+   */
   public boolean isPlayersOnly() {
     return this.playersOnly;
   }
-  
+
+  /**
+   * Returns how many successive scoreless turns there have been in this gamestate.
+   *
+   * @return successiveScorelessTurns
+   * @author tthielen
+   */
   public int getSuccessiveScorelessTurns() {
     return this.successiveScorelessTurns;
   }

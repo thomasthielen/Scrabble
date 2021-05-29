@@ -33,9 +33,9 @@ class JoinGameTest {
     ArrayList<Player> players;
     try {
       Server.createServer(port);
-      Client.initialiseClient(Server.getIp(), port, true);
+      Client.initializeClient(Server.getIp(), port, true);
       Client.connectToServer(p1);
-      Client.initialiseClient(Server.getIp(), port, false);
+      Client.initializeClient(Server.getIp(), port, false);
       Client.connectToServer(p2);
       serverHandler.channelRead0(ctx, cm1);
       serverHandler.channelRead0(ctx, cm2);

@@ -24,9 +24,9 @@ class ChatTest {
     
     try {
       Server.createServer(port);
-      Client.initialiseClient(Server.getIp(), port, true);
+      Client.initializeClient(Server.getIp(), port, true);
       Client.connectToServer(p1);
-      Client.initialiseClient(Server.getIp(), port, true);
+      Client.initializeClient(Server.getIp(), port, true);
       Client.connectToServer(p2);
       Client.sendChat(p1, "Hallo");
     } catch (Exception e) {
