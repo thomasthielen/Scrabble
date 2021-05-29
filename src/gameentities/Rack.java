@@ -64,7 +64,7 @@ public class Rack implements Serializable {
   public void refillDraw(boolean ai) {
     while (this.tiles.size() < 7) {
       if (bag.isEmpty()) {
-        return;
+        break;
       }
       Tile newTile = bag.drawTile();
       tiles.add(newTile);
@@ -82,9 +82,22 @@ public class Rack implements Serializable {
       for (int i = 0; i < tileArray.length; i++) {
         if (tileArray[i] != null) {
           tiles.add(tileArray[i]);
+          tileArray[i] = null;
         }
       }
+      for (int i = 0; i < tiles.size(); i++) {
+        tileArray[i] = tiles.get(i);
+      }
     }
+    System.out.println("tileArray of AI = " + ai);
+    for (int i = 0; i < tileArray.length; i++) {
+      if (tileArray[i] != null) {
+        System.out.print(tileArray[i].getLetter() + " "); 
+      } else {
+        System.out.print("null "); 
+      }
+    }
+    System.out.println("\n"); 
   }
 
   /**
@@ -128,6 +141,9 @@ public class Rack implements Serializable {
    * @param position the position of the tile that should be played on the board
    */
   public void playTile(int position) {
+    System.out.println("Failsafe: Position = " + position); 
+    System.out.println(
+        "tile " + tileArray[position].getLetter() + " at position " + position + " played");
     tileArray[position] = null;
     this.tiles.clear();
     for (int i = 0; i < tileArray.length; i++) {
@@ -162,6 +178,7 @@ public class Rack implements Serializable {
    * @param position the position of the tile on the rack
    */
   public void returnTile(Tile tile, int position) {
+    System.out.println("tile " + tile.getLetter() + " returned to position " + position);
     if (tileArray[position] == null) {
       tileArray[position] = tile;
     }
@@ -172,7 +189,7 @@ public class Rack implements Serializable {
       }
     }
   }
-  
+
   /**
    * Adds a tile back to the rack. Used for AI.
    *

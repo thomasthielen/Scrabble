@@ -375,7 +375,7 @@ public class GameScreenController {
               clickedOnTile.setSelected(false);
               clickedOnTile.setPlacedTemporarily(true);
               gameSession.placeTile(
-                  boardSelectedX, boardSelectedY, clickedOnTile, rackPanes.indexOf(node));
+                  boardSelectedX, boardSelectedY, clickedOnTile, rackTiles.indexOf(clickedOnTile));
 
               gameBoardTiles.add(clickedOnTile);
               gameBoardTiles.remove(returnTile);
