@@ -6,7 +6,6 @@ import gameentities.Player;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,8 +27,9 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 /**
- * this class provides the controller for the Existing Profile Screen.
+ * This class provides the controller for the Existing Profile Screen.
  *
+ * @author jluellig
  * @author jbleil
  */
 public class ExistingProfileScreenController {
@@ -77,7 +77,7 @@ public class ExistingProfileScreenController {
    * play or to edit.
    *
    * @author jluellig
-   * @throws Exception
+   * @throws Exception general exception throw
    */
   protected void addProfiles() throws Exception {
     buttonGroup = new ToggleGroup();
@@ -114,7 +114,7 @@ public class ExistingProfileScreenController {
    * Profile Screen.
    *
    * @author jluellig
-   * @param event
+   * @param event ActionEvent that gets triggered when the edit profile Button is clicked.
    */
   @FXML
   void editProfile(ActionEvent event) throws Exception {
@@ -178,7 +178,7 @@ public class ExistingProfileScreenController {
    * Checks if there are profiles to show.
    *
    * @author jluellig
-   * @throws Exception
+   * @throws Exception IOException and FileNotFoundException
    */
   protected void checkProfilesEmpty() throws Exception {
     if (profiles.isEmpty()) {
@@ -223,7 +223,7 @@ public class ExistingProfileScreenController {
    *
    * @author jbleil
    * @param event the MouseEvent that gets thrown when clicking on the "freeicons.io" Text
-   * @throws Exception
+   * @throws Exception general exception throw
    */
   @FXML
   void openSiteScreen(MouseEvent event) throws Exception {

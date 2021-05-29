@@ -52,12 +52,15 @@ import session.Dictionary;
  * This class provides the Controller for the Lobby Screen.
  *
  * @author jbleil
+ * @author tikrause
+ * @author jluellig
+ * @author tthielen
  */
 public class LobbyScreenController {
 
   @FXML private Pane lobbyPane;
 
-  @FXML private Pane chooseAIPane;
+  @FXML private Pane chooseBotPane;
 
   @FXML private Pane tooltipPaneHost;
 
@@ -89,14 +92,14 @@ public class LobbyScreenController {
   @FXML private Text selectDictionaryText;
   @FXML private Text editTilesText;
 
-  @FXML private Rectangle addAIPlayerTooltip;
+  @FXML private Rectangle addBotPlayerTooltip;
   @FXML private Rectangle uploadDictionaryTooltip;
   @FXML private Rectangle chooseDictionaryTooltip;
   @FXML private Rectangle startGameTooltip;
   @FXML private Rectangle editTilesTooltip;
 
   @FXML private Button fileForm;
-  @FXML private Button addAIPlayer;
+  @FXML private Button addBotPlayer;
   @FXML private Button startGame;
   @FXML private Button editTiles;
   @FXML private MenuButton dictionarySelecter;
@@ -115,10 +118,10 @@ public class LobbyScreenController {
   private Text tooltipText;
 
   /**
-   * this method initializes the LobbyScreen
+   * This method initializes the LobbyScreen.
    *
    * @author jbleil
-   * @throws Exception
+   * @author tthielen
    */
   public void initialize() throws Exception {
     playerInfos.add(playerInfo1);
@@ -131,7 +134,7 @@ public class LobbyScreenController {
     playerStatistics.add(playerStatistic3);
     playerStatistics.add(playerStatistic4);
 
-    addAIPlayerTooltip.setVisible(false);
+    addBotPlayerTooltip.setVisible(false);
     uploadDictionaryTooltip.setVisible(false);
     chooseDictionaryTooltip.setVisible(false);
     startGameTooltip.setVisible(false);
@@ -148,7 +151,7 @@ public class LobbyScreenController {
     Client.getGameSession().setLobbyScreenController(this);
     if (!Client.isHost()) {
       fileForm.setDisable(true);
-      addAIPlayer.setDisable(true);
+      addBotPlayer.setDisable(true);
       startGame.setDisable(true);
       editTiles.setDisable(true);
       dictionarySelecter.setDisable(true);
@@ -156,7 +159,7 @@ public class LobbyScreenController {
       selectDictionaryText.setOpacity(0.5);
       editTilesText.setOpacity(0.5);
 
-      addAIPlayerTooltip.setVisible(true);
+      addBotPlayerTooltip.setVisible(true);
       uploadDictionaryTooltip.setVisible(true);
       chooseDictionaryTooltip.setVisible(true);
       startGameTooltip.setVisible(true);
@@ -170,7 +173,7 @@ public class LobbyScreenController {
     chatField.setFocusTraversable(false);
     chatField.setWrapText(true);
 
-    chooseAIPane.setVisible(false);
+    chooseBotPane.setVisible(false);
     tooltipPaneHost.setVisible(false);
     tooltipPane.setVisible(false);
 
@@ -183,7 +186,6 @@ public class LobbyScreenController {
    *
    * @author jluellig
    * @param event ActionEvent when the "Upload dictionary"-Button is clicked
-   * @throws Exception
    */
   @FXML
   void uploadDictionary(ActionEvent event) throws Exception {
@@ -234,7 +236,13 @@ public class LobbyScreenController {
   void openTooltip(MouseEvent event) {
     Text text =
         new Text(
-            "You can upload your own dictionary for the\ngame! You can only use text files in which\nevery line starts with the word you want to\nadd to the dictionary. Every other information\n(that will not be used by this game) has to be\nseparated from the word in this line\nby a whitespace.");
+            "You can upload your own dictionary for the"
+                + "\ngame! You can only use text files in which"
+                + "\nevery line starts with the word you want to"
+                + "\nadd to the dictionary. Every other information"
+                + "\n(that will not be used by this game) has to be"
+                + "\nseparated from the word in this line"
+                + "\nby a whitespace.");
     text.relocate(10, 10);
     text.setFill(Paint.valueOf("#f88c00"));
     text.setFont(new Font(14));
@@ -260,7 +268,6 @@ public class LobbyScreenController {
    *
    * @author tikrause
    * @param event user hits the 'LEAVE LOBBY'-Button
-   * @throws Exception
    */
   @FXML
   void leaveLobby(ActionEvent event) throws Exception {
@@ -307,7 +314,7 @@ public class LobbyScreenController {
    *
    * @author jbleil
    * @param event ActionEvent that gets triggered when the startGame Button is clicked
-   * @throws Exception the Exception that is throws if FXML file is not found
+   * @throws Exception the Exception that it throws if FXML file is not found
    */
   @FXML
   void startGame(ActionEvent event) throws Exception {
@@ -326,8 +333,10 @@ public class LobbyScreenController {
         errorAlert.setTitle("Error");
         errorAlert.setHeaderText("Too few players.");
         errorAlert.setContentText(
-            "You can't start a MultiPlayer game alone. Please wait for other players to join your lobby or add an AI player.\n\n"
-                + "If you want to play alone and learn how to play Scrabble, try the Training Mode.");
+            "You can't start a MultiPlayer game alone. Please wait for other "
+                + "players to join your lobby or add an AI player.\n\n"
+                + "If you want to play alone and learn how to play Scrabble, "
+                + "try the Training Mode.");
         errorAlert.showAndWait();
         return;
       }
@@ -341,8 +350,8 @@ public class LobbyScreenController {
    * @param event user clicks the button
    */
   @FXML
-  void addAIPlayer(ActionEvent event) throws Exception {
-    chooseAIPane.setVisible(true);
+  void addBotPlayer(ActionEvent event) throws Exception {
+    chooseBotPane.setVisible(true);
   }
 
   /**
@@ -352,7 +361,7 @@ public class LobbyScreenController {
    * @param event user chooses to add an easy AI player
    */
   @FXML
-  void easyAIPlayer(ActionEvent event) {
+  void easyBotPlayer(ActionEvent event) {
     try {
       int aiCount = Server.getEasyBotCount() + 1;
       String aiName = "EasyAI" + aiCount;
@@ -372,7 +381,8 @@ public class LobbyScreenController {
       errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Too many players.");
       errorAlert.setContentText(
-          "You can't add another AI player because there are already the maximum of 4 players in the game.");
+          "You can't add another AI player because "
+              + "there are already the maximum of 4 players in the game.");
       errorAlert.showAndWait();
     }
     closeChooseAIPane(new ActionEvent());
@@ -385,7 +395,7 @@ public class LobbyScreenController {
    * @param event user chooses to add a hard AI player
    */
   @FXML
-  void hardAIPlayer(ActionEvent event) {
+  void hardBotPlayer(ActionEvent event) {
     try {
       int aiCount = Server.getHardBotCount() + 1;
       String aiName = "HardAI" + aiCount;
@@ -405,7 +415,8 @@ public class LobbyScreenController {
       errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Too many players.");
       errorAlert.setContentText(
-          "You can't add another AI player because there are already the maximum of 4 players in the game.");
+          "You can't add another AI player because "
+              + "there are already the maximum of 4 players in the game.");
       errorAlert.showAndWait();
     }
     closeChooseAIPane(new ActionEvent());
@@ -418,7 +429,7 @@ public class LobbyScreenController {
    * @param event user chooses to delete the AI player
    */
   @FXML
-  void deleteAIPlayer1(ActionEvent event) {
+  void deleteBotPlayer1(ActionEvent event) {
     Player ai = Server.getPlayerList().get(1);
     Server.removeBotPlayer(ai);
     refreshPlayerList();
@@ -432,7 +443,7 @@ public class LobbyScreenController {
    * @param event user chooses to delete the AI player
    */
   @FXML
-  void deleteAIPlayer2(ActionEvent event) {
+  void deleteBotPlayer2(ActionEvent event) {
     Player ai = Server.getPlayerList().get(2);
     Server.removeBotPlayer(ai);
     refreshPlayerList();
@@ -446,7 +457,7 @@ public class LobbyScreenController {
    * @param event user chooses to delete the AI player
    */
   @FXML
-  void deleteAIPlayer3(ActionEvent event) {
+  void deleteBotPlayer3(ActionEvent event) {
     Player ai = Server.getPlayerList().get(3);
     Server.removeBotPlayer(ai);
     refreshPlayerList();
@@ -461,7 +472,7 @@ public class LobbyScreenController {
    */
   @FXML
   void closeChooseAIPane(ActionEvent event) {
-    chooseAIPane.setVisible(false);
+    chooseBotPane.setVisible(false);
   }
 
   /**
@@ -1077,7 +1088,7 @@ public class LobbyScreenController {
     tooltipText.setFont(new Font(14));
     tooltipText.relocate(4, 2);
     tooltipPane.getChildren().add(tooltipText);
-    tooltipPane.relocate(14, addAIPlayer.getLayoutY() - 25);
+    tooltipPane.relocate(14, addBotPlayer.getLayoutY() - 25);
     tooltipPane.setVisible(true);
   }
 

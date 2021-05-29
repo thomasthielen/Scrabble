@@ -35,12 +35,12 @@
          </font>
       </Button>
       <Button layoutX="863.0" layoutY="22.0" mnemonicParsing="false" onAction="#leaveLobby" prefHeight="40.0" prefWidth="123.0" style="-fx-background-color: #f88c00;" text="Leave Lobby" textFill="WHITE" />
-      <Button fx:id="addAIPlayer" layoutX="14.0" layoutY="473.0" mnemonicParsing="false" onAction="#addAIPlayer" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #F88C00;" text="Add AI Player" textFill="WHITE" />
+      <Button fx:id="addBotPlayer" layoutX="14.0" layoutY="473.0" mnemonicParsing="false" onAction="#addBotPlayer" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #F88C00;" text="Add AI Player" textFill="WHITE" />
       <Rectangle fx:id="chooseDictionaryTooltip" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="40.0" layoutX="409.0" layoutY="142.0" onMouseEntered="#displayChooseDictionaryTooltip" onMouseExited="#closeChooseDictionaryTooltip" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="180.0" />
       <Rectangle fx:id="uploadDictionaryTooltip" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="40.0" layoutX="409.0" layoutY="257.0" onMouseEntered="#displayUploadDictionaryTooltip" onMouseExited="#openUploadDictionaryTooltip" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="180.0" />
       <Rectangle fx:id="editTilesTooltip" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="40.0" layoutX="409.0" layoutY="376.0" onMouseEntered="#displayEditTilesTooltip" onMouseExited="#openEditTilesTooltip" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="180.0" />
       <Rectangle fx:id="startGameTooltip" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="75.0" layoutX="300.0" layoutY="473.0" onMouseEntered="#displayStartGameTooltip" onMouseExited="#closeStartGameTooltip" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="400.0" />
-      <Rectangle fx:id="addAIPlayerTooltip" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="40.0" layoutX="14.0" layoutY="473.0" onMouseEntered="#displayAddAIPlayerTooltip" onMouseExited="#closeAddAIPlayerTooltip" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="180.0" />
+      <Rectangle fx:id="addBotPlayerTooltip" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="40.0" layoutX="14.0" layoutY="473.0" onMouseEntered="#displayAddAIPlayerTooltip" onMouseExited="#closeAddAIPlayerTooltip" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="180.0" />
       <Pane layoutX="765.0" layoutY="72.0" prefHeight="475.0" prefWidth="221.0" style="-fx-background-color: #FFFFFF;">
          <children>
             <TextArea fx:id="chatField" layoutX="8.0" layoutY="51.0" prefHeight="372.0" prefWidth="204.0" />
@@ -86,17 +86,17 @@
       <Text fx:id="playerStatistic2" layoutX="14.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics 2" />
       <Text fx:id="playerStatistic3" layoutX="14.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics 3" />
       <Text fx:id="playerStatistic4" layoutX="14.0" layoutY="415.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics 4" />
-      <Button fx:id="deleteButton1" layoutX="130.0" layoutY="223.0" mnemonicParsing="false" onAction="#deleteAIPlayer1" style="-fx-background-color: #f88c00;" text="delete" textFill="WHITE">
+      <Button fx:id="deleteButton1" layoutX="130.0" layoutY="223.0" mnemonicParsing="false" onAction="#deleteBotPlayer1" style="-fx-background-color: #f88c00;" text="delete" textFill="WHITE">
          <font>
             <Font size="12.0" />
          </font>
       </Button>
-      <Button fx:id="deleteButton2" layoutX="130.0" layoutY="299.0" mnemonicParsing="false" onAction="#deleteAIPlayer2" style="-fx-background-color: #f88c00;" text="delete" textFill="WHITE">
+      <Button fx:id="deleteButton2" layoutX="130.0" layoutY="299.0" mnemonicParsing="false" onAction="#deleteBotPlayer2" style="-fx-background-color: #f88c00;" text="delete" textFill="WHITE">
          <font>
             <Font size="12.0" />
          </font>
       </Button>
-      <Button fx:id="deleteButton3" layoutX="130.0" layoutY="375.0" mnemonicParsing="false" onAction="#deleteAIPlayer3" style="-fx-background-color: #f88c00;" text="delete" textFill="WHITE">
+      <Button fx:id="deleteButton3" layoutX="130.0" layoutY="375.0" mnemonicParsing="false" onAction="#deleteBotPlayer3" style="-fx-background-color: #f88c00;" text="delete" textFill="WHITE">
          <font>
             <Font size="12.0" />
          </font>
@@ -106,7 +106,7 @@
             <Font size="22.0" />
          </font>
       </Text>
-      <Pane fx:id="chooseAIPane" layoutX="12.0" layoutY="316.0" prefHeight="200.0" prefWidth="425.0" style="-fx-background-color: #F4D896; -fx-border-color: #f88c00;">
+      <Pane fx:id="chooseBotPane" layoutX="12.0" layoutY="316.0" prefHeight="200.0" prefWidth="425.0" style="-fx-background-color: #F4D896; -fx-border-color: #f88c00;">
          <children>
             <Button layoutX="382.0" layoutY="13.0" mnemonicParsing="false" onAction="#closeChooseAIPane" style="-fx-background-color: #f88c00;" text="X" textFill="WHITE">
                <font>
@@ -114,8 +114,8 @@
                </font>
             </Button>
             <Text fill="#f88c00" layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select a difficulty level for the AI player" />
-            <Button layoutX="14.0" layoutY="61.0" mnemonicParsing="false" onAction="#easyAIPlayer" prefHeight="39.0" prefWidth="349.0" style="-fx-background-color: #f88c00;" text="EASY" textFill="WHITE" />
-            <Button layoutX="14.0" layoutY="121.0" mnemonicParsing="false" onAction="#hardAIPlayer" prefHeight="39.0" prefWidth="349.0" style="-fx-background-color: #f88c00;" text="HARD" textFill="WHITE" />
+            <Button layoutX="14.0" layoutY="61.0" mnemonicParsing="false" onAction="#easyBotPlayer" prefHeight="39.0" prefWidth="349.0" style="-fx-background-color: #f88c00;" text="EASY" textFill="WHITE" />
+            <Button layoutX="14.0" layoutY="121.0" mnemonicParsing="false" onAction="#hardBotPlayer" prefHeight="39.0" prefWidth="349.0" style="-fx-background-color: #f88c00;" text="HARD" textFill="WHITE" />
          </children>
       </Pane>
       <Pane fx:id="tooltipPaneHost" layoutX="349.0" layoutY="98.0" prefHeight="155.0" prefWidth="300.0" style="-fx-background-color: #F4D896; -fx-border-color: #f88c00;" />

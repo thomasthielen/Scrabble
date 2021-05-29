@@ -69,7 +69,8 @@ public class EditProfileScreenController {
         errorAlert.setTitle("Error");
         errorAlert.setHeaderText("Input not valid.");
         errorAlert.setContentText(
-            "The username must contain 2-15 letters or numbers. It can't contain any special characters.");
+            "The username must contain 2-15 letters or numbers. It can't contain any special "
+                + "characters.");
         errorAlert.showAndWait();
         nameField.setText(currentUsername);
         return;
@@ -236,7 +237,7 @@ public class EditProfileScreenController {
    *
    * @author jbleil
    * @param event the MouseEvent that gets thrown when clicking on the "Soni Sokell" Text
-   * @throws Exception
+   * @throws Exception general exception catch
    */
   @FXML
   void openNameScreen(MouseEvent event) throws Exception {
@@ -251,7 +252,7 @@ public class EditProfileScreenController {
    *
    * @author jbleil
    * @param event the MouseEvent that gets thrown when clicking on the "freeicons.io" Text
-   * @throws Exception
+   * @throws Exception general exception catch
    */
   @FXML
   void openSiteScreen(MouseEvent event) throws Exception {

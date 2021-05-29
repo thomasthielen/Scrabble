@@ -1,17 +1,16 @@
 package screens;
 
-import java.util.regex.Pattern;
-
 import gameentities.Bag;
 import gameentities.TileContainer;
+import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -21,6 +20,7 @@ import network.Client;
  * The controller for the ChangeTilesScreen.
  *
  * @author jbleil
+ * @author tthielen
  */
 public class ChangeTilesScreenController {
 
@@ -80,7 +80,9 @@ public class ChangeTilesScreenController {
   }
 
   /**
-   * this method sets the TextFields for the ChangeTilesScreen and fills them initially with the properties from the current Bag.
+   * this method sets the TextFields for the ChangeTilesScreen and fills them initially with the
+   * properties from the current Bag.
+   *
    * @author jbleil
    */
   public void setTileScreen() {
@@ -135,7 +137,7 @@ public class ChangeTilesScreenController {
    * Stores the changes that were made.
    *
    * @param event the ActionEvent when the submitChanges-Button is pressed.
-   * @throws Exception
+   * @throws Exception IOException from the back button
    * @author jbleil
    */
   @FXML
@@ -199,7 +201,7 @@ public class ChangeTilesScreenController {
    * Gets the user back to the LobbyScreen.
    *
    * @param event the ActionEvent when the back-Button is pressed
-   * @throws Exception
+   * @throws Exception IOException
    * @author jbleil
    */
   @FXML
@@ -232,19 +234,19 @@ public class ChangeTilesScreenController {
    * saves the status if it is a multiplayer game or not to return to the right screen.
    *
    * @author jbleil
-   * @param b is multiplayer or not
+   * @param multiplayer is multiplayer or not
    */
-  void setMultiplayer(boolean b) {
-    isMultiplayer = b;
+  void setMultiplayer(boolean multiplayer) {
+    isMultiplayer = multiplayer;
   }
 
   /**
    * Stores the chat for when the host goes back after editing the tiles.
    *
    * @author tikrause
-   * @param sb chat that has been stored
+   * @param storedChat chat that has been stored
    */
-  void storeChat(StringBuffer sb) {
-    storedChat = sb;
+  void storeChat(StringBuffer storedChat) {
+    this.storedChat = storedChat;
   }
 }

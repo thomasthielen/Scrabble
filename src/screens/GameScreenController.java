@@ -7,7 +7,6 @@ import gameentities.Rack;
 import gameentities.Square;
 import gameentities.SquarePane;
 import gameentities.Tile;
-import gameentities.TileContainer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +24,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
@@ -32,7 +32,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -54,7 +53,11 @@ import session.GameSession;
  * This class provides the Controller for the Game Screen and handles all the interaction with the
  * Players during the game.
  *
+ * @author tthielen
+ * @author lsteltma
  * @author jbleil
+ * @author tikrause
+ * @author jluellig
  */
 public class GameScreenController {
 
@@ -64,10 +67,7 @@ public class GameScreenController {
    */
   @FXML private GridPane gameBoard;
 
-  /** gameBoardPane represents the Container for the Game Board and. */
-  @FXML private Pane gameBoardPane; // TODO: Might want to rename this compared to gameBoard
-
-  /** chatPane represents the Container for the Chat */
+  /** chatPane represents the Container for the Chat. */
   @FXML private Pane chatPane;
 
   /** playerStatisticsPane represents the Container for the Player Statistics. */
@@ -80,11 +80,11 @@ public class GameScreenController {
   /** rackPane represents the Container for the Tiles in the Rack. */
   @FXML private FlowPane rackPane;
 
-  /** swapRack */
-  @FXML private FlowPane swapRack;
-
-  /** swapPane has */
+  /** swapPane represents the Container for the swap feature. */
   @FXML private Pane swapPane;
+
+  /** swapRack lies in the swapPane and holds the player's tiles. */
+  @FXML private FlowPane swapRack;
 
   @FXML private Pane wildcardPane;
 
@@ -163,7 +163,7 @@ public class GameScreenController {
    * initializes the GameScreen.
    *
    * @author jbleil
-   * @throws Exception
+   * @author tthielen
    */
   public void initialize() throws Exception {
 
@@ -178,8 +178,7 @@ public class GameScreenController {
     // Set the endGame button to invisible
     endGame.setVisible(false);
 
-    // Fill the gameBoard with SquarePanes which are also held in squarePanes (!)
-    System.out.println(gameBoard.getColumnConstraints());
+    // Fill the gameBoard with SquarePanes which are also held in squarePanes
     squarePanes.clear();
     for (int j = 0; j <= 14; j++) {
       for (int i = 0; i <= 14; i++) {
@@ -226,6 +225,12 @@ public class GameScreenController {
     gameBoard.add(starView, 7, 7);
   }
 
+  /**
+   * Sets the rack according to the rack in the back end.
+   *
+   * @author tthielen
+   * @param isFirstTime whether it is the first time setting the rack
+   */
   public void setRack(boolean isFirstTime) {
     rack.clear();
     letters.clear();
@@ -290,13 +295,16 @@ public class GameScreenController {
   }
 
   /**
-   * If the Rack is clicked the clicked Tile is set as selected.
+   * Handles the player clicking on the rack. There are 4 different scenarios which have to be
+   * considered.
    *
+   * @author tthielen
    * @author jbleil
    * @param event MouseEvent that is triggered when the rack is clicked
    */
   @FXML
   void rackClicked(MouseEvent event) {
+    // Only react in any way if it is the player's turn
     if (playable) {
       // Extract the coordinates from the event
       eventX = event.getX();
@@ -420,28 +428,17 @@ public class GameScreenController {
   }
 
   /**
-   * initializes a new Tile.
+   * Serves as a Listener for the GridPane, which displays the GameBoard. There are 6 different
+   * scenarios which have to be considered.
    *
+   * @author tthielen
+   * @author lsteltma
    * @author jbleil
-   * @throws Exception
-   */
-  public static Tile setTile() throws Exception {
-    return null; // dummy return
-  }
-
-  /**
-   * TODO this methods serves as a Listener for the GridPane, which displays the the GameBoard If a
-   * Tile from the Rack is selected it is
-   *
-   * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event MouseEvent that is triggered when the board is clicked
    */
   @FXML
-  void tileClicked(MouseEvent event) throws Exception {
+  void boardClicked(MouseEvent event) throws Exception {
     if (playable && !swapPaneOpen) {
-      // TODO: This method should be renamed, as it is called as soon as any square on the board is
-      // clicked
       boolean rackSelected = false;
 
       // Go through all StackPanes in gameBoard and search for the one on which the user clicked
@@ -467,6 +464,7 @@ public class GameScreenController {
               // Check if any tile on the rack is selected
               for (Tile tile : rackTiles) {
                 if (tile.isSelected() && !tile.isPlacedTemporarily()) {
+
                   // OPTION 1: Yes, the tile on the rack will be placed...
 
                   tileToPlace = tile;
@@ -642,12 +640,11 @@ public class GameScreenController {
   }
 
   /**
-   * This method serves as the Listener for "Player Statistics"-Button If the Statistics are open it
-   * closes the and if they are closed it opens them
+   * Serves as the Listener for "Player Statistics"-Button. If the statistics are opened it closes
+   * them and if they are closed it opens them.
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event the ActionEvent called by the button
    */
   @FXML
   void playerStatistics(ActionEvent event) throws Exception {
@@ -659,12 +656,11 @@ public class GameScreenController {
   }
 
   /**
-   * This method serves as the Listener for "X"-Button from the playerStatisticsPane It closes the
-   * Player Statistics
+   * Serves as the Listener for "X"-Button from the playerStatisticsPane. It closes the player
+   * statistics.
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event the ActionEvent called by the button
    */
   @FXML
   void closePlayerStatistics(ActionEvent event) throws Exception {
@@ -672,12 +668,11 @@ public class GameScreenController {
   }
 
   /**
-   * This method serves as the Listener for "CHAT"-Button. If the Chat is open, it closes it and if
-   * it's closed, it opens it.
+   * Serves as the Listener for "CHAT"-Button. If the chat is open, it closes it and if it's closed,
+   * it opens it.
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event the ActionEvent called by the button
    */
   @FXML
   void chat(ActionEvent event) throws Exception {
@@ -691,11 +686,10 @@ public class GameScreenController {
   }
 
   /**
-   * This method serves as the Listener for "X"-Button from the chatPane. It closes the Chat.
+   * Serves as the Listener for "X"-Button from the chatPane. It closes the chat.
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event the ActionEvent called by the button
    */
   @FXML
   void closeChat(ActionEvent event) throws Exception {
@@ -703,8 +697,8 @@ public class GameScreenController {
   }
 
   /**
-   * This method serves as the Listener for the "Leave Game"-Button. It asks the user whether he
-   * wants to leave the game and removes him after his confirmation.
+   * Serves as the Listener for the "Leave Game"-Button. It asks the user whether he wants to leave
+   * the game and removes him after his confirmation.
    *
    * @author tikrause
    * @param event user clicks the 'LEAVE GAME'-Button
@@ -796,7 +790,6 @@ public class GameScreenController {
    *
    * @author tikrause
    * @param event user types in a message and clicks 'SEND'
-   * @throws Exception
    */
   @FXML
   void sendMessage(ActionEvent event) {
@@ -844,11 +837,10 @@ public class GameScreenController {
   }
 
   /**
-   * This method serves as the Listener for the Enter-key in the chat text field. It serves as an
-   * alternative to the send message button.
+   * Serves as the Listener for the Enter-key in the chat text field. It serves as an alternative to
+   * the send message button.
    *
    * @param event ActionEvent when enter is pressed in the text field
-   * @throws Exception
    * @author jluellig
    */
   @FXML
@@ -857,30 +849,12 @@ public class GameScreenController {
   }
 
   /**
-   * TODO This method serves as the Listener for "BAG"-Button from the gameBoardPane It opens a
-   * popUp-Window in which the user can see all the remaining tiles
+   * Serves as the Listener for the "Recall"-Button from the gameBoardPane. It allows the user to
+   * call back the tiles he has laid on the gameBoard in the current move.
    *
+   * @author tthielen
    * @author jbleil
-   * @param event
-   * @throws Exception
-   */
-  @FXML
-  void bag(ActionEvent event) throws Exception {
-    ArrayList<TileContainer> tileCounter = new ArrayList<TileContainer>();
-    tileCounter = gameSession.getBag().getTileCounter();
-    for (TileContainer tc : tileCounter) {
-      char c = tc.getTile().getLetter();
-      int count = tc.getCount();
-    }
-  }
-
-  /**
-   * TODO This method serves as the Listener for "Recall"-Button from the gameBoardPane It allows
-   * the user to call back the tiles he has laid on the gameBoard in the current move
-   *
-   * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event the ActionEvent called by the button
    */
   @FXML
   void recallLetters(ActionEvent event) throws Exception {
@@ -912,13 +886,13 @@ public class GameScreenController {
   }
 
   /**
-   * TODO This method serves as the Listener for "Submit"-Button from the gameBoardPane The Button
-   * gets enabled if the user lays a valid word on the gameBoard If the user presses the Button the
-   * layed word is submitted and it's the next players turn
+   * Serves as the Listener for "Submit"-Button from the gameBoardPane. The Button gets enabled if
+   * the user lays a valid word on the gameBoard. If the user presses the Button the laid word is
+   * submitted and it's the next players turn.
    *
+   * @author tthielen
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event the ActionEvent called by the button
    */
   @FXML
   void submitWord(ActionEvent event) throws Exception {
@@ -944,13 +918,12 @@ public class GameScreenController {
   }
 
   /**
-   * TODO This method serves as the Listener for "Swap"-Button from the gameBoardPane Opens a
-   * popUp-Window in which the user can swap one or more tiles out of his rack with new Tiles from
-   * the Bag
+   * Serves as the Listener for "Swap"-Button from the gameBoardPane. Opens a popUp-window in which
+   * the user can swap one or more tiles out of his rack with new tiles from the bag.
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @author tthielen
+   * @param event the ActionEvent called by the button
    */
   @FXML
   void openSwapPane(ActionEvent event) throws Exception {
@@ -996,20 +969,14 @@ public class GameScreenController {
       StackPane.setAlignment(number, Pos.BOTTOM_RIGHT);
       swapRack.getChildren().add(stackPane);
     }
-    // this.gameBoard = modifyPane(gameBoard); // Test for GridPane exchange
   }
 
   /**
-   * TODO This method serves as the Listener for the Submit Button in the popUp-Window which opens
-   * when you click the "Swap"-Button from the gameBoardPane
+   * Serves as the Listener for "Close"-Button from the swap window. Closes the window.
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event the ActionEvent called by the button
    */
-  @FXML
-  void submitSwapTiles(ActionEvent event) throws Exception {}
-
   @FXML
   void closeSwapPane(ActionEvent event) throws Exception {
     swapPaneOpen = false;
@@ -1017,6 +984,14 @@ public class GameScreenController {
     swapRack.getChildren().clear();
   }
 
+  /**
+   * Serves as the Listener for the submit button in the popUp-Window which opens when you click the
+   * "Swap"-Button from the gameBoardPane.
+   *
+   * @author tthielen
+   * @author jbleil
+   * @param event the ActionEvent called by the button
+   */
   @FXML
   void swapTiles(ActionEvent event) throws Exception {
     swapPaneOpen = false;
@@ -1027,6 +1002,13 @@ public class GameScreenController {
     setRack(false);
   }
 
+  /**
+   * Serves as the Listener for the swap pane. Used to select or deselect the tiles in the rack.
+   *
+   * @author tthielen
+   * @author jbleil
+   * @param event the ActionEvent called by the button
+   */
   @FXML
   void swapPaneClicked(MouseEvent event) {
     // Extract the coordinates from the event
@@ -1055,6 +1037,13 @@ public class GameScreenController {
     submitSwapButton.setDisable(positions.size() == 0);
   }
 
+  /**
+   * Serves as the Listener for the submit wildcard button.
+   *
+   * @author tthielen
+   * @author jbleil
+   * @param event the ActionEvent called by the button
+   */
   @FXML
   void submitWildcard(ActionEvent event) {
     wildcardPane.setVisible(false);
@@ -1064,8 +1053,8 @@ public class GameScreenController {
   }
 
   /**
-   * This method serves as the Listener for the Enter-key in the wildcard text field. It serves as
-   * an alternative to the submit wildcard button.
+   * Serves as the Listener for the Enter-key in the wildcard text field. It serves as an
+   * alternative to the submit wildcard button.
    *
    * @param event the ActionEvent when enter is pressed in the wildcard text field
    * @author jluellig
@@ -1076,11 +1065,10 @@ public class GameScreenController {
   }
 
   /**
-   * this method serves as a Listener for the close Button in the wildcardPane. It closes the
-   * wildCardPane.
+   * Serves as a Listener for the close Button in the wildcardPane. It closes the wildCardPane.
    *
    * @author jbleil
-   * @param event
+   * @param event the ActionEvent called by the button
    */
   @FXML
   void closeWildcardPane(ActionEvent event) {
@@ -1100,11 +1088,10 @@ public class GameScreenController {
   }
 
   /**
-   * This method serves as a Listener for the skipTurn Button. It enables the user to skip a turn.
+   * Serves as a Listener for the skipTurn Button. It instantly skips the turn of the user.
    *
    * @author jbleil
-   * @param event
-   * @throws Exception
+   * @param event the ActionEvent called by the button
    */
   @FXML
   void skipTurn(ActionEvent event) throws Exception {
@@ -1115,12 +1102,23 @@ public class GameScreenController {
     setRack(false);
   }
 
+  /**
+   * Serves as a Listener for the end game button. Ends the game via condition 2.
+   *
+   * @author jbleil
+   * @param event the ActionEvent called by the button
+   */
   @FXML
   void endGame(ActionEvent event) throws Exception {
     Client.reportEndGame(DataHandler.getOwnPlayer());
     switchToEndScreen();
   }
 
+  /**
+   * Calls a switch to the end screen.
+   *
+   * @author jbleil
+   */
   public void switchToEndScreen() {
     gameSession.endGame();
     FXMLLoader loader = new FXMLLoader();
@@ -1136,8 +1134,11 @@ public class GameScreenController {
     }
   }
 
-  // All following methods are functions used multiple times in the methods above
-
+  /**
+   * Deselects all tiles on the board and rack within the back end.
+   *
+   * @author tthielen
+   */
   private void deselectAll() {
     for (Tile t : rackTiles) {
       t.setSelected(false);
@@ -1147,6 +1148,12 @@ public class GameScreenController {
     }
   }
 
+  /**
+   * Refreshes the submit button according to the checkMove() method. Also displays the value of the
+   * turn if a legal move was placed.
+   *
+   * @author tthielen
+   */
   private void refreshSubmit() {
     if (!wildcardPane.isVisible()) {
       if (gameSession.checkMove()) {
@@ -1159,6 +1166,13 @@ public class GameScreenController {
     }
   }
 
+  /**
+   * Places a given tile on the board via its corresponding StackPane.
+   *
+   * @author tthielen
+   * @param tile the tile which is meant to be placed
+   * @param sp the StackPane on which the tile is meant to be placed
+   */
   private void placeTileOnBoard(Tile tile, StackPane sp) {
     sp.getChildren().clear();
 
@@ -1186,6 +1200,13 @@ public class GameScreenController {
     sp.getChildren().add(number);
   }
 
+  /**
+   * Paints a tile as selected or not via its StackPane.
+   *
+   * @author tthielen
+   * @param sp the StackPane which needs to be modified.
+   * @param selected whether the tile is meant to be painted as selected or not.
+   */
   private void paintTileAsSelected(StackPane sp, boolean selected) {
     for (Node n : sp.getChildren()) {
       if (n instanceof Rectangle) {
@@ -1199,6 +1220,11 @@ public class GameScreenController {
     }
   }
 
+  /**
+   * Paints all tiles as deselected, parallel to the back end method.
+   *
+   * @author tthielen
+   */
   private void paintAllAsDeselected() {
     for (StackPane sp : rackPanes) {
       for (Node n : sp.getChildren()) {
@@ -1222,6 +1248,11 @@ public class GameScreenController {
     }
   }
 
+  /**
+   * Refreshes the recall button according to whether any tile is currently placed on the board.
+   *
+   * @author tthielen
+   */
   private void refreshRecall() {
     if (gameBoardTiles.size() > 0) {
       recallButton.setDisable(false);
@@ -1230,10 +1261,22 @@ public class GameScreenController {
     }
   }
 
+  /**
+   * Refreshes the count of the remaining tiles on the bag button.
+   *
+   * @author tthielen
+   */
   private void refreshBagCount() {
     bagButton.setText("BAG\n " + this.gameSession.getBag().getRemainingCount());
   }
 
+  /**
+   * Refreshes the timer text according to the given text and seconds.
+   *
+   * @author tthielen
+   * @param text the timer text already formatted to mm:ss
+   * @param seconds the remaining seconds, used to recolor the text <31 seconds
+   */
   public void refreshTimerText(String text, int seconds) {
     timerText.setText(text);
     if (seconds <= 30) {
@@ -1243,6 +1286,12 @@ public class GameScreenController {
     }
   }
 
+  /**
+   * Sets the visibility of multiple buttons according to whether it is the player's turn or not.
+   *
+   * @author tthielen
+   * @param ownTurn whether it is the player's turn or not
+   */
   public void setPlayable(boolean ownTurn) {
     if (!ownTurn) {
       playable = false;
@@ -1271,6 +1320,13 @@ public class GameScreenController {
     }
   }
 
+  /**
+   * Opens the wildcardPane if the given clicked tile is a wildcard. Also checks the input by the
+   * player with a regex and enables or disables the wildcardSubmit button accordingly.
+   *
+   * @author tthielen
+   * @param clickedTile the tile on the rack which the player clicked on
+   */
   private void chooseWildcard(Tile clickedTile) {
     if (clickedTile.isWildCard()) {
       wildcardTextField.setText("");
@@ -1298,6 +1354,11 @@ public class GameScreenController {
     }
   }
 
+  /**
+   * Refreshes the game board with the placed tiles of the other players.
+   *
+   * @author tthielen
+   */
   public void loadPlacedTiles() {
 
     squarePanes.clear();
@@ -1350,6 +1411,12 @@ public class GameScreenController {
     refreshBagCount();
   }
 
+  /**
+   * Sets the player statistics which are displayed when the statistics button is pressed.
+   *
+   * @author jbleil
+   * @author jluellig
+   */
   public void setPlayerStatistics() {
     ArrayList<Player> players = Client.getGameSession().getPlayerList();
     playerStatisticsScrollPane.setFitToWidth(true);
@@ -1381,6 +1448,12 @@ public class GameScreenController {
     }
   }
 
+  /**
+   * Refreshes the player names in the upper left corner according to the current scores and the
+   * currently playing player.
+   *
+   * @author jbleil
+   */
   public void refreshPlayerNames() {
     for (Node node : backgroundPane.getChildren()) {
       if (node instanceof GridPane) {
@@ -1409,7 +1482,7 @@ public class GameScreenController {
                   true)),
           0,
           i);
-      Text name = new Text(players.get(i).getUsername()); // TODO: add points
+      Text name = new Text(players.get(i).getUsername());
       name.setFill(Paint.valueOf("#f88c00"));
       grid.add(name, 1, i);
       Text points = new Text("-  " + players.get(i).getScore());
@@ -1463,7 +1536,7 @@ public class GameScreenController {
    * Restores the chat from the lobby screen into the game screen when the game has started.
    *
    * @author tikrause
-   * @param chat
+   * @param chat the string of chat from the lobby
    */
   public void takeOverChat(String chat) {
     chatHistory = new StringBuffer(chat);
@@ -1485,7 +1558,8 @@ public class GameScreenController {
                 alert.setTitle("Confirmation dialog");
                 alert.setHeaderText("You are trying to leave the game.");
                 alert.setContentText(
-                    "When you leave the game, you get disconnected from the server and can't join this session anymore.");
+                    "When you leave the game, you get disconnected from the server and can't "
+                        + "join this session anymore.");
                 Button cancelButton =
                     (Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL);
                 cancelButton.setText("Cancel");
@@ -1512,8 +1586,7 @@ public class GameScreenController {
   }
 
   /**
-   * This method serves as a Listener for the Text "Soni Sokell" and displays an instance of
-   * SiteLinkScreen.
+   * Serves as a Listener for the Text "Soni Sokell" and displays an instance of SiteLinkScreen.
    *
    * @author jbleil
    * @param event the MouseEvent that gets thrown when clicking on the "Soni Sokell" Text
@@ -1526,8 +1599,7 @@ public class GameScreenController {
   }
 
   /**
-   * This method serves as a Listener for the Text "freeicons.io" and displays an instance of
-   * SiteLinkScreen.
+   * Serves as a Listener for the Text "freeicons.io" and displays an instance of SiteLinkScreen.
    *
    * @author jbleil
    * @param event the MouseEvent that gets thrown when clicking on the "freeicons.io" Text

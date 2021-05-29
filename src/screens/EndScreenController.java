@@ -27,6 +27,12 @@ import javafx.stage.WindowEvent;
 import network.Client;
 import network.Server;
 
+/**
+ * This class provides the controller for the EndScreen.
+ *
+ * @author jbleil
+ * @author tikrause
+ */
 public class EndScreenController {
 
   @FXML private Pane backgroundPane;
@@ -69,7 +75,13 @@ public class EndScreenController {
       width[0] += place.getLayoutBounds().getWidth();
       GridPane.setHalignment(place, HPos.CENTER);
 
-      Image avatar = new Image(getClass().getClassLoader().getResourceAsStream(players.get(i).getAvatar().getUrl()), 52, 52, true, true);
+      Image avatar =
+          new Image(
+              getClass().getClassLoader().getResourceAsStream(players.get(i).getAvatar().getUrl()),
+              52,
+              52,
+              true,
+              true);
       ImageView imageView = new ImageView(avatar);
       grid1.add(imageView, i, 1);
       width[1] += avatar.getWidth();
@@ -129,7 +141,7 @@ public class EndScreenController {
   }
 
   /**
-   * closes the tooltip pane.
+   * Closes the tooltip pane.
    *
    * @author tikrause
    * @param event mouse event
