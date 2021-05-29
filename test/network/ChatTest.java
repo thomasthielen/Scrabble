@@ -1,22 +1,15 @@
 package network;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import gameentities.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import gameentities.Player;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
-import network.messages.Message;
-import network.messages.SendChatMessage;
-import screens.GameScreenController;
-import screens.LobbyScreenController;
-
 class ChatTest {
 
-  private Player p1, p2;
+  private Player p1;
+  private Player p2;
   private int port;
 
   @BeforeEach

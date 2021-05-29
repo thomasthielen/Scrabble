@@ -1,15 +1,15 @@
 package data;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
+import gameentities.Avatar;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
-import gameentities.Avatar;
-
 /**
  * This is the test class to make sure the functional requirements of the UC1: Manage Player
- * Profiles work correctly
+ * Profiles work correctly.
  *
  * @author lsteltma
  */

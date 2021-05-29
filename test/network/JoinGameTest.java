@@ -1,19 +1,19 @@
 package network;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import gameentities.Player;
 import io.netty.channel.ChannelHandlerContext;
+import java.util.ArrayList;
 import network.messages.ConnectMessage;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class JoinGameTest {
 
-  private Player p1, p2;
+  private Player p1;
+  private Player p2;
   private int port;
   private ServerHandler serverHandler;
   private ChannelHandlerContext ctx;

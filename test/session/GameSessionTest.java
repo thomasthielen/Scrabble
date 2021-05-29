@@ -11,7 +11,7 @@ import gameentities.Player;
 import session.GameSession;
 
 /**
- * JUnit Test Class for the GameSession class
+ * JUnit Test Class for the GameSession class.
  *
  * @author lsteltma
  */
