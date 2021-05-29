@@ -163,7 +163,6 @@ public class Rack implements Serializable {
    */
   public void returnTile(Tile tile, int position) {
     if (tileArray[position] == null) {
-      System.out.println("returned to position " + position);
       tileArray[position] = tile;
     }
     this.tiles.clear();
