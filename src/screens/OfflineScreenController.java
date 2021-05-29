@@ -9,7 +9,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import network.Client;
 import network.Server;
-import network.messages.TooManyPlayerException;
 
 /**
  * this class provides the controller for the Offline Screen.
@@ -96,7 +95,7 @@ public class OfflineScreenController {
         break;
       } catch (BindException e) {
         port++;
-      } catch (InterruptedException | TooManyPlayerException e) {
+      } catch (InterruptedException e) {
         e.printStackTrace();
       }
     }

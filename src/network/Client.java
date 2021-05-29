@@ -16,7 +16,6 @@ import network.messages.NotifyBotsMessage;
 import network.messages.PlayAgainMessage;
 import network.messages.SendChatMessage;
 import network.messages.StartGameMessage;
-import network.messages.TooManyPlayerException;
 import session.GameSession;
 import session.GameState;
 
@@ -58,9 +57,8 @@ public class Client {
    *
    * @author tikrause
    * @param p player instance that should be connected to the game
-   * @throws TooManyPlayersException 4 players are already in the session and no one else can join
    */
-  public static void connectToServer(Player p) throws TooManyPlayerException {
+  public static void connectToServer(Player p) {
     group = new NioEventLoopGroup();
 
     try {

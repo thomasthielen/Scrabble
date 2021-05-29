@@ -16,7 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import network.Client;
-import network.messages.TooManyPlayerException;
 
 /**
  * This class provides the controller for the Choose Server Screen.
@@ -45,25 +44,17 @@ public class ChooseServerScreenController {
       if (Pattern.matches(
           "[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}", ipField.getText().trim())) {
         if (Pattern.matches("[1-9][0-9]{3,4}", portField.getText().trim())) {
-          try {
-            Client.initializeClient(
-                ipField.getText().trim(), Integer.valueOf(portField.getText().trim()), false);
-            Client.connectToServer(DataHandler.getOwnPlayer());
-            FXMLLoader loader = new FXMLLoader();
-            Parent content =
-                loader.load(
-                    getClass()
-                        .getClassLoader()
-                        .getResourceAsStream("screens/resources/LobbyScreen.fxml"));
-            StartScreen.getStage().setScene(new Scene(content));
-            StartScreen.getStage().show();
-          } catch (TooManyPlayerException te) {
-            Alert errorAlert = new Alert(AlertType.ERROR);
-            errorAlert.setTitle("Error");
-            errorAlert.setHeaderText("Too many players.");
-            errorAlert.setContentText("There are already the maximum of 4 players in the game.");
-            errorAlert.showAndWait();
-          }
+          Client.initializeClient(
+              ipField.getText().trim(), Integer.valueOf(portField.getText().trim()), false);
+          Client.connectToServer(DataHandler.getOwnPlayer());
+          FXMLLoader loader = new FXMLLoader();
+          Parent content =
+              loader.load(
+                  getClass()
+                      .getClassLoader()
+                      .getResourceAsStream("screens/resources/LobbyScreen.fxml"));
+          StartScreen.getStage().setScene(new Scene(content));
+          StartScreen.getStage().show();
         } else {
           Alert errorAlert = new Alert(AlertType.ERROR);
           errorAlert.setTitle("Error");
