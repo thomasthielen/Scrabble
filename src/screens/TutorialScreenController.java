@@ -1,7 +1,10 @@
 package screens;
 
 import java.io.IOException;
+import java.net.BindException;
 import java.util.ArrayList;
+
+import data.DataHandler;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,6 +21,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import network.Client;
+import network.Server;
 
 /**
  * This class provides the controller for the Tutorial Screen.
@@ -81,6 +86,8 @@ public class TutorialScreenController {
     updateImage();
 
     initializeArrowKeys();
+    
+    startGameButton.setDisable(!(activeImage >= 8));
   }
 
   /**
@@ -165,9 +172,10 @@ public class TutorialScreenController {
 
   /**
    * This method is called every time the previous or next button gets pressed to update the shown
-   * image.
+   * image. Also sets the startgame button as enabled on the last slide.
    *
    * @author lsteltma
+   * @author tthielen
    */
   private void updateImage() {
     for (Node node : backgroundPane.getChildren()) {
@@ -184,8 +192,10 @@ public class TutorialScreenController {
       if (node instanceof Button && ((Button) node).getText().equals(">")) {
         if (activeImage >= 8) {
           ((Button) node).setDisable(true);
+          startGameButton.setDisable(false);
         } else {
           ((Button) node).setDisable(false);
+          startGameButton.setDisable(true);
         }
       }
       if (node instanceof ImageView) {
@@ -230,8 +240,43 @@ public class TutorialScreenController {
    * a Tutorial Game.
    *
    * @author jbleil
+   * @author tthielen
    * @param event ActionEvent that gets triggered when the startGameButton is clicked
    */
   @FXML
-  void startGame(ActionEvent event) {}
+  void startGame(ActionEvent event) throws Exception {
+    createSinglePlayerLobby();
+    FXMLLoader loader = new FXMLLoader();
+    Parent content =
+        loader.load(
+            getClass()
+                .getClassLoader()
+                .getResourceAsStream("screens/resources/SinglePlayerLobbyScreen.fxml"));
+    StartScreen.getStage().setScene(new Scene(content));
+    StartScreen.getStage().show();
+  }
+  
+  /**
+   * Creates a single player lobby by creating a server connection that can't be connected to at the
+   * 'JOIN GAME' function. Also sets the Tutorial boolean to true.
+   *
+   * @author tikrause
+   * @author tthielen
+   */
+  private void createSinglePlayerLobby() {
+    int port = 800;
+    while (port < 1000) {
+      try {
+        Server.createServer(port);
+        Client.initializeClient("localhost", port, true);
+        Client.connectToServer(DataHandler.getOwnPlayer());
+        Client.setTutorial(true);
+        break;
+      } catch (BindException e) {
+        port++;
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+  }
 }

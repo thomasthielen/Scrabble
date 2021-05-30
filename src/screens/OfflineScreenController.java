@@ -92,6 +92,7 @@ public class OfflineScreenController {
         Server.createServer(port);
         Client.initializeClient("localhost", port, true);
         Client.connectToServer(DataHandler.getOwnPlayer());
+        Client.setTutorial(false);
         break;
       } catch (BindException e) {
         port++;

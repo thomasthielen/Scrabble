@@ -76,7 +76,7 @@ public class GameScreenController {
   @FXML private Pane playerStatisticsPane;
 
   @FXML private Pane backgroundPane;
-  
+
   @FXML private Pane tutorialPane;
 
   /** rackPane represents the Container for the Tiles in the Rack. */
@@ -161,6 +161,10 @@ public class GameScreenController {
   private StringBuffer chatHistory;
   private int unreadMessages = 0;
 
+  private ArrayList<String> tutorialTexts = new ArrayList<String>();
+  private Text tutorialText = new Text();
+  private int tutorialCounter = 0;
+
   /**
    * initializes the GameScreen.
    *
@@ -179,7 +183,7 @@ public class GameScreenController {
     openSwapButton.setDisable(false);
     // Set the endGame button to invisible
     endGame.setVisible(false);
-    
+
     tutorialPane.setVisible(false);
 
     // Fill the gameBoard with SquarePanes which are also held in squarePanes
@@ -227,6 +231,35 @@ public class GameScreenController {
     starView.setFitHeight(22);
     starView.setFitWidth(22);
     gameBoard.add(starView, 7, 7);
+
+    tutorialTexts.add(
+        "It's your turn! "
+            + "\nSelect a tile from your rack and place it "
+            + "\non the board."
+            + "\nTry to create a valid word through the star.");
+    tutorialTexts.add(
+        "You can always return the tiles which you"
+            + "\nplaced on the board during your turn."
+            + "\nTo do that simply select one of your tiles"
+            + "\non the board and return it to its place "
+            + "\non the rack."
+            + "\nOr press the 'Recall' button to return"
+            + "\nall tiles at once.");
+    tutorialTexts.add("You placed a valid word!"
+        + "\nThe 'Submit' button displays how much"
+        + "\npoints submitting this move would net."
+        + "\nIf you are content with the amount, simply"
+        + "\npress the button.");
+
+    tutorialText.relocate(5, 5);
+    tutorialText.setFill(Paint.valueOf("#f88c00"));
+
+    if (Client.isTutorial()) {
+      tutorialPane.setVisible(true);
+      tutorialPane.getChildren().add(tutorialText);
+      
+      updateTutorialText(0);
+    }
   }
 
   /**
@@ -339,7 +372,7 @@ public class GameScreenController {
               // Back end methods
               returnTile.setSelected(false);
               returnTile.setPlacedTemporarily(false);
-              
+
               int position = rackTiles.indexOf(returnTile);
 
               // Get the correct square via the coordinates taken in the board selection
@@ -383,7 +416,7 @@ public class GameScreenController {
               // OPTION 2: The clicked on tile is the selected tile on the board
             } else if (boardSelected && clickedOnTile == returnTile) {
               deselectAll();
-              
+
               gameBoardTiles.remove(clickedOnTile);
               int position = rackTiles.indexOf(clickedOnTile);
 
@@ -647,6 +680,10 @@ public class GameScreenController {
       }
       refreshRecall();
       refreshSubmit();
+    }
+    
+    if (Client.isTutorial()) {
+      updateTutorialText(1);
     }
   }
 
@@ -1086,7 +1123,7 @@ public class GameScreenController {
   @FXML
   void closeWildcardPane(ActionEvent event) {
     int position = rackTiles.indexOf(wildcardTile);
-    
+
     wildcardPane.setVisible(false);
     gameSession.recallTile(wildcardSquare.getX(), wildcardSquare.getY(), position);
     wildcardStackPane.getChildren().clear();
@@ -1173,6 +1210,7 @@ public class GameScreenController {
       if (gameSession.checkMove()) {
         submitButton.setDisable(false);
         submitButton.setText("Submit +" + gameSession.getTurnValue());
+        updateTutorialText(2);
       } else {
         submitButton.setDisable(true);
         submitButton.setText("Submit");
@@ -1610,7 +1648,7 @@ public class GameScreenController {
   public ArrayList<Tile> getRackTiles() {
     return this.rackTiles;
   }
-  
+
   /**
    * Serves as a Listener for the Text "Soni Sokell" and displays an instance of SiteLinkScreen.
    *
@@ -1635,5 +1673,19 @@ public class GameScreenController {
     SiteLinkScreen sls = new SiteLinkScreen();
     Stage stage = new Stage();
     sls.start(stage);
+  }
+
+  /**
+   * Updates the tutorial text according to the given tutorialNumber.
+   *
+   * @author tthielen
+   * @param tutorialNumber the number of the tutorial text which is meant to be displayed
+   */
+  private void updateTutorialText(int tutorialNumber) {
+    if (tutorialNumber == tutorialCounter) {
+      tutorialText.setText(tutorialTexts.get(tutorialCounter));
+      tutorialPane.setPrefHeight(10 + tutorialText.getLayoutBounds().getHeight());
+      tutorialCounter++;
+    }
   }
 }

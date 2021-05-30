@@ -30,6 +30,7 @@ public class Client {
   private static int port;
   private static ChannelFuture cf;
   private static boolean isHost;
+  private static boolean isTutorial;
   private static EventLoopGroup group;
   private static GameSession gameSession;
 
@@ -189,13 +190,33 @@ public class Client {
   }
 
   /**
-   * getter method if the client is the host of the game session.
+   * Getter method if the client is the host of the game session.
    *
    * @author tikrause
    * @return isHost
    */
   public static boolean isHost() {
     return isHost;
+  }
+  
+  /**
+   * Sets whether the game is a tutorial or not.
+   *
+   * @author tthielen
+   * @param tutorial whether it is a tutorial or not
+   */
+  public static void setTutorial(boolean tutorial) {
+    isTutorial = tutorial;
+  }
+  
+  /**
+   * Getter method if the client is in a tutorial session.
+   *
+   * @author tthielen
+   * @return isTutorial
+   */
+  public static boolean isTutorial() {
+    return isTutorial;
   }
 
   /**

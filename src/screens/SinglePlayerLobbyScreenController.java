@@ -48,6 +48,8 @@ public class SinglePlayerLobbyScreenController {
   @FXML private Button startGame;
 
   @FXML private Button editTiles;
+  
+  @FXML private Button addBotPlayer;
 
   @FXML private MenuButton dictionarySelecter;
 
@@ -56,6 +58,8 @@ public class SinglePlayerLobbyScreenController {
   @FXML private Pane chooseBotPane;
 
   @FXML private Pane tooltipPane;
+
+  @FXML private Text header;
 
   @FXML private Text playerInfo1;
   @FXML private Text playerInfo2;
@@ -105,6 +109,17 @@ public class SinglePlayerLobbyScreenController {
     }
 
     Client.getGameSession().setSinglePlayerLobbyScreenController(this);
+
+    if (Client.isTutorial()) {
+      header.setText("TUTORIAL GAME");
+      header.setLayoutX(405);
+      fileForm.setDisable(true);
+      
+      // Add easy AI player
+      easyBotPlayer(new ActionEvent());
+      addBotPlayer.setDisable(true);
+      deleteButtons[0].setDisable(true);
+    }
 
     refreshPlayerList();
     setDictionaryMenu();
@@ -246,9 +261,8 @@ public class SinglePlayerLobbyScreenController {
       Alert errorAlert = new Alert(AlertType.ERROR);
       errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Too few players.");
-      errorAlert.setContentText(
-          "You can't start the game before adding an AI player.\n"
-              + "If you want to play alone and learn how to play Scrabble, try the Training Mode.");
+      errorAlert.setContentText("You can't start the game before adding an AI player.");
+
       errorAlert.showAndWait();
       return;
     }

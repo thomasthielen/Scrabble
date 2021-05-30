@@ -59,6 +59,7 @@ public class OnlineScreenController {
     chooseServerScreenController.initializeTab();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
+    Client.setTutorial(false);
   }
 
   /**
@@ -94,6 +95,7 @@ public class OnlineScreenController {
         Server.createServer(port);
         Client.initializeClient("localhost", port, true);
         Client.connectToServer(DataHandler.getOwnPlayer());
+        Client.setTutorial(false);
         break;
       } catch (BindException e) {
         port++;
