@@ -499,8 +499,18 @@ public class GameScreenController {
     refreshSubmit();
   }
 
-  // onEnterWildcard
-  
+  /**
+   * Serves as the Listener for the Enter-key in the wildcard text field. It serves as an
+   * alternative to the submit wildcard button.
+   *
+   * @param event the ActionEvent when enter is pressed in the wildcard text field
+   * @author jluellig
+   */
+  @FXML
+  void onEnterWildcard(ActionEvent event) {
+    submitWildcard(event);
+  }
+
   /**
    * Serves as a Listener for the close Button in the wildcardPane. It closes the wildCardPane.
    *
@@ -833,7 +843,17 @@ public class GameScreenController {
     }
   }
 
-  // onEnter
+  /**
+   * Serves as the Listener for the Enter-key in the chat text field. It serves as an alternative to
+   * the send message button.
+   *
+   * @param event ActionEvent when enter is pressed in the text field
+   * @author jluellig
+   */
+  @FXML
+  void onEnter(ActionEvent event) throws Exception {
+    sendMessage(event);
+  }
 
   /**
    * When a text message is received by another player in the game session, the chat pane is updated
@@ -957,18 +977,6 @@ public class GameScreenController {
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
-
-  /**
-   * Serves as the Listener for the Enter-key in the chat text field. It serves as an alternative to
-   * the send message button.
-   *
-   * @param event ActionEvent when enter is pressed in the text field
-   * @author jluellig
-   */
-  @FXML
-  void onEnter(ActionEvent event) throws Exception {
-    sendMessage(event);
   }
 
   /**
@@ -1159,20 +1167,6 @@ public class GameScreenController {
     gameBoardTiles.clear();
     recallButton.setDisable(true);
   }
-
-
-  /**
-   * Serves as the Listener for the Enter-key in the wildcard text field. It serves as an
-   * alternative to the submit wildcard button.
-   *
-   * @param event the ActionEvent when enter is pressed in the wildcard text field
-   * @author jluellig
-   */
-  @FXML
-  void onEnterWildcard(ActionEvent event) {
-    submitWildcard(event);
-  }
-
 
   /**
    * Serves as a Listener for the skipTurn Button. It instantly skips the turn of the user.
