@@ -329,42 +329,26 @@ public class LobbyScreenController {
     }
   }
 
-  // editTiles
-
   /**
-   * Serves as a Listener for the uploadDictionaryButton. It Displays the Tooltip Text when entered.
+   * Opens the ChangeTilesScreen.
    *
    * @author jbleil
-   * @param event MouseEvent that gets triggered when the mouse hovers over the button
+   * @param event ActionEvent that gets triggered when the Edit Tiles Button is clicked
    */
   @FXML
-  void openTooltip(MouseEvent event) {
-    Text text =
-        new Text(
-            "You can upload your own dictionary for the"
-                + "\ngame! You can only use text files in which"
-                + "\nevery line starts with the word you want to"
-                + "\nadd to the dictionary. Every other information"
-                + "\n(that will not be used by this game) has to be"
-                + "\nseparated from the word in this line"
-                + "\nby a whitespace.");
-    text.relocate(10, 10);
-    text.setFill(Paint.valueOf("#f88c00"));
-    text.setFont(new Font(14));
-    tooltipPaneHost.getChildren().add(text);
-    tooltipPaneHost.setVisible(true);
-  }
-
-  /**
-   * Serves as a Listener for the uploadDictionaryButton. It closes the Tooltip Text when the mouse
-   * leaves the button.
-   *
-   * @author jbleil
-   * @param event MouseEvent that gets triggered when the mouse hovers over the button
-   */
-  @FXML
-  void closeTooltip(MouseEvent event) {
-    tooltipPaneHost.setVisible(false);
+  void editTiles(ActionEvent event) throws Exception {
+    FXMLLoader loader = new FXMLLoader();
+    Parent content =
+        loader.load(
+            getClass()
+                .getClassLoader()
+                .getResourceAsStream("screens/resources/ChangeTilesScreen.fxml"));
+    ChangeTilesScreenController changeTilesScreenController = loader.getController();
+    StartScreen.getStage().setScene(new Scene(content));
+    StartScreen.getStage().show();
+    changeTilesScreenController.setMultiplayer(true);
+    changeTilesScreenController.setTileScreen();
+    changeTilesScreenController.storeChat(chatHistory);
   }
 
   /**
@@ -655,28 +639,6 @@ public class LobbyScreenController {
   @FXML
   void onEnter(ActionEvent event) {
     sendMessage(event);
-  }
-
-  /**
-   * Opens the ChangeTilesScreen.
-   *
-   * @author jbleil
-   * @param event ActionEvent that gets triggered when the Edit Tiles Button is clicked
-   */
-  @FXML
-  void editTiles(ActionEvent event) throws Exception {
-    FXMLLoader loader = new FXMLLoader();
-    Parent content =
-        loader.load(
-            getClass()
-                .getClassLoader()
-                .getResourceAsStream("screens/resources/ChangeTilesScreen.fxml"));
-    ChangeTilesScreenController changeTilesScreenController = loader.getController();
-    StartScreen.getStage().setScene(new Scene(content));
-    StartScreen.getStage().show();
-    changeTilesScreenController.setMultiplayer(true);
-    changeTilesScreenController.setTileScreen();
-    changeTilesScreenController.storeChat(chatHistory);
   }
 
   /**
@@ -971,8 +933,41 @@ public class LobbyScreenController {
             });
   }
 
-  // openToolTip
-  // closeToolTip
+  /**
+   * Serves as a Listener for the uploadDictionaryButton. It Displays the Tooltip Text when entered.
+   *
+   * @author jbleil
+   * @param event MouseEvent that gets triggered when the mouse hovers over the button
+   */
+  @FXML
+  void openTooltip(MouseEvent event) {
+    Text text =
+        new Text(
+            "You can upload your own dictionary for the"
+                + "\ngame! You can only use text files in which"
+                + "\nevery line starts with the word you want to"
+                + "\nadd to the dictionary. Every other information"
+                + "\n(that will not be used by this game) has to be"
+                + "\nseparated from the word in this line"
+                + "\nby a whitespace.");
+    text.relocate(10, 10);
+    text.setFill(Paint.valueOf("#f88c00"));
+    text.setFont(new Font(14));
+    tooltipPaneHost.getChildren().add(text);
+    tooltipPaneHost.setVisible(true);
+  }
+
+  /**
+   * Serves as a Listener for the uploadDictionaryButton. It closes the Tooltip Text when the mouse
+   * leaves the button.
+   *
+   * @author jbleil
+   * @param event MouseEvent that gets triggered when the mouse hovers over the button
+   */
+  @FXML
+  void closeTooltip(MouseEvent event) {
+    tooltipPaneHost.setVisible(false);
+  }
 
   /**
    * Serves as a Listener for the dictionarySelector. By hovering over the Button it displays the
