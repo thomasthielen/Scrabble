@@ -207,7 +207,9 @@ public class GameSession {
       }
 
       if (!overrideGameState.isPlayersOnly() && overrideGameState.getBag() != null) {
-        setBag(overrideGameState.getBag());
+        if (!overrideGameState.isConnectGameState()) {
+          setBag(overrideGameState.getBag());
+        }
         this.board = overrideGameState.getBoard();
         this.successiveScorelessTurns = overrideGameState.getSuccessiveScorelessTurns();
         if (gameScreenController != null) {

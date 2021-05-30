@@ -156,7 +156,7 @@ public class Server {
       aiPlayers.add(ai);
       players.add(ai.getPlayer());
       Client.updateGameSession(new GameState(players));
-      Client.sendGameState(new GameState(Client.getGameSession().getPlayerList()));
+      Client.sendGameState(new GameState(Client.getGameSession(), false));
     }
   }
 
