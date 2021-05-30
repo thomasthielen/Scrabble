@@ -318,7 +318,9 @@ public class LobbyScreenController {
   @FXML
   void startGame(ActionEvent event) throws Exception {
     if (Client.isHost()) {
-      if (Server.getPlayerList().size() > 1) {
+      if (Server.getPlayerList().size() > 1
+          && Client.getGameSession().getBag().getRemainingCount()
+              >= Server.getPlayerList().size() * 7) {
         Client.getGameSession().setBag(Client.getGameSession().getBag());
         DataHandler.userDictionaryFile(chosenDictionary);
         Client.sendDictionary(chosenDictionary);
@@ -327,15 +329,25 @@ public class LobbyScreenController {
         Server.setActive();
         Client.getGameSession().initializeGameScreen(chatHistory.toString());
         switchToGameScreen(chatHistory.toString());
+      } else if (!(Server.getPlayerList().size() > 1)) {
+        Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setTitle("Error");
+        errorAlert.setHeaderText("Not enough players.");
+        errorAlert.setContentText(
+            "You can't start a Multiplayer game alone. Please wait for other "
+                + "players to join your lobby or add an AI player.\n\n");
+        errorAlert.showAndWait();
+        return;
       } else {
         Alert errorAlert = new Alert(AlertType.ERROR);
         errorAlert.setTitle("Error");
-        errorAlert.setHeaderText("Too few players.");
+        errorAlert.setHeaderText("Not enough tiles.");
         errorAlert.setContentText(
-            "You can't start a MultiPlayer game alone. Please wait for other "
-                + "players to join your lobby or add an AI player.\n\n"
-                + "If you want to play alone and learn how to play Scrabble, "
-                + "try the Training Mode.");
+            "Because there are "
+                + Server.getPlayerList().size()
+                + " players, there have to be at least "
+                + Server.getPlayerList().size() * 7
+                + " tiles in the bag.");
         errorAlert.showAndWait();
         return;
       }

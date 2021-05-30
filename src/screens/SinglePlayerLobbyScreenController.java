@@ -48,7 +48,7 @@ public class SinglePlayerLobbyScreenController {
   @FXML private Button startGame;
 
   @FXML private Button editTiles;
-  
+
   @FXML private Button addBotPlayer;
 
   @FXML private MenuButton dictionarySelecter;
@@ -114,7 +114,7 @@ public class SinglePlayerLobbyScreenController {
       header.setText("TUTORIAL GAME");
       header.setLayoutX(405);
       fileForm.setDisable(true);
-      
+
       // Add easy AI player
       easyBotPlayer(new ActionEvent());
       addBotPlayer.setDisable(true);
@@ -248,7 +248,9 @@ public class SinglePlayerLobbyScreenController {
    */
   @FXML
   void startGame(ActionEvent event) throws Exception {
-    if (Server.getBotPlayerList().size() > 0) {
+    if (Server.getBotPlayerList().size() > 0
+        && Client.getGameSession().getBag().getRemainingCount()
+            >= Server.getPlayerList().size() * 7) {
       Client.getGameSession().setBag(Client.getGameSession().getBag());
       DataHandler.userDictionaryFile(chosenDictionary);
       Client.sendDictionary(chosenDictionary);
@@ -257,12 +259,24 @@ public class SinglePlayerLobbyScreenController {
       Server.setActive();
       Client.getGameSession().initializeSinglePlayerGameScreen();
       switchToGameScreen();
-    } else {
+    } else if (!(Server.getBotPlayerList().size() > 0)){
       Alert errorAlert = new Alert(AlertType.ERROR);
       errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Too few players.");
       errorAlert.setContentText("You can't start the game before adding an AI player.");
 
+      errorAlert.showAndWait();
+      return;
+    } else {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setTitle("Error");
+      errorAlert.setHeaderText("Not enough tiles.");
+      errorAlert.setContentText(
+          "Because there are "
+              + Server.getPlayerList().size()
+              + " players, there have to be at least "
+              + Server.getPlayerList().size() * 7
+              + " tiles in the bag.");
       errorAlert.showAndWait();
       return;
     }

@@ -15,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import network.Client;
+import network.Server;
 
 /**
  * The controller for the ChangeTilesScreen.
@@ -145,6 +146,7 @@ public class ChangeTilesScreenController {
 
     boolean countOkay = true;
     boolean valueOkay = true;
+    boolean minCountOkay = true;
 
     for (TextField tf : countFields) {
       String text = tf.getText();
@@ -169,6 +171,14 @@ public class ChangeTilesScreenController {
     }
 
     if (countOkay && valueOkay) {
+      int totalCount = 0;
+      for (int i = 0; i < countFields.length; i++) {
+        totalCount += Integer.valueOf(countFields[i].getText());
+      }
+      minCountOkay = (totalCount >= Server.getPlayerList().size() * 7);
+    }
+
+    if (countOkay && valueOkay && minCountOkay) {
       Bag bag = new Bag();
       int counter = 0;
       for (TileContainer t : bag.getTileCounter()) {
@@ -180,18 +190,30 @@ public class ChangeTilesScreenController {
       Client.getGameSession().setBag(bag);
       Client.getGameSession().sendGameStateMessage(false);
       back(event);
-    } else if (valueOkay) {
+    } else if (!countOkay) {
       Alert errorAlert = new Alert(AlertType.ERROR);
       errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Invalid tile count entered.");
       errorAlert.setContentText("It must be a number between 0 and 100.");
       errorAlert.showAndWait();
       return;
-    } else {
+    } else if (!valueOkay) {
       Alert errorAlert = new Alert(AlertType.ERROR);
       errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Invalid tile value entered.");
       errorAlert.setContentText("It must be a number between 0 and 20.");
+      errorAlert.showAndWait();
+      return;
+    } else {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setTitle("Error");
+      errorAlert.setHeaderText("Not enough tiles.");
+      errorAlert.setContentText(
+          "Because there are "
+              + Server.getPlayerList().size()
+              + " players, there have to be at least "
+              + Server.getPlayerList().size() * 7
+              + " tiles in the bag.");
       errorAlert.showAndWait();
       return;
     }
