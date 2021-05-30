@@ -11,7 +11,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import session.GameSession;
-import session.GameState;
 
 /**
  * This is the test class to make sure the functional requirements of the UC2: Play Scrabble work
@@ -26,9 +25,7 @@ class PlayScrabbleTest {
   private Player player1;
   private Player player2;
   private int port;
-  private GameState gameState;
   private GameSession gameSession;
-  private ArrayList<Player> players;
 
   @BeforeEach
   void init() {
@@ -37,7 +34,6 @@ class PlayScrabbleTest {
     player2 = new Player("player2");
     bag = new Bag();
     board = new Board();
-    gameState = new GameState(players, bag, board);
 
     try {
       Server.createServer(port);
@@ -45,7 +41,6 @@ class PlayScrabbleTest {
       Client.connectToServer(player1);
       Client.connectToServer(player2);
       gameSession = Client.getGameSession();
-      players = Server.getPlayerList();
 
     } catch (Exception e) {
       e.printStackTrace();
