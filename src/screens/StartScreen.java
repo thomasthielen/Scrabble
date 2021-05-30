@@ -26,6 +26,7 @@ public class StartScreen extends Application {
         loader.load(
             getClass().getClassLoader().getResourceAsStream("screens/resources/StartScreen.fxml"));
     stage.setScene(new Scene(content));
+    stage.setTitle("THE BEST SCRABBLE");
     stage.setResizable(false);
     stage.show();
   }
