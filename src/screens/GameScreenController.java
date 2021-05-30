@@ -500,7 +500,30 @@ public class GameScreenController {
   }
 
   // onEnterWildcard
-  // closeWildcardPane
+  
+  /**
+   * Serves as a Listener for the close Button in the wildcardPane. It closes the wildCardPane.
+   *
+   * @author jbleil
+   * @param event the ActionEvent called by the button
+   */
+  @FXML
+  void closeWildcardPane(ActionEvent event) {
+    int position = rackTiles.indexOf(wildcardTile);
+
+    wildcardPane.setVisible(false);
+    gameSession.recallTile(wildcardSquare.getX(), wildcardSquare.getY(), position);
+    wildcardStackPane.getChildren().clear();
+
+    deselectAll();
+    gameBoardTiles.remove(wildcardTile);
+
+    wildcardTile.setPlacedTemporarily(false);
+    Node n = rackPane.getChildren().get(position);
+    rackPanes.get(rackPanes.indexOf(n)).setOpacity(1);
+
+    refreshSubmit();
+  }
 
   /**
    * Serves as a Listener for the GridPane, which displays the GameBoard. There are 6 different
@@ -948,7 +971,59 @@ public class GameScreenController {
     sendMessage(event);
   }
 
-  // openSwapPane
+  /**
+   * Serves as the Listener for "Swap"-Button from the gameBoardPane. Opens a popUp-window in which
+   * the user can swap one or more tiles out of his rack with new tiles from the bag.
+   *
+   * @author jbleil
+   * @author tthielen
+   * @param event the ActionEvent called by the button
+   */
+  @FXML
+  void openSwapPane(ActionEvent event) throws Exception {
+    swapPaneOpen = true;
+
+    recallLetters(event);
+    deselectAll();
+    paintAllAsDeselected();
+    swapPane.setVisible(true);
+    swapPanes.clear();
+    swapRack.setHgap(20);
+    swapRack.setAlignment(Pos.CENTER);
+    rack.clear();
+    letters.clear();
+    numbers.clear();
+
+    for (Node node : swapPane.getChildren()) {
+      if (node instanceof Button && ((Button) node).getText().equals("Swap")) {
+        submitSwapButton = (Button) node;
+        submitSwapButton.setDisable(true);
+      }
+    }
+
+    for (Tile t : rackTiles) {
+      // Set a rectangle
+      Rectangle rectangle = new Rectangle(22, 22);
+      rectangle.setFill(Paint.valueOf("#f88c00"));
+      rack.add(rectangle);
+      // Set the letter
+      Text text = new Text(String.valueOf(t.getLetter()));
+      text.setFill(Color.WHITE);
+      letters.add(text);
+      // Set the value
+      Text number = new Text(String.valueOf(t.getValue()));
+      number.setFont(new Font(10));
+      number.setFill(Color.WHITE);
+      numbers.add(number);
+
+      // And add those as children to a StackPane, which is saved in rackPanes
+      StackPane stackPane = new StackPane();
+      stackPane.getChildren().addAll(rectangle, text, number);
+      swapPanes.add(stackPane);
+      StackPane.setAlignment(number, Pos.BOTTOM_RIGHT);
+      swapRack.getChildren().add(stackPane);
+    }
+  }
 
   /**
    * Serves as the Listener for the swap pane. Used to select or deselect the tiles in the rack.
@@ -1003,7 +1078,18 @@ public class GameScreenController {
     setRack(false);
   }
 
-  // closeSwapPane
+  /**
+   * Serves as the Listener for "Close"-Button from the swap window. Closes the window.
+   *
+   * @author jbleil
+   * @param event the ActionEvent called by the button
+   */
+  @FXML
+  void closeSwapPane(ActionEvent event) throws Exception {
+    swapPaneOpen = false;
+    swapPane.setVisible(false);
+    swapRack.getChildren().clear();
+  }
 
   /**
    * Serves as the Listener for "Submit"-Button from the gameBoardPane. The Button gets enabled if
@@ -1074,72 +1160,6 @@ public class GameScreenController {
     recallButton.setDisable(true);
   }
 
-  /**
-   * Serves as the Listener for "Swap"-Button from the gameBoardPane. Opens a popUp-window in which
-   * the user can swap one or more tiles out of his rack with new tiles from the bag.
-   *
-   * @author jbleil
-   * @author tthielen
-   * @param event the ActionEvent called by the button
-   */
-  @FXML
-  void openSwapPane(ActionEvent event) throws Exception {
-    swapPaneOpen = true;
-
-    recallLetters(event);
-    deselectAll();
-    paintAllAsDeselected();
-    swapPane.setVisible(true);
-    swapPanes.clear();
-    swapRack.setHgap(20);
-    swapRack.setAlignment(Pos.CENTER);
-    rack.clear();
-    letters.clear();
-    numbers.clear();
-
-    for (Node node : swapPane.getChildren()) {
-      if (node instanceof Button && ((Button) node).getText().equals("Swap")) {
-        submitSwapButton = (Button) node;
-        submitSwapButton.setDisable(true);
-      }
-    }
-
-    for (Tile t : rackTiles) {
-      // Set a rectangle
-      Rectangle rectangle = new Rectangle(22, 22);
-      rectangle.setFill(Paint.valueOf("#f88c00"));
-      rack.add(rectangle);
-      // Set the letter
-      Text text = new Text(String.valueOf(t.getLetter()));
-      text.setFill(Color.WHITE);
-      letters.add(text);
-      // Set the value
-      Text number = new Text(String.valueOf(t.getValue()));
-      number.setFont(new Font(10));
-      number.setFill(Color.WHITE);
-      numbers.add(number);
-
-      // And add those as children to a StackPane, which is saved in rackPanes
-      StackPane stackPane = new StackPane();
-      stackPane.getChildren().addAll(rectangle, text, number);
-      swapPanes.add(stackPane);
-      StackPane.setAlignment(number, Pos.BOTTOM_RIGHT);
-      swapRack.getChildren().add(stackPane);
-    }
-  }
-
-  /**
-   * Serves as the Listener for "Close"-Button from the swap window. Closes the window.
-   *
-   * @author jbleil
-   * @param event the ActionEvent called by the button
-   */
-  @FXML
-  void closeSwapPane(ActionEvent event) throws Exception {
-    swapPaneOpen = false;
-    swapPane.setVisible(false);
-    swapRack.getChildren().clear();
-  }
 
   /**
    * Serves as the Listener for the Enter-key in the wildcard text field. It serves as an
@@ -1153,29 +1173,6 @@ public class GameScreenController {
     submitWildcard(event);
   }
 
-  /**
-   * Serves as a Listener for the close Button in the wildcardPane. It closes the wildCardPane.
-   *
-   * @author jbleil
-   * @param event the ActionEvent called by the button
-   */
-  @FXML
-  void closeWildcardPane(ActionEvent event) {
-    int position = rackTiles.indexOf(wildcardTile);
-
-    wildcardPane.setVisible(false);
-    gameSession.recallTile(wildcardSquare.getX(), wildcardSquare.getY(), position);
-    wildcardStackPane.getChildren().clear();
-
-    deselectAll();
-    gameBoardTiles.remove(wildcardTile);
-
-    wildcardTile.setPlacedTemporarily(false);
-    Node n = rackPane.getChildren().get(position);
-    rackPanes.get(rackPanes.indexOf(n)).setOpacity(1);
-
-    refreshSubmit();
-  }
 
   /**
    * Serves as a Listener for the skipTurn Button. It instantly skips the turn of the user.
