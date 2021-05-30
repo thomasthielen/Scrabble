@@ -40,39 +40,6 @@ public class ExistingProfileScreenController {
   private static HashMap<Integer, String[]> profiles;
 
   /**
-   * This method serves as the Listener for "START GAME"-Button. It redirects the user to the Online
-   * or Offline Screen.
-   *
-   * @author jluellig
-   * @param event ActionEvent that gets triggered when the startGame Button is clicked
-   * @throws Exception the Exception when the fxml file is not found
-   */
-  @FXML
-  void startGame(ActionEvent event) throws Exception {
-    if (buttonGroup.getSelectedToggle() != null) {
-      int id = (int) buttonGroup.getSelectedToggle().getUserData();
-      String username = (String) profiles.get(id)[0];
-      Avatar avatar = Avatar.valueOf(profiles.get(id)[1]);
-      DataHandler.setOwnPlayerId(id);
-      DataHandler.setOwnPlayer(new Player(username, avatar));
-      FXMLLoader loader = new FXMLLoader();
-      Parent content =
-          loader.load(
-              getClass()
-                  .getClassLoader()
-                  .getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
-      StartScreen.getStage().setScene(new Scene(content));
-      StartScreen.getStage().show();
-    } else {
-      Alert errorAlert = new Alert(AlertType.ERROR);
-      errorAlert.setTitle("Error");
-      errorAlert.setHeaderText("No profile selected.");
-      errorAlert.setContentText("Please select a profile from the list above or create a new one.");
-      errorAlert.showAndWait();
-    }
-  }
-
-  /**
    * Adds all profiles of the database to the ScrollPane so that the user can choose one of them to
    * play or to edit.
    *
@@ -110,6 +77,55 @@ public class ExistingProfileScreenController {
   }
 
   /**
+   * Pre-selects the edited profile.
+   *
+   * @param id the ID of the profile that should be pre-selected
+   * @author jluellig
+   */
+  protected void setSelectedProfile(int id) {
+    List<Toggle> toggles = buttonGroup.getToggles();
+    for (Toggle t : toggles) {
+      if ((int) t.getUserData() == id) {
+        t.setSelected(true);
+        break;
+      }
+    }
+  }
+
+  /**
+   * This method serves as the Listener for "START GAME"-Button. It redirects the user to the Online
+   * or Offline Screen.
+   *
+   * @author jluellig
+   * @param event ActionEvent that gets triggered when the startGame Button is clicked
+   * @throws Exception the Exception when the fxml file is not found
+   */
+  @FXML
+  void startGame(ActionEvent event) throws Exception {
+    if (buttonGroup.getSelectedToggle() != null) {
+      int id = (int) buttonGroup.getSelectedToggle().getUserData();
+      String username = (String) profiles.get(id)[0];
+      Avatar avatar = Avatar.valueOf(profiles.get(id)[1]);
+      DataHandler.setOwnPlayerId(id);
+      DataHandler.setOwnPlayer(new Player(username, avatar));
+      FXMLLoader loader = new FXMLLoader();
+      Parent content =
+          loader.load(
+              getClass()
+                  .getClassLoader()
+                  .getResourceAsStream("screens/resources/OnlineOrOfflineScreen.fxml"));
+      StartScreen.getStage().setScene(new Scene(content));
+      StartScreen.getStage().show();
+    } else {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setTitle("Error");
+      errorAlert.setHeaderText("No profile selected.");
+      errorAlert.setContentText("Please select a profile from the list above or create a new one.");
+      errorAlert.showAndWait();
+    }
+  }
+
+  /**
    * This method serves as the Listener for "EDIT PROFILE"-Button. It redirects the user to the Edit
    * Profile Screen.
    *
@@ -141,40 +157,6 @@ public class ExistingProfileScreenController {
   }
 
   /**
-   * Pre-selects the edited profile.
-   *
-   * @param id the ID of the profile that should be pre-selected
-   * @author jluellig
-   */
-  protected void setSelectedProfile(int id) {
-    List<Toggle> toggles = buttonGroup.getToggles();
-    for (Toggle t : toggles) {
-      if ((int) t.getUserData() == id) {
-        t.setSelected(true);
-        break;
-      }
-    }
-  }
-
-  /**
-   * This method serves as the Listener for "Back"-Button. It redirects the user to the Start
-   * Screen.
-   *
-   * @author jbleil
-   * @param event ActionEvent that gets triggered when the back Button is clicked.
-   * @throws Exception the Exception when the fxml file is not found
-   */
-  @FXML
-  void back(ActionEvent event) throws Exception {
-    FXMLLoader loader = new FXMLLoader();
-    Parent content =
-        loader.load(
-            getClass().getClassLoader().getResourceAsStream("screens/resources/StartScreen.fxml"));
-    StartScreen.getStage().setScene(new Scene(content));
-    StartScreen.getStage().show();
-  }
-
-  /**
    * Checks if there are profiles to show.
    *
    * @author jluellig
@@ -200,6 +182,24 @@ public class ExistingProfileScreenController {
         StartScreen.getStage().show();
       }
     }
+  }
+
+  /**
+   * This method serves as the Listener for "Back"-Button. It redirects the user to the Start
+   * Screen.
+   *
+   * @author jbleil
+   * @param event ActionEvent that gets triggered when the back Button is clicked.
+   * @throws Exception the Exception when the fxml file is not found
+   */
+  @FXML
+  void back(ActionEvent event) throws Exception {
+    FXMLLoader loader = new FXMLLoader();
+    Parent content =
+        loader.load(
+            getClass().getClassLoader().getResourceAsStream("screens/resources/StartScreen.fxml"));
+    StartScreen.getStage().setScene(new Scene(content));
+    StartScreen.getStage().show();
   }
 
   /**
