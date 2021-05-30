@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Pattern;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -164,6 +166,8 @@ public class GameScreenController {
   private ArrayList<String> tutorialTexts = new ArrayList<String>();
   private Text tutorialText = new Text();
   private ArrayList<Boolean> notYetShown = new ArrayList<Boolean>();
+  private int loadPlacedTilesCounter = 0;
+  private ArrayList<Timer> timers = new ArrayList<Timer>();
 
   /**
    * initializes the GameScreen.
@@ -238,7 +242,9 @@ public class GameScreenController {
         "It's your turn! "
             + "\nSelect a tile from your rack and place it "
             + "\non the board."
-            + "\nTry to create a valid word through the star.");
+            + "\nTry to create a valid word through the star."
+            + "\nAll words must be read from top to bottom"
+            + "\nor left to right.");
     tutorialTexts.add(
         "You can always return the tiles which you"
             + "\nplaced on the board during your turn."
@@ -262,6 +268,47 @@ public class GameScreenController {
             + "\nIf you choose to return the wildcard tile"
             + "\nto your rack, the chosen letter will be"
             + "\nresetted.");
+    tutorialTexts.add(
+        "After submitting your move,"
+            + "\nthe next player will be allowed to play."
+            + "\nIn this case the AI player calculates a move."
+            + "\nIt will be your turn again as soon"
+            + "\nas their play was made.");
+    tutorialTexts.add(
+        "This is the swap dialogue."
+            + "\nYou may choose any amount of tiles from"
+            + "\nyour rack to be exchanged with new tiles"
+            + "\nfrom the bag."
+            + "\nAlthough in doing so you will skip"
+            + "\nyour turn and therefore won't earn"
+            + "\nany points this round.");
+    tutorialTexts.add(
+        "You just skipped your turn."
+            + "\nThat is a perfectly fine thing to do, but"
+            + "\nbeware that if you could not find a (good)"
+            + "\nmove with your tiles in this round,"
+            + "\nyou may still have the same problem in the"
+            + "\nnext round."
+            + "\nConsider exchanging tiles or to git gud.");
+    tutorialTexts.add(
+        "After another player submitted their move,"
+            + "\nall (now permanently) placed tiles will"
+            + "\nbe shown as grey tiles on your board."
+            + "\nNow it is your task to find a move"
+            + "\nin which you connect tiles to the"
+            + "\ntiles already laying on the board to"
+            + "\ncreate new words."
+            + "\nPay attention though, as all newly"
+            + "\ncreated words will have to exist in"
+            + "\nthe chosen dictionary.");
+    tutorialTexts.add(
+        "Because six successive scoreless turns"
+            + "\nhave occured, you are presented the option"
+            + "\n(meaning the button) to end the game "
+            + "\nmanually."
+            + "\nYou could, of course, ignore that option"
+            + "\nand simply continue playing to rake in"
+            + "\nmore points.");
 
     for (int i = 0; i < tutorialTexts.size(); i++) {
       notYetShown.add(true);
@@ -1031,6 +1078,8 @@ public class GameScreenController {
       StackPane.setAlignment(number, Pos.BOTTOM_RIGHT);
       swapRack.getChildren().add(stackPane);
     }
+
+    updateTutorialText(5);
   }
 
   /**
@@ -1129,6 +1178,8 @@ public class GameScreenController {
     refreshSubmit();
     refreshRecall();
     setPlayable(gameSession.getPlayer().isCurrentlyPlaying());
+
+    updateTutorialText(4);
   }
 
   /**
@@ -1181,6 +1232,8 @@ public class GameScreenController {
     paintAllAsDeselected();
     gameSession.skipTurn();
     setRack(false);
+
+    updateTutorialText(6);
   }
 
   /**
@@ -1395,6 +1448,7 @@ public class GameScreenController {
 
       if (gameSession.getSuccessiveScorelessTurns() >= 6) {
         endGame.setVisible(true);
+        updateTutorialText(8);
       } else {
         endGame.setVisible(false);
       }
@@ -1495,6 +1549,15 @@ public class GameScreenController {
     }
 
     refreshBagCount();
+
+    if (Client.isTutorial()) {
+      if (loadPlacedTilesCounter < 4) {
+        loadPlacedTilesCounter++;
+        if (loadPlacedTilesCounter == 3) {
+          updateTutorialText(7);
+        }
+      }
+    }
   }
 
   /**
@@ -1706,9 +1769,26 @@ public class GameScreenController {
    */
   private void updateTutorialText(int tutorialNumber) {
     if (notYetShown.get(tutorialNumber) && Client.isTutorial()) {
+      tutorialPane.setVisible(true);
       tutorialText.setText(tutorialTexts.get(tutorialNumber));
       tutorialPane.setPrefHeight(10 + tutorialText.getLayoutBounds().getHeight());
       notYetShown.set(tutorialNumber, false);
+
+      for (Timer t : timers) {
+        t.cancel();
+      }
+      timers.clear();
+
+      Timer timer = new Timer();
+      timer.schedule(
+          new TimerTask() {
+            @Override
+            public void run() {
+              tutorialPane.setVisible(false);
+            }
+          },
+          25000);
+      timers.add(timer);
     }
   }
 }

@@ -114,6 +114,7 @@ public class SinglePlayerLobbyScreenController {
       header.setText("TUTORIAL GAME");
       header.setLayoutX(405);
       fileForm.setDisable(true);
+      editTiles.setDisable(true);
 
       // Add easy AI player
       if (Server.getBotPlayerList().size() == 0) {
