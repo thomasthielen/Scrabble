@@ -40,6 +40,22 @@ public class EditProfileScreenController {
   @FXML private Pane backgroundPane;
 
   /**
+   * Sets the ID for the profile in the database that is going to be edited.
+   *
+   * @param id the id of the selected profile in the database that is going to be changed
+   * @author jluellig
+   */
+  protected void loadProfile(int id) {
+    profileID = id;
+    HashMap<Integer, String[]> profiles = DataHandler.getPlayerInfo();
+    currentUsername = (String) profiles.get(id)[0];
+    currentAvatar = Avatar.valueOf(profiles.get(id)[1]);
+    nameField.setText(currentUsername);
+  }
+  
+  // addAvatars
+  
+  /**
    * This method serves as the Listener for "SUBMIT CHANGES"-Button. It allows the user to save the
    * changes to the Profile and redirects him back to the Existing Profile Screen.
    *
@@ -105,6 +121,37 @@ public class EditProfileScreenController {
   }
 
   /**
+   * Checks if the given username is already used in the database.
+   *
+   * @param username the input username that should be checked
+   * @return true if the given username is already a username in the database, otherwise false
+   * @author jluellig
+   */
+  private boolean usernameAlreadyUsed(String username) {
+    HashMap<Integer, String[]> profiles = DataHandler.getPlayerInfo();
+    for (int key : profiles.keySet()) {
+      String s = (String) profiles.get(key)[0];
+      if (s.equals(username)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  /**
+   * This method serves as the Listener for the Enter-key in the text field. It serves as an
+   * alternative to the submit changes button.
+   *
+   * @param event ActionEvent when enter is pressed in the text field
+   * @throws Exception the Exception when the fxml file is not found
+   * @author jluellig
+   */
+  @FXML
+  void onEnter(ActionEvent event) throws Exception {
+    submitChanges(event);
+  }
+  
+  /**
    * This method serves as the Listener for "DELETE PROFILE"-Button. It allows the user to delete
    * the selected Profile and redirects him back to the Existing Profile Screen
    *
@@ -147,51 +194,6 @@ public class EditProfileScreenController {
     existingProfileScreenController.addProfiles();
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
-  }
-
-  /**
-   * Sets the ID for the profile in the database that is going to be edited.
-   *
-   * @param id the id of the selected profile in the database that is going to be changed
-   * @author jluellig
-   */
-  protected void loadProfile(int id) {
-    profileID = id;
-    HashMap<Integer, String[]> profiles = DataHandler.getPlayerInfo();
-    currentUsername = (String) profiles.get(id)[0];
-    currentAvatar = Avatar.valueOf(profiles.get(id)[1]);
-    nameField.setText(currentUsername);
-  }
-
-  /**
-   * Checks if the given username is already used in the database.
-   *
-   * @param username the input username that should be checked
-   * @return true if the given username is already a username in the database, otherwise false
-   * @author jluellig
-   */
-  private boolean usernameAlreadyUsed(String username) {
-    HashMap<Integer, String[]> profiles = DataHandler.getPlayerInfo();
-    for (int key : profiles.keySet()) {
-      String s = (String) profiles.get(key)[0];
-      if (s.equals(username)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /**
-   * This method serves as the Listener for the Enter-key in the text field. It serves as an
-   * alternative to the submit changes button.
-   *
-   * @param event ActionEvent when enter is pressed in the text field
-   * @throws Exception the Exception when the fxml file is not found
-   * @author jluellig
-   */
-  @FXML
-  void onEnter(ActionEvent event) throws Exception {
-    submitChanges(event);
   }
 
   /**
