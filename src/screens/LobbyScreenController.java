@@ -180,7 +180,109 @@ public class LobbyScreenController {
     initializeCloseHandler();
   }
 
-  // setDictionaryMenu
+  /**
+   * Sets all possible dictionaries that are given and implements their handlers if they are
+   * selected.
+   *
+   * @author tikrause
+   * @author jluellig
+   */
+  private void setDictionaryMenu() {
+    MenuItem menuItem1 = new MenuItem("Collins Scrabble Words");
+    menuItem1.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            dictionarySelecter.setText(menuItem1.getText());
+            try {
+              File temp = File.createTempFile("scrabbleDict", ".txt");
+              temp.deleteOnExit();
+              FileOutputStream out = new FileOutputStream(temp);
+              IOUtils.copy(
+                  getClass().getClassLoader().getResourceAsStream(Dictionary.COLLINS.getUrl()),
+                  out);
+              chosenDictionary = temp;
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          }
+        });
+
+    MenuItem menuItem2 = new MenuItem("Enable (Words With Friends)");
+    menuItem2.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            dictionarySelecter.setText(menuItem2.getText());
+            try {
+              File temp = File.createTempFile("scrabbleDict", ".txt");
+              temp.deleteOnExit();
+              FileOutputStream out = new FileOutputStream(temp);
+              IOUtils.copy(
+                  getClass().getClassLoader().getResourceAsStream(Dictionary.ENABLE.getUrl()), out);
+              chosenDictionary = temp;
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          }
+        });
+
+    MenuItem menuItem3 = new MenuItem("Sowpods (Europe Scrabble Word List)");
+    menuItem3.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            dictionarySelecter.setText(menuItem3.getText());
+            try {
+              File temp = File.createTempFile("scrabbleDict", ".txt");
+              temp.deleteOnExit();
+              FileOutputStream out = new FileOutputStream(temp);
+              IOUtils.copy(
+                  getClass().getClassLoader().getResourceAsStream(Dictionary.SOWPODS.getUrl()),
+                  out);
+              chosenDictionary = temp;
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          }
+        });
+
+    MenuItem menuItem4 = new MenuItem("TWL06 (North America Scrabble Word List)");
+    menuItem4.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            dictionarySelecter.setText(menuItem4.getText());
+            try {
+              File temp = File.createTempFile("scrabbleDict", ".txt");
+              temp.deleteOnExit();
+              FileOutputStream out = new FileOutputStream(temp);
+              IOUtils.copy(
+                  getClass().getClassLoader().getResourceAsStream(Dictionary.TWL06.getUrl()), out);
+              chosenDictionary = temp;
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          }
+        });
+
+    dictionarySelecter.getItems().add(menuItem1);
+    dictionarySelecter.getItems().add(menuItem2);
+    dictionarySelecter.getItems().add(menuItem3);
+    dictionarySelecter.getItems().add(menuItem4);
+
+    dictionarySelecter.setText(menuItem1.getText());
+    try {
+      File temp = File.createTempFile("scrabbleDict", ".txt");
+      temp.deleteOnExit();
+      FileOutputStream out = new FileOutputStream(temp);
+      IOUtils.copy(
+          getClass().getClassLoader().getResourceAsStream(Dictionary.COLLINS.getUrl()), out);
+      chosenDictionary = temp;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
   /**
    * Serves as the listener for the "Upload dictionary"-Button. It allows the user to upload his own
@@ -715,110 +817,6 @@ public class LobbyScreenController {
       StartScreen.getStage().show();
       gsc.takeOverChat(chat);
     } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  /**
-   * Sets all possible dictionaries that are given and implements their handlers if they are
-   * selected.
-   *
-   * @author tikrause
-   * @author jluellig
-   */
-  private void setDictionaryMenu() {
-    MenuItem menuItem1 = new MenuItem("Collins Scrabble Words");
-    menuItem1.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent event) {
-            dictionarySelecter.setText(menuItem1.getText());
-            try {
-              File temp = File.createTempFile("scrabbleDict", ".txt");
-              temp.deleteOnExit();
-              FileOutputStream out = new FileOutputStream(temp);
-              IOUtils.copy(
-                  getClass().getClassLoader().getResourceAsStream(Dictionary.COLLINS.getUrl()),
-                  out);
-              chosenDictionary = temp;
-            } catch (Exception e) {
-              e.printStackTrace();
-            }
-          }
-        });
-
-    MenuItem menuItem2 = new MenuItem("Enable (Words With Friends)");
-    menuItem2.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent event) {
-            dictionarySelecter.setText(menuItem2.getText());
-            try {
-              File temp = File.createTempFile("scrabbleDict", ".txt");
-              temp.deleteOnExit();
-              FileOutputStream out = new FileOutputStream(temp);
-              IOUtils.copy(
-                  getClass().getClassLoader().getResourceAsStream(Dictionary.ENABLE.getUrl()), out);
-              chosenDictionary = temp;
-            } catch (Exception e) {
-              e.printStackTrace();
-            }
-          }
-        });
-
-    MenuItem menuItem3 = new MenuItem("Sowpods (Europe Scrabble Word List)");
-    menuItem3.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent event) {
-            dictionarySelecter.setText(menuItem3.getText());
-            try {
-              File temp = File.createTempFile("scrabbleDict", ".txt");
-              temp.deleteOnExit();
-              FileOutputStream out = new FileOutputStream(temp);
-              IOUtils.copy(
-                  getClass().getClassLoader().getResourceAsStream(Dictionary.SOWPODS.getUrl()),
-                  out);
-              chosenDictionary = temp;
-            } catch (Exception e) {
-              e.printStackTrace();
-            }
-          }
-        });
-
-    MenuItem menuItem4 = new MenuItem("TWL06 (North America Scrabble Word List)");
-    menuItem4.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent event) {
-            dictionarySelecter.setText(menuItem4.getText());
-            try {
-              File temp = File.createTempFile("scrabbleDict", ".txt");
-              temp.deleteOnExit();
-              FileOutputStream out = new FileOutputStream(temp);
-              IOUtils.copy(
-                  getClass().getClassLoader().getResourceAsStream(Dictionary.TWL06.getUrl()), out);
-              chosenDictionary = temp;
-            } catch (Exception e) {
-              e.printStackTrace();
-            }
-          }
-        });
-
-    dictionarySelecter.getItems().add(menuItem1);
-    dictionarySelecter.getItems().add(menuItem2);
-    dictionarySelecter.getItems().add(menuItem3);
-    dictionarySelecter.getItems().add(menuItem4);
-
-    dictionarySelecter.setText(menuItem1.getText());
-    try {
-      File temp = File.createTempFile("scrabbleDict", ".txt");
-      temp.deleteOnExit();
-      FileOutputStream out = new FileOutputStream(temp);
-      IOUtils.copy(
-          getClass().getClassLoader().getResourceAsStream(Dictionary.COLLINS.getUrl()), out);
-      chosenDictionary = temp;
-    } catch (Exception e) {
       e.printStackTrace();
     }
   }
