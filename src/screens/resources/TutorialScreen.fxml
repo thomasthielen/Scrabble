@@ -18,5 +18,7 @@
       <Button fx:id="previousButton" layoutX="20.0" layoutY="231.0" mnemonicParsing="false" onAction="#previous" prefHeight="100.0" prefWidth="40.0" style="-fx-background-color: #f88c00;" text="&lt;" textFill="WHITE" />
       <Button fx:id="nextButton" layoutX="940.0" layoutY="231.0" mnemonicParsing="false" onAction="#next" prefHeight="100.0" prefWidth="40.0" style="-fx-background-color: #f88c00;" text="&gt;" textFill="WHITE" />
       <Button fx:id="startGameButton" layoutX="701.0" layoutY="22.0" mnemonicParsing="false" onAction="#startGame" prefHeight="40.0" prefWidth="135.0" style="-fx-background-color: #f88c00;" text="Start Tutorial Game" textFill="WHITE" />
+      <Rectangle fx:id="startTutorialGameRectangle" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="40.0" layoutX="701.0" layoutY="22.0" onMouseEntered="#openTooltip" onMouseExited="#closeTooltip" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="135.0" />
+      <Pane fx:id="tooltipPane" layoutX="659.0" layoutY="67.0" prefHeight="200.0" prefWidth="220.0" style="-fx-background-color: #F4D896; -fx-border-color: #f88c00;" />
    </children>
 </Pane>

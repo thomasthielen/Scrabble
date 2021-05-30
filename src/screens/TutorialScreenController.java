@@ -16,8 +16,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import network.Client;
@@ -47,6 +50,10 @@ public class TutorialScreenController {
   @FXML private Pane backgroundPane;
 
   @FXML private Button startGameButton;
+
+  @FXML private Rectangle startTutorialGameRectangle;
+
+  @FXML private Pane tooltipPane;
 
   /**
    * This method initializes all the functionalities on the Screen.
@@ -87,6 +94,12 @@ public class TutorialScreenController {
     initializeArrowKeys();
 
     startGameButton.setDisable(!(activeImage >= 8));
+
+    startTutorialGameRectangle.setVisible(startGameButton.isDisable());
+
+    tooltipPane.toFront();
+
+    tooltipPane.setVisible(false);
   }
 
   /**
@@ -226,6 +239,7 @@ public class TutorialScreenController {
         } else {
           ((Button) node).setDisable(false);
           startGameButton.setDisable(true);
+          startTutorialGameRectangle.setVisible(false);
         }
       }
       if (node instanceof ImageView) {
@@ -277,5 +291,35 @@ public class TutorialScreenController {
         e.printStackTrace();
       }
     }
+  }
+
+  /**
+   * opens tooltipPane and sets the tooltip text.
+   *
+   * @author jbleil
+   * @param event MouseEvent that gets triggered when hovering over the startTutorialGameRectangle
+   */
+  @FXML
+  void openTooltip(MouseEvent event) {
+    Text text =
+        new Text(
+            "You have to read through all nine pages" + "\nbefore you can start a tutorial game");
+    text.relocate(5, 5);
+    text.setFill(Paint.valueOf("#f88c00"));
+    tooltipPane.getChildren().add(text);
+    tooltipPane.setPrefHeight(text.getLayoutBounds().getHeight() + 10);
+    tooltipPane.setVisible(true);
+  }
+
+  /**
+   * closes tolltip when hovering out of the MouseEvent that gets triggered when hovering over the
+   * startTutorialGameRectangle.
+   *
+   * @author jbleil
+   * @param event MouseEvent that gets triggered when hovering over the startTutorialGameRectangle
+   */
+  @FXML
+  void closeTooltip(MouseEvent event) {
+    tooltipPane.setVisible(false);
   }
 }
