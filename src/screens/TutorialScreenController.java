@@ -1,10 +1,9 @@
 package screens;
 
+import data.DataHandler;
 import java.io.IOException;
 import java.net.BindException;
 import java.util.ArrayList;
-
-import data.DataHandler;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
