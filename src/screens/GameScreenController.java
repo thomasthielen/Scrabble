@@ -770,10 +770,69 @@ public class GameScreenController {
     }
   }
 
-  // takeoverChat
-  // sendMessage
+  /**
+   * Restores the chat from the lobby screen into the game screen when the game has started.
+   *
+   * @author tikrause
+   * @param chat the string of chat from the lobby
+   */
+  public void takeOverChat(String chat) {
+    chatHistory = new StringBuffer(chat);
+    chatField.setText(chatHistory.toString());
+  }
+
+  /**
+   * Sends the typed message to all other users in the game session.
+   *
+   * @author tikrause
+   * @param event user types in a message and clicks 'SEND'
+   */
+  @FXML
+  void sendMessage(ActionEvent event) {
+    String input = textField.getText().trim();
+    if (Pattern.matches(".{1,140}", input)) {
+      Client.sendChat(DataHandler.getOwnPlayer(), ": " + input);
+      chatHistory.append(DataHandler.getOwnPlayer().getUsername() + ": " + input + "\n");
+      chatField.setText(chatHistory.toString());
+      textField.clear();
+    } else if (input.isBlank()) {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setTitle("Error");
+      errorAlert.setHeaderText("Message is empty.");
+      errorAlert.setContentText("The chat message has to contain at least one character.");
+      errorAlert.showAndWait();
+    } else {
+      Alert errorAlert = new Alert(AlertType.ERROR);
+      errorAlert.setTitle("Error");
+      errorAlert.setHeaderText("Message too long.");
+      errorAlert.setContentText("The maximum length of a chat message is 140 characters.");
+      errorAlert.showAndWait();
+    }
+  }
+
   // onEnter
-  // receivedMessage
+
+  /**
+   * When a text message is received by another player in the game session, the chat pane is updated
+   * and the received message is shown.
+   *
+   * @author tikrause
+   * @param p player that has sent the message
+   * @param chat message that has been received
+   */
+  public void receivedMessage(Player p, String chat) {
+    if (!chatPane.isVisible()) {
+      Platform.runLater(
+          new Runnable() {
+            @Override
+            public void run() {
+              chatButton.setText("Chat (" + ++unreadMessages + ")");
+            }
+          });
+    }
+    chatHistory.append(p.getUsername() + chat + "\n");
+    chatField.setText(chatHistory.toString());
+  }
 
   /**
    * Serves as the Listener for "X"-Button from the chatPane. It closes the chat.
@@ -878,57 +937,6 @@ public class GameScreenController {
   }
 
   /**
-   * Sends the typed message to all other users in the game session.
-   *
-   * @author tikrause
-   * @param event user types in a message and clicks 'SEND'
-   */
-  @FXML
-  void sendMessage(ActionEvent event) {
-    String input = textField.getText().trim();
-    if (Pattern.matches(".{1,140}", input)) {
-      Client.sendChat(DataHandler.getOwnPlayer(), ": " + input);
-      chatHistory.append(DataHandler.getOwnPlayer().getUsername() + ": " + input + "\n");
-      chatField.setText(chatHistory.toString());
-      textField.clear();
-    } else if (input.isBlank()) {
-      Alert errorAlert = new Alert(AlertType.ERROR);
-      errorAlert.setTitle("Error");
-      errorAlert.setHeaderText("Message is empty.");
-      errorAlert.setContentText("The chat message has to contain at least one character.");
-      errorAlert.showAndWait();
-    } else {
-      Alert errorAlert = new Alert(AlertType.ERROR);
-      errorAlert.setTitle("Error");
-      errorAlert.setHeaderText("Message too long.");
-      errorAlert.setContentText("The maximum length of a chat message is 140 characters.");
-      errorAlert.showAndWait();
-    }
-  }
-
-  /**
-   * When a text message is received by another player in the game session, the chat pane is updated
-   * and the received message is shown.
-   *
-   * @author tikrause
-   * @param p player that has sent the message
-   * @param chat message that has been received
-   */
-  public void receivedMessage(Player p, String chat) {
-    if (!chatPane.isVisible()) {
-      Platform.runLater(
-          new Runnable() {
-            @Override
-            public void run() {
-              chatButton.setText("Chat (" + ++unreadMessages + ")");
-            }
-          });
-    }
-    chatHistory.append(p.getUsername() + chat + "\n");
-    chatField.setText(chatHistory.toString());
-  }
-
-  /**
    * Serves as the Listener for the Enter-key in the chat text field. It serves as an alternative to
    * the send message button.
    *
@@ -941,7 +949,7 @@ public class GameScreenController {
   }
 
   // openSwapPane
-  
+
   /**
    * Serves as the Listener for the swap pane. Used to select or deselect the tiles in the rack.
    *
@@ -976,7 +984,7 @@ public class GameScreenController {
 
     submitSwapButton.setDisable(positions.size() == 0);
   }
-  
+
   /**
    * Serves as the Listener for the submit button in the popUp-Window which opens when you click the
    * "Swap"-Button from the gameBoardPane.
@@ -994,7 +1002,7 @@ public class GameScreenController {
     closeSwapPane(event);
     setRack(false);
   }
-  
+
   // closeSwapPane
 
   /**
@@ -1617,17 +1625,6 @@ public class GameScreenController {
         "The host has left the game and therefore you have been disconnected from the server.");
     errorAlert.showAndWait();
     leave();
-  }
-
-  /**
-   * Restores the chat from the lobby screen into the game screen when the game has started.
-   *
-   * @author tikrause
-   * @param chat the string of chat from the lobby
-   */
-  public void takeOverChat(String chat) {
-    chatHistory = new StringBuffer(chat);
-    chatField.setText(chatHistory.toString());
   }
 
   /**
