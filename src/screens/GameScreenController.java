@@ -1172,6 +1172,7 @@ public class GameScreenController {
    */
   public void switchToEndScreen() {
     gameSession.endGame();
+    DataHandler.getOwnPlayer().refreshStatistics();
     FXMLLoader loader = new FXMLLoader();
     Parent content;
     try {

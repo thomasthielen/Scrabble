@@ -129,6 +129,15 @@ public class Player implements Serializable, Comparable<Player> {
   public void exchangeTiles(ArrayList<Integer> positions) {
     rack.exchangeTiles(positions);
   }
+  
+  /**
+   * Refreshes the player object according to the statistics of the DataHandler.
+   *
+   * @author tthielen
+   */
+  public void refreshStatistics() {
+    this.playerStatistics = DataHandler.getStatistics(DataHandler.getOwnPlayerId());
+  }
 
   /**
    * Sets the player's username.
