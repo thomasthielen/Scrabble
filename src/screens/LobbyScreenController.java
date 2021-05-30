@@ -180,6 +180,8 @@ public class LobbyScreenController {
     initializeCloseHandler();
   }
 
+  // setDictionaryMenu
+
   /**
    * Serves as the listener for the "Upload dictionary"-Button. It allows the user to upload his own
    * dictionary for the game.
@@ -224,6 +226,8 @@ public class LobbyScreenController {
       errorAlert.showAndWait();
     }
   }
+
+  // editTiles
 
   /**
    * Serves as a Listener for the uploadDictionaryButton. It Displays the Tooltip Text when entered.
@@ -968,6 +972,9 @@ public class LobbyScreenController {
               }
             });
   }
+
+  // openToolTip
+  // closeToolTip
 
   /**
    * Serves as a Listener for the dictionarySelector. By hovering over the Button it displays the
