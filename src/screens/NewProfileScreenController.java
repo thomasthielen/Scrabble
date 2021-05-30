@@ -37,6 +37,8 @@ public class NewProfileScreenController {
 
   @FXML private Pane backgroundPane;
 
+  // addAvatars
+
   /**
    * This method serves as the Listener for "START GAME"-Button. It redirects the user to the New
    * Profile Screen and a new Player instance is created and added to the database.
@@ -103,24 +105,6 @@ public class NewProfileScreenController {
   }
 
   /**
-   * This method serves as the Listener for "Back"-Button. It redirects the user to the Start
-   * Screen.
-   *
-   * @author jbleil
-   * @param event ActionEvent that gets triggered when the back button is clicked
-   * @throws Exception the Exception when the FXML-File is not found
-   */
-  @FXML
-  void back(ActionEvent event) throws Exception {
-    FXMLLoader loader = new FXMLLoader();
-    Parent content =
-        loader.load(
-            getClass().getClassLoader().getResourceAsStream("screens/resources/StartScreen.fxml"));
-    StartScreen.getStage().setScene(new Scene(content));
-    StartScreen.getStage().show();
-  }
-
-  /**
    * Checks if the given username is already used in the database.
    *
    * @param username the input username that should be checked
@@ -137,6 +121,24 @@ public class NewProfileScreenController {
       }
     }
     return false;
+  }
+
+  /**
+   * This method serves as the Listener for "Back"-Button. It redirects the user to the Start
+   * Screen.
+   *
+   * @author jbleil
+   * @param event ActionEvent that gets triggered when the back button is clicked
+   * @throws Exception the Exception when the FXML-File is not found
+   */
+  @FXML
+  void back(ActionEvent event) throws Exception {
+    FXMLLoader loader = new FXMLLoader();
+    Parent content =
+        loader.load(
+            getClass().getClassLoader().getResourceAsStream("screens/resources/StartScreen.fxml"));
+    StartScreen.getStage().setScene(new Scene(content));
+    StartScreen.getStage().show();
   }
 
   /**
