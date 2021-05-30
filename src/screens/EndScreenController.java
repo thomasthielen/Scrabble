@@ -51,12 +51,9 @@ public class EndScreenController {
   public void initialize() {
     ArrayList<Player> players = Client.getGameSession().getPlayerList();
     Collections.sort(players);
-    for (int i = 0; i < players.size() - 1; i++) {
-      Player help = new Player("");
-      help = players.get(i);
-      players.set(i, players.get(i + 1));
-      players.set(i + 1, help);
-    }
+    
+    int counter = 0;
+    
     GridPane grid1 = new GridPane();
     grid1.setHgap(50);
     grid1.setVgap(20);
@@ -67,11 +64,11 @@ public class EndScreenController {
       width[i] = 0;
     }
 
-    for (int i = 0; i < players.size(); i++) {
-      Text place = new Text((i + 1) + ".Place:");
+    for (int i = players.size() - 1; i >= 0; i--) {
+      Text place = new Text((counter + 1) + ".Place:");
       place.setFill(Paint.valueOf("#f88c00"));
       place.setFont(new Font(18));
-      grid1.add(place, i, 0);
+      grid1.add(place, counter, 0);
       width[0] += place.getLayoutBounds().getWidth();
       GridPane.setHalignment(place, HPos.CENTER);
 
@@ -83,21 +80,21 @@ public class EndScreenController {
               true,
               true);
       ImageView imageView = new ImageView(avatar);
-      grid1.add(imageView, i, 1);
+      grid1.add(imageView, counter, 1);
       width[1] += avatar.getWidth();
 
       Text name = new Text(players.get(i).getUsername());
       name.setFill(Paint.valueOf("#f88c00"));
       name.setFont(new Font(18));
       name.relocate(0, 150);
-      grid1.add(name, i, 2);
+      grid1.add(name, counter, 2);
       width[2] += name.getLayoutBounds().getWidth();
       GridPane.setHalignment(name, HPos.CENTER);
 
       Text points = new Text("Points: " + players.get(i).getScore());
       points.setFill(Paint.valueOf("#f88c00"));
       points.setFont(new Font(18));
-      grid1.add(points, i, 3);
+      grid1.add(points, counter, 3);
       width[3] += points.getLayoutBounds().getWidth();
       GridPane.setHalignment(points, HPos.CENTER);
 
@@ -108,6 +105,8 @@ public class EndScreenController {
         imageView.setStyle(
             "-fx-translate-x: " + (points.getLayoutBounds().getWidth() - 52) / 2 + ";");
       }
+      
+      counter++;
     }
 
     Arrays.sort(width);
