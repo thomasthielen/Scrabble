@@ -95,8 +95,6 @@ public class TutorialScreenController {
 
     startGameButton.setDisable(!(activeImage >= 8));
 
-    startTutorialGameRectangle.setVisible(startGameButton.isDisable());
-
     tooltipPane.toFront();
 
     tooltipPane.setVisible(false);
@@ -236,10 +234,11 @@ public class TutorialScreenController {
         if (activeImage >= 8) {
           ((Button) node).setDisable(true);
           startGameButton.setDisable(false);
+          startTutorialGameRectangle.setVisible(false);
         } else {
           ((Button) node).setDisable(false);
           startGameButton.setDisable(true);
-          startTutorialGameRectangle.setVisible(false);
+          startTutorialGameRectangle.setVisible(true);
         }
       }
       if (node instanceof ImageView) {
