@@ -472,17 +472,35 @@ public class GameScreenController {
               StackPane sp = (StackPane) node;
               paintTileAsSelected(sp, true);
             }
-            
+
             if (clickedOnTile.isWildCard()) {
               updateTutorialText(3);
             }
-          } 
+          }
         }
       }
       refreshRecall();
       refreshSubmit();
     }
   }
+
+  /**
+   * Serves as the Listener for the submit wildcard button.
+   *
+   * @author tthielen
+   * @author jbleil
+   * @param event the ActionEvent called by the button
+   */
+  @FXML
+  void submitWildcard(ActionEvent event) {
+    wildcardPane.setVisible(false);
+    wildcardTile.setLetter(wildcardChar);
+    placeTileOnBoard(wildcardTile, wildcardStackPane);
+    refreshSubmit();
+  }
+
+  // onEnterWildcard
+  // closeWildcardPane
 
   /**
    * Serves as a Listener for the GridPane, which displays the GameBoard. There are 6 different
@@ -752,6 +770,11 @@ public class GameScreenController {
     }
   }
 
+  // takeoverChat
+  // sendMessage
+  // onEnter
+  // receivedMessage
+
   /**
    * Serves as the Listener for "X"-Button from the chatPane. It closes the chat.
    *
@@ -917,6 +940,95 @@ public class GameScreenController {
     sendMessage(event);
   }
 
+  // openSwapPane
+  
+  /**
+   * Serves as the Listener for the swap pane. Used to select or deselect the tiles in the rack.
+   *
+   * @author tthielen
+   * @author jbleil
+   * @param event the ActionEvent called by the button
+   */
+  @FXML
+  void swapPaneClicked(MouseEvent event) {
+    // Extract the coordinates from the event
+    double eventX = event.getX();
+    double eventY = event.getY();
+    // Go through all elements of the swapRack
+    for (Node node : swapRack.getChildren()) {
+      if (node instanceof StackPane) {
+        if (node.getBoundsInParent().contains(eventX, eventY)) {
+          Tile clickedOnTile = rackTiles.get(swapPanes.indexOf(node));
+          if (clickedOnTile.isSelected()) {
+            clickedOnTile.setSelected(false);
+            positions.remove(swapTiles.indexOf(clickedOnTile));
+            swapTiles.remove(clickedOnTile);
+            paintTileAsSelected((StackPane) node, false);
+          } else {
+            clickedOnTile.setSelected(true);
+            swapTiles.add(clickedOnTile);
+            positions.add(rackTiles.indexOf(clickedOnTile));
+            paintTileAsSelected((StackPane) node, true);
+          }
+        }
+      }
+    }
+
+    submitSwapButton.setDisable(positions.size() == 0);
+  }
+  
+  /**
+   * Serves as the Listener for the submit button in the popUp-Window which opens when you click the
+   * "Swap"-Button from the gameBoardPane.
+   *
+   * @author tthielen
+   * @author jbleil
+   * @param event the ActionEvent called by the button
+   */
+  @FXML
+  void swapTiles(ActionEvent event) throws Exception {
+    swapPaneOpen = false;
+    gameSession.exchangeTiles(positions);
+    swapTiles.clear();
+    positions.clear();
+    closeSwapPane(event);
+    setRack(false);
+  }
+  
+  // closeSwapPane
+
+  /**
+   * Serves as the Listener for "Submit"-Button from the gameBoardPane. The Button gets enabled if
+   * the user lays a valid word on the gameBoard. If the user presses the Button the laid word is
+   * submitted and it's the next players turn.
+   *
+   * @author tthielen
+   * @author jbleil
+   * @param event the ActionEvent called by the button
+   */
+  @FXML
+  void submitWord(ActionEvent event) throws Exception {
+    for (Tile t : gameBoardTiles) {
+      t.setPlacedTemporarily(false);
+      t.setPlacedFinally(true);
+    }
+    for (StackPane sp : boardPanes) {
+      for (Node node : sp.getChildren()) {
+        if (node instanceof Rectangle) {
+          ((Rectangle) node).setFill(Paint.valueOf("#cccccc"));
+        } else if (node instanceof Text) {
+          ((Text) node).setFill(Color.BLACK);
+        }
+      }
+    }
+    gameSession.makePlay();
+    gameBoardTiles.clear();
+    setRack(false);
+    refreshSubmit();
+    refreshRecall();
+    setPlayable(gameSession.getPlayer().isCurrentlyPlaying());
+  }
+
   /**
    * Serves as the Listener for the "Recall"-Button from the gameBoardPane. It allows the user to
    * call back the tiles he has laid on the gameBoard in the current move.
@@ -952,38 +1064,6 @@ public class GameScreenController {
 
     gameBoardTiles.clear();
     recallButton.setDisable(true);
-  }
-
-  /**
-   * Serves as the Listener for "Submit"-Button from the gameBoardPane. The Button gets enabled if
-   * the user lays a valid word on the gameBoard. If the user presses the Button the laid word is
-   * submitted and it's the next players turn.
-   *
-   * @author tthielen
-   * @author jbleil
-   * @param event the ActionEvent called by the button
-   */
-  @FXML
-  void submitWord(ActionEvent event) throws Exception {
-    for (Tile t : gameBoardTiles) {
-      t.setPlacedTemporarily(false);
-      t.setPlacedFinally(true);
-    }
-    for (StackPane sp : boardPanes) {
-      for (Node node : sp.getChildren()) {
-        if (node instanceof Rectangle) {
-          ((Rectangle) node).setFill(Paint.valueOf("#cccccc"));
-        } else if (node instanceof Text) {
-          ((Text) node).setFill(Color.BLACK);
-        }
-      }
-    }
-    gameSession.makePlay();
-    gameBoardTiles.clear();
-    setRack(false);
-    refreshSubmit();
-    refreshRecall();
-    setPlayable(gameSession.getPlayer().isCurrentlyPlaying());
   }
 
   /**
@@ -1051,74 +1131,6 @@ public class GameScreenController {
     swapPaneOpen = false;
     swapPane.setVisible(false);
     swapRack.getChildren().clear();
-  }
-
-  /**
-   * Serves as the Listener for the submit button in the popUp-Window which opens when you click the
-   * "Swap"-Button from the gameBoardPane.
-   *
-   * @author tthielen
-   * @author jbleil
-   * @param event the ActionEvent called by the button
-   */
-  @FXML
-  void swapTiles(ActionEvent event) throws Exception {
-    swapPaneOpen = false;
-    gameSession.exchangeTiles(positions);
-    swapTiles.clear();
-    positions.clear();
-    closeSwapPane(event);
-    setRack(false);
-  }
-
-  /**
-   * Serves as the Listener for the swap pane. Used to select or deselect the tiles in the rack.
-   *
-   * @author tthielen
-   * @author jbleil
-   * @param event the ActionEvent called by the button
-   */
-  @FXML
-  void swapPaneClicked(MouseEvent event) {
-    // Extract the coordinates from the event
-    double eventX = event.getX();
-    double eventY = event.getY();
-    // Go through all elements of the swapRack
-    for (Node node : swapRack.getChildren()) {
-      if (node instanceof StackPane) {
-        if (node.getBoundsInParent().contains(eventX, eventY)) {
-          Tile clickedOnTile = rackTiles.get(swapPanes.indexOf(node));
-          if (clickedOnTile.isSelected()) {
-            clickedOnTile.setSelected(false);
-            positions.remove(swapTiles.indexOf(clickedOnTile));
-            swapTiles.remove(clickedOnTile);
-            paintTileAsSelected((StackPane) node, false);
-          } else {
-            clickedOnTile.setSelected(true);
-            swapTiles.add(clickedOnTile);
-            positions.add(rackTiles.indexOf(clickedOnTile));
-            paintTileAsSelected((StackPane) node, true);
-          }
-        }
-      }
-    }
-
-    submitSwapButton.setDisable(positions.size() == 0);
-  }
-
-  /**
-   * Serves as the Listener for the submit wildcard button.
-   *
-   * @author tthielen
-   * @author jbleil
-   * @param event the ActionEvent called by the button
-   */
-  @FXML
-  void submitWildcard(ActionEvent event) {
-    wildcardPane.setVisible(false);
-    wildcardTile.setLetter(wildcardChar);
-    placeTileOnBoard(wildcardTile, wildcardStackPane);
-    refreshSubmit();
   }
 
   /**
