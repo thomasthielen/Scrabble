@@ -584,6 +584,8 @@ public class SinglePlayerLobbyScreenController {
           if (i > 0) {
             deleteButtons[i - 1].setVisible(true);
           }
+          playerStatistics.get(i).setText("");
+          playerStatistics.get(i).setVisible(false);
         }
       }
 
