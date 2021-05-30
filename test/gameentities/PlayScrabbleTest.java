@@ -2,6 +2,7 @@ package gameentities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -39,7 +40,9 @@ class PlayScrabbleTest {
     players = new ArrayList<Player>();
     players.add(player1);
     players.add(player2);
-    gameState = new GameState(players, this.bag = new Bag(), this.board = new Board());
+    bag = new Bag();
+    board = new Board();
+    gameState = new GameState(players, bag, board);
 
     try {
       Server.createServer(port);
@@ -50,11 +53,6 @@ class PlayScrabbleTest {
     } catch (Exception e) {
       e.printStackTrace();
     }
-
-    // initializing the board
-    this.board = new Board();
-    // initializing the bag
-    this.bag = new Bag();
     // initializing the Tile as a wildcard
     tile = new Tile('*', 0);
   }
@@ -77,8 +75,6 @@ class PlayScrabbleTest {
 
   @Test
   void testExchangeTiles() {
-    gameSession.synchronize(gameState);
-
     player1.createRack(gameSession);
     ArrayList<Tile> before = player1.getRack().getTiles();
     assertNotNull(before);
@@ -88,7 +84,7 @@ class PlayScrabbleTest {
     player1.exchangeTiles(swap);
     ArrayList<Tile> after = player1.getRack().getTiles();
     assertNotNull(after);
-    assertEquals(before, after);
+    assertEquals(before.get(2).getLetter(), after.get(2).getLetter());
   }
 
   @Test
@@ -448,13 +444,5 @@ class PlayScrabbleTest {
     assertEquals(Premium.NONE, board.getSquare(15, 11).getPremium());
     assertEquals(Premium.NONE, board.getSquare(15, 13).getPremium());
     assertEquals(Premium.NONE, board.getSquare(15, 14).getPremium());
-  }
-
-  @Test
-  void testPass() {
-    for (Square sq : board.getSquareList()) {
-      assertFalse(sq.isTaken());
-    }
-    //    gameSession.skipTurn();
   }
 }
