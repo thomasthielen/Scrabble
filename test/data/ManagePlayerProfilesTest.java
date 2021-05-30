@@ -29,7 +29,7 @@ class ManagePlayerProfilesTest {
     assertEquals("BLACK", data[1]);
   }
 
-  // read and update player profiles
+  // read and update and delete player profiles
   @Test
   @Order(2)
   void testUpdatePlayerProfile() {
@@ -41,12 +41,7 @@ class ManagePlayerProfilesTest {
 
     assertEquals("alteredName", data[0]);
     assertEquals("RED", data[1]);
-  }
-
-  // delete player profiles
-  @Test
-  @Order(3)
-  void testDeletePlayerProfile() {
+    
     DataHandler.deletePlayer(DataHandler.getOwnPlayerId());
 
     assertNull(DataHandler.getPlayerInfo().get(DataHandler.getOwnPlayerId()));
