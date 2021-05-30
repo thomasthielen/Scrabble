@@ -281,7 +281,27 @@ public class SinglePlayerLobbyScreenController {
     }
   }
   
-  //edit tiles
+  /**
+   * Opens the ChangeTilesScreen. Listener for the "Edit Tiles"-Button.
+   *
+   * @param event the ActionEvent when the edit Tiles-Button is pressed.
+   * @throws Exception if fxml file not found
+   * @author jbleil
+   */
+  @FXML
+  void editTiles(ActionEvent event) throws Exception {
+    FXMLLoader loader = new FXMLLoader();
+    Parent content =
+        loader.load(
+            getClass()
+                .getClassLoader()
+                .getResourceAsStream("screens/resources/ChangeTilesScreen.fxml"));
+    ChangeTilesScreenController changeTilesScreenController = loader.getController();
+    changeTilesScreenController.setMultiplayer(false);
+    changeTilesScreenController.setTileScreen();
+    StartScreen.getStage().setScene(new Scene(content));
+    StartScreen.getStage().show();
+  }
 
   /**
    * Opens the tooltip.
@@ -538,29 +558,6 @@ public class SinglePlayerLobbyScreenController {
     }
   }
 
-  
-
-  /**
-   * Opens the ChangeTilesScreen. Listener for the "Edit Tiles"-Button.
-   *
-   * @param event the ActionEvent when the edit Tiles-Button is pressed.
-   * @throws Exception if fxml file not found
-   * @author jbleil
-   */
-  @FXML
-  void editTiles(ActionEvent event) throws Exception {
-    FXMLLoader loader = new FXMLLoader();
-    Parent content =
-        loader.load(
-            getClass()
-                .getClassLoader()
-                .getResourceAsStream("screens/resources/ChangeTilesScreen.fxml"));
-    ChangeTilesScreenController changeTilesScreenController = loader.getController();
-    changeTilesScreenController.setMultiplayer(false);
-    changeTilesScreenController.setTileScreen();
-    StartScreen.getStage().setScene(new Scene(content));
-    StartScreen.getStage().show();
-  }
 
   /**
    * this method is responsible for displaying the player names and statistics in the game lobby.
