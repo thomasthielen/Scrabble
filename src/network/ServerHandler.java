@@ -133,7 +133,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
           }
         }
         for (Bot ai : Server.getBotPlayerList()) {
-          ai.initializeAI(dm.getFile());
+          ai.initializeBot(dm.getFile());
         }
         break;
 

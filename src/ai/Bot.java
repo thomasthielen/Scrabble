@@ -45,10 +45,13 @@ public class Bot {
   }
 
   /**
+   * Initializes the AI instance with the dictionary file, makes its initial draw and updates the
+   * rack of the AI after that.
+   *
    * @author tikrause
-   * @param dictionary
+   * @param dictionary chosen dictionary file
    */
-  public void initializeAI(File dictionary) {
+  public void initializeBot(File dictionary) {
     this.dictionary = dictionary;
     this.gameReference.setBag(Client.getGameSession().getBag());
     this.gameReference.getPlayer().getRack().initialDraw();
@@ -169,7 +172,7 @@ public class Bot {
       return null;
     }
   }
-  
+
   /**
    * this method iterates through all possible moves the AI can make and chooses the move with the
    * best score when the difficulty level is set to difficult. If the difficulty level is easy, then
@@ -845,7 +848,7 @@ public class Bot {
   public void makeMove() {
 
     // get the current time
-    long startTime = System.currentTimeMillis();
+    final long startTime = System.currentTimeMillis();
 
     tiles = gameReference.getPlayer().getRack().getTiles();
     if (!dictionaryInitialized) {
