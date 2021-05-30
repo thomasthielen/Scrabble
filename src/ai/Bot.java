@@ -817,34 +817,53 @@ public class Bot {
   }
 
   public void makeMove() {
-    Timer timer = new Timer();
-    timer.schedule(
-        new TimerTask() {
-          @Override
-          public void run() {
-            tiles = gameReference.getPlayer().getRack().getTiles();
-            if (!dictionaryInitialized) {
-              DataHandler.botDictionaryFile(dictionary);
-              dictionaryInitialized = true;
-            }
-            ArrayList<Square> squares = getTheBestMove();
-            if (squares != null) {
-              gameReference.recallAll(true);
-              for (Square s : squares) {
-                Tile t = s.getTile();
-                t.setPlacedTemporarily(false);
-                t.setPlacedFinally(true);
-                gameReference.placeTile(s.getX(), s.getY(), t);
+
+    // get the current time
+    long startTime = System.currentTimeMillis();
+
+    tiles = gameReference.getPlayer().getRack().getTiles();
+    if (!dictionaryInitialized) {
+      DataHandler.botDictionaryFile(dictionary);
+      dictionaryInitialized = true;
+    }
+    ArrayList<Square> squares = getTheBestMove();
+    if (squares != null) {
+      gameReference.recallAll(true);
+      for (Square s : squares) {
+        Tile t = s.getTile();
+        t.setPlacedTemporarily(false);
+        t.setPlacedFinally(true);
+        gameReference.placeTile(s.getX(), s.getY(), t);
+      }
+    } else {
+      gameReference.skipTurn();
+    }
+
+    // calculate the processing time via the difference of the current time and the start time
+    long processingTime = System.currentTimeMillis() - startTime;
+
+    // see if the processing time was longer than our required 5 seconds
+    int delay = (int) (5000 - processingTime);
+
+    // if no, wait until 5 seconds are reached
+    if (delay > 0) {
+      Timer timer = new Timer();
+      timer.schedule(
+          new TimerTask() {
+            @Override
+            public void run() {
+              if (gameReference.checkMove()) {
+                gameReference.makePlay();
               }
-            } else {
-              gameReference.skipTurn();
             }
-            if (gameReference.checkMove()) {
-              gameReference.makePlay();
-            }
-          }
-        },
-        5000);
+          },
+          delay);
+    } else {
+      // otherwise execute the move instantly
+      if (gameReference.checkMove()) {
+        gameReference.makePlay();
+      }
+    }
   }
 
   public ArrayList<Word> getWords() {
