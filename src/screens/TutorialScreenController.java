@@ -85,7 +85,7 @@ public class TutorialScreenController {
     updateImage();
 
     initializeArrowKeys();
-    
+
     startGameButton.setDisable(!(activeImage >= 8));
   }
 
@@ -116,6 +116,37 @@ public class TutorialScreenController {
     iv.setPreserveRatio(true);
     iv.setFitWidth(880);
     backgroundPane.getChildren().add(iv);
+  }
+
+  /**
+   * Initializes the function for the stage to switch to the next or previous image by pressing the
+   * arrow keys.
+   *
+   * @author jluellig
+   */
+  private void initializeArrowKeys() {
+    for (Node n : backgroundPane.getChildren()) {
+      n.setOnKeyPressed(
+          new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+              if (ke.getCode().equals(KeyCode.LEFT)) {
+                try {
+                  previous(new ActionEvent());
+                } catch (Exception e) {
+                  e.printStackTrace();
+                }
+              }
+              if (ke.getCode().equals(KeyCode.RIGHT)) {
+                try {
+                  next(new ActionEvent());
+                } catch (Exception e) {
+                  e.printStackTrace();
+                }
+              }
+            }
+          });
+    }
   }
 
   /**
@@ -204,37 +235,6 @@ public class TutorialScreenController {
   }
 
   /**
-   * Initializes the function for the stage to switch to the next or previous image by pressing the
-   * arrow keys.
-   *
-   * @author jluellig
-   */
-  private void initializeArrowKeys() {
-    for (Node n : backgroundPane.getChildren()) {
-      n.setOnKeyPressed(
-          new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent ke) {
-              if (ke.getCode().equals(KeyCode.LEFT)) {
-                try {
-                  previous(new ActionEvent());
-                } catch (Exception e) {
-                  e.printStackTrace();
-                }
-              }
-              if (ke.getCode().equals(KeyCode.RIGHT)) {
-                try {
-                  next(new ActionEvent());
-                } catch (Exception e) {
-                  e.printStackTrace();
-                }
-              }
-            }
-          });
-    }
-  }
-
-  /**
    * This method serves as a Listener for the startGameButton. When the Button is clicked it starts
    * a Tutorial Game.
    *
@@ -254,7 +254,7 @@ public class TutorialScreenController {
     StartScreen.getStage().setScene(new Scene(content));
     StartScreen.getStage().show();
   }
-  
+
   /**
    * Creates a single player lobby by creating a server connection that can't be connected to at the
    * 'JOIN GAME' function. Also sets the Tutorial boolean to true.
