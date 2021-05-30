@@ -17,7 +17,7 @@ import session.GameSession;
 import session.GameState;
 
 /**
- * an AI instance of the game that calculates a move using given methods
+ * an AI instance of the game that calculates a move using given methods.
  *
  * @author sisselha
  */
@@ -33,6 +33,8 @@ public class Bot {
   private File dictionary;
 
   /**
+   * Constructor: creates a new AI Object.
+   *
    * @author sisselha
    * @param username username
    * @param difficult difficulty of the AI
@@ -52,6 +54,7 @@ public class Bot {
     this.gameReference.getPlayer().getRack().initialDraw();
     Server.updateRackOfBotPlayer(this);
   }
+
   /**
    * If the AI has to make the first move, the method initializes all possible moves the AI can make
    * with the given letters.
@@ -99,7 +102,7 @@ public class Bot {
    * the first move, if the board is empty it returns true, otherwise false.
    *
    * @author sisselha
-   * @return
+   * @return if board is empty or not
    */
   public boolean boardIsEmpty() {
     for (Square s : this.gameReference.getBoard().getSquareList()) {
@@ -118,7 +121,7 @@ public class Bot {
    * @author sisselha
    * @param list1 Arraylist of String
    * @param suf String of the suffix
-   * @return
+   * @return updated ArrayList
    */
   public ArrayList<String> addArrayLists(ArrayList<String> list1, String suf) {
     ArrayList<String> list = new ArrayList<String>();
@@ -166,6 +169,7 @@ public class Bot {
       return null;
     }
   }
+  
   /**
    * this method iterates through all possible moves the AI can make and chooses the move with the
    * best score when the difficulty level is set to difficult. If the difficulty level is easy, then
@@ -213,10 +217,9 @@ public class Bot {
 
   /**
    * Initializes a complete list of all possible moves that can be placed on the board with the
-   * given tiles in the bag to the words that are already lying on the board
+   * given tiles in the bag to the words that are already lying on the board.
    *
    * @author sisselha
-   * @param swapTiles
    */
   public void setMoves() {
     this.moves = new ArrayList<PossibleMove>();
@@ -264,7 +267,6 @@ public class Bot {
               if (gameReference.checkMove()) {
                 PossibleMove pm = new PossibleMove(placedsquare, gameReference.getTurnValue());
                 this.moves.add(pm);
-              } else {
               }
             }
           }
@@ -330,7 +332,6 @@ public class Bot {
                       this.gameReference.getBoard());
             }
             if (squares != null && squares.size() > 1) {
-              for (Square ss : squares) {}
               if (gameReference.checkMove()) {
                 PossibleMove pm = new PossibleMove(squares, gameReference.getTurnValue());
                 this.moves.add(pm);
@@ -368,8 +369,6 @@ public class Bot {
             }
             if (squares != null && squares.size() > 1) {
 
-              for (Square ss : squares) {}
-
               if (gameReference.checkMove()) {
                 PossibleMove pm = new PossibleMove(squares, gameReference.getTurnValue());
                 this.moves.add(pm);
@@ -382,10 +381,11 @@ public class Bot {
   }
 
   /**
-   * copies an arraylist and returns it
+   * copies an arraylist and returns it.
    *
    * @author sisselha
-   * @param swapTiles
+   * @param list list of the tiles
+   * @return copied list of tiles
    */
   public ArrayList<Tile> copyTiles(ArrayList<Tile> list) {
     ArrayList<Tile> tile = new ArrayList<Tile>();
@@ -396,13 +396,13 @@ public class Bot {
   }
 
   /**
-   * Checks if the prefix of the word to be created fits the field
+   * Checks if the prefix of the word to be created fits the field.
    *
    * @author sisselha
    * @param prefix the prefix of the word, which is tried to be created with the given tiles
    * @param word the word that is already on the board
    * @param board board
-   * @return
+   * @return returns if the word is in the board or not
    */
   public boolean checkAbove(int prefix, Word word, Board board) {
     if ((word.getBeginningY() + prefix) > 15) {
@@ -411,59 +411,64 @@ public class Bot {
       return true;
     }
   }
+
   /**
-   * Checks if the suffix of the word to be created fits the field
+   * Checks if the suffix of the word to be created fits the field.
    *
    * @author sisselha
    * @param suffix the suffix of the word, which is tried to be created with the given tiles
    * @param word the word that is already on the board
    * @param board board
-   * @return
+   * @return returns if the word is in the board or not
    */
-  public boolean checkDown(int suf, Word word, Board board) {
-    if ((word.getEndingY() - suf) < 1) {
+  public boolean checkDown(int suffix, Word word, Board board) {
+    if ((word.getEndingY() - suffix) < 1) {
       return false;
     } else {
       return true;
     }
   }
+
   /**
-   * Checks if the suffix of the word to be created fits the field
+   * Checks if the suffix of the word to be created fits the field.
    *
    * @author sisselha
    * @param suffix the suffix of the word, which is tried to be created with the given tiles
    * @param word the word that is already on the board
    * @param board board
-   * @return
+   * @return returns if the word is in the board or not
    */
-  public boolean checkRight(int suf, Word wort, Board board) {
-    if ((wort.getEndingX() + suf) > 15) {
+  public boolean checkRight(int suffix, Word word, Board board) {
+    if ((word.getEndingX() + suffix) > 15) {
       return false;
     } else {
       return true;
     }
   }
+
   /**
-   * Checks if the prefix of the word to be created fits the field
+   * Checks if the prefix of the word to be created fits the field.
    *
    * @author sisselha
    * @param prefix the prefix of the word, which is tried to be created with the given tiles
    * @param word the word that is already on the board
    * @param board board
-   * @return
+   * @return returns if the word is in the board or not
    */
-  public boolean checkLeft(int pre, Word wort, Board board) {
-    if ((wort.getBeginningX() - pre) < 1) {
+  public boolean checkLeft(int prefix, Word word, Board board) {
+    if ((word.getBeginningX() - prefix) < 1) {
       return false;
     } else {
       return true;
     }
   }
+
   /**
-   * Converts a string into a String ArrayList
+   * Converts a string into a String ArrayList.
    *
    * @author sisselha
-   * @param swapTiles
+   * @param s string to be converted
+   * @return letters divided into a String ArrayList
    */
   public ArrayList<String> divideString(String s) {
     char[] feld1 = s.toCharArray();
@@ -473,13 +478,14 @@ public class Bot {
     }
     return letters;
   }
+
   /**
-   * converts the prefix and suffix of a word into a String ArrayList
+   * converts the prefix and suffix of a word into a String ArrayList.
    *
    * @author sisselha
    * @param pre the prefix of the word
    * @param suf the suffix of the word
-   * @return
+   * @return divided String ArrayList of prefix and suffix
    */
   public ArrayList<String> prefixPlusSuffix(String pre, String suf) {
     char[] feld1 = pre.toCharArray();
@@ -594,6 +600,7 @@ public class Bot {
       return null;
     }
   }
+
   /**
    * This method recursively checks the last element of the string array list to see if the letter
    * in the list matches a tile in the TileArrayList, if it does, the StringArrayList is reduced by
@@ -617,7 +624,7 @@ public class Bot {
       ArrayList<String> letters,
       ArrayList<Square> placedsquares,
       ArrayList<Tile> remainingtiles,
-      Word wort,
+      Word word,
       int pre,
       int suf,
       Board board) {
@@ -627,68 +634,66 @@ public class Bot {
     } else {
       if (letters.size() <= pre) {
         if (board
-            .getSquare((wort.getBeginningX() - pre) + letters.size() - 1, wort.getBeginningY())
+            .getSquare((word.getBeginningX() - pre) + letters.size() - 1, word.getBeginningY())
             .isTaken()) {
           char[] c = letters.get(letters.size() - 1).toCharArray();
           if (board
                   .getSquare(
-                      (wort.getBeginningX() - pre) + letters.size() - 1, wort.getBeginningY())
+                      (word.getBeginningX() - pre) + letters.size() - 1, word.getBeginningY())
                   .getTile()
                   .getLetter()
               == c[0]) {
             letters.remove(letters.size() - 1);
             return checkTilesHorizontal(
-                letters, placedsquares, remainingtiles, wort, pre, suf, board);
+                letters, placedsquares, remainingtiles, word, pre, suf, board);
           } else {
             return null;
           }
         } else {
           char[] c = letters.get(letters.size() - 1).toCharArray();
           for (int i = 0; i < remainingtiles.size(); i++) {
-            String s = String.valueOf(c);
             if (remainingtiles.get(i).getLetter() == c[0]) {
               this.gameReference.placeTile(
-                  wort.getBeginningX() - pre + letters.size() - 1,
-                  wort.getBeginningY(),
+                  word.getBeginningX() - pre + letters.size() - 1,
+                  word.getBeginningY(),
                   remainingtiles.get(i));
               Square square =
-                  new Square(wort.getBeginningX() - pre + letters.size() - 1, wort.getBeginningY());
+                  new Square(word.getBeginningX() - pre + letters.size() - 1, word.getBeginningY());
               square.placeTile(remainingtiles.get(i));
               remainingtiles.remove(i);
               placedsquares.add(square);
               letters.remove(letters.size() - 1);
               return checkTilesHorizontal(
-                  letters, placedsquares, remainingtiles, wort, pre, suf, board);
+                  letters, placedsquares, remainingtiles, word, pre, suf, board);
             }
           }
         }
       } else {
-        if (board.getSquare(wort.getEndingX() + suf, wort.getEndingY()).isTaken()) {
+        if (board.getSquare(word.getEndingX() + suf, word.getEndingY()).isTaken()) {
           char[] c = letters.get(letters.size() - 1).toCharArray();
-          if (board.getSquare(wort.getEndingX() + suf, wort.getEndingY()).getTile().getLetter()
+          if (board.getSquare(word.getEndingX() + suf, word.getEndingY()).getTile().getLetter()
               == c[0]) {
             letters.remove(letters.size() - 1);
             suf = suf - 1;
             return checkTilesHorizontal(
-                letters, placedsquares, remainingtiles, wort, pre, suf, board);
+                letters, placedsquares, remainingtiles, word, pre, suf, board);
           } else {
             return null;
           }
         } else {
           char[] c = letters.get(letters.size() - 1).toCharArray();
           for (int i = 0; i < remainingtiles.size(); i++) {
-            String s = String.valueOf(c[0]);
             if (remainingtiles.get(i).getLetter() == c[0]) {
               this.gameReference.placeTile(
-                  wort.getEndingX() + suf, wort.getEndingY(), remainingtiles.get(i));
-              Square square = new Square(wort.getEndingX() + suf, wort.getEndingY());
+                  word.getEndingX() + suf, word.getEndingY(), remainingtiles.get(i));
+              Square square = new Square(word.getEndingX() + suf, word.getEndingY());
               square.placeTile(remainingtiles.get(i));
               remainingtiles.remove(i);
               placedsquares.add(square);
               letters.remove(letters.size() - 1);
               suf = suf - 1;
               return checkTilesHorizontal(
-                  letters, placedsquares, remainingtiles, wort, pre, suf, board);
+                  letters, placedsquares, remainingtiles, word, pre, suf, board);
             }
           }
         }
@@ -697,7 +702,11 @@ public class Bot {
     }
   }
 
-  /** @author sisselha */
+  /**
+   * Scans the whole board for already laid words and adds it to the ArrayList of words.
+   *
+   * @author sisselha
+   */
   public void scanBoardForWords() {
     this.words = new ArrayList<Word>();
     for (int i = 0; i < this.gameReference.getBoard().getSquareList().size(); i++) {
@@ -761,12 +770,12 @@ public class Bot {
         if (rightneighbour != null) {
           if (rightneighbour.isTaken()
               && (!this.gameReference.getBoard().getSquareList().get(i).isWithinRowWord())) {
-            Word word = new Word();
             buffer = new StringBuffer();
             ArrayList<Square> squares = new ArrayList<Square>();
             buffer.append(
                 this.gameReference.getBoard().getSquareList().get(i).getTile().getLetter());
             squares.add(this.gameReference.getBoard().getSquareList().get(i));
+            Word word = new Word();
             word.setBeginningX(this.gameReference.getBoard().getSquareList().get(i).getX());
             word.setBeginningY(this.gameReference.getBoard().getSquareList().get(i).getY());
             if (rightneighbour != null) {
@@ -796,6 +805,12 @@ public class Bot {
     }
   }
 
+  /**
+   * if a word lays on squares in a column the flag isWithinColumnWord has to be set.
+   *
+   * @author sisselha
+   * @param squares ArrayList of the squares of the word
+   */
   public void setWithinColumnWord(ArrayList<Square> squares) {
     for (int i = 0; i < squares.size(); i++) {
       int x = squares.get(i).getX();
@@ -804,6 +819,12 @@ public class Bot {
     }
   }
 
+  /**
+   * if a word lays on squares in a row the flag isWithinRowWord has to be set.
+   *
+   * @author sisselha
+   * @param squares ArrayList of the squares of the word
+   */
   public void setWithinRowWord(ArrayList<Square> squares) {
     for (int i = 0; i < squares.size(); i++) {
       int x = squares.get(i).getX();
@@ -816,6 +837,11 @@ public class Bot {
     this.gameReference.synchronize(state);
   }
 
+  /**
+   * makes the move for the Bot.
+   *
+   * @author sisselha
+   */
   public void makeMove() {
 
     // get the current time
@@ -870,6 +896,11 @@ public class Bot {
     return this.words;
   }
 
+  /**
+   * Scans the whole board for already laid letters and adds it to the ArrayList of words.
+   *
+   * @author sisselha
+   */
   public void scanBoardForLetters() {
     for (int i = 0; i < this.gameReference.getBoard().getSquareList().size(); i++) {
       if (this.gameReference.getBoard().getSquareList().get(i).isTaken()) {
@@ -885,7 +916,6 @@ public class Bot {
           if (rightneighbour.isTaken() && (!lowerneighbour.isTaken())) {
             int x = this.gameReference.getBoard().getSquareList().get(i).getX();
             int y = this.gameReference.getBoard().getSquareList().get(i).getY();
-            char c = this.gameReference.getBoard().getSquareList().get(i).getTile().getLetter();
             Word w = new Word();
             w.setBeginningX(x);
             w.setEndingX(x);
@@ -899,7 +929,6 @@ public class Bot {
           } else if ((!rightneighbour.isTaken()) && lowerneighbour.isTaken()) {
             int x = this.gameReference.getBoard().getSquareList().get(i).getX();
             int y = this.gameReference.getBoard().getSquareList().get(i).getY();
-            char c = this.gameReference.getBoard().getSquareList().get(i).getTile().getLetter();
             Word w = new Word();
             w.setBeginningX(x);
             w.setEndingX(x);
@@ -916,10 +945,22 @@ public class Bot {
     }
   }
 
+  /**
+   * getter Method for Player.
+   *
+   * @author sisselha
+   * @return returns the Player Object
+   */
   public Player getPlayer() {
     return gameReference.getPlayer();
   }
 
+  /**
+   * Getter-Method for Difficulty-Level of the AI.
+   *
+   * @author sisselha
+   * @return the difficulty level
+   */
   public boolean getDifficulty() {
     return difficult;
   }
