@@ -163,7 +163,7 @@ public class GameScreenController {
 
   private ArrayList<String> tutorialTexts = new ArrayList<String>();
   private Text tutorialText = new Text();
-  private int tutorialCounter = 0;
+  private ArrayList<Boolean> notYetShown = new ArrayList<Boolean>();
 
   /**
    * initializes the GameScreen.
@@ -232,6 +232,8 @@ public class GameScreenController {
     starView.setFitWidth(22);
     gameBoard.add(starView, 7, 7);
 
+    // Tutorial
+
     tutorialTexts.add(
         "It's your turn! "
             + "\nSelect a tile from your rack and place it "
@@ -245,11 +247,25 @@ public class GameScreenController {
             + "\non the rack."
             + "\nOr press the 'Recall' button to return"
             + "\nall tiles at once.");
-    tutorialTexts.add("You placed a valid word!"
-        + "\nThe 'Submit' button displays how much"
-        + "\npoints submitting this move would net."
-        + "\nIf you are content with the amount, simply"
-        + "\npress the button.");
+    tutorialTexts.add(
+        "You placed a valid word!"
+            + "\nThe 'Submit' button displays how much"
+            + "\npoints submitting this move would net."
+            + "\nIf you are content with the amount, simply"
+            + "\npress the button.");
+    tutorialTexts.add(
+        "You selected a wildcard tile."
+            + "\nThose can be played as any tile you like,"
+            + "\nbut will (usually) net you no points."
+            + "\nAfter placing the tile on the board"
+            + "\nyou will be asked to enter a letter."
+            + "\nIf you choose to return the wildcard tile"
+            + "\nto your rack, the chosen letter will be"
+            + "\nresetted.");
+
+    for (int i = 0; i < tutorialTexts.size(); i++) {
+      notYetShown.add(true);
+    }
 
     tutorialText.relocate(5, 5);
     tutorialText.setFill(Paint.valueOf("#f88c00"));
@@ -257,7 +273,6 @@ public class GameScreenController {
     if (Client.isTutorial()) {
       tutorialPane.setVisible(true);
       tutorialPane.getChildren().add(tutorialText);
-      
       updateTutorialText(0);
     }
   }
@@ -457,7 +472,11 @@ public class GameScreenController {
               StackPane sp = (StackPane) node;
               paintTileAsSelected(sp, true);
             }
-          }
+            
+            if (clickedOnTile.isWildCard()) {
+              updateTutorialText(3);
+            }
+          } 
         }
       }
       refreshRecall();
@@ -681,7 +700,7 @@ public class GameScreenController {
       refreshRecall();
       refreshSubmit();
     }
-    
+
     if (Client.isTutorial()) {
       updateTutorialText(1);
     }
@@ -1404,6 +1423,9 @@ public class GameScreenController {
                   }
                 }
               });
+      if (Client.isTutorial()) {
+        updateTutorialText(3);
+      }
     }
   }
 
@@ -1683,10 +1705,10 @@ public class GameScreenController {
    * @param tutorialNumber the number of the tutorial text which is meant to be displayed
    */
   private void updateTutorialText(int tutorialNumber) {
-    if (tutorialNumber == tutorialCounter) {
-      tutorialText.setText(tutorialTexts.get(tutorialCounter));
+    if (notYetShown.get(tutorialNumber) && Client.isTutorial()) {
+      tutorialText.setText(tutorialTexts.get(tutorialNumber));
       tutorialPane.setPrefHeight(10 + tutorialText.getLayoutBounds().getHeight());
-      tutorialCounter++;
+      notYetShown.set(tutorialNumber, false);
     }
   }
 }

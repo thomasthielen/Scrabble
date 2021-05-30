@@ -109,16 +109,20 @@ public class SinglePlayerLobbyScreenController {
     }
 
     Client.getGameSession().setSinglePlayerLobbyScreenController(this);
-
+    
     if (Client.isTutorial()) {
       header.setText("TUTORIAL GAME");
       header.setLayoutX(405);
       fileForm.setDisable(true);
 
       // Add easy AI player
-      easyBotPlayer(new ActionEvent());
+      if (Server.getBotPlayerList().size() == 0) {
+        easyBotPlayer(new ActionEvent());
+      }
       addBotPlayer.setDisable(true);
-      deleteButtons[0].setDisable(true);
+      for (Button b : deleteButtons) {
+        b.setDisable(true);
+      }
     }
 
     refreshPlayerList();
@@ -259,7 +263,7 @@ public class SinglePlayerLobbyScreenController {
       Server.setActive();
       Client.getGameSession().initializeSinglePlayerGameScreen();
       switchToGameScreen();
-    } else if (!(Server.getBotPlayerList().size() > 0)){
+    } else if (!(Server.getBotPlayerList().size() > 0)) {
       Alert errorAlert = new Alert(AlertType.ERROR);
       errorAlert.setTitle("Error");
       errorAlert.setHeaderText("Too few players.");
